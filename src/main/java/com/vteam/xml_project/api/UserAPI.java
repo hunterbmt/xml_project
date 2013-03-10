@@ -32,12 +32,12 @@ public class UserAPI {
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public @ResponseBody
     HashMap<String, Object> login(
-            @RequestParam String uuid, String password) {
+            @RequestParam String email, String password) {
         HashMap<String, Object> returnMap = new HashMap<String, Object>();
-        boolean result = userService.checkLogin(uuid, password);
+        boolean result = userService.checkLogin(email, password);
         if (result) {
             returnMap.put("status", "success");
-            session.put("UUID", uuid);
+            session.put("Email", email);
         } else {
             returnMap.put("status", "error");
         }

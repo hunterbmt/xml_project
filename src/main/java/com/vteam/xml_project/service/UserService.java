@@ -10,6 +10,8 @@ import com.vteam.xml_project.dto.UserProfileDTO;
 //import com.vteam.xml_project.hibernate.dao.UserProfileDAO;
 //import com.vteam.xml_project.hibernate.orm.User;
 //import com.vteam.xml_project.hibernate.orm.UserProfile;
+import com.vteam.xml_project.hibernate.orm.User;
+import com.vteam.xml_project.hibernate.dao.UserDAO;
 import com.vteam.xml_project.util.StringUtil;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
@@ -25,21 +27,22 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserService {
 
     private static Logger log = Logger.getLogger(UserService.class.getName());
-//    @Autowired
-//    private UserDAO userDAO;
+    @Autowired
+     private UserDAO userDAO;
+     private User dbUser;
 //    @Autowired
 //    private UserProfileDAO userProfileDAO;
 
     @Transactional
-    public boolean checkLogin(String uuid, String password) {
-//        try {
-//            User dbUser = userDAO.findUserByUUIDAndPassword(uuid, password);
-//            if (dbUser != null) {
-//                return true;
-//            }
-//        } catch (HibernateException ex) {
-//            log.error(ex);
-//        }
+    public boolean checkLogin(String email, String password) {
+        try {
+            dbUser = userDAO.findUserByEmailAndPassword(email, password);
+            if (dbUser != null) {
+               return true;
+           }
+        } catch (HibernateException ex) {
+           log.error(ex);
+       }
         return false;
     }
     @Transactional

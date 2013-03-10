@@ -1,4 +1,4 @@
-package com.vteam.xml_project.hibernate.example;
+package com.vteam.xml_project.hibernate.dao;
 
 import org.hibernate.HibernateException;
 import org.hibernate.SessionFactory;
