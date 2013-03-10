@@ -31,10 +31,10 @@ public class MainController {
         return mav;
     }
 
-    @RequestMapping(value = "/places")
+    @RequestMapping(value = "/admin")
     @Transactional
-    public ModelAndView places(HttpServletRequest request) {
-        ModelAndView mav = new ModelAndView("places");
+    public ModelAndView admin(HttpServletRequest request) {
+        ModelAndView mav = new ModelAndView("admin");
         return mav;
     }
     @RequestMapping(value = "/routes")
