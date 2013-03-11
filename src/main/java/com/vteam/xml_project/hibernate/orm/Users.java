@@ -82,7 +82,7 @@ public class Users implements java.io.Serializable {
         return this.tblOrderHistories;
     }
 
-    public void setTblOrderHistories(Set tblOrderHistories) {
+    public void setTblOrderHistories(Set<OrderHistory> tblOrderHistories) {
         this.tblOrderHistories = tblOrderHistories;
     }
 
@@ -91,7 +91,7 @@ public class Users implements java.io.Serializable {
         return this.tblUserPayments;
     }
 
-    public void setTblUserPayments(Set tblUserPayments) {
+    public void setTblUserPayments(Set<UserPayment> tblUserPayments) {
         this.tblUserPayments = tblUserPayments;
     }
 
@@ -109,7 +109,7 @@ public class Users implements java.io.Serializable {
         return this.tblCardCodes;
     }
 
-    public void setTblCardCodes(Set tblCardCodes) {
+    public void setTblCardCodes(Set<CardCode> tblCardCodes) {
         this.tblCardCodes = tblCardCodes;
     }
 
@@ -118,7 +118,7 @@ public class Users implements java.io.Serializable {
         return this.tblBidHistories;
     }
 
-    public void setTblBidHistories(Set tblBidHistories) {
+    public void setTblBidHistories(Set<BidHistory> tblBidHistories) {
         this.tblBidHistories = tblBidHistories;
     }
 }
