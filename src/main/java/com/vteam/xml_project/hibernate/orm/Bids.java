@@ -36,7 +36,7 @@ public class Bids  implements java.io.Serializable {
      private Date startDate;
      private Date endDate;
      private Date lastEdit;
-     private Set tblBidHistories = new HashSet(0);
+     private Set<BidHistory> tblBidHistories = new HashSet<BidHistory>();
 
     public Bids() {
     }
@@ -123,7 +123,7 @@ public class Bids  implements java.io.Serializable {
         this.lastEdit = lastEdit;
     }
 @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="tblBids")
-    public Set getTblBidHistories() {
+    public Set<BidHistory> getTblBidHistories() {
         return this.tblBidHistories;
     }
     
