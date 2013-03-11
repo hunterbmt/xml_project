@@ -78,7 +78,7 @@ public class Tags implements java.io.Serializable {
         return this.tblProducts;
     }
 
-    public void setTblProducts(Set tblProducts) {
+    public void setTblProducts(Set<Product> tblProducts) {
         this.tblProducts = tblProducts;
     }
 }

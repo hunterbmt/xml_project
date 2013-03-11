@@ -172,7 +172,7 @@ public class Product implements java.io.Serializable {
         return this.tblTagses;
     }
 
-    public void setTblTagses(Set tblTagses) {
+    public void setTblTagses(Set<Tags> tblTagses) {
         this.tblTagses = tblTagses;
     }
 
@@ -181,7 +181,7 @@ public class Product implements java.io.Serializable {
         return this.tblBidses;
     }
 
-    public void setTblBidses(Set tblBidses) {
+    public void setTblBidses(Set<Bids> tblBidses) {
         this.tblBidses = tblBidses;
     }
 
@@ -190,7 +190,7 @@ public class Product implements java.io.Serializable {
         return this.tblOrderHistories;
     }
 
-    public void setTblOrderHistories(Set tblOrderHistories) {
+    public void setTblOrderHistories(Set<OrderHistory> tblOrderHistories) {
         this.tblOrderHistories = tblOrderHistories;
     }
 }

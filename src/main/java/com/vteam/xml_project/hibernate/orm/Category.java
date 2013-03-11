@@ -72,7 +72,7 @@ public class Category  implements java.io.Serializable {
         return this.Products;
     }
     
-    public void setTblProducts(Set tblProducts) {
+    public void setTblProducts(Set<Product> tblProducts) {
         this.Products = tblProducts;
     }
 
