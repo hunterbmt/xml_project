@@ -78,7 +78,7 @@ public class Users implements java.io.Serializable {
     }
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "tbl_users")
-    public Set getTblOrderHistories() {
+    public Set<OrderHistory> getTblOrderHistories() {
         return this.tblOrderHistories;
     }
 
@@ -87,7 +87,7 @@ public class Users implements java.io.Serializable {
     }
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "tbl_users")
-    public Set getTblUserPayments() {
+    public Set<UserPayment> getTblUserPayments() {
         return this.tblUserPayments;
     }
 
@@ -105,7 +105,7 @@ public class Users implements java.io.Serializable {
     }
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "tbl_users")
-    public Set getTblCardCodes() {
+    public Set<CardCode> getTblCardCodes() {
         return this.tblCardCodes;
     }
 
@@ -114,7 +114,7 @@ public class Users implements java.io.Serializable {
     }
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "tbl_users")
-    public Set getTblBidHistories() {
+    public Set<BidHistory> getTblBidHistories() {
         return this.tblBidHistories;
     }
 
