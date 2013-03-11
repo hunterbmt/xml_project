@@ -24,11 +24,11 @@ public class Users implements java.io.Serializable {
     private Integer id;
     private String email;
     private String password;
-    private Set<OrderHistory> tblOrderHistories = new HashSet(0);
-    private Set<UserPayment> tblUserPayments = new HashSet(0);
+    private Set<OrderHistory> tblOrderHistories = new HashSet<OrderHistory>(0);
+    private Set<UserPayment> tblUserPayments = new HashSet<UserPayment>(0);
     private UserInfo user_info ;
-    private Set<CardCode> tblCardCodes = new HashSet(0);
-    private Set<BidHistory> tblBidHistories = new HashSet(0);
+    private Set<CardCode> tblCardCodes = new HashSet<CardCode>(0);
+    private Set<BidHistory> tblBidHistories = new HashSet<BidHistory>(0);
 
     public Users() {
     }
@@ -77,7 +77,7 @@ public class Users implements java.io.Serializable {
         this.password = password;
     }
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "tbl_users")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "users")
     public Set<OrderHistory> getTblOrderHistories() {
         return this.tblOrderHistories;
     }
@@ -86,7 +86,7 @@ public class Users implements java.io.Serializable {
         this.tblOrderHistories = tblOrderHistories;
     }
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "tbl_users")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "tblUsers")
     public Set<UserPayment> getTblUserPayments() {
         return this.tblUserPayments;
     }
@@ -95,7 +95,7 @@ public class Users implements java.io.Serializable {
         this.tblUserPayments = tblUserPayments;
     }
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "tbl_users")
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "tblUsers")
     public UserInfo getUserInfo() {
         return this.user_info;
     }
@@ -104,7 +104,7 @@ public class Users implements java.io.Serializable {
         this.user_info = user_info;
     }
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "tbl_users")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "tblUsers")
     public Set<CardCode> getTblCardCodes() {
         return this.tblCardCodes;
     }
@@ -113,7 +113,7 @@ public class Users implements java.io.Serializable {
         this.tblCardCodes = tblCardCodes;
     }
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "tbl_users")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "tblUsers")
     public Set<BidHistory> getTblBidHistories() {
         return this.tblBidHistories;
     }

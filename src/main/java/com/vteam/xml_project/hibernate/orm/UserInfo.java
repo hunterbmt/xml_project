@@ -20,7 +20,7 @@ import javax.persistence.TemporalType;
 public class UserInfo implements java.io.Serializable {
 
     private int userId;
-    private Users user;
+    private Users tblUsers;
     private String fullname;
     private Date birthday;
     private String address;
@@ -31,7 +31,7 @@ public class UserInfo implements java.io.Serializable {
 
     public UserInfo(int userId, Users user, String fullname, Date birthday, String address, String phone) {
         this.userId = userId;
-        this.user = user;
+        this.tblUsers = user;
         this.fullname = fullname;
         this.birthday = birthday;
         this.address = address;
@@ -51,11 +51,11 @@ public class UserInfo implements java.io.Serializable {
     @OneToOne(fetch = FetchType.LAZY)
     @PrimaryKeyJoinColumn
     public Users getUsers() {
-        return this.user;
+        return this.tblUsers;
     }
 
     public void setTblUsers(Users user) {
-        this.user = user;
+        this.tblUsers = user;
     }
 
     @Column(name = "fullname", nullable = false)

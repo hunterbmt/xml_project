@@ -22,7 +22,7 @@ import javax.persistence.TemporalType;
 public class OrderHistory implements java.io.Serializable {
 
     private Integer id;
-    private Users user;
+    private Users users;
     private Product tblProduct;
     private Date orderDay;
     private String address;
@@ -32,7 +32,7 @@ public class OrderHistory implements java.io.Serializable {
     }
 
     public OrderHistory(Users user, Product tblProduct, Date orderDay, String address, int amount) {
-        this.user = user;
+        this.users = user;
         this.tblProduct = tblProduct;
         this.orderDay = orderDay;
         this.address = address;
@@ -53,11 +53,11 @@ public class OrderHistory implements java.io.Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     public Users getUser() {
-        return this.user;
+        return this.users;
     }
 
     public void setUser(Users user) {
-        this.user = user;
+        this.users = user;
     }
 
     @ManyToOne(fetch = FetchType.LAZY)

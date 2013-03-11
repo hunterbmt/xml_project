@@ -26,7 +26,7 @@ public class UserPayment  implements java.io.Serializable {
 
 
      private Integer id;
-     private Users user;
+     private Users tblUsers;
      private Date paymentDay;
      private String cardCode;
      private int amount;
@@ -35,7 +35,7 @@ public class UserPayment  implements java.io.Serializable {
     }
 
     public UserPayment(Users user, Date paymentDay, String cardCode, int amount) {
-       this.user = user;
+       this.tblUsers = user;
        this.paymentDay = paymentDay;
        this.cardCode = cardCode;
        this.amount = amount;
@@ -54,11 +54,11 @@ public class UserPayment  implements java.io.Serializable {
 @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="user_id", nullable=false)
     public Users getUsers() {
-        return this.user;
+        return this.tblUsers;
     }
     
     public void setUsers(Users user) {
-        this.user = user;
+        this.tblUsers = user;
     }
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name="payment_day", nullable=false, length=19)
