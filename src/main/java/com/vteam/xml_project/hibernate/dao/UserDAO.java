@@ -7,7 +7,7 @@ package com.vteam.xml_project.hibernate.dao;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
-import com.vteam.xml_project.hibernate.orm.User;
+import com.vteam.xml_project.hibernate.orm.Users;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -19,27 +19,27 @@ public class UserDAO extends BaseDAO{
     public UserDAO() {
     }
     
-    public User findUserByUuid(String uuid) throws HibernateException {
-        User returnUser ;
+    public Users findUserByUuid(String uuid) throws HibernateException {
+        Users returnUser ;
         String sql = "From User where user_id = ?";
         Query query = this.sessionFactory.getCurrentSession().createQuery(sql);
         query.setString(0, uuid);
-        returnUser =  (User) query.uniqueResult();
+        returnUser =  (Users) query.uniqueResult();
         return returnUser;
     }
-    public User findUserByEmail(String email) throws HibernateException {
-        User returnUser ;
+    public Users findUserByEmail(String email) throws HibernateException {
+        Users returnUser ;
         String sql = "From User where email = ?";
         Query query = this.sessionFactory.getCurrentSession().createQuery(sql);
         query.setString(0, email);
-        returnUser =  (User) query.uniqueResult();
+        returnUser =  (Users) query.uniqueResult();
         return returnUser;
     }
-  public User findUserByEmailAndPassword(String uuid,String password) throws HibernateException{
+  public Users findUserByEmailAndPassword(String uuid,String password) throws HibernateException{
         String sql ="From User where email = ? and password = ?";
         Query query = this.sessionFactory.getCurrentSession().createQuery(sql);
         query.setString(0, uuid);
         query.setString(1, password);
-        return (User) query.uniqueResult();
+        return (Users) query.uniqueResult();
     }
 }

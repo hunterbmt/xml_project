@@ -10,7 +10,7 @@ import com.vteam.xml_project.dto.UserProfileDTO;
 //import com.vteam.xml_project.hibernate.dao.UserProfileDAO;
 //import com.vteam.xml_project.hibernate.orm.User;
 //import com.vteam.xml_project.hibernate.orm.UserProfile;
-import com.vteam.xml_project.hibernate.orm.User;
+import com.vteam.xml_project.hibernate.orm.Users;
 import com.vteam.xml_project.hibernate.dao.UserDAO;
 import com.vteam.xml_project.util.StringUtil;
 import org.apache.log4j.Logger;
