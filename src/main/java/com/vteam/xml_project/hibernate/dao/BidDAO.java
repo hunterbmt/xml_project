@@ -6,7 +6,7 @@ package com.vteam.xml_project.hibernate.dao;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
-import com.vteam.xml_project.hibernate.orm.Bid;
+import com.vteam.xml_project.hibernate.orm.Bids;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -21,16 +21,16 @@ public class BidDAO extends BaseDAO{
     public BidDAO() {
     }
     
-    public Bid getBidById(Integer id) throws HibernateException {
-        Bid returnObj ;
+    public Bids getBidById(Integer id) throws HibernateException {
+        Bids returnObj ;
         String sql = "From tbl_bids where id = ?";
         Query query = this.sessionFactory.getCurrentSession().createQuery(sql);
         query.setInteger(0, id);
-        returnObj =  (Bid) query.uniqueResult();
+        returnObj =  (Bids) query.uniqueResult();
         return returnObj;
     }
     
-    public List<Bid> getBidsByStartDate(Date date) throws HibernateException {        
+    public List<Bids> getBidsByStartDate(Date date) throws HibernateException {        
         String sql = "From tbl_bids where start_date = ?";
         Query query = this.sessionFactory.getCurrentSession().createQuery(sql);
         query.setDate(0, date);        

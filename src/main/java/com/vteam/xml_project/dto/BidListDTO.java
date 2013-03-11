@@ -4,7 +4,6 @@
  */
 package com.vteam.xml_project.dto;
 
-import com.vteam.xml_project.hibernate.orm.Bid;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,17 +12,17 @@ import java.util.List;
  * @author Crick
  */
 public class BidListDTO {
-    private List<Bid> lists;
+    private List<BidDTO> lists;
 
     public BidListDTO() {
-        this.lists = new ArrayList<Bid>();
+        this.lists = new ArrayList<BidDTO>();
     }
 
-    public List<Bid> getLists() {
+    public List<BidDTO> getLists() {
         return lists;
     }
 
-    public void setLists(List<Bid> lists) {
+    public void setLists(List<BidDTO> lists) {
         this.lists = lists;
     }
     

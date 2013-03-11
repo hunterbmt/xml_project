@@ -6,9 +6,10 @@ package com.vteam.xml_project.api;
 
 
 import com.vteam.xml_project.controller.UserSession;
+import com.vteam.xml_project.dto.BidDTO;
 import com.vteam.xml_project.dto.UserDTO;
 import com.vteam.xml_project.dto.UserProfileDTO;
-import com.vteam.xml_project.service.UserService;
+import com.vteam.xml_project.service.BidService;
 import java.util.HashMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -28,58 +29,27 @@ public class BidAPI {
     @Autowired
     private UserSession session;
     @Autowired
-    private UserService userService;
+    private BidService bidService;
 
     @RequestMapping(value = "/get_bid_by_id", method = RequestMethod.POST)
     public @ResponseBody
     HashMap<String, Object> getBidByID(
             @RequestParam int _id) {
         HashMap<String, Object> returnMap = new HashMap<String, Object>();
-        boolean result = userService.checkLogin(email, password);
-        if (result) {
+        BidDTO result = bidService.getBidByID(_id);
+        if (result != null) {
             returnMap.put("status", "success");
-            session.put("Email", email);
+            returnMap.put("rs", result);
         } else {
             returnMap.put("status", "error");
+            returnMap.put("message", "Cannot get");
         }
         return returnMap;
 
     }
 
-    @RequestMapping(value = "/logout", method = RequestMethod.POST)
-    public @ResponseBody
-    HashMap<String, Object> logout(
-            @RequestParam String uuid) {
-        HashMap<String, Object> returnMap = new HashMap<String, Object>();
-        String currentUUID = (String) session.get("UUID");
-        if (currentUUID.equals(uuid)) {
-            returnMap.put("status", "success");
-            session.remove("UUID");
-        } else {
-            returnMap.put("status", "error");
-        }
-        return returnMap;
-    }
+    
 
-    @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public @ResponseBody
-    HashMap<String, Object> create(
-            @RequestParam String uuid, String password, String name, String email, String phoneNumber) {
-        HashMap<String, Object> returnMap = new HashMap<String, Object>();
-        UserDTO newUser = new UserDTO();
-        newUser.setUuid(uuid);
-        newUser.setPassword(password);
-        UserProfileDTO newProfile = new UserProfileDTO();
-        newProfile.setEmail(email);
-        newProfile.setName(name);
-        newProfile.setPhoneNumber(phoneNumber);
-        boolean result = userService.createNewUser(newUser, newProfile);
-        if (result) {
-            returnMap.put("status", "success");
-        } else {
-            returnMap.put("status", "error");
-        }
-        return returnMap;
-    }
+    
 }
 
