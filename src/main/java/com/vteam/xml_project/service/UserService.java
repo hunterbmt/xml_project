@@ -12,7 +12,6 @@ import com.vteam.xml_project.dto.UserProfileDTO;
 //import com.vteam.xml_project.hibernate.orm.UserProfile;
 import com.vteam.xml_project.hibernate.orm.Users;
 import com.vteam.xml_project.hibernate.dao.UserDAO;
-import com.vteam.xml_project.util.StringUtil;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +28,7 @@ public class UserService {
     private static Logger log = Logger.getLogger(UserService.class.getName());
     @Autowired
      private UserDAO userDAO;
-     private User dbUser;
+     private Users dbUser;
 //    @Autowired
 //    private UserProfileDAO userProfileDAO;
 

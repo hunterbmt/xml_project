@@ -6,8 +6,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -20,7 +20,7 @@ import javax.persistence.TemporalType;
 public class UserInfo implements java.io.Serializable {
 
     private int userId;
-    private Users tblUsers;
+    private Users user;
     private String fullname;
     private Date birthday;
     private String address;
@@ -29,9 +29,9 @@ public class UserInfo implements java.io.Serializable {
     public UserInfo() {
     }
 
-    public UserInfo(int userId, Users tblUsers, String fullname, Date birthday, String address, String phone) {
+    public UserInfo(int userId, Users user, String fullname, Date birthday, String address, String phone) {
         this.userId = userId;
-        this.tblUsers = tblUsers;
+        this.user = user;
         this.fullname = fullname;
         this.birthday = birthday;
         this.address = address;
@@ -48,14 +48,14 @@ public class UserInfo implements java.io.Serializable {
         this.userId = userId;
     }
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", unique = true, nullable = false, insertable = false, updatable = false)
-    public Users getTblUsers() {
-        return this.tblUsers;
+    @OneToOne(fetch = FetchType.LAZY)
+    @PrimaryKeyJoinColumn
+    public Users getUsers() {
+        return this.user;
     }
 
-    public void setTblUsers(Users tblUsers) {
-        this.tblUsers = tblUsers;
+    public void setTblUsers(Users user) {
+        this.user = user;
     }
 
     @Column(name = "fullname", nullable = false)

@@ -11,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 /**
@@ -25,7 +26,7 @@ public class Users implements java.io.Serializable {
     private String password;
     private Set tblOrderHistories = new HashSet(0);
     private Set tblUserPayments = new HashSet(0);
-    private Set tblUserInfos = new HashSet(0);
+    private UserInfo user_info ;
     private Set tblCardCodes = new HashSet(0);
     private Set tblBidHistories = new HashSet(0);
 
@@ -37,12 +38,12 @@ public class Users implements java.io.Serializable {
         this.password = password;
     }
 
-    public Users(String email, String password, Set tblOrderHistories, Set tblUserPayments, Set tblUserInfos, Set tblCardCodes, Set tblBidHistories) {
+    public Users(String email, String password, Set tblOrderHistories, Set tblUserPayments, UserInfo user_info, Set tblCardCodes, Set tblBidHistories) {
         this.email = email;
         this.password = password;
         this.tblOrderHistories = tblOrderHistories;
         this.tblUserPayments = tblUserPayments;
-        this.tblUserInfos = tblUserInfos;
+        this.user_info = user_info;
         this.tblCardCodes = tblCardCodes;
         this.tblBidHistories = tblBidHistories;
     }
@@ -76,7 +77,7 @@ public class Users implements java.io.Serializable {
         this.password = password;
     }
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "tblUsers")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "tbl_users")
     public Set getTblOrderHistories() {
         return this.tblOrderHistories;
     }
@@ -85,7 +86,7 @@ public class Users implements java.io.Serializable {
         this.tblOrderHistories = tblOrderHistories;
     }
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "tblUsers")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "tbl_users")
     public Set getTblUserPayments() {
         return this.tblUserPayments;
     }
@@ -94,16 +95,16 @@ public class Users implements java.io.Serializable {
         this.tblUserPayments = tblUserPayments;
     }
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "tblUsers")
-    public Set getTblUserInfos() {
-        return this.tblUserInfos;
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "tbl_users")
+    public UserInfo getUserInfo() {
+        return this.user_info;
     }
 
-    public void setTblUserInfos(Set tblUserInfos) {
-        this.tblUserInfos = tblUserInfos;
+    public void setUserInfo(UserInfo user_info) {
+        this.user_info = user_info;
     }
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "tblUsers")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "tbl_users")
     public Set getTblCardCodes() {
         return this.tblCardCodes;
     }
@@ -112,7 +113,7 @@ public class Users implements java.io.Serializable {
         this.tblCardCodes = tblCardCodes;
     }
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "tblUsers")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "tbl_users")
     public Set getTblBidHistories() {
         return this.tblBidHistories;
     }
