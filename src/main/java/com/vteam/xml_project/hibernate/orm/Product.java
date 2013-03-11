@@ -27,10 +27,8 @@ import javax.persistence.TemporalType;
     ,catalog="xml_project"
 )
 public class Product  implements java.io.Serializable {
-
-
      private Integer id;
-     private Category tblCategory;
+     private Category category_id;
      private String productName;
      private String description;
      private String image;
@@ -39,16 +37,16 @@ public class Product  implements java.io.Serializable {
      private double maxPrice;
      private Date lastUpdate;
      private boolean isActive;
-     private Set tblTagsProducts = new HashSet(0);
-     private Set tblBidses = new HashSet(0);
-     private Set tblOrderHistories = new HashSet(0);
+     private Set tagsProducts = new HashSet(0);
+     private Set bidses = new HashSet(0);
+     private Set orderHistories = new HashSet(0);
 
     public Product() {
     }
 
 	
     public Product(Category tblCategory, String productName, String description, String image, byte status, double minPrice, double maxPrice, boolean isActive) {
-        this.tblCategory = tblCategory;
+        this.category_id = tblCategory;
         this.productName = productName;
         this.description = description;
         this.image = image;
@@ -58,7 +56,7 @@ public class Product  implements java.io.Serializable {
         this.isActive = isActive;
     }
     public Product(Category tblCategory, String productName, String description, String image, byte status, double minPrice, double maxPrice, Date lastUpdate, boolean isActive, Set tblTagsProducts, Set tblBidses, Set tblOrderHistories) {
-       this.tblCategory = tblCategory;
+       this.category_id = tblCategory;
        this.productName = productName;
        this.description = description;
        this.image = image;
@@ -67,9 +65,9 @@ public class Product  implements java.io.Serializable {
        this.maxPrice = maxPrice;
        this.lastUpdate = lastUpdate;
        this.isActive = isActive;
-       this.tblTagsProducts = tblTagsProducts;
-       this.tblBidses = tblBidses;
-       this.tblOrderHistories = tblOrderHistories;
+       this.tagsProducts = tblTagsProducts;
+       this.bidses = tblBidses;
+       this.orderHistories = tblOrderHistories;
     }
    
      @Id @GeneratedValue(strategy=IDENTITY)
@@ -82,14 +80,15 @@ public class Product  implements java.io.Serializable {
     public void setId(Integer id) {
         this.id = id;
     }
-@ManyToOne(fetch=FetchType.LAZY)
+    
+    @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="category_id", nullable=false)
-    public Category getTblCategory() {
-        return this.tblCategory;
+    public Category getCategory() {
+        return this.category_id;
     }
     
-    public void setTblCategory(Category tblCategory) {
-        this.tblCategory = tblCategory;
+    public void setCategory(Category tblCategory) {
+        this.category_id= tblCategory;
     }
     
     @Column(name="product_name", nullable=false, length=100)
@@ -164,28 +163,28 @@ public class Product  implements java.io.Serializable {
         this.isActive = isActive;
     }
 @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="tblProduct")
-    public Set getTblTagsProducts() {
-        return this.tblTagsProducts;
+    public Set getTagsProducts() {
+        return this.tagsProducts;
     }
     
-    public void setTblTagsProducts(Set tblTagsProducts) {
-        this.tblTagsProducts = tblTagsProducts;
+    public void setTagsProducts(Set tblTagsProducts) {
+        this.tagsProducts = tblTagsProducts;
     }
 @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="tblProduct")
     public Set getTblBidses() {
-        return this.tblBidses;
+        return this.bidses;
     }
     
     public void setTblBidses(Set tblBidses) {
-        this.tblBidses = tblBidses;
+        this.bidses = tblBidses;
     }
 @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="tblProduct")
     public Set getTblOrderHistories() {
-        return this.tblOrderHistories;
+        return this.orderHistories;
     }
     
     public void setTblOrderHistories(Set tblOrderHistories) {
-        this.tblOrderHistories = tblOrderHistories;
+        this.orderHistories = tblOrderHistories;
     }
 
 
