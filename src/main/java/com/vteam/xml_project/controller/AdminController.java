@@ -17,42 +17,18 @@ import org.springframework.web.servlet.ModelAndView;
  * @author Administrator
  */
 @Controller
-public class MainController {
+@RequestMapping(value = "/admin")
+public class AdminController {
 
     @Autowired
     private UserService userService;
     @Autowired
     private UserSession session;
 
-    @RequestMapping(value = "/")
-    @Transactional
-    public ModelAndView main(HttpServletRequest request) {
-        ModelAndView mav = new ModelAndView("main");
-        return mav;
-    }
-
-    @RequestMapping(value = "/admin")
+    @RequestMapping(value = "/product")
     @Transactional
     public ModelAndView admin(HttpServletRequest request) {
-        ModelAndView mav = new ModelAndView("admin");
-        return mav;
-    }
-    @RequestMapping(value = "/routes")
-    @Transactional
-    public ModelAndView routes(HttpServletRequest request) {
-        ModelAndView mav = new ModelAndView("routes");
-        return mav;
-    }
-    @RequestMapping(value = "/catalogs")
-    @Transactional
-    public ModelAndView catalogs(HttpServletRequest request) {
-        ModelAndView mav = new ModelAndView("catalogs");
-        return mav;
-    }
-    @RequestMapping(value = "/keywords")
-    @Transactional
-    public ModelAndView keywords(HttpServletRequest request) {
-        ModelAndView mav = new ModelAndView("keywords");
+        ModelAndView mav = new ModelAndView("admin_product");
         return mav;
     }
     

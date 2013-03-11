@@ -21,7 +21,7 @@ public class UserDAO extends BaseDAO{
     
     public User findUserByUuid(String uuid) throws HibernateException {
         User returnUser ;
-        String sql = "From tbl_users where user_id = ?";
+        String sql = "From User where user_id = ?";
         Query query = this.sessionFactory.getCurrentSession().createQuery(sql);
         query.setString(0, uuid);
         returnUser =  (User) query.uniqueResult();
@@ -29,14 +29,14 @@ public class UserDAO extends BaseDAO{
     }
     public User findUserByEmail(String email) throws HibernateException {
         User returnUser ;
-        String sql = "From tbl_users where email = ?";
+        String sql = "From User where email = ?";
         Query query = this.sessionFactory.getCurrentSession().createQuery(sql);
         query.setString(0, email);
         returnUser =  (User) query.uniqueResult();
         return returnUser;
     }
   public User findUserByEmailAndPassword(String uuid,String password) throws HibernateException{
-        String sql ="From tbl_users where email = ? and password = ?";
+        String sql ="From User where email = ? and password = ?";
         Query query = this.sessionFactory.getCurrentSession().createQuery(sql);
         query.setString(0, uuid);
         query.setString(1, password);

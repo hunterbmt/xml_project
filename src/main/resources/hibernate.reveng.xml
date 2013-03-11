@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-reverse-engineering PUBLIC "-//Hibernate/Hibernate Reverse Engineering DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-reverse-engineering-3.0.dtd">
+<hibernate-reverse-engineering>
+  <schema-selection match-catalog="xml_project"/>
+  <table-filter match-name="tbl_bids"/>
+  <table-filter match-name="tbl_category"/>
+  <table-filter match-name="tbl_product"/>
+  <table-filter match-name="tbl_card_code"/>
+  <table-filter match-name="tbl_bid_history"/>
+  <table-filter match-name="tbl_order_history"/>
+  <table-filter match-name="tbl_tags_product"/>
+  <table-filter match-name="tbl_users"/>
+  <table-filter match-name="tbl_tags"/>
+  <table-filter match-name="tbl_user_payment"/>
+  <table-filter match-name="tbl_user_info"/>
+</hibernate-reverse-engineering>

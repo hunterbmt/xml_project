@@ -36,6 +36,7 @@ public class UserAPI {
         HashMap<String, Object> returnMap = new HashMap<String, Object>();
         boolean result = userService.checkLogin(email, password);
         if (result) {
+            returnMap.put("email", email);
             returnMap.put("status", "success");
             session.put("Email", email);
         } else {
