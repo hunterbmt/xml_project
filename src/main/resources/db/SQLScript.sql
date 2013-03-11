@@ -87,12 +87,13 @@ CREATE TABLE `tbl_tags_product` (
 
 CREATE TABLE `tbl_bids` (
     `id` int(10) NOT NULL AUTO_INCREMENT,
-    `last_userid` int(10) NOT NULL,
+    `last_userid` int(10) NULL,
     `product_id` int(10) NOT NULL,
-    `current_price` double NOT NULL,
+    `current_price` double NULL,
     `start_date` DATETIME NOT NULL,
     `end_date` DATETIME DEFAULT NULL,
     `last_edit` DATETIME DEFAULT NULL,
+    `status` TINYINT(2) DEFAULT 0,
     PRIMARY KEY (`id`),
     CONSTRAINT `bids_product_fkey` FOREIGN KEY (`product_id`)
         REFERENCES `tbl_product` (`id`)

@@ -1,0 +1,19 @@
+﻿
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+# On branch master
+# Your branch is behind 'origin/master' by 2 commits, and can be fast-forwarded.
+#
+# Changes to be committed:
+#   (use "git reset HEAD <file>..." to unstage)
+#
+#	new file:   src/main/java/com/vteam/xml_project/api/BidAPI.java
+#	new file:   src/main/java/com/vteam/xml_project/dto/BidDTO.java
+#	new file:   src/main/java/com/vteam/xml_project/dto/BidListDTO.java
+#	new file:   src/main/java/com/vteam/xml_project/hibernate/dao/BidDAO.java
+#	new file:   src/main/java/com/vteam/xml_project/hibernate/orm/Bid.java
+#	new file:   src/main/java/com/vteam/xml_project/service/BidService.java
+#	new file:   src/main/java/com/vteam/xml_project/util/DateUtil.java
+#	modified:   src/main/resources/db/SQLScript.sql
+#
+
