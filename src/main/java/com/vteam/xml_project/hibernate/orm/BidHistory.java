@@ -22,8 +22,8 @@ import javax.persistence.TemporalType;
 public class BidHistory implements java.io.Serializable {
 
     private Integer id;
-    private Users tblUsers;
-    private Bids tblBids;
+    private Users user;
+    private Bids bid;
     private double price;
     private Date bidTime;
 
@@ -31,14 +31,14 @@ public class BidHistory implements java.io.Serializable {
     }
 
     public BidHistory(Users tblUsers, Bids tblBids, double price) {
-        this.tblUsers = tblUsers;
-        this.tblBids = tblBids;
+        this.user = tblUsers;
+        this.bid = tblBids;
         this.price = price;
     }
 
     public BidHistory(Users tblUsers, Bids tblBids, double price, Date bidTime) {
-        this.tblUsers = tblUsers;
-        this.tblBids = tblBids;
+        this.user = tblUsers;
+        this.bid = tblBids;
         this.price = price;
         this.bidTime = bidTime;
     }
@@ -56,22 +56,22 @@ public class BidHistory implements java.io.Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
-    public Users getTblUsers() {
-        return this.tblUsers;
+    public Users getUser() {
+        return this.user;
     }
 
-    public void setTblUsers(Users tblUsers) {
-        this.tblUsers = tblUsers;
+    public void setUser(Users tblUsers) {
+        this.user = tblUsers;
     }
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "bid_id", nullable = false)
-    public Bids getTblBids() {
-        return this.tblBids;
+    public Bids getBid() {
+        return this.bid;
     }
 
-    public void setTblBids(Bids tblBids) {
-        this.tblBids = tblBids;
+    public void setBid(Bids tblBids) {
+        this.bid = tblBids;
     }
 
     @Column(name = "price", nullable = false, precision = 22, scale = 0)

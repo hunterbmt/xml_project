@@ -37,9 +37,9 @@ public class Product implements java.io.Serializable {
     private double maxPrice;
     private Date lastUpdate;
     private boolean isActive;
-    private Set<Tags> tblTagses = new HashSet(0);
-    private Set<Bids> tblBidses = new HashSet(0);
-    private Set<OrderHistory> tblOrderHistories = new HashSet(0);
+    private Set<Tags> tagses = new HashSet(0);
+    private Set<Bids> bidses = new HashSet(0);
+    private Set<OrderHistory> orderHistories = new HashSet(0);
 
     public Product() {
     }
@@ -65,9 +65,9 @@ public class Product implements java.io.Serializable {
         this.maxPrice = maxPrice;
         this.lastUpdate = lastUpdate;
         this.isActive = isActive;
-        this.tblTagses = tblTagses;
-        this.tblBidses = tblBidses;
-        this.tblOrderHistories = tblOrderHistories;
+        this.tagses = tblTagses;
+        this.bidses = tblBidses;
+        this.orderHistories = tblOrderHistories;
     }
 
     @Id
@@ -83,11 +83,11 @@ public class Product implements java.io.Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id", nullable = false)
-    public Category getTblCategory() {
+    public Category getCategory() {
         return this.tblCategory;
     }
 
-    public void setTblCategory(Category tblCategory) {
+    public void setCategory(Category tblCategory) {
         this.tblCategory = tblCategory;
     }
 
@@ -168,29 +168,29 @@ public class Product implements java.io.Serializable {
     @JoinTable(name = "tbl_tags_product", catalog = "xml_project", joinColumns = {
         @JoinColumn(name = "product_id", nullable = false, updatable = false)}, inverseJoinColumns = {
         @JoinColumn(name = "tags_id", nullable = false, updatable = false)})
-    public Set<Tags> getTblTagses() {
-        return this.tblTagses;
+    public Set<Tags> getTagses() {
+        return this.tagses;
     }
 
-    public void setTblTagses(Set<Tags> tblTagses) {
-        this.tblTagses = tblTagses;
+    public void setTagses(Set<Tags> tblTagses) {
+        this.tagses = tblTagses;
     }
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "tblProduct")
-    public Set<Bids> getTblBidses() {
-        return this.tblBidses;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "product")
+    public Set<Bids> getBidses() {
+        return this.bidses;
     }
 
-    public void setTblBidses(Set<Bids> tblBidses) {
-        this.tblBidses = tblBidses;
+    public void setBidses(Set<Bids> tblBidses) {
+        this.bidses = tblBidses;
     }
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "tblProduct")
-    public Set<OrderHistory> getTblOrderHistories() {
-        return this.tblOrderHistories;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "product")
+    public Set<OrderHistory> getOrderHistories() {
+        return this.orderHistories;
     }
 
-    public void setTblOrderHistories(Set<OrderHistory> tblOrderHistories) {
-        this.tblOrderHistories = tblOrderHistories;
+    public void setOrderHistories(Set<OrderHistory> tblOrderHistories) {
+        this.orderHistories = tblOrderHistories;
     }
 }

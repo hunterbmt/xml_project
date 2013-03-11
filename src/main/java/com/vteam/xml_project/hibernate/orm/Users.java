@@ -24,11 +24,11 @@ public class Users implements java.io.Serializable {
     private Integer id;
     private String email;
     private String password;
-    private Set<OrderHistory> tblOrderHistories = new HashSet<OrderHistory>(0);
-    private Set<UserPayment> tblUserPayments = new HashSet<UserPayment>(0);
-    private UserInfo user_info ;
-    private Set<CardCode> tblCardCodes = new HashSet<CardCode>(0);
-    private Set<BidHistory> tblBidHistories = new HashSet<BidHistory>(0);
+    private Set<OrderHistory> orderHistories = new HashSet<OrderHistory>(0);
+    private Set<UserPayment> userPayments = new HashSet<UserPayment>(0);
+    private UserInfo userInfo ;
+    private Set<CardCode> cardCodes = new HashSet<CardCode>(0);
+    private Set<BidHistory> bidHistories = new HashSet<BidHistory>(0);
 
     public Users() {
     }
@@ -41,11 +41,11 @@ public class Users implements java.io.Serializable {
     public Users(String email, String password, Set tblOrderHistories, Set tblUserPayments, UserInfo user_info, Set tblCardCodes, Set tblBidHistories) {
         this.email = email;
         this.password = password;
-        this.tblOrderHistories = tblOrderHistories;
-        this.tblUserPayments = tblUserPayments;
-        this.user_info = user_info;
-        this.tblCardCodes = tblCardCodes;
-        this.tblBidHistories = tblBidHistories;
+        this.orderHistories = tblOrderHistories;
+        this.userPayments = tblUserPayments;
+        this.userInfo = user_info;
+        this.cardCodes = tblCardCodes;
+        this.bidHistories = tblBidHistories;
     }
 
     @Id
@@ -77,48 +77,48 @@ public class Users implements java.io.Serializable {
         this.password = password;
     }
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "users")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
     public Set<OrderHistory> getTblOrderHistories() {
-        return this.tblOrderHistories;
+        return this.orderHistories;
     }
 
     public void setTblOrderHistories(Set<OrderHistory> tblOrderHistories) {
-        this.tblOrderHistories = tblOrderHistories;
+        this.orderHistories = tblOrderHistories;
     }
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "tblUsers")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
     public Set<UserPayment> getTblUserPayments() {
-        return this.tblUserPayments;
+        return this.userPayments;
     }
 
     public void setTblUserPayments(Set<UserPayment> tblUserPayments) {
-        this.tblUserPayments = tblUserPayments;
+        this.userPayments = tblUserPayments;
     }
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "tblUsers")
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
     public UserInfo getUserInfo() {
-        return this.user_info;
+        return this.userInfo;
     }
 
     public void setUserInfo(UserInfo user_info) {
-        this.user_info = user_info;
+        this.userInfo = user_info;
     }
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "tblUsers")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
     public Set<CardCode> getTblCardCodes() {
-        return this.tblCardCodes;
+        return this.cardCodes;
     }
 
     public void setTblCardCodes(Set<CardCode> tblCardCodes) {
-        this.tblCardCodes = tblCardCodes;
+        this.cardCodes = tblCardCodes;
     }
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "tblUsers")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
     public Set<BidHistory> getTblBidHistories() {
-        return this.tblBidHistories;
+        return this.bidHistories;
     }
 
     public void setTblBidHistories(Set<BidHistory> tblBidHistories) {
-        this.tblBidHistories = tblBidHistories;
+        this.bidHistories = tblBidHistories;
     }
 }

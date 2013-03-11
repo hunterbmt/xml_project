@@ -22,8 +22,8 @@ import javax.persistence.TemporalType;
 public class OrderHistory implements java.io.Serializable {
 
     private Integer id;
-    private Users users;
-    private Product tblProduct;
+    private Users user;
+    private Product product;
     private Date orderDay;
     private String address;
     private int amount;
@@ -32,8 +32,8 @@ public class OrderHistory implements java.io.Serializable {
     }
 
     public OrderHistory(Users user, Product tblProduct, Date orderDay, String address, int amount) {
-        this.users = user;
-        this.tblProduct = tblProduct;
+        this.user = user;
+        this.product = tblProduct;
         this.orderDay = orderDay;
         this.address = address;
         this.amount = amount;
@@ -53,21 +53,21 @@ public class OrderHistory implements java.io.Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     public Users getUser() {
-        return this.users;
+        return this.user;
     }
 
-    public void setUser(Users user) {
-        this.users = user;
+    public void setUser(Users tblUsers) {
+        this.user = tblUsers;
     }
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id", nullable = false)
-    public Product getTblProduct() {
-        return this.tblProduct;
+    public Product getProduct() {
+        return this.product;
     }
 
-    public void setTblProduct(Product tblProduct) {
-        this.tblProduct = tblProduct;
+    public void setProduct(Product tblProduct) {
+        this.product = tblProduct;
     }
 
     @Temporal(TemporalType.TIMESTAMP)

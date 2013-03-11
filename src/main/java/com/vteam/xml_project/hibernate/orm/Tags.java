@@ -25,7 +25,7 @@ public class Tags implements java.io.Serializable {
     private Integer id;
     private String name;
     private String description;
-    private Set<Product> tblProducts = new HashSet(0);
+    private Set<Product> products = new HashSet(0);
 
     public Tags() {
     }
@@ -38,7 +38,7 @@ public class Tags implements java.io.Serializable {
     public Tags(String name, String description, Set tblProducts) {
         this.name = name;
         this.description = description;
-        this.tblProducts = tblProducts;
+        this.products = tblProducts;
     }
 
     @Id
@@ -74,11 +74,11 @@ public class Tags implements java.io.Serializable {
     @JoinTable(name = "tbl_tags_product", catalog = "xml_project", joinColumns = {
         @JoinColumn(name = "tags_id", nullable = false, updatable = false)}, inverseJoinColumns = {
         @JoinColumn(name = "product_id", nullable = false, updatable = false)})
-    public Set<Product> getTblProducts() {
-        return this.tblProducts;
+    public Set<Product> getProducts() {
+        return this.products;
     }
 
-    public void setTblProducts(Set<Product> tblProducts) {
-        this.tblProducts = tblProducts;
+    public void setProducts(Set<Product> tblProducts) {
+        this.products = tblProducts;
     }
 }

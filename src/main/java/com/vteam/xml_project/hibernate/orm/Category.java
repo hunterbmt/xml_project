@@ -23,7 +23,7 @@ public class Category  implements java.io.Serializable {
      private Integer id;
      private String categoryName;
      private String description;
-     private Set<Product> Products = new HashSet(0);
+     private Set<Product> products = new HashSet(0);
 
     public Category() {
     }
@@ -36,7 +36,7 @@ public class Category  implements java.io.Serializable {
     public Category(String categoryName, String description, Set tblProducts) {
        this.categoryName = categoryName;
        this.description = description;
-       this.Products = tblProducts;
+       this.products = tblProducts;
     }
    
     @Id 
@@ -67,13 +67,13 @@ public class Category  implements java.io.Serializable {
     public void setDescription(String description) {
         this.description = description;
     }
-@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="tblCategory")
-    public Set<Product> getTblProducts() {
-        return this.Products;
+@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="category")
+    public Set<Product> getProducts() {
+        return this.products;
     }
     
-    public void setTblProducts(Set<Product> tblProducts) {
-        this.Products = tblProducts;
+    public void setProducts(Set<Product> tblProducts) {
+        this.products = tblProducts;
     }
 
 

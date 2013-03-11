@@ -26,7 +26,7 @@ public class CardCode  implements java.io.Serializable {
 
 
      private Integer id;
-     private Users tblUsers;
+     private Users user;
      private String code;
      private Date usedDay;
      private int amount;
@@ -40,7 +40,7 @@ public class CardCode  implements java.io.Serializable {
         this.amount = amount;
     }
     public CardCode(Users tblUsers, String code, Date usedDay, int amount) {
-       this.tblUsers = tblUsers;
+       this.user = tblUsers;
        this.code = code;
        this.usedDay = usedDay;
        this.amount = amount;
@@ -58,12 +58,12 @@ public class CardCode  implements java.io.Serializable {
     }
 @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="used_by")
-    public Users getTblUsers() {
-        return this.tblUsers;
+    public Users getUser() {
+        return this.user;
     }
     
-    public void setTblUsers(Users tblUsers) {
-        this.tblUsers = tblUsers;
+    public void setUser(Users tblUsers) {
+        this.user = tblUsers;
     }
     
     @Column(name="code", nullable=false, length=20)
