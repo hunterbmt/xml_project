@@ -57,113 +57,171 @@
         <div class="main" >
             <div class="container">
                 <div class="row">
-                    <div class="span6">
+                    <div class="span4">
                         <div class="widget">
                             <div class="widget-header">
-                                <i class="icon-bar-chart"></i>
-                                <h3>Static</h3>
+                                <i class="icon-tasks"></i>
+                                <h3>Product detail</h3>
                             </div>
+
                             <div class="widget-content">
-                                <div class="stats">
-                                    <div class="stat">
-                                        <span class="stat-value">12,386</span>									
-                                        Products
-                                    </div> <!-- /stat -->
-
-                                    <div class="stat">
-                                        <span class="stat-value">9,249</span>									
-                                        Users
-                                    </div> <!-- /stat -->
-
-                                    <div class="stat">
-                                        <span class="stat-value">70%</span>									
-                                        Bids
-                                    </div> 
-                                </div>
+                                <form action="#" method="get" class="form-horizontal">
+                                    <div class="control-group">
+                                        <label class="control-label">Id</label>
+                                        <div class="controls">
+                                            <span class="input-medium uneditable-input"></span>
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label">Name</label>
+                                        <div class="controls">
+                                            <input type="text">
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label">Description</label>
+                                        <div class="controls">
+                                            <textarea style="height: 120px"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label">Min price</label>
+                                        <div class="controls">
+                                            <input type="text">
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label">Max price</label>
+                                        <div class="controls">
+                                            <input type="text">
+                                        </div>
+                                    </div>
+                                    <div class="controls-button">
+                                        <button type="submit" class="btn btn-warning">Save</button>
+                                        <button type="submit" class="btn">New</button>
+                                    </div>
+                                </form>
                             </div>
+
                         </div>
-
                         <div class="widget">
-
                             <div class="widget-header">
-                                <i class="icon-cogs"></i>
-                                <h3>Function Shortcuts</h3>
-                            </div> <!-- /widget-header -->
+                                <i class="icon-tasks"></i>
+                                <h3>Category detail</h3>
+                            </div>
 
                             <div class="widget-content">
-
-                                <div class="shortcuts">
-
-                                    <a href="javascript:;" class="shortcut">
-                                        <i class="shortcut-icon icon-cloud-download"></i>
-                                        <span class="shortcut-label">Download report as PDF</span>	
-                                    </a>
-
-                                    <a href="javascript:;" class="shortcut">
-                                        <i class="shortcut-icon  icon-magic"></i>
-                                        <span class="shortcut-label">Generate Nin code</span>	
-                                    </a>
-
-                                    <a href="javascript:;" class="shortcut">
-                                        <i class="shortcut-icon icon-envelope"></i>
-                                        <span class="shortcut-label">Send email to users</span>
-                                    </a>				
-                                </div> <!-- /shortcuts -->	
-
-                            </div> <!-- /widget-content -->
+                                <form action="#" method="get" class="form-horizontal">
+                                    <div class="control-group">
+                                        <label class="control-label">Id</label>
+                                        <div class="controls">
+                                            <span class="input-medium uneditable-input"></span>
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label">Name</label>
+                                        <div class="controls">
+                                            <input type="text">
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label">Description</label>
+                                        <div class="controls">
+                                            <textarea style="height: 120px"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="controls-button">
+                                        <button type="submit" class="btn btn-warning">Save</button>
+                                        <button type="submit" class="btn">New</button>
+                                    </div>
+                                </form>
+                            </div>
 
                         </div>
                     </div>
-                    <div class="span6">
-                        <div class="widget widget-nopad">
+                    <div class="span8">
+                        <div class="widget widget-table action-table">
 
                             <div class="widget-header">
                                 <i class="icon-list-alt"></i>
                                 <h3>Recent Payment</h3>
-                            </div> <!-- /widget-header -->
+                            </div>
 
                             <div class="widget-content">
-                                <ul class="news-items">
-                                    <li>
-                                        <div class="news-item-detail">										
-                                            <a href="javascript:;" class="news-item-title">500 Nin be added</a>
-                                            <p class="news-item-preview">500 Nin be added by HunterBMT via Nin code : 56fgds54gd43</p>
-                                        </div>
+                                <table class="table table-striped table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Name</th>
+                                            <th>Description</th>
+                                            <th class="td-actions"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>1</td>
+                                            <td>IPhone4</td>
+                                            <td>Blabla</td>
+                                            <td class="td-actions">
+                                                <a href="javascript:;" class="btn btn-small btn-warning">
+                                                    <i class="btn-icon-only icon-edit"></i>										
+                                                </a>
 
-                                        <div class="news-item-date">
-                                            <span class="news-item-day">10</span>
-                                            <span class="news-item-month">Mar</span>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="news-item-detail">										
-                                            <a href="javascript:;" class="news-item-title">500 Nin be added</a>
-                                            <p class="news-item-preview">500 Nin be added by HunterBMT via Nin code : 56f54444444</p>
-                                        </div>
+                                                <a href="javascript:;" class="btn btn-small">
+                                                    <i class="btn-icon-only icon-remove"></i>										
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>2</td>
+                                            <td>IPhone 5</td>
+                                            <td>Blabla</td>
+                                            <td class="td-actions">
+                                                <a href="javascript:;" class="btn btn-small btn-warning">
+                                                    <i class="btn-icon-only icon-edit"></i>										
+                                                </a>
 
-                                        <div class="news-item-date">
-                                            <span class="news-item-day">08</span>
-                                            <span class="news-item-month">Mar</span>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="news-item-detail">										
-                                            <a href="javascript:;" class="news-item-title">200 Nin be added</a>
-                                            <p class="news-item-preview">500 Nin be added by HunterBMT via Nin code : 56svcfd43554</p>
-                                        </div>
+                                                <a href="javascript:;" class="btn btn-small">
+                                                    <i class="btn-icon-only icon-remove"></i>										
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>3</td>
+                                            <td>IPhone 6</td>
+                                            <td>Bla bla bla</td>
+                                            <td class="td-actions">
+                                                <a href="javascript:;" class="btn btn-small btn-warning">
+                                                    <i class="btn-icon-only  icon-edit"></i>										
+                                                </a>
 
-                                        <div class="news-item-date">
-                                            <span class="news-item-day">08</span>
-                                            <span class="news-item-month">Mar</span>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div> <!-- /widget-content -->
+                                                <a href="javascript:;" class="btn btn-small">
+                                                    <i class="btn-icon-only icon-remove"></i>										
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <div class="pagination-bar">
+                                    <a tabindex="0" class="ui-button last">Last</a>
+                                    <a tabindex="0" class="ui-button next">Next</a>
+
+                                    <span>
+                                        <a tabindex="0" class="ui-button active">1</a>
+                                        <a tabindex="0" class="ui-button ">2</a>
+                                        <a tabindex="0" class="ui-button ">3</a>
+                                        <a tabindex="0" class="ui-button ">4</a>
+                                        <a tabindex="0" class="ui-button ">5</a>
+                                    </span>
+                                    <a tabindex="0" class="ui-button ui-button-diable">Previous</a>
+                                    <a tabindex="0" class="ui-button ui-button-diable first">First</a>
+
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>    
             </div>
         </div>
-
     </body>
 </html>
