@@ -127,7 +127,7 @@ public class Bids  implements java.io.Serializable {
         return this.tblBidHistories;
     }
     
-    public void setTblBidHistories(Set tblBidHistories) {
+    public void setTblBidHistories(Set<BidHistory> tblBidHistories) {
         this.tblBidHistories = tblBidHistories;
     }
 
