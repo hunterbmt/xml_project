@@ -73,10 +73,9 @@ CREATE TABLE `tbl_tags` (
 );
 
 CREATE TABLE `tbl_tags_product` (
-    `id` int(10) NOT NULL AUTO_INCREMENT,
     `tags_id` int(10) NOT NULL,
     `product_id` int(10) NOT NULL,
-    PRIMARY KEY (`id`),
+    PRIMARY KEY (`tags_id`,`product_id`),
     CONSTRAINT `tags_fkey` FOREIGN KEY (`tags_id`)
         REFERENCES `tbl_tags` (`id`)
         ON DELETE CASCADE ON UPDATE NO ACTION,

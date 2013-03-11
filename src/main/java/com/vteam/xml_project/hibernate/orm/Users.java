@@ -24,11 +24,11 @@ public class Users implements java.io.Serializable {
     private Integer id;
     private String email;
     private String password;
-    private Set tblOrderHistories = new HashSet(0);
-    private Set tblUserPayments = new HashSet(0);
+    private Set<OrderHistory> tblOrderHistories = new HashSet(0);
+    private Set<UserPayment> tblUserPayments = new HashSet(0);
     private UserInfo user_info ;
-    private Set tblCardCodes = new HashSet(0);
-    private Set tblBidHistories = new HashSet(0);
+    private Set<CardCode> tblCardCodes = new HashSet(0);
+    private Set<BidHistory> tblBidHistories = new HashSet(0);
 
     public Users() {
     }
