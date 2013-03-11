@@ -37,6 +37,7 @@ public class BidService {
             
             BidDTO bid = new BidDTO(); 
             bid.setId(dbBid.getId());
+            bid.setProduct_id(dbBid.getProduct().getId());
             bid.setCurrent_price(dbBid.getCurrentPrice());
             bid.setLast_userid(dbBid.getLastUserid());
             

@@ -19,6 +19,8 @@ public class BidDTO implements Serializable{
     private Date start_date;
     private Date end_date;
     private Date last_edit;
+    
+    public BidDTO() {}
 
     public Integer getId() {
         return id;

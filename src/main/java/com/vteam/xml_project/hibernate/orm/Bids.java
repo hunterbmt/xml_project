@@ -27,8 +27,8 @@ public class Bids implements java.io.Serializable {
 
     private Integer id;
     private Product product;
-    private int lastUserid;
-    private double currentPrice;
+    private Integer lastUserid;
+    private Double currentPrice;
     private Date startDate;
     private Date endDate;
     private Date lastEdit;
@@ -76,20 +76,20 @@ public class Bids implements java.io.Serializable {
     }
 
     @Column(name = "last_userid", nullable = false)
-    public int getLastUserid() {
+    public Integer getLastUserid() {
         return this.lastUserid;
     }
 
-    public void setLastUserid(int lastUserid) {
+    public void setLastUserid(Integer lastUserid) {
         this.lastUserid = lastUserid;
     }
 
-    @Column(name = "current_price", nullable = false, precision = 22, scale = 0)
-    public double getCurrentPrice() {
-        return this.currentPrice;
+    @Column(name = "current_price", nullable = true, precision = 22, scale = 0)
+    public Double getCurrentPrice() {
+        return this.currentPrice  ;
     }
 
-    public void setCurrentPrice(double currentPrice) {
+    public void setCurrentPrice(Double currentPrice) {
         this.currentPrice = currentPrice;
     }
 
