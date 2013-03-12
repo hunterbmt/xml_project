@@ -58,7 +58,7 @@ public class BidAPI {
             returnMap.put("message", "The bid has been set");
         } else {
             returnMap.put("allowed", "no");
-            returnMap.put("message", "The bid has locked to another bidder");
+            returnMap.put("message", "The bid has locked to other bidder");
         }
         return returnMap;
     }
