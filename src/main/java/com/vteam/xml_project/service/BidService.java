@@ -125,7 +125,8 @@ public class BidService {
             dbBid.setLastEdit(current_date);
             dbBid.setLastUserid(uuid);
             DecimalFormat df = new DecimalFormat("0");
-            dbBid.setCurrentPrice(Double.valueOf(df.format(randomPrice)));
+            Double price = Double.valueOf(df.format(randomPrice));
+            dbBid.setCurrentPrice(price);
     }
     @Transactional
     public boolean doBid(Integer uuid, int bid_id) {

@@ -37,12 +37,7 @@ public class MainController {
         ModelAndView mav = new ModelAndView("admin");
         return mav;
     }
-    @RequestMapping(value = "/routes")
-    @Transactional
-    public ModelAndView routes(HttpServletRequest request) {
-        ModelAndView mav = new ModelAndView("routes");
-        return mav;
-    }
+    
     @RequestMapping(value = "/catalogs")
     @Transactional
     public ModelAndView catalogs(HttpServletRequest request) {

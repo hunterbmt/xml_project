@@ -39,7 +39,7 @@
                             </a>	    				
                         </li>
                         <li>
-                            <a href="./bid">
+                            <a href="/admin/bid">
                                 <i class="icon-legal"></i>
                                 <span>Bid</span>
                             </a>	    				
