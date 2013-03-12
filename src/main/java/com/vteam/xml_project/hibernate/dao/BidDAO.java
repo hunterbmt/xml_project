@@ -29,8 +29,19 @@ public class BidDAO extends BaseDAO{
         return returnObj;
     }
     
+    public  List<Bids> getBidsList(int page, int pageSize) throws HibernateException {
+        Query query = this
+                .sessionFactory
+                .getCurrentSession()
+                .createQuery("FROM Bids");
+       
+        query = query.setFirstResult(pageSize * (page - 1));
+		query.setMaxResults(pageSize);
+		return query.list();    
+    }  
+    
     public List<Bids> getBidsByStartDate(Date date) throws HibernateException {        
-        String sql = "From Bids where start_date = ?";
+        String sql = "From Bids where start_date >= ?";
         Query query = this.sessionFactory.getCurrentSession().createQuery(sql);
         query.setDate(0, date);        
         return query.list();
