@@ -50,5 +50,12 @@ public class MainController {
         ModelAndView mav = new ModelAndView("keywords");
         return mav;
     }
+   @RequestMapping(value= "/user/test")
+   @Transactional
+   public ModelAndView test(HttpServletRequest request){
+       ModelAndView mav=new ModelAndView("newjsp");
+       return  mav;
+   }
+    
     
 }

@@ -2,20 +2,12 @@ CREATE TABLE `tbl_users`(
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `email` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
+    `fullname`  varchar(255) NOT NULL,
+   `birthday` DATETIME  NULL,
+   `address` varchar(255)  NULL,
+   `phone` varchar(255)  NULL,
   PRIMARY KEY (`id`)
 )  ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
-
-CREATE TABLE `tbl_user_info`(
-   `user_id` int(10) NOT NULL,
-   `fullname`  varchar(255) NOT NULL,
-   `birthday` DATETIME NOT NULL,
-   `address` varchar(255) NOT NULL,
-   `phone` varchar(255) NOT NULL,
-  PRIMARY KEY (`user_id`),
-  CONSTRAINT `info_user_fkey` FOREIGN KEY (`user_id`) REFERENCES `tbl_users`(`id`) ON DELETE CASCADE ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=UTF8;
-
 
 CREATE TABLE `tbl_user_payment`(
   `id` int(10) NOT NULL AUTO_INCREMENT,

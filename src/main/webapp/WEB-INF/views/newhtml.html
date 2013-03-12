@@ -33,21 +33,23 @@ and open the template in the editor.
         <script src="resources/js/lib/jquery-ui.js"></script>
         <script src="resources/js/vteam.js"></script>
         <script type="text/javascript">
+            function login(){
             var email=document.getElementById("user_username").value;
             var password=document.getElementById("user_password").value;
             vteam_http.init();
-            vteam_http.makeHttpRequest("user/login",{email:email.toString(),
-            password:password.toString()},function (result){
-                        if(result=='success')
+            vteam_http.makeHttpRequest("http://localhost:8080/user/login ",{email:email.toString(),
+            password:password.toString()},"POST",function (result){
+                        if(result.status =="success")
                             {
-                                
+                           $('form#loginForm').hide();
+                            $('div#loginResult').text("Welcome,: " + result.email);
                             }
                          else{
-                             alert();
+                             alert("Error");
                          }   
             });
            
-           
+            }
         
         </script>
     </head>
@@ -62,16 +64,18 @@ and open the template in the editor.
                             <a href="#" id="drop3" role="button" class="dropdown-toggle" data-toggle="dropdown">Login <b class="caret"></b></a>
                             <ul class="dropdown-menu" role="menu" aria-labelledby="drop3">
                                 <li role="presentation"><a role="menuitem" tabindex="-1" href="#">
+                                        <div id="loginResult" style="display: none"></div>
                                         <div id="login">  
-                                        <form  method="post" accept-charset="UTF-8">
+                                            
+                                        <form id="loginForm" accept-charset="UTF-8">
                                             <label > Username:</label>
                                             <input id="user_username"  type="text" name="username" />
                                             <label > Password:</label>
                                             <input id="user_password"  type="password" name="password" />
-                                            <a href="#">Create a new account</a>
-                                            <input class="btn btn-primary"  type="submit" value="Log In" />
+                                            <input class="btn btn-primary"  value="Log In" onclick="login()" />
+                                            <input class="btn btn-inverse" type="button" value="Register here"/>
                                         </form>
-                                        </div>
+                                        
                                         <div id="sigin" style="display: none">
                                             <form  method="post" accept-charset="UTF-8">
                                             <label > Username:</label>
@@ -81,15 +85,16 @@ and open the template in the editor.
                                             <label > Re-Password:</label>
                                             <input id="user_repassword"  type="password" name="password" />
                                             <input class="btn btn-primary"  type="submit" value="Sin In" />
-                                        </form>
+                                          
                                         </div>
-                                    </a></li>
-
+                                        </div>
+                                    </a>
+                                        </li>
+                             
                             </ul>
                         </li>
                     </ul>
-                        </li>
-                    </ul>
+                    
                 </div>
             </div>
         </div>

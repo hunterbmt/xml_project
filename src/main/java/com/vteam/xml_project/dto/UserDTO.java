@@ -5,27 +5,65 @@
 package com.vteam.xml_project.dto;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  *
  * @author HunterBMT
  */
 public class UserDTO implements Serializable{
-    private String uuid;
+    private String email;
     private String password;
+   private String fullname;
+    private Date birthday;
+    private String address;
+    private String phone;
+
+    public String getFullname() {
+        return fullname;
+    }
+
+    public void setFullname(String fullname) {
+        this.fullname = fullname;
+    }
+
+    public Date getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(Date birthday) {
+        this.birthday = birthday;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+    
 
     /**
      * @return the uuid
      */
-    public String getUuid() {
-        return uuid;
+    public String getEmail() {
+        return email;
     }
 
     /**
-     * @param uuid the uuid to set
+     * @param uuid the email to set
      */
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     /**
