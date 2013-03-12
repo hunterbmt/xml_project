@@ -30,6 +30,8 @@ public class ProductService {
              List<Product> dbProducts=  productDAO.getProductList(page, pageSize);
              ProductDTO p = new ProductDTO();
              p.setName(dbProducts.get(0).getProductName());
+             p.setDescription(dbProducts.get(1).getDescription());
+             p.setImage(dbProducts.get(2).getImage());
              return p;
          } catch (HibernateException ex) {
              log.error(ex);
