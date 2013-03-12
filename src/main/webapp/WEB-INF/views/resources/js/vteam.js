@@ -17,10 +17,10 @@ var vteam_http = {
             http.send(null);
         } else if (method.toUpperCase() == 'POST') {
             http.open("POST", url, true);
-            http.setRequestHeader("Content-type", "application/json");
+            http.setRequestHeader("Content-type", " application/x-www-form-urlencoded");
             http.onreadystatechange = function () {
                 if (http.readyState == 4 && http.status == 200) {
-                    callbackFunction(hoiio_http.getResponseObj());
+                    callbackFunction(vteam_http.getResponseObj());
                 }
             }
             http.send(queryString);

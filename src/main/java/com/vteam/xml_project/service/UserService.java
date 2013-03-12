@@ -5,19 +5,15 @@
 package com.vteam.xml_project.service;
 
 import com.vteam.xml_project.dto.UserDTO;
-import com.vteam.xml_project.dto.UserInfoDTO;
-import com.vteam.xml_project.dto.UserProfileDTO;
+
 //import com.vteam.xml_project.hibernate.dao.UserDAO;
 //import com.vteam.xml_project.hibernate.dao.UserProfileDAO;
 //import com.vteam.xml_project.hibernate.orm.User;
 //import com.vteam.xml_project.hibernate.orm.UserProfile;
 import com.vteam.xml_project.hibernate.orm.Users;
 import com.vteam.xml_project.hibernate.dao.UserDAO;
-import com.vteam.xml_project.util.DateUtil;
 import com.vteam.xml_project.util.StringUtil;
 import java.security.NoSuchAlgorithmException;
-import java.text.DateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;

@@ -6,8 +6,6 @@ package com.vteam.xml_project.api;
 
 import com.vteam.xml_project.controller.UserSession;
 import com.vteam.xml_project.dto.UserDTO;
-import com.vteam.xml_project.dto.UserInfoDTO;
-import com.vteam.xml_project.dto.UserProfileDTO;
 import com.vteam.xml_project.service.UserService;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;

@@ -40,8 +40,11 @@
             var email=document.getElementById("user_username").value;
             var password=document.getElementById("user_password").value;
             vteam_http.init();
-            vteam_http.makeHttpRequest("/user/login",{email:email,
-            password:password},"POST",function (result){
+            vteam_http.makeHttpRequest("/user/login",
+                                    {email:email,
+                                    password:password},
+                                    "POST",
+                      function (result){
                         if(result.status =="success")
                             {
                            $('form#loginForm').hide(); 
@@ -50,7 +53,7 @@
                          else{
                              alert("Error");
                          }   
-            });
+                    });
            
             }
         
