@@ -32,4 +32,13 @@ public class ProductDAO {
 		query.setMaxResults(pageSize);
 		return query.list();    
     }  
+
+    public Product getProductById(Integer product_id) throws HibernateException {
+        Query query = this
+                .sessionFactory
+                .getCurrentSession()
+                .createQuery("FROM Product where id = ?");
+        query.setInteger(0, product_id);
+        return (Product) query.uniqueResult();
+    }
 }

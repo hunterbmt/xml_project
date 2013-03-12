@@ -37,15 +37,22 @@ public class Bids implements java.io.Serializable {
     public Bids() {
     }
 
-    public Bids(Product tblProduct, int lastUserid, double currentPrice, Date startDate) {
-        this.product = tblProduct;
+    public Bids(Product product, Date startDate) {
+        this.product = product;
+        this.startDate = startDate;
+    }
+    
+    public Bids(Product product, int lastUserid, double currentPrice, Date startDate) {
+        this.product = product;
         this.lastUserid = lastUserid;
         this.currentPrice = currentPrice;
         this.startDate = startDate;
     }
+    
+    
 
-    public Bids(Product tblProduct, int lastUserid, double currentPrice, Date startDate, Date endDate, Date lastEdit, Set tblBidHistories) {
-        this.product = tblProduct;
+    public Bids(Product product, int lastUserid, double currentPrice, Date startDate, Date endDate, Date lastEdit, Set tblBidHistories) {
+        this.product = product;
         this.lastUserid = lastUserid;
         this.currentPrice = currentPrice;
         this.startDate = startDate;
