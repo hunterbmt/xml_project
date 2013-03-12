@@ -12,6 +12,7 @@ import com.vteam.xml_project.util.DateUtil;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.HashMap;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,17 +27,45 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 @RequestMapping(value = "/bid")
 public class BidAPI {
+    
+    private static Logger logger = Logger.getLogger(BidAPI.class.getName());
 
     @Autowired
-    private UserSession session;
+    private UserSession userSession;
     @Autowired
     private BidService bidService;
+    
     private DateUtil dateUtil;
 
     public BidAPI() {
         dateUtil = new DateUtil();
     }
-
+    /* ========== place bid ============ */
+    
+    @RequestMapping(value = "/do_bid", method = RequestMethod.POST)
+    public @ResponseBody
+    HashMap<String, Object> doBid (
+            @RequestParam int bid_id) {
+        HashMap<String, Object> returnMap = new HashMap<String, Object>();
+        
+        //String uuid = (String) userSession.get("uuid");
+        Integer uuid = 1;
+        logger.debug("do_bid: placing a bid, wait for respond ,from uuid :" + uuid);
+        
+        boolean is_allowed = bidService.doBid(uuid, bid_id);
+        if (is_allowed) {
+            returnMap.put("allowed", "ok");
+            returnMap.put("message", "The bid has been set");
+        } else {
+            returnMap.put("allowed", "no");
+            returnMap.put("message", "The bid has locked to another bidder");
+        }
+        return returnMap;
+    }
+    
+    
+    /* =============== bid manipulations ================= */
+    
     @RequestMapping(value = "/get_bid_by_id", method = RequestMethod.POST)
     public @ResponseBody
     HashMap<String, Object> getBidByID(

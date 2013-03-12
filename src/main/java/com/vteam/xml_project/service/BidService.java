@@ -10,9 +10,11 @@ import com.vteam.xml_project.hibernate.dao.BidDAO;
 import com.vteam.xml_project.hibernate.dao.ProductDAO;
 import com.vteam.xml_project.hibernate.orm.Bids;
 import com.vteam.xml_project.hibernate.orm.Product;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +34,7 @@ public class BidService {
     @Autowired
     private ProductDAO productDAO;
     private Bids dbBid;
+    private static long BID_DURATION = (long) 35.00;
 
     private List<BidDTO> getTmpList(List<Bids> bidList) {
         BidDTO tmp;
@@ -70,7 +73,7 @@ public class BidService {
     public BidListDTO getBidsByStartDate(Date _date) {
         try {
             BidListDTO list = new BidListDTO();
-            List<Bids> bidList = bidDAO.getBidsByStartDate(_date);            
+            List<Bids> bidList = bidDAO.getBidsByStartDate(_date);
             list.setLists(getTmpList(bidList));
             return list;
         } catch (HibernateException ex) {
@@ -112,5 +115,35 @@ public class BidService {
             success = false;
         }
         return success;
+    }
+
+    private void update_bid(Bids dbBid, Date current_date, Integer uuid) {
+        Random rand = new Random();
+            double maxPrice = dbBid.getProduct().getMaxPrice();
+            double minPrice = dbBid.getProduct().getMinPrice();            
+            double randomPrice = minPrice + (maxPrice - minPrice) * rand.nextDouble();
+            dbBid.setLastEdit(current_date);
+            dbBid.setLastUserid(uuid);
+            DecimalFormat df = new DecimalFormat("0");
+            dbBid.setCurrentPrice(Double.valueOf(df.format(randomPrice)));
+    }
+    @Transactional
+    public boolean doBid(Integer uuid, int bid_id) {
+        Bids dbBid = bidDAO.getBidById(bid_id);
+        Date last_edit = dbBid.getLastEdit();
+        Date current_date = new Date();
+        
+        if (last_edit == null) {
+            update_bid(dbBid, current_date, uuid);
+            return true;
+        } else { // not null
+            long seconds = (current_date.getTime() - last_edit.getTime()) / 1000;
+            if (seconds > BID_DURATION) {
+                update_bid(dbBid, current_date, uuid);
+                return true;
+            } else {
+                return false;
+            }
+        }
     }
 }
