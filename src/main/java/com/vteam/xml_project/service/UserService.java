@@ -35,8 +35,8 @@ public class UserService {
     @Transactional
     public boolean checkLogin(UserDTO user) throws NoSuchAlgorithmException {
         try {
-            
-            String storagepass=StringUtil.createPasswordForDB(user.getPassword());
+
+            String storagepass = StringUtil.createPasswordForDB(user.getPassword());
             Users dbUser = userDAO.findUserByEmailAndPassword(user.getEmail(), storagepass);
             if (dbUser != null) {
                 return true;
@@ -89,5 +89,22 @@ public class UserService {
             log.error(ex);
         }
         return false;
+    }
+
+    @Transactional
+    public UserDTO getUserById(Integer id) {
+        try {
+            Users dbUser = userDAO.findUserByUuid(id);
+            UserDTO returnUser = new UserDTO();
+            returnUser.setFullname(dbUser.getFullname());
+            return returnUser;
+        } catch (NullPointerException ex) {
+            log.error(ex);
+        } catch (HibernateException ex) {
+            log.error(ex);
+        } catch (Exception ex) {
+            log.error(ex);
+        }
+        return null;
     }
 }

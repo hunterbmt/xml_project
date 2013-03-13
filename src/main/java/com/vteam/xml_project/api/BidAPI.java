@@ -68,7 +68,7 @@ public class BidAPI {
     
     @RequestMapping(value = "/get_bid_by_id", method = RequestMethod.POST)
     public @ResponseBody
-    HashMap<String, Object> getBidByID(
+    HashMap<String, Object> get_bid_by_id(
             @RequestParam int _id) {
         HashMap<String, Object> returnMap = new HashMap<String, Object>();
         BidDTO result = bidService.getBidByID(_id);
@@ -84,7 +84,7 @@ public class BidAPI {
 
     @RequestMapping(value = "/get_bids_list", method = RequestMethod.POST)
     public @ResponseBody
-    HashMap<String, Object> getBidByID(
+    HashMap<String, Object> get_bids_list(
             @RequestParam int page, int page_size) {
 
         HashMap<String, Object> returnMap = new HashMap<String, Object>();
@@ -101,7 +101,7 @@ public class BidAPI {
 
     @RequestMapping(value = "/get_bids_by_start_date", method = RequestMethod.POST)
     public @ResponseBody
-    HashMap<String, Object> getBidByID(
+    HashMap<String, Object> get_bids_by_start_date(
             @RequestParam String start_date, String format_date) throws ParseException {
 
         HashMap<String, Object> returnMap = new HashMap<String, Object>();
@@ -110,6 +110,24 @@ public class BidAPI {
         }
         Date parseDate = dateUtil.parseFromString(start_date, format_date);
         BidListDTO result = bidService.getBidsByStartDate(parseDate);
+        if (result != null) {
+            returnMap.put("status", "success");
+            returnMap.put("bid_list", result);
+        } else {
+            returnMap.put("status", "error");
+            returnMap.put("message", "Cannot get");
+        }
+        return returnMap;
+    }
+    
+    @RequestMapping(value = "/get_upcoming_bids", method = RequestMethod.POST)
+    public @ResponseBody
+    HashMap<String, Object> get_upcoming_bids(
+            ) throws ParseException {
+
+        HashMap<String, Object> returnMap = new HashMap<String, Object>();        
+        Date curDate = dateUtil.getCurrentDate();
+        BidListDTO result = bidService.getBidsFromDate(curDate);
         if (result != null) {
             returnMap.put("status", "success");
             returnMap.put("bid_list", result);

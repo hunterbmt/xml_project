@@ -14,6 +14,52 @@
         <script src="/resources/js/lib/jquery.url.js"></script>
         <script src="/resources/js/lib/jquery-ui.js"></script>
         <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
+        <script src="/resources/js/vteam.js"></script>
+        <script src="/resources/js/dateUtils.js"></script>
+        <script>
+            var bidList = new Object;
+            $(document).ready(function() {
+                vteam_http.init();
+                var page_size = 5;
+                var page =1;
+                var format_date = "MM/dd/yyyy";
+                var current_date = new Date();
+                //alert(current_date);
+                vteam_http.makeHttpRequest(
+                        "/bid/get_upcoming_bids",
+                        {
+                            
+                        },
+                "POST",
+                        function(data) {
+                            if (data.status == "success") {
+                                displayOngoingBid(data.bid_list.lists);
+                            }
+                        }
+                );
+            });
+
+            function displayOngoingBid(bidList) {
+                var cnt = '';
+                for (var i = 0; i < bidList.length; i++) {
+                    cnt += "<tr>";
+                    cnt += "<td>" + bidList[i].id + "</td>";
+                    cnt += "<td>" + bidList[i].product_name + "</td>";
+                    cnt += "<td>" + toDate(bidList[i].start_date) + "</td>";
+                    cnt += "<td>" + bidList[i].last_username + "</td>";
+                    cnt += "<td>" + bidList[i].current_price + "</td>";
+                    cnt += "<td>" + toDate(bidList[i].last_edit) + "</td>";
+                    cnt += '<td class="td-actions">';
+                    cnt += '<a href="javascript:;" class="btn btn-small"><i class="btn-icon-only icon-stop"></i>';
+                    cnt += '</a></td>';
+                    cnt += "</tr>";
+                }
+                $("#onGoingBid").html(
+                        cnt
+                    );
+            }
+
+        </script>
     </head>
     <body>
         <div class="navbar navbar-fixed-top">
@@ -122,15 +168,16 @@
                             </div>
 
                         </div>
-                        
+
                     </div>
                     <div class="span8">
-                        <!-- ongoing bids -->
+
+                        <!-- upcomming bids -->
                         <div class="widget widget-table action-table">
 
                             <div class="widget-header">
                                 <i class="icon-list-alt"></i>
-                                <h3>Ongoing Bids</h3>
+                                <h3>Upcoming Bids</h3>
                             </div>
 
                             <div class="widget-content">
@@ -146,60 +193,7 @@
                                             <th class="td-actions"></th>
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>1</td>
-                                            <td>IPhone4</td>
-                                            <td>04/04/2013 08:00:00</td>
-                                            <td>Le Anh</td>
-                                            <td>450</td>
-                                            <td>04/04/2013 09:33:45</td>
-                                            <td class="td-actions">
-                                                <a href="javascript:;" class="btn btn-small">
-                                                    <i class="btn-icon-only icon-stop"></i>										
-                                                </a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>2</td>
-                                            <td>IPhone 3GS</td>
-                                            <td>04/04/2013 08:00:00</td>
-                                            <td>Le Anh Minh</td>
-                                            <td>1450</td>
-                                            <td>04/04/2013 09:33:45</td>
-                                            <td class="td-actions">                                        
-                                                <a href="javascript:;" class="btn btn-small">
-                                                    <i class="btn-icon-only icon-stop"></i>										
-                                                </a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>3</td>
-                                            <td>IPhone 3GS</td>
-                                            <td>04/04/2013 08:00:00</td>
-                                            <td>Le Anh Minh</td>
-                                            <td>1450</td>
-                                            <td>04/04/2013 09:33:45</td>
-                                            <td class="td-actions">                                        
-                                                <a href="javascript:;" class="btn btn-small">
-                                                    <i class="btn-icon-only icon-stop"></i>										
-                                                </a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>4</td>
-                                            <td>IPhone 3GS</td>
-                                            <td>04/04/2013 08:00:00</td>
-                                            <td>Le Anh Minh</td>
-                                            <td>1450</td>
-                                            <td>04/04/2013 09:33:45</td>
-                                            <td class="td-actions">                                        
-                                                <a href="javascript:;" class="btn btn-small">
-                                                    <i class="btn-icon-only icon-stop"></i>										
-                                                </a>
-                                            </td>
-                                        </tr>
-                                        
+                                    <tbody id="onGoingBid">
                                     </tbody>
                                 </table>
                                 <div class="pagination-bar">
@@ -262,9 +256,9 @@
                                                 </a>
                                             </td>
                                         </tr>
-                                        
-                                       
-                                        
+
+
+
                                     </tbody>
                                 </table>
                                 <div class="pagination-bar">
@@ -275,7 +269,7 @@
                                         <a tabindex="0" class="ui-button active">1</a>
                                         <a tabindex="0" class="ui-button ">2</a>
                                         <a tabindex="0" class="ui-button ">3</a>
-                                        
+
                                     </span>
                                     <a tabindex="0" class="ui-button ui-button-diable">Previous</a>
                                     <a tabindex="0" class="ui-button ui-button-diable first">First</a>
@@ -301,7 +295,7 @@
                                             <th>Bidder</th>
                                             <th>Price</th>
                                             <th>Complete on</th>
-                                            
+
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -312,7 +306,7 @@
                                             <td>Le Anh</td>
                                             <td>1450</td>
                                             <td>04/04/2013 09:33:45</td>
-                                            
+
                                         </tr>
                                         <tr>
                                             <td>2</td>
@@ -321,7 +315,7 @@
                                             <td>Le Anh Minh</td>
                                             <td>1050</td>
                                             <td>04/04/2013 09:33:45</td>
-                                            
+
                                         </tr>
                                         <tr>
                                             <td>3</td>
@@ -330,7 +324,7 @@
                                             <td>Le Anh Minh</td>
                                             <td>1390</td>
                                             <td>04/04/2013 09:33:45</td>
-                                           
+
                                         </tr>
                                         <tr>
                                             <td>4</td>
@@ -339,9 +333,9 @@
                                             <td>Le Anh Minh</td>
                                             <td>450</td>
                                             <td>04/04/2013 09:33:45</td>
-                                            
+
                                         </tr>
-                                        
+
                                     </tbody>
                                 </table>
                                 <div class="pagination-bar">

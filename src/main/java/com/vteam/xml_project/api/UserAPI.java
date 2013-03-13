@@ -6,6 +6,7 @@ package com.vteam.xml_project.api;
 
 import com.vteam.xml_project.controller.UserSession;
 import com.vteam.xml_project.dto.UserDTO;
+import com.vteam.xml_project.hibernate.orm.Users;
 import com.vteam.xml_project.service.UserService;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
@@ -98,6 +99,22 @@ public class UserAPI {
         boolean result = userService.upadateUser(email, address, phone, null);
         if (result) {
             returnMap.put("status", "success");
+        } else {
+            returnMap.put("status", "error");
+        }
+        return returnMap;
+    }
+      
+    @RequestMapping(value = "/get_user_by_id", method = RequestMethod.POST)
+    public @ResponseBody
+    HashMap<String, Object> get_user_by_id(
+            @RequestParam String id) {
+        HashMap<String, Object> returnMap = new HashMap<String, Object>();
+        
+        UserDTO rs = userService.getUserById(Integer.valueOf(id));
+        if (rs!= null) {
+            returnMap.put("status", "success");
+            returnMap.put("user", rs);
         } else {
             returnMap.put("status", "error");
         }

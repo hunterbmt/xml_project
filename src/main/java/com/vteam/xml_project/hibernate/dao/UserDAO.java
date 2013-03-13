@@ -19,11 +19,11 @@ public class UserDAO extends BaseDAO{
     public UserDAO() {
     }
     
-    public Users findUserByUuid(int uuid) throws HibernateException {
+    public Users findUserByUuid(Integer uuid) throws HibernateException {
         Users returnUser ;
-        String sql = "From Users where user_id = ?";
+        String sql = "From Users where id = ?";
         Query query = this.sessionFactory.getCurrentSession().createQuery(sql);
-        query.setString(0,"'"+uuid+"'");
+        query.setInteger(0,uuid);
         returnUser =  (Users) query.uniqueResult();
         return returnUser;
     }
