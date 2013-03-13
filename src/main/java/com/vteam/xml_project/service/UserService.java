@@ -12,6 +12,7 @@ import com.vteam.xml_project.dto.UserDTO;
 //import com.vteam.xml_project.hibernate.orm.UserProfile;
 import com.vteam.xml_project.hibernate.orm.Users;
 import com.vteam.xml_project.hibernate.dao.UserDAO;
+import com.vteam.xml_project.util.DateUtil;
 import com.vteam.xml_project.util.StringUtil;
 import java.security.NoSuchAlgorithmException;
 import java.util.Date;
@@ -48,11 +49,13 @@ public class UserService {
     }
 
     @Transactional
-    public boolean upadateUser(String email, String address, String phone, Date birthday) {
+    public boolean upadateUser(String email, String address, String phone, String birthday) {
         try {
             Users dbUser = userDAO.findUserByEmail(email);
             dbUser.setAddress(address);
-            dbUser.setBirthday(birthday);
+            DateUtil util=new DateUtil();
+            Date parseDay=util.parseFromString(birthday);
+            dbUser.setBirthday(parseDay);
             dbUser.setPhone(phone);
             userDAO.save(dbUser);
             return true;

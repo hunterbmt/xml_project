@@ -42,7 +42,7 @@ public class UserAPI {
         if (result) {
             returnMap.put("email", email);
             returnMap.put("status", "success");
-            session.put("Email", email);
+            session.put("email", email);
         } else {
             returnMap.put("status", "error");
         }
@@ -96,7 +96,7 @@ public class UserAPI {
         //newUser.setFullname(fullname);
         //UserInfoDTO newProfile = new UserInfoDTO();
         //newProfile.setFullname(fullname);
-        boolean result = userService.upadateUser(email, address, phone, null);
+        boolean result = userService.upadateUser(email, address,date,phone);
         if (result) {
             returnMap.put("status", "success");
         } else {

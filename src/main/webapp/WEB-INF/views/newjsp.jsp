@@ -47,8 +47,8 @@
                       function (result){
                         if(result.status =="success")
                             {
-                           $('form#loginForm').hide(); 
-                            $('div#loginResult').text("Welcome,: " + result.email);
+                           $('#fat-menu').hide(); 
+                            $('#loginResult').html("Welcome"+ '<a class="btn btn-primary" href="/user/detail"><i class="icon-user icon-white"></i>'  + result.email+' </a>').show();
                             }
                          else{
                              alert("Error");
@@ -66,11 +66,12 @@
                     <a class="brand" href="#">My Site</a>
 
                     <ul class="nav pull-right">
+                         <div id="loginResult" style="display: none"></div>
                         <li id="fat-menu" class="dropdown">
                             <a href="#" id="drop3" role="button" class="dropdown-toggle" data-toggle="dropdown">Login <b class="caret"></b></a>
                             <ul class="dropdown-menu" role="menu" aria-labelledby="drop3">
                                 <li role="presentation"><a role="menuitem" tabindex="-1" href="#">
-                                        <div id="loginResult" style="display: none"></div>
+                                       
                                         <div id="login">  
                                             
                                         <form id="loginForm" accept-charset="UTF-8">
