@@ -7,7 +7,7 @@ function toDate(timestamp) {
 }
 
 function toDateAndTime(ts) {
-    return formatDate(new Date(ts)) + ' ' + getTime(ts);
+    return formatDate(new Date(ts)) + ' <strong>' + getTime(ts) + '</strong>';
 }
 function formatDate(pubDate) {
     var weekday = new Array("Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat");
