@@ -16,8 +16,7 @@
         <link href="/resources/css/bootstrap-responsive.css" rel="stylesheet">
         <script type="text/javascript"
         src="http://platform.twitter.com/widgets.js"></script>
-        <script src="resources/js/lib/prettify.js"></script>
-
+      
 
         <script src="/resources/js/lib/jquery.js"></script>
         <script src="/resources/js/lib/jquery.url.js"></script>
@@ -38,16 +37,24 @@
         <script src="/resources/js/lib/jquery-ui.js"></script>
         <script type="text/javascript">
             function update(){
+                var email=document.getElementById("email").value;
                 var address=document.getElementById("address").value;
                 var phone= document.getElementById("phone").value;
                 var birthday=document.getElementById("birthday").value;
                 vteam_http.init();
-                vteam_http.makeHttpRequest("/user/login",
+            vteam_http.makeHttpRequest("/user/update",
                                     {email:email,
-                                    password:password},
+                                    address:address,
+                                    phone:phone,
+                                    birthday:birthday},
                                     "POST",
                       function (result){
-                
+                           if(result.status =="success")
+                            {
+                            alert("Update successfully.");
+                            }else{
+                                alert("error");
+                            }
                 });           
                
             }
@@ -63,20 +70,20 @@
                 <div class="tab-pane active in" id="home">
                     <form id="tab">
                         <label>Email</label>
-                        <input type="text" class="input-xlarge" value="${user_email}">
+                        <input type="text" id="email" class="input-xlarge" value="${user_email}">
                         <label>Password</label>
                         <input type="password" class="input-xlarge">
                         <label>First Name</label>
                         <input type="text"  class="input-xlarge" value="${user_email}">
                         <label>Phone</label>
-                        <input type="text"  class="input-xlarge">
+                        <input type="text" id="phone"  class="input-xlarge">
                         
                         <label>Address</label>
                         <input type="text" id="address"  class="input-xlarge">
                         <label>Birthday</label>
-                        <input type="text"  class="input-xlarge">
+                        <input type="text" id="birthday" class="input-xlarge">
                         <div>
-                            <button class="btn btn-primary">Update</button>
+                            <button class="btn btn-primary" onclick="update()">Update</button>
                         </div>
                     </form>
                 </div>

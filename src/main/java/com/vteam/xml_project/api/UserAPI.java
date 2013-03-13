@@ -96,7 +96,7 @@ public class UserAPI {
         //newUser.setFullname(fullname);
         //UserInfoDTO newProfile = new UserInfoDTO();
         //newProfile.setFullname(fullname);
-        boolean result = userService.upadateUser(email, address,date,phone);
+        boolean result = userService.upadateUser(email, address,phone,date);
         if (result) {
             returnMap.put("status", "success");
         } else {
