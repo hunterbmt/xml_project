@@ -27,7 +27,7 @@ public class ProductAPI {
     @Autowired
     private ProductService productService;
 
-    @RequestMapping(value = "/getProductList", method = RequestMethod.POST)
+    @RequestMapping(value = "/product/getProductList", method = RequestMethod.POST)
     public @ResponseBody 
     HashMap<String, Object> getProductList( 
             @RequestParam int page, int pageSize) {
@@ -35,11 +35,11 @@ public class ProductAPI {
         
         ProductListDTO result = productService.getProductList(page,pageSize);
         if (result != null) {
-            returnMap.put("status", "success");
-            returnMap.put("rs", result);
+            returnMap.put("Status", "Success");
+            returnMap.put("Result", result);
         } else {
-            returnMap.put("status", "error");
-            returnMap.put("message", "Cannot get");
+            returnMap.put("Status", "Error");
+            returnMap.put("Message", "Cannot get");
         }
         return returnMap;
         //return result;
