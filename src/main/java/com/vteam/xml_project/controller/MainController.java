@@ -27,7 +27,7 @@ public class MainController {
     @RequestMapping(value = "/")
     @Transactional
     public ModelAndView main(HttpServletRequest request) {
-        ModelAndView mav = new ModelAndView("main");
+        ModelAndView mav = new ModelAndView("product_list");
         return mav;
     }
 

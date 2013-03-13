@@ -27,7 +27,7 @@ public class ProductAPI {
     @Autowired
     private ProductService productService;
 
-    @RequestMapping(value = "/product/getProductList", method = RequestMethod.POST)
+    @RequestMapping(value = "/getProductList", method = RequestMethod.POST)
     public @ResponseBody 
     HashMap<String, Object> getProductList( 
             @RequestParam int page, int pageSize) {

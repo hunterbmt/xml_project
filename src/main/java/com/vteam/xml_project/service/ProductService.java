@@ -50,4 +50,15 @@ public class ProductService {
         }
 
     }
+    
+    @Transactional
+    public ProductDTO getProductById(int id) {
+        try {
+            Product product = productDAO.getProductById(id);
+            
+        }catch (HibernateException ex) {
+            log.error(ex);
+        }
+        return null;
+    }
 }
