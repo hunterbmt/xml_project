@@ -48,7 +48,7 @@
                     cnt += "<td>" + toDate(bidList[i].start_date) + "</td>";
                     cnt += "<td>" + bidList[i].last_username + "</td>";
                     cnt += "<td>" + bidList[i].current_price + "</td>";
-                    cnt += "<td>" + toDate(bidList[i].last_edit) + "</td>";
+                    cnt += "<td>" + toDateAndTime(bidList[i].last_edit) + "</td>";
                     cnt += '<td class="td-actions">';
                     cnt += '<a href="javascript:;" class="btn btn-small"><i class="btn-icon-only icon-stop"></i>';
                     cnt += '</a></td>';

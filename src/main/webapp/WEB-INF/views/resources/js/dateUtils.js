@@ -5,6 +5,10 @@
 function toDate(timestamp) {
     return formatDate(new Date(timestamp));
 }
+
+function toDateAndTime(ts) {
+    return formatDate(new Date(ts)) + ' ' + getTime(ts);
+}
 function formatDate(pubDate) {
     var weekday = new Array("Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat");
     var monthname = new Array("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec");
@@ -12,4 +16,20 @@ function formatDate(pubDate) {
             + monthname[pubDate.getMonth()] + ' '
             + pubDate.getDate() + ', ' + pubDate.getFullYear();
     return formattedDate;
+}
+
+
+function getTime(ts) {
+    var date = new Date(ts);
+// hours part from the timestamp
+var hours = date.getHours();
+// minutes part from the timestamp
+var minutes = date.getMinutes();
+// seconds part from the timestamp
+var seconds = date.getSeconds();
+
+// will display time in 10:30:23 format
+var formattedTime = hours + ':' + minutes + ':' + seconds;
+
+return formattedTime;
 }
