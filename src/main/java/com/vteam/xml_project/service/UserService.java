@@ -53,10 +53,10 @@ public class UserService {
         try {
             Users dbUser = userDAO.findUserByEmail(email);
             dbUser.setAddress(address);
+            dbUser.setPhone(phone);
             DateUtil util=new DateUtil();
             Date parseDay=util.parseFromString(birthday);
             dbUser.setBirthday(parseDay);
-            dbUser.setPhone(phone);
             userDAO.save(dbUser);
             return true;
         } catch (NullPointerException ex) {

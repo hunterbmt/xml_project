@@ -88,7 +88,7 @@ public class UserAPI {
       @RequestMapping(value = "/update", method = RequestMethod.POST)
     public @ResponseBody
     HashMap<String, Object> update(
-            @RequestParam String email, String address, String date,String phone) {
+            @RequestParam String email, String address, String birthday,String phone) {
         HashMap<String, Object> returnMap = new HashMap<String, Object>();
         UserDTO newUser = new UserDTO();
         //newUser.setEmail(email);
@@ -96,7 +96,7 @@ public class UserAPI {
         //newUser.setFullname(fullname);
         //UserInfoDTO newProfile = new UserInfoDTO();
         //newProfile.setFullname(fullname);
-        boolean result = userService.upadateUser(email, address,phone,date);
+        boolean result = userService.upadateUser(email, address,phone,birthday);
         if (result) {
             returnMap.put("status", "success");
         } else {

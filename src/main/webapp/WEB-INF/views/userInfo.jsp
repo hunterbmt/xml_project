@@ -35,6 +35,7 @@
         <script src="/resources/js/lib/bootstrap-affix.js"></script>
         <script src="/resources/js/lib/application.js"></script>
         <script src="/resources/js/lib/jquery-ui.js"></script>
+        <script src="/resources/js/vteam.js"></script>
         <script type="text/javascript">
             function update(){
                 var email=document.getElementById("email").value;
