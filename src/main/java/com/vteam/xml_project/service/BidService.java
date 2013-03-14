@@ -55,6 +55,7 @@ public class BidService {
             tmp.setStart_date(bid.getStartDate());
             tmp.setProduct_id(bid.getProduct().getId());
             tmp.setProduct_name(bid.getProduct().getProductName());
+            tmp.setEnd_date(bid.getEndDate());
             
             if (uuid != null) {
                 Users u = userDAO.findUserByUuid(uuid);
@@ -74,11 +75,22 @@ public class BidService {
             dbBid = bidDAO.getBidById(_id);
 
             BidDTO bid = new BidDTO();
+            Integer uuid = dbBid.getLastUserid();
             bid.setId(dbBid.getId());
+            bid.setProduct_name(dbBid.getProduct().getProductName());
             bid.setProduct_id(dbBid.getProduct().getId());
             bid.setCurrent_price(dbBid.getCurrentPrice());
             bid.setStart_date(dbBid.getStartDate());
             bid.setLast_userid(dbBid.getLastUserid());
+            bid.setEnd_date(dbBid.getEndDate());
+            bid.setStatus(dbBid.getStatus().toString());
+            bid.setLast_edit(dbBid.getLastEdit());
+            if (uuid != null) {
+                Users u = userDAO.findUserByUuid(uuid);
+                bid.setLast_username(u.getFullname());
+            } else {
+                bid.setLast_username("None");
+            }
 
             return bid;
         } catch (HibernateException ex) {
@@ -180,6 +192,39 @@ public class BidService {
         try {
             BidListDTO list = new BidListDTO();
             List<Bids> bidList = bidDAO.getBidsFromDate(parseDate);
+            list.setLists(getTmpList(bidList));
+            return list;
+        } catch (HibernateException he) {
+            log.error(he);
+        } catch (NullPointerException ne) {
+            log.error(ne);
+        } catch (Exception ex) {
+            log.error(ex);
+        }
+        return null;
+    }
+    
+    @Transactional
+    public BidListDTO getOngoingBids(Date curDate) {
+        try {
+            BidListDTO list = new BidListDTO();
+            List<Bids> bidList = bidDAO.getOngoingBids(curDate);
+            list.setLists(getTmpList(bidList));
+            return list;
+        } catch (HibernateException he) {
+            log.error(he);
+        } catch (NullPointerException ne) {
+            log.error(ne);
+        } catch (Exception ex) {
+            log.error(ex);
+        }
+        return null;
+    }
+    @Transactional
+    public BidListDTO getCompletedBids() {
+        try {
+            BidListDTO list = new BidListDTO();
+            List<Bids> bidList = bidDAO.getCompleteBids();
             list.setLists(getTmpList(bidList));
             return list;
         } catch (HibernateException he) {

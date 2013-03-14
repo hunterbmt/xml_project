@@ -7,6 +7,8 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import static javax.persistence.GenerationType.IDENTITY;
@@ -25,6 +27,10 @@ import javax.persistence.TemporalType;
 @Table(name = "tbl_bids", catalog = "xml_project")
 public class Bids implements java.io.Serializable {
 
+    public enum Status {
+        UNCOMPLETED, COMPLETED
+    };
+    
     private Integer id;
     private Product product;
     private Integer lastUserid;
@@ -32,6 +38,7 @@ public class Bids implements java.io.Serializable {
     private Date startDate;
     private Date endDate;
     private Date lastEdit;
+    private Status status;
     private Set<BidHistory> bidHistories = new HashSet<BidHistory>();
 
     public Bids() {
@@ -42,14 +49,28 @@ public class Bids implements java.io.Serializable {
         this.startDate = startDate;
     }
     
+    public Bids(Product product, Date startDate, Date endDate) {
+        this.product = product;
+        this.startDate = startDate;
+        this.endDate = endDate;
+    }
+
+    @Enumerated(EnumType.ORDINAL)
+    @Column(name = "status", nullable = false, columnDefinition = "TINYINT")
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
     public Bids(Product product, int lastUserid, double currentPrice, Date startDate) {
         this.product = product;
         this.lastUserid = lastUserid;
         this.currentPrice = currentPrice;
         this.startDate = startDate;
     }
-    
-    
 
     public Bids(Product product, int lastUserid, double currentPrice, Date startDate, Date endDate, Date lastEdit, Set tblBidHistories) {
         this.product = product;
@@ -93,7 +114,7 @@ public class Bids implements java.io.Serializable {
 
     @Column(name = "current_price", nullable = true, precision = 22, scale = 0)
     public Double getCurrentPrice() {
-        return this.currentPrice  ;
+        return this.currentPrice;
     }
 
     public void setCurrentPrice(Double currentPrice) {

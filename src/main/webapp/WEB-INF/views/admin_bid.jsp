@@ -16,48 +16,14 @@
         <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
         <script src="/resources/js/vteam.js"></script>
         <script src="/resources/js/dateUtils.js"></script>
+        <script src="/resources/js/bid.js"></script>
         <script>
-            var bidList = new Object;
             $(document).ready(function() {
-                vteam_http.init();
-                var page_size = 5;
-                var page =1;
-                var format_date = "MM/dd/yyyy";
-                var current_date = new Date();
-                //alert(current_date);
-                vteam_http.makeHttpRequest(
-                        "/bid/get_upcoming_bids",
-                        {
-                            
-                        },
-                "POST",
-                        function(data) {
-                            if (data.status == "success") {
-                                displayOngoingBid(data.bid_list.lists);
-                            }
-                        }
-                );
+                vteam_http.init();                
+                _displayOngoingBid();
+                
             });
-
-            function displayOngoingBid(bidList) {
-                var cnt = '';
-                for (var i = 0; i < bidList.length; i++) {
-                    cnt += "<tr>";
-                    cnt += "<td>" + bidList[i].id + "</td>";
-                    cnt += "<td>" + bidList[i].product_name + "</td>";
-                    cnt += "<td>" + toDate(bidList[i].start_date) + "</td>";
-                    cnt += "<td>" + bidList[i].last_username + "</td>";
-                    cnt += "<td>" + bidList[i].current_price + "</td>";
-                    cnt += "<td>" + toDateAndTime(bidList[i].last_edit) + "</td>";
-                    cnt += '<td class="td-actions">';
-                    cnt += '<a href="javascript:;" class="btn btn-small"><i class="btn-icon-only icon-stop"></i>';
-                    cnt += '</a></td>';
-                    cnt += "</tr>";
-                }
-                $("#onGoingBid").html(
-                        cnt
-                    );
-            }
+            
 
         </script>
     </head>
@@ -115,49 +81,51 @@
                                     <div class="control-group">
                                         <label class="control-label">ID</label>
                                         <div class="controls">
-                                            <span class="input-medium uneditable-input"></span>
+                                            <span id="bid_id" class="input-medium uneditable-input">
+                                                
+                                            </span>
                                         </div>
                                     </div>
                                     <div class="control-group">
-                                        <label class="control-label">Last user ID</label>
+                                        <label class="control-label">Last user</label>
                                         <div class="controls">
-                                            <span class="input-medium uneditable-input"></span>
+                                            <span id="bid_last_userid" class="input-medium uneditable-input"></span>
                                         </div>
                                     </div>
                                     <div class="control-group">
-                                        <label class="control-label">Product ID</label>
+                                        <label class="control-label">Product Name</label>
                                         <div class="controls">
-                                            <span class="input-medium uneditable-input"></span>
+                                            <span id="bid_product_name" class="input-medium uneditable-input"></span>
                                         </div>
                                     </div>
                                     <div class="control-group">
                                         <label class="control-label">Current price</label>
                                         <div class="controls">
-                                            <span class="input-medium uneditable-input"></span>
+                                            <span id="bid_current_price" class="input-medium uneditable-input"></span>
                                         </div>
                                     </div>
                                     <div class="control-group">
                                         <label class="control-label">Last edit</label>
                                         <div class="controls">
-                                            <span class="input-medium uneditable-input"></span>
+                                            <span id="bid_last_edit" class="input-medium uneditable-input"></span>
                                         </div>
                                     </div>
                                     <div class="control-group">
                                         <label class="control-label">Start date</label>
                                         <div class="controls">
-                                            <input type="text">
+                                            <input id="bid_start_date" type="text">
                                         </div>
                                     </div>
                                     <div class="control-group">
                                         <label class="control-label">End date</label>
                                         <div class="controls">
-                                            <input type="text">
+                                            <input id="bid_end_date" type="text">
                                         </div>
                                     </div>
                                     <div class="control-group">
                                         <label class="control-label">Status</label>
                                         <div class="controls">
-                                            <input type="text">
+                                            <input id ="bid_status" type="text">
                                         </div>
                                     </div>
                                     <div class="controls-button">
@@ -172,12 +140,12 @@
                     </div>
                     <div class="span8">
 
-                        <!-- upcomming bids -->
+                        <!-- Ongoing bids -->
                         <div class="widget widget-table action-table">
 
                             <div class="widget-header">
                                 <i class="icon-list-alt"></i>
-                                <h3>Upcoming Bids</h3>
+                                <h3>Ongoing Bids</h3>
                             </div>
 
                             <div class="widget-content">
@@ -211,12 +179,12 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- unapproved bids -->
+                        <!-- Upcoming bids -->
                         <div class="widget widget-table action-table">
 
                             <div class="widget-header">
                                 <i class="icon-list-alt"></i>
-                                <h3>Unapproved Bids</h3>
+                                <h3>Upcoming Bids</h3>
                             </div>
 
                             <div class="widget-content">
@@ -225,40 +193,12 @@
                                         <tr>
                                             <th>ID</th>
                                             <th>Product</th>
-                                            <th>Start Date</th>
+                                            <th>Start date</th>
+                                            
                                             <th class="td-actions"></th>
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>1</td>
-                                            <td>IPhone4</td>
-                                            <td>04/04/2013 19:55:00</td>
-                                            <td class="td-actions">
-                                                <a href="javascript:;" class="btn btn-small btn-warning">
-                                                    <i class="btn-icon-only icon-book"></i>										
-                                                </a>
-                                                <a href="javascript:;" class="btn btn-small">
-                                                    <i class="btn-icon-only icon-remove"></i>										
-                                                </a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>2</td>
-                                            <td>IPhone 5</td>
-                                            <td>04/04/2013 19:55:00</td>
-                                            <td class="td-actions">
-                                                <a href="javascript:;" class="btn btn-small btn-warning">
-                                                    <i class="btn-icon-only icon-book"></i>										
-                                                </a>
-                                                <a href="javascript:;" class="btn btn-small">
-                                                    <i class="btn-icon-only icon-remove"></i>										
-                                                </a>
-                                            </td>
-                                        </tr>
-
-
-
+                                    <tbody id="upComingBid">
                                     </tbody>
                                 </table>
                                 <div class="pagination-bar">
@@ -268,8 +208,7 @@
                                     <span>
                                         <a tabindex="0" class="ui-button active">1</a>
                                         <a tabindex="0" class="ui-button ">2</a>
-                                        <a tabindex="0" class="ui-button ">3</a>
-
+                                        <a tabindex="0" class="ui-button ">3</a>                                        
                                     </span>
                                     <a tabindex="0" class="ui-button ui-button-diable">Previous</a>
                                     <a tabindex="0" class="ui-button ui-button-diable first">First</a>
@@ -277,6 +216,7 @@
                                 </div>
                             </div>
                         </div>
+                        
                         <!-- completed bids -->
                         <div class="widget widget-table action-table">
 
@@ -295,46 +235,9 @@
                                             <th>Bidder</th>
                                             <th>Price</th>
                                             <th>Complete on</th>
-
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>1</td>
-                                            <td>IPhone4</td>
-                                            <td>04/04/2013 08:00:00</td>
-                                            <td>Le Anh</td>
-                                            <td>1450</td>
-                                            <td>04/04/2013 09:33:45</td>
-
-                                        </tr>
-                                        <tr>
-                                            <td>2</td>
-                                            <td>IPhone 3GS</td>
-                                            <td>04/04/2013 08:00:00</td>
-                                            <td>Le Anh Minh</td>
-                                            <td>1050</td>
-                                            <td>04/04/2013 09:33:45</td>
-
-                                        </tr>
-                                        <tr>
-                                            <td>3</td>
-                                            <td>IPhone 3GS</td>
-                                            <td>04/04/2013 08:00:00</td>
-                                            <td>Le Anh Minh</td>
-                                            <td>1390</td>
-                                            <td>04/04/2013 09:33:45</td>
-
-                                        </tr>
-                                        <tr>
-                                            <td>4</td>
-                                            <td>IPhone 3GS</td>
-                                            <td>04/04/2013 08:00:00</td>
-                                            <td>Le Anh Minh</td>
-                                            <td>450</td>
-                                            <td>04/04/2013 09:33:45</td>
-
-                                        </tr>
+                                    <tbody id="completedBids">                                 
 
                                     </tbody>
                                 </table>

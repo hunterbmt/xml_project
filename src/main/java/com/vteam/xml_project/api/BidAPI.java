@@ -34,12 +34,9 @@ public class BidAPI {
     private UserSession userSession;
     @Autowired
     private BidService bidService;
-    
+    @Autowired
     private DateUtil dateUtil;
 
-    public BidAPI() {
-        dateUtil = new DateUtil();
-    }
     /* ========== place bid ============ */
     
     @RequestMapping(value = "/do_bid", method = RequestMethod.POST)
@@ -130,7 +127,43 @@ public class BidAPI {
         BidListDTO result = bidService.getBidsFromDate(curDate);
         if (result != null) {
             returnMap.put("status", "success");
-            returnMap.put("bid_list", result);
+            returnMap.put("upcoming_bid_list", result);
+        } else {
+            returnMap.put("status", "error");
+            returnMap.put("message", "Cannot get");
+        }
+        return returnMap;
+    }
+    
+    @RequestMapping(value = "/get_ongoing_bids", method = RequestMethod.POST)
+    public @ResponseBody
+    HashMap<String, Object> get_ongoing_bids (
+            ) throws ParseException {
+
+        HashMap<String, Object> returnMap = new HashMap<String, Object>();        
+        Date curDate = new Date();
+        BidListDTO result = bidService.getOngoingBids(curDate);
+        if (result != null) {
+            returnMap.put("status", "success");
+            returnMap.put("ongoing_bid_list", result);
+        } else {
+            returnMap.put("status", "error");
+            returnMap.put("message", "Cannot get");
+        }
+        return returnMap;
+    }
+    
+    @RequestMapping(value = "/get_completed_bids", method = RequestMethod.POST)
+    public @ResponseBody
+    HashMap<String, Object> get_completed_bids (
+            ) throws ParseException {
+
+        HashMap<String, Object> returnMap = new HashMap<String, Object>();        
+        
+        BidListDTO result = bidService.getCompletedBids();
+        if (result != null) {
+            returnMap.put("status", "success");
+            returnMap.put("completed_bid_list", result);
         } else {
             returnMap.put("status", "error");
             returnMap.put("message", "Cannot get");
