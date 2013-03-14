@@ -45,5 +45,23 @@ public class ProductAPI {
         }
         return returnMap;
         //return result;
-    }   
+    } 
+    
+    @RequestMapping(value = "/searchProduct", method = RequestMethod.POST)
+    public @ResponseBody 
+    HashMap<String, Object> getProductList( 
+            @RequestParam String txtSearch) {
+        HashMap<String, Object> returnMap = new HashMap<String, Object>();
+        
+        ProductListDTO result = productService.searchProduct(txtSearch);
+        if (result != null) {
+            returnMap.put("status", "success");
+            returnMap.put("result", result);
+        } else {
+            returnMap.put("status", "error");
+            returnMap.put("msg", "Cannot get");
+        }
+        return returnMap;
+        //return result;
+    }
 }

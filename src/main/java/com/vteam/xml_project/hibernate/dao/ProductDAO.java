@@ -41,4 +41,14 @@ public class ProductDAO {
         query.setInteger(0, product_id);
         return (Product) query.uniqueResult();
     }
+    
+    public List<Product> searchProduct(String txtSearch) throws HibernateException {
+        Query query = this
+                .sessionFactory
+                .getCurrentSession()
+                .createQuery("FROM Product where productName LIKE :q" );
+        query.setParameter("q", "%"+txtSearch+"%");
+        return query.list();
+    }
+           
 }

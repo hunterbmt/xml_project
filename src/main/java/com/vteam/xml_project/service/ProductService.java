@@ -52,6 +52,26 @@ public class ProductService {
     }
     
     @Transactional
+    public ProductListDTO searchProduct(String txtSearch) {
+        try {
+            List<Product> dbProducts = productDAO.searchProduct(txtSearch);
+            ProductDTO p;
+            ProductListDTO list = new ProductListDTO();
+            List<ProductDTO> tmpList = new ArrayList<ProductDTO>();
+            for (Product d : dbProducts) {
+                p = new ProductDTO();
+                p.setName(d.getProductName());
+                tmpList.add(p);
+            }
+            list.setProductList(tmpList);
+            return list;            
+        }catch (HibernateException ex) {
+            log.error(ex);
+        }
+        return null;
+    }
+    
+    @Transactional
     public ProductDTO getProductById(int id) {
         try {
             Product product = productDAO.getProductById(id);
