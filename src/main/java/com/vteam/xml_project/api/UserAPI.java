@@ -8,6 +8,7 @@ import com.vteam.xml_project.controller.UserSession;
 import com.vteam.xml_project.dto.UserDTO;
 import com.vteam.xml_project.hibernate.orm.Users;
 import com.vteam.xml_project.service.UserService;
+import com.vteam.xml_project.util.DateUtil;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,7 @@ public class UserAPI {
     private UserSession session;
     @Autowired
     private UserService userService;
+    
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public @ResponseBody
@@ -88,7 +90,7 @@ public class UserAPI {
       @RequestMapping(value = "/update", method = RequestMethod.POST)
     public @ResponseBody
     HashMap<String, Object> update(
-            @RequestParam String email, String address, String birthday,String phone) {
+            @RequestParam String email, String address, String birthday,String phone,String formatDate) {
         HashMap<String, Object> returnMap = new HashMap<String, Object>();
         UserDTO newUser = new UserDTO();
         //newUser.setEmail(email);
@@ -96,7 +98,7 @@ public class UserAPI {
         //newUser.setFullname(fullname);
         //UserInfoDTO newProfile = new UserInfoDTO();
         //newProfile.setFullname(fullname);
-        boolean result = userService.upadateUser(email, address,phone,birthday);
+        boolean result = userService.upadateUser(email, address,phone,birthday,formatDate);
         if (result) {
             returnMap.put("status", "success");
         } else {
@@ -120,4 +122,20 @@ public class UserAPI {
         }
         return returnMap;
     }
+    @RequestMapping(value="/changePassword", method= RequestMethod.POST)
+    public @ResponseBody
+    HashMap<String, Object> changePassword(
+             @RequestParam String email,String currentPass,String newPass) throws NoSuchAlgorithmException{
+        HashMap<String, Object> returnMap = new HashMap<String, Object>();
+        boolean result=userService.checkPassword(email,currentPass, newPass);
+        if (result) {
+            
+            returnMap.put("status", "success");
+            
+        } else {
+            returnMap.put("status", "error");
+        }
+        return returnMap;
+    }
+
 }

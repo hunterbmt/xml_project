@@ -37,17 +37,19 @@
         <script src="/resources/js/lib/jquery-ui.js"></script>
         <script src="/resources/js/vteam.js"></script>
         <script type="text/javascript">
-            function update(){
+            function updateInfo(){
                 var email=document.getElementById("email").value;
                 var address=document.getElementById("address").value;
                 var phone= document.getElementById("phone").value;
                 var birthday=document.getElementById("birthday").value;
+                var format_date = "MM/dd/yyyy";
                 vteam_http.init();
-            vteam_http.makeHttpRequest("/user/update",
+                vteam_http.makeHttpRequest("/user/update",
                                     {email:email,
                                     address:address,
                                     phone:phone,
-                                    birthday:birthday},
+                                    birthday:birthday,
+                                    formatDate:format_date},
                                     "POST",
                       function (result){
                            if(result.status =="success")
@@ -59,12 +61,34 @@
                 });           
                
             }
+        function updatePassword(){
+            var email="<c:out value = "${user_email}"/>";;
+            var currentPass=document.getElementById("curr_password").value;
+            var newPass=document.getElementById("newpassword").value;
+             vteam_http.init();
+             vteam_http.makeHttpRequest("/user/changePassword",
+                                    {email:email,
+                                    
+                                    currentPass:currentPass,
+                                    newPass:newPass},
+                                    "POST",
+                      function (result){
+                           if(result.status =="success")
+                            {
+                            alert("Update successfully.");
+                            }else{
+                                alert("error");
+                            }
+                });           
+           
+        }
         </script>
     </head>
     <body>
         <div class="well">
             <ul class="nav nav-tabs">
                 <li class="active"><a href="#home" data-toggle="tab">Profile</a></li>
+                <li><a href="#profile" data-toggle="tab">Change Password</a></li>
                 <li><a href="#profile" data-toggle="tab">Order History</a></li>
             </ul>
             <div id="myTabContent" class="tab-content">
@@ -72,10 +96,9 @@
                     <form id="tab">
                         <label>Email</label>
                         <input type="text" id="email" class="input-xlarge" value="${user_email}">
-                        <label>Password</label>
-                        <input type="password" class="input-xlarge">
+                        
                         <label>First Name</label>
-                        <input type="text"  class="input-xlarge" value="${user_email}">
+                        <input type="text"  class="input-xlarge" value="${user_fullname}">
                         <label>Phone</label>
                         <input type="text" id="phone"  class="input-xlarge">
                         
@@ -84,12 +107,24 @@
                         <label>Birthday</label>
                         <input type="text" id="birthday" class="input-xlarge">
                         <div>
-                            <button class="btn btn-primary" onclick="update()">Update</button>
+                            <button class="btn btn-primary" onclick="updateInfo()">Update</button>
                         </div>
                     </form>
                 </div>
-                <div class="tab-pane fade" id="profile">
+              <div class="tab-pane fade" id="profile">
                     <form id="tab2">
+                        <label>Password</label>
+                        <input type="password" id="newpassword" class="input-xlarge">       
+                        <label>Old Password</label>
+                        <input type="Password" id="curr_password" class="input-xlarge">
+                        <div>
+                            <button class="btn btn-primary" onclick="updatePassword()">Update</button>
+                        </div>
+                        
+                    </form>
+                </div>
+                <div class="tab-pane fade" id="profile">
+                    <form id="tab3">
                         <label>Order History</label>
                         
                     </form>

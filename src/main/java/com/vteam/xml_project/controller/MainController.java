@@ -80,15 +80,13 @@ public class MainController {
    @Transactional
    public String showListingPage(Map<String, Object> model) 
    {
-             String viewName = null;
+             String viewName = "userInfo";
                 Users user= new Users();
            
                 user=userDAO.findUserByEmail((String)session.get("email"));
                 
 		model.put("user_email", user.getEmail());
 		model.put("user_fullname", user.getFullname());
-		viewName = "userInfo";
-		
 		return viewName;
    }
 }

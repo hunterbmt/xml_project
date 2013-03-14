@@ -15,6 +15,7 @@ import com.vteam.xml_project.hibernate.dao.UserDAO;
 import com.vteam.xml_project.util.DateUtil;
 import com.vteam.xml_project.util.StringUtil;
 import java.security.NoSuchAlgorithmException;
+import java.text.ParseException;
 import java.util.Date;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
@@ -32,6 +33,8 @@ public class UserService {
     private static Logger log = Logger.getLogger(UserService.class.getName());
     @Autowired
     private UserDAO userDAO;
+    @Autowired
+    private DateUtil util;
 
     @Transactional
     public boolean checkLogin(UserDTO user) throws NoSuchAlgorithmException {
@@ -49,13 +52,15 @@ public class UserService {
     }
 
     @Transactional
-    public boolean upadateUser(String email, String address, String phone, String birthday) {
+    public boolean upadateUser(String email, String address, String phone, String birthday,String formatDate) {
         try {
             Users dbUser = userDAO.findUserByEmail(email);
             dbUser.setAddress(address);
             dbUser.setPhone(phone);
-            DateUtil util=new DateUtil();
-            Date parseDay=util.parseFromString(birthday);
+            if (formatDate == null) {
+            formatDate = "MM/dd/yyyy HH:mm:ss";
+           }
+            Date parseDay=util.parseFromString(birthday, formatDate);
             dbUser.setBirthday(parseDay);
             userDAO.save(dbUser);
             return true;
@@ -63,7 +68,11 @@ public class UserService {
             log.error(ex);
         } catch (HibernateException ex) {
             log.error(ex);
-        } catch (Exception ex) {
+            
+        }catch(ParseException ex){
+            log.error(ex);
+        } 
+        catch (Exception ex) {
             log.error(ex);
         }
         return false;
@@ -109,5 +118,21 @@ public class UserService {
             log.error(ex);
         }
         return null;
+    }
+    @Transactional
+    public boolean  checkPassword(String email,String currentPass,String newPassword) throws NoSuchAlgorithmException{
+        try {
+            Users user=userDAO.findUserByEmail(email);
+            String storagepass = StringUtil.createPasswordForDB(currentPass);
+            if(user.getPassword().equals(storagepass)){
+                String covertNewPass = StringUtil.createPasswordForDB(newPassword);
+                user.setPassword(covertNewPass);
+                userDAO.save(user);
+                return true;
+            }
+        } catch (HibernateException ex) {
+            log.error(ex);
+        }
+        return false;
     }
 }

@@ -74,7 +74,7 @@
                                        
                                         <div id="login">  
                                             
-                                        <form id="loginForm" accept-charset="UTF-8">
+                                            <form id="loginForm" accept-charset="UTF-8" style="">
                                             <label > Username:</label>
                                             <input id="user_username"  type="text" name="username" />
                                             <label > Password:</label>

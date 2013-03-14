@@ -1,6 +1,7 @@
     package com.vteam.xml_project.hibernate.orm;
 // Generated Mar 11, 2013 2:33:25 PM by Hibernate Tools 3.2.1.GA
 
+import com.vteam.xml_project.util.StringUtil;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -83,6 +84,7 @@ public class Users implements java.io.Serializable {
 
     @Column(name = "password", nullable = false)
     public String getPassword() {
+        
         return this.password;
     }
 
