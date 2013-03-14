@@ -11,4 +11,6 @@
 	<!-- <context:property-placeholder location="classpath:configuration.properties" /> -->
 	<!-- Scans the classpath of this application for @Components to deploy as beans -->
 	<context:component-scan base-package="com.vteam.xml_project" />
+        
+        <bean id="dateUtil" class="com.vteam.xml_project.util.DateUtil" />
 </beans>

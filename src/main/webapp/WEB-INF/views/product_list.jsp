@@ -23,7 +23,8 @@
         <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
         <script src="/resources/js/lib/holder.js"></script>
         <script src="/resources/js/vteam.js"></script>
-        <script src="/resources/js/productfunction.js"></script>
+        <script src="/resources/js/product.js"></script>
+        <script src="/resources/js/category.js"></script>
 
     </header>
     <body>
@@ -100,28 +101,10 @@
             </div>
         </div>
     </body>
-    <!--    <script>
+    <script>
             $(document).ready(function() {
-                vteam_http.init();
-                vteam_http.makeHttpRequest("/product/getProductList",
-                        {page: 1, pageSize: 5},
-                'POST',
-                        function(result) {
-                            if (result.status == 'success') {
-                                displayProduct(result.result.productList)
-                            }
-                        });
+                loadAndDisplayProduct(1,5);
+                
             });
-            function displayProduct(productList) {
-                var html = '';
-                for (var i =0 ; i < productList.length; i++) {
-                    html += '<li>'
-                    html += '<td>'+productList[i].name+'</td>'
-                    html += '<td>'+productList[i].description+'</td>'
-                    html += '<td>'+productList[i].image+'</td>'
-                    html +='</li>'
-                }
-                $("table >tbody").html(html)
-            }
-        </script>-->
+        </script>
 </html>

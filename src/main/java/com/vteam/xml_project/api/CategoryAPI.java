@@ -29,7 +29,7 @@ public class CategoryAPI {
     @Autowired
     private CategoryService categoryService;
                    
-    @RequestMapping (value = "/getCategoryList", method = RequestMethod.POST)
+    @RequestMapping (value = "/getCategoryList", method = RequestMethod.GET)
     public @ResponseBody
     HashMap<String, Object> getCategoryList() {
         HashMap<String, Object> returnMap =  new HashMap<String, Object>();

@@ -9,6 +9,7 @@ import com.vteam.xml_project.dto.CategoryDTO;
 import com.vteam.xml_project.hibernate.dao.CategoryDAO;
 import com.vteam.xml_project.hibernate.orm.Category;
 import com.vteam.xml_project.hibernate.orm.Product;
+import com.vteam.xml_project.util.DateUtil;
 import java.util.ArrayList;
 import java.util.List;
 import org.apache.log4j.Logger;
@@ -36,9 +37,9 @@ public class CategoryService {
             CategoryDTO c;
             List<CategoryDTO> tmpList = new ArrayList<CategoryDTO>();
             for (Category category : dbCategory) {
-
                 c = new CategoryDTO();
                 c.setName(category.getCategoryName());
+                c.setId(category.getId());
                 //c.setName(category.getId());
                 //c.setImage("/resources/img/product/" + d.getImage());
                 tmpList.add(c);

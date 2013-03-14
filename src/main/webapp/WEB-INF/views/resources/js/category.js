@@ -1,14 +1,14 @@
 
-$(document).ready(function() {
+function loadAndDisplayCategory(){
     vteam_http.init();
-    vteam_http.makeHttpRequest("/product/getCategoryList",            
-    'POST',
+    vteam_http.makeHttpRequest("/category/getCategoryList",{},            
+    'GET',
             function(result) {
                 if (result.status == 'success') {
                     displayCategory(result.result.categoryList)
                 }
             });
-});
+}
 function displayCategory(categoryList) {
     var html = '';
     for (var i = 0; i < categoryList.length; i++) {
