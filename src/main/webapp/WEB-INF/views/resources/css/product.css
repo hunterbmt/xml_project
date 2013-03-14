@@ -54,7 +54,7 @@ body {font-family: 'Open Sans', serif;}
 /* Header
 -------------------------------------------------- */
 
-#header {;position: relative;z-index: 2;}
+#header {position: relative;z-index: 2;}
 #header .navbar {
     font-family: 'Open Sans', sans-serif;
     *position: relative;
@@ -257,7 +257,13 @@ ul.thumbnails li.span4:nth-child(3n + 4) {margin-left : 0px;}
 ul.thumbnails li.span3:nth-child(4n + 5) {margin-left : 0px;}
 ul.thumbnails li.span12 + li {margin-left : 0px;}
 
-
+#side-section .nav-list {
+padding-right: 15px;
+padding-left: 15px;
+margin-bottom: 0;
+border: 1px solid #EEE;
+border-radius: 4px;
+}
 
 #side-section .nav-list > .active > a,
 .nav-list > .active > a:hover {

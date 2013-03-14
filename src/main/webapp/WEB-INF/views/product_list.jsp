@@ -56,16 +56,11 @@
         </div>
         <div class="container" style="margin-top: 80px">
             <div class="row-fluid">
-                <div id="side-section" class="span3">
-                    <div>
-                        <ul class="nav nav-list">
-                            <li class="nav-header"><i class="icon-lock"></i>Category</li> 
-                        </ul>
-                        <ul class ="categorylist">
-                            <li>Dien Thoai</li>
-                            <li>Laptop</li>
-                        </ul>
-                    </div>
+                <div id="side-section" class="span3">   
+                    <ul id ="category_div" class="nav nav-list">
+                        
+                    </ul>
+
                     <div class="module-top"><i class="icon-lock"></i> Quick Login</div>
                     <div class="module">
                         <form method="post" action="?" data-jkit="[form:validateonly=true]">
@@ -102,9 +97,9 @@
         </div>
     </body>
     <script>
-            $(document).ready(function() {
-                loadAndDisplayProduct(1,5);
-                
-            });
-        </script>
+        $(document).ready(function() {
+            loadAndDisplayProduct(1, 5);
+
+        });
+    </script>
 </html>
