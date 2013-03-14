@@ -39,10 +39,10 @@ public class ProductService {
                 p = new ProductDTO();
                 p.setName(d.getProductName());
                 p.setDescription(d.getDescription());
-                p.setImage(d.getImage());
+                p.setImage("/resources/img/product/" + d.getImage());
                 tmpList.add(p);
             }
-            list.setList(tmpList);
+            list.setProductList(tmpList);
             return list;
         } catch (HibernateException ex) {
             log.error(ex);

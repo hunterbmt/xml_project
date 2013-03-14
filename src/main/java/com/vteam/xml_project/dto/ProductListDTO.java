@@ -12,18 +12,18 @@ import java.util.List;
  * @author Crick
  */
 public class ProductListDTO {
-    private List<ProductDTO> list;
+    private List<ProductDTO> productList;
 
     public ProductListDTO() {
-        list = new ArrayList<ProductDTO>();
+        productList = new ArrayList<ProductDTO>();
     }
 
-    public List<ProductDTO> getList() {
-        return list;
+    public List<ProductDTO> getProductList() {
+        return productList;
     }
 
-    public void setList(List<ProductDTO> list) {
-        this.list = list;
+    public void setProductList(List<ProductDTO> list) {
+        this.productList = list;
     }
     
     

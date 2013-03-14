@@ -22,20 +22,19 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * @author phitt60230
  */
 @Controller
-@RequestMapping(value = "/product")
-public class ProductAPI {
+@RequestMapping(value = "/category")
+public class CategoryAPI {
     @Autowired
     private UserSession session;
     @Autowired
-    private ProductService productService;
-
-    @RequestMapping(value = "/getProductList", method = RequestMethod.POST)
-    public @ResponseBody 
-    HashMap<String, Object> getProductList( 
-            @RequestParam int page, int pageSize) {
-        HashMap<String, Object> returnMap = new HashMap<String, Object>();
+    private CategoryService categoryService;
+                   
+    @RequestMapping (value = "/getCategoryList", method = RequestMethod.POST)
+    public @ResponseBody
+    HashMap<String, Object> getCategoryList() {
+        HashMap<String, Object> returnMap =  new HashMap<String, Object>();
         
-        ProductListDTO result = productService.getProductList(page,pageSize);
+        CategoryListDTO result = categoryService.getCategoryList();
         if (result != null) {
             returnMap.put("status", "success");
             returnMap.put("result", result);
@@ -44,6 +43,5 @@ public class ProductAPI {
             returnMap.put("msg", "Cannot get");
         }
         return returnMap;
-        //return result;
-    }   
+    }
 }
