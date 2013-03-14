@@ -6,7 +6,9 @@ package com.vteam.xml_project.service;
 
 import com.vteam.xml_project.dto.ProductDTO;
 import com.vteam.xml_project.dto.ProductListDTO;
+import com.vteam.xml_project.hibernate.dao.CategoryDAO;
 import com.vteam.xml_project.hibernate.dao.ProductDAO;
+import com.vteam.xml_project.hibernate.orm.Category;
 import com.vteam.xml_project.hibernate.orm.Product;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,44 +23,30 @@ import org.springframework.transaction.annotation.Transactional;
  * @author phitt60230
  */
 @Service
-public class ProductService {
+public class AdminService {
 
     private static Logger log = Logger.getLogger(UserService.class.getName());
     @Autowired
     private ProductDAO productDAO;
+    @Autowired
+    private CategoryDAO categoryDAO;
 
     @Transactional
-    public ProductListDTO getProductList(int page, int pageSize) {
+    public ProductDTO insertProduct(int categoryId, String productName, String description, String img, double minPrice, double maxPrice) {
         try {
-            List<Product> dbProducts = productDAO.getProductList(page, pageSize);
-            ProductDTO p;
-            ProductListDTO list = new ProductListDTO();
-            List<ProductDTO> tmpList = new ArrayList<ProductDTO>();
-            for (Product d : dbProducts) {
-
-                p = new ProductDTO();
-                p.setName(d.getProductName());
-                p.setDescription(d.getDescription());
-                p.setImage("/resources/img/product/" + d.getImage());
-                tmpList.add(p);
-            }
-            list.setProductList(tmpList);
-            return list;
+            Category category = categoryDAO.getCategoryById(categoryId);
+            Product newProduct = new Product(category, productName, description, img, Product.Status.AVAILABLE, minPrice, maxPrice, true);
+            ProductDTO productDTO;
+            productDAO.save(newProduct);
+            productDTO = new ProductDTO();
+            productDTO.setName(newProduct.getProductName());
+            productDTO.setDescription(newProduct.getDescription());
+            productDTO.setImage(newProduct.getImage());
+            return productDTO;
         } catch (HibernateException ex) {
             log.error(ex);
             return null;
         }
 
-    }
-    
-    @Transactional
-    public ProductDTO getProductById(int id) {
-        try {
-            Product product = productDAO.getProductById(id);
-            
-        }catch (HibernateException ex) {
-            log.error(ex);
-        }
-        return null;
     }
 }

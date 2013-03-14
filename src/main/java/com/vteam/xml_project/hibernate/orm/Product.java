@@ -7,12 +7,15 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -27,12 +30,16 @@ import javax.persistence.TemporalType;
 @Table(name = "tbl_product", catalog = "xml_project")
 public class Product implements java.io.Serializable {
 
+    public enum Status {
+
+        AVAILABLE ,UNAVAILABLE, DELETE;
+    }
     private Integer id;
     private Category tblCategory;
     private String productName;
     private String description;
     private String image;
-    private byte status;
+    private Status status;
     private double minPrice;
     private double maxPrice;
     private Date lastUpdate;
@@ -44,7 +51,7 @@ public class Product implements java.io.Serializable {
     public Product() {
     }
 
-    public Product(Category tblCategory, String productName, String description, String image, byte status, double minPrice, double maxPrice, boolean isActive) {
+    public Product(Category tblCategory, String productName, String description, String image, Status status, double minPrice, double maxPrice, boolean isActive) {
         this.tblCategory = tblCategory;
         this.productName = productName;
         this.description = description;
@@ -55,7 +62,7 @@ public class Product implements java.io.Serializable {
         this.isActive = isActive;
     }
 
-    public Product(Category tblCategory, String productName, String description, String image, byte status, double minPrice, double maxPrice, Date lastUpdate, boolean isActive, Set tblTagses, Set tblBidses, Set tblOrderHistories) {
+    public Product(Category tblCategory, String productName, String description, String image, Status status, double minPrice, double maxPrice, Date lastUpdate, boolean isActive, Set tblTagses, Set tblBidses, Set tblOrderHistories) {
         this.tblCategory = tblCategory;
         this.productName = productName;
         this.description = description;
@@ -100,6 +107,7 @@ public class Product implements java.io.Serializable {
         this.productName = productName;
     }
 
+    @Lob
     @Column(name = "description", nullable = false, length = 65535)
     public String getDescription() {
         return this.description;
@@ -118,12 +126,13 @@ public class Product implements java.io.Serializable {
         this.image = image;
     }
 
-    @Column(name = "status", nullable = false)
-    public byte getStatus() {
+    @Enumerated(EnumType.ORDINAL)
+    @Column(name = "status", nullable = false, columnDefinition = "TINYINT")
+    public Status getStatus() {
         return this.status;
     }
 
-    public void setStatus(byte status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 

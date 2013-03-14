@@ -5,6 +5,9 @@
     Description:
         Purpose of the stylesheet follows.
 */
+a:hover{
+    text-decoration: none;
+}
 body {
     background: #E9E9E9 url(../img/body-bg.png) repeat 0 0;
 }
@@ -391,4 +394,7 @@ body {
     background-image: -o-linear-gradient(top, #ffffff, #e6e6e6);
     background-image: linear-gradient(top, #ffffff, #e6e6e6);
     cursor: default !important;
+}
+.control-group .row{
+    margin-left: 0px;
 }

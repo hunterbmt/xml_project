@@ -5,12 +5,8 @@
 package com.vteam.xml_project.api;
 
 import com.vteam.xml_project.controller.UserSession;
-import com.vteam.xml_project.dto.BidDTO;
-import com.vteam.xml_project.dto.BidListDTO;
-import com.vteam.xml_project.service.BidService;
-import com.vteam.xml_project.util.DateUtil;
-import java.text.ParseException;
-import java.util.Date;
+import com.vteam.xml_project.dto.ProductDTO;
+import com.vteam.xml_project.service.AdminService;
 import java.util.HashMap;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,140 +21,31 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * @author HunterBMT
  */
 @Controller
-@RequestMapping(value = "/bid")
-public class BidAPI {
+@RequestMapping(value = "/admin")
+public class AdminAPI {
     
-    private static Logger logger = Logger.getLogger(BidAPI.class.getName());
+    private static Logger logger = Logger.getLogger(AdminAPI.class.getName());
 
     @Autowired
     private UserSession userSession;
     @Autowired
-    private BidService bidService;
-    
-    private DateUtil dateUtil;
+    private AdminService adminService;
 
-    public BidAPI() {
-        dateUtil = new DateUtil();
-    }
-    /* ========== place bid ============ */
     
-    @RequestMapping(value = "/do_bid", method = RequestMethod.POST)
+    @RequestMapping(value = "/insert_product", method = RequestMethod.POST)
     public @ResponseBody
-    HashMap<String, Object> doBid (
-            @RequestParam int bid_id) {
+    HashMap<String, Object> insertProduct (
+            @RequestParam String productName,String description,String img,double minPrice,double maxPrice) {
         HashMap<String, Object> returnMap = new HashMap<String, Object>();
-        
-        //String uuid = (String) userSession.get("uuid");
-        Integer uuid = 1;
-        logger.debug("do_bid: placing a bid, wait for respond ,from uuid :" + uuid);
-        
-        boolean is_allowed = bidService.doBid(uuid, bid_id);
-        if (is_allowed) {
-            returnMap.put("allowed", "ok");
-            returnMap.put("message", "The bid has been set");
-        } else {
-            returnMap.put("allowed", "no");
-            returnMap.put("message", "The bid has locked to other bidder");
+        System.out.println("blabla");
+        ProductDTO productDTO = adminService.insertProduct(1, productName, description, img, minPrice, maxPrice);
+        if(productDTO ==null){
+            returnMap.put("status", "error");
+        }else{
+            returnMap.put("status","success_ok");
+            returnMap.put("product", productDTO);
         }
         return returnMap;
     }
     
-    
-    /* =============== bid manipulations ================= */
-    
-    @RequestMapping(value = "/get_bid_by_id", method = RequestMethod.POST)
-    public @ResponseBody
-    HashMap<String, Object> get_bid_by_id(
-            @RequestParam int _id) {
-        HashMap<String, Object> returnMap = new HashMap<String, Object>();
-        BidDTO result = bidService.getBidByID(_id);
-        if (result != null) {
-            returnMap.put("status", "success");
-            returnMap.put("bid", result);
-        } else {
-            returnMap.put("status", "error");
-            returnMap.put("message", "Cannot get");
-        }
-        return returnMap;
-    }
-
-    @RequestMapping(value = "/get_bids_list", method = RequestMethod.POST)
-    public @ResponseBody
-    HashMap<String, Object> get_bids_list(
-            @RequestParam int page, int page_size) {
-
-        HashMap<String, Object> returnMap = new HashMap<String, Object>();
-        BidListDTO result = bidService.getBidsList(page, page_size);
-        if (result != null) {
-            returnMap.put("status", "success");
-            returnMap.put("bid_list", result);
-        } else {
-            returnMap.put("status", "error");
-            returnMap.put("message", "Cannot get");
-        }
-        return returnMap;
-    }
-
-    @RequestMapping(value = "/get_bids_by_start_date", method = RequestMethod.POST)
-    public @ResponseBody
-    HashMap<String, Object> get_bids_by_start_date(
-            @RequestParam String start_date, String format_date) throws ParseException {
-
-        HashMap<String, Object> returnMap = new HashMap<String, Object>();
-        if (format_date == null) {
-            format_date = "MM/dd/yyyy HH:mm:ss";
-        }
-        Date parseDate = dateUtil.parseFromString(start_date, format_date);
-        BidListDTO result = bidService.getBidsByStartDate(parseDate);
-        if (result != null) {
-            returnMap.put("status", "success");
-            returnMap.put("bid_list", result);
-        } else {
-            returnMap.put("status", "error");
-            returnMap.put("message", "Cannot get");
-        }
-        return returnMap;
-    }
-    
-    @RequestMapping(value = "/get_upcoming_bids", method = RequestMethod.POST)
-    public @ResponseBody
-    HashMap<String, Object> get_upcoming_bids(
-            ) throws ParseException {
-
-        HashMap<String, Object> returnMap = new HashMap<String, Object>();        
-        Date curDate = dateUtil.getCurrentDate();
-        BidListDTO result = bidService.getBidsFromDate(curDate);
-        if (result != null) {
-            returnMap.put("status", "success");
-            returnMap.put("bid_list", result);
-        } else {
-            returnMap.put("status", "error");
-            returnMap.put("message", "Cannot get");
-        }
-        return returnMap;
-    }
-
-    @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public @ResponseBody
-    HashMap<String, Object> create(
-            @RequestParam int product_id, String start_date, String format_date) throws ParseException {
-        HashMap<String, Object> returnMap = new HashMap<String, Object>();
-        BidDTO newBid = new BidDTO();
-        newBid.setProduct_id(product_id);
-
-        if (format_date == null) {
-            format_date = "MM/dd/yyyy HH:mm:ss";
-        }
-        //Date parseDate = dateUtil.parseFromString(start_date, DateUtil.SERVER_RETURN_FORMATE_STRING);
-        Date parseDate = dateUtil.parseFromString(start_date, format_date);
-        newBid.setStart_date(parseDate);
-
-        boolean result = bidService.createNewBid(newBid);
-        if (result) {
-            returnMap.put("status", "success");
-        } else {
-            returnMap.put("status", "error");
-        }
-        return returnMap;
-    }
 }

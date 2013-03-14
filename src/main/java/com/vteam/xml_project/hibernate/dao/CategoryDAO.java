@@ -18,24 +18,17 @@ import org.springframework.stereotype.Repository;
  * @author phitt60230
  */
 @Repository
-public class CategoryDAO {
-    
-    @Autowired
-    private SessionFactory sessionFactory;
-    
-    
-    
-    public  List<Category> getCategoryList() throws HibernateException {
-        Query query = this
-                .sessionFactory
+public class CategoryDAO extends BaseDAO {
+
+    public List<Category> getCategoryList() throws HibernateException {
+        Query query = this.sessionFactory
                 .getCurrentSession()
                 .createQuery("FROM Category");
-		return query.list();    
-    }  
+        return query.list();
+    }
 
-    public Category getCategoryById(Integer category_id) throws HibernateException {
-        Query query = this
-                .sessionFactory
+    public Category getCategoryById(int category_id) throws HibernateException {
+        Query query = this.sessionFactory
                 .getCurrentSession()
                 .createQuery("FROM Category where id = ?");
         query.setInteger(0, category_id);

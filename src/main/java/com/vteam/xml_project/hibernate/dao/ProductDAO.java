@@ -17,25 +17,20 @@ import org.springframework.stereotype.Repository;
  * @author phitt60230
  */
 @Repository
-public class ProductDAO {
-    
-    @Autowired
-    private SessionFactory sessionFactory;
-    
-    public  List<Product> getProductList(int page, int pageSize) throws HibernateException {
-        Query query = this
-                .sessionFactory
+public class ProductDAO extends BaseDAO {
+
+    public List<Product> getProductList(int page, int pageSize) throws HibernateException {
+        Query query = this.sessionFactory
                 .getCurrentSession()
                 .createQuery("FROM Product");
-       
+
         query = query.setFirstResult(pageSize * (page - 1));
-		query.setMaxResults(pageSize);
-		return query.list();    
-    }  
+        query.setMaxResults(pageSize);
+        return query.list();
+    }
 
     public Product getProductById(Integer product_id) throws HibernateException {
-        Query query = this
-                .sessionFactory
+        Query query = this.sessionFactory
                 .getCurrentSession()
                 .createQuery("FROM Product where id = ?");
         query.setInteger(0, product_id);

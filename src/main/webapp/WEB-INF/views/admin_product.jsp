@@ -14,6 +14,11 @@
         <script src="/resources/js/lib/jquery.url.js"></script>
         <script src="/resources/js/lib/jquery-ui.js"></script>
         <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
+        <script src="/resources/js/lib/ckeditor/ckeditor.js"></script>
+        <script src="/resources/js/lib/ckeditor/config.js"></script>
+        <script src="/resources/js/lib/ckeditor/styles.js"></script>
+        <script src="/resources/js/vteam.js"></script>
+        <script src="/resources/js/admin_product.js"></script>
     </head>
     <body>
         <div class="navbar navbar-fixed-top">
@@ -57,7 +62,7 @@
         <div class="main" >
             <div class="container">
                 <div class="row">
-                    <div class="span4">
+                    <div class="span5">
                         <div class="widget">
                             <div class="widget-header">
                                 <i class="icon-tasks"></i>
@@ -65,40 +70,47 @@
                             </div>
 
                             <div class="widget-content">
-                                <form action="#" method="get" class="form-horizontal">
+                                <form action="/product/update" method="POST" class="form-horizontal">
                                     <div class="control-group">
                                         <label class="control-label">Id</label>
                                         <div class="controls">
-                                            <span class="input-medium uneditable-input"></span>
+                                            <span id="product_id" class="input-medium uneditable-input"></span>
                                         </div>
                                     </div>
                                     <div class="control-group">
                                         <label class="control-label">Name</label>
                                         <div class="controls">
-                                            <input type="text">
+                                            <input id="product_name" type="text">
                                         </div>
                                     </div>
                                     <div class="control-group">
-                                        <label class="control-label">Description</label>
-                                        <div class="controls">
-                                            <textarea style="height: 120px"></textarea>
+                                        <div class="row">
+                                            <label class="control-label">Description</label>
                                         </div>
+                                        <textarea class="ckeditor" id="product_description"></textarea>
+
                                     </div>
                                     <div class="control-group">
                                         <label class="control-label">Min price</label>
                                         <div class="controls">
-                                            <input type="text">
+                                            <input type="text" id="product_min_price">
                                         </div>
                                     </div>
                                     <div class="control-group">
                                         <label class="control-label">Max price</label>
                                         <div class="controls">
-                                            <input type="text">
+                                            <input type="text" id="product_max_price">
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label">Image</label>
+                                        <div class="controls">
+                                            <input type="text" id="product_img">
                                         </div>
                                     </div>
                                     <div class="controls-button">
-                                        <button type="submit" class="btn btn-warning">Save</button>
-                                        <button type="submit" class="btn">New</button>
+                                        <button type="button" class="btn btn-warning" onclick="insertOrUpdateProduct()">Save</button>
+                                        <button type="button" class="btn" onclick="clearProductDetail()">New</button>
                                     </div>
                                 </form>
                             </div>
@@ -126,7 +138,7 @@
                                     </div>
                                     <div class="control-group">
                                         <label class="control-label">Description</label>
-                                        <div class="controls">
+                                        <div class="row">
                                             <textarea style="height: 120px"></textarea>
                                         </div>
                                     </div>
@@ -139,7 +151,7 @@
 
                         </div>
                     </div>
-                    <div class="span8">
+                    <div class="span7">
                         <div class="widget widget-table action-table">
 
                             <div class="widget-header">
