@@ -40,7 +40,7 @@ public class UserService {
     public boolean checkLogin(UserDTO user) throws NoSuchAlgorithmException {
         try {
 
-            String storagepass = StringUtil.createPasswordForDB(user.getPassword());
+           String storagepass = StringUtil.createPasswordForDB(user.getPassword());
             Users dbUser = userDAO.findUserByEmailAndPassword(user.getEmail(), storagepass);
             if (dbUser != null) {
                 return true;

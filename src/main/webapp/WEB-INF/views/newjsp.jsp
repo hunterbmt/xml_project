@@ -80,7 +80,7 @@
                                             <label > Password:</label>
                                             <input id="user_password"  type="password" name="password" />
                                             <input class="btn btn-primary"  value="Log In" onclick="login()" />
-                                            <input class="btn btn-inverse" type="button" value="Register here"/>
+                                            <input class="btn btn-inverse" type="button" value="Register here" onclick="change()"/>
                                         </form>
                                         
                                         <div id="sigin" style="display: none">
