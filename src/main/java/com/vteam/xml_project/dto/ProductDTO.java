@@ -12,6 +12,15 @@ public class ProductDTO {
     private String name;
     private String description;
     private String image;
+    private Integer product_id;
+
+    public Integer getId() {
+        return product_id;
+    }
+
+    public void setId(Integer id) {
+        this.product_id = id;
+    }
 
     public String getName() {
         return name;

@@ -4,12 +4,14 @@
  */
 package com.vteam.xml_project.controller;
 
+import com.vteam.xml_project.dto.ProductDTO;
 import com.vteam.xml_project.hibernate.dao.UserDAO;
 import com.vteam.xml_project.hibernate.orm.Users;
+import com.vteam.xml_project.service.ProductService;
 import com.vteam.xml_project.service.UserService;
+import java.util.HashMap;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,6 +32,7 @@ public class MainController {
     private UserSession session;
     @Autowired
     private UserDAO userDAO;
+    
      
     
 
@@ -53,6 +56,15 @@ public class MainController {
         ModelAndView mav = new ModelAndView("product_list");
         return mav;
     }
+    
+    @RequestMapping(value = "/product/detail", method = RequestMethod.GET)
+    @Transactional
+    public String productDetail(HttpServletRequest request, HashMap<String, Object> m) {
+        m.put("pid", request.getParameter("pid"));
+        return "product_detail";
+    }
+    
+   
     
     @RequestMapping(value = "/catalogs")
     @Transactional

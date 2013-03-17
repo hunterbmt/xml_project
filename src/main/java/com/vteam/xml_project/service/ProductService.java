@@ -40,6 +40,7 @@ public class ProductService {
                 p.setName(d.getProductName());
                 p.setDescription(d.getDescription());
                 p.setImage("/resources/img/product/" + d.getImage());
+                p.setId(d.getId());
                 tmpList.add(p);
             }
             list.setProductList(tmpList);
@@ -61,7 +62,7 @@ public class ProductService {
             for (Product d : dbProducts) {
                 p = new ProductDTO();
                 p.setName(d.getProductName());
-
+                p.setId(d.getId());
                 p.setDescription(d.getDescription());
                 p.setImage("/resources/img/product/" + d.getImage());
                 tmpList.add(p);
@@ -78,6 +79,12 @@ public class ProductService {
     public ProductDTO getProductById(int id) {
         try {
             Product product = productDAO.getProductById(id);
+            ProductDTO p = new ProductDTO();
+            p.setId(product.getId());
+            p.setName(product.getProductName());
+            p.setImage("/resources/img/product/" + product.getImage());
+            p.setDescription(product.getDescription());
+            return p;
 
         } catch (HibernateException ex) {
             log.error(ex);

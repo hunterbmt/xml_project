@@ -52,6 +52,8 @@
             $(document).ready(function() {
                 loadAndDisplayProduct(1, 5);
             });
+
+
         </script>
     </header>
     <body>
@@ -122,7 +124,7 @@
             </div>
 
             <div class="container" style="margin-top: 80px">
-                <div class="row-fluid" id="product_detail">
+                <div class="row-fluid" id="product">
                     <div id="side-section" class="span3">   
                         <ul id ="category_div" class="nav nav-list">
 
@@ -155,6 +157,14 @@
 
                         </ul>
                     </div>
+
+                    <div class="span9" id="product_detail" style="display: none">
+                        <ul class="p_detail">
+
+
+                        </ul>
+                    </div>
+
                     <div class="pagination pagination-small pull-right">
                         <ul>
                             <li><a href="#">«</a></li>

@@ -12,16 +12,17 @@ function loadAndDisplayProduct(page, page_size) {
             });
 }
 
-function searchProduct(){
+function searchProduct() {
     var input = document.getElementById("appendedInputButtons").value;
     vteam_http.init();
     vteam_http.makeHttpRequest("/product/searchProduct",
-            {txtSearch:input},
+            {txtSearch: input},
     'POST',
             function(result) {
                 if (result.status == 'success_search') {
                     loadAndDisplayCategory();
                     $('#product_list').hide();
+                    $('#product_detail').hide();
                     $('#search_product_list').show();
                     displaySearchProduct(result.search_result.productList)
                 }
@@ -33,26 +34,97 @@ function displayProduct(productList) {
     for (var i = 0; i < productList.length; i++) {
 
         html += '<li class= "span4">'
+
         html += '<div class= "thumbnail">'
-        html += '<img data-src="holder.js/300x200" src="' + productList[i].image + '"/>'
+//        html += '<a href="javascript:view_product_detail('
+//        html += productList[i].id + ')">'
+        html += '<img data-src="holder.js/320x280" src="' + productList[i].image + '"/>'
+
         html += '<div class= "caption">'
+        html += '<a href="/product/detail?pid='
+        html += productList[i].id + '">'
         html += '<h6>'
-        html += '<a href>' + productList[i].name + '</a>'
-        html += '</h6>'
+
+        html += productList[i].name
+        html += '</h6></a>'
         html += '<p>' + productList[i].description + '<p>'
         html += '</div>'
         html += '</div>'
-        html += '</li>'
+        html += '</li></a>'
     }
     $(".thumbnails").html(html)
 }
+
+function displayProductDetail(product) {
+    var html = '';
+
+
+    html += '<li class= "span4">'
+
+    html += '<div class= "p_detail" style="border:none; margin-top:0px">'
+
+    html += '<img src="' + product.image + '"/>'
+
+    html += '<div id= "right">'
+
+    html += '<div class="title">'
+    html += product.name
+    html += '</div>'
+    html += '<div class="price"><div class="price_view">'
+    html += '<div class="v6Price mTop10" align="center">'
+    html += '<span>$60,000</span></div>'
+    html += '<div class="v7inlinetype" align="center">20 nils per bid</div>'
+    html += '<div class="v6BuyNow">'
+    html += '<a class=" fixPng" href="javascript:void(0)" onclick="bidNow(void);"></a></div>'
+    html += "</div></div>"
+
+    html += '<div class="v6BorderBot pTop5"><div class="v6Timer">'
+    html += '<div class="v6Gray fl">Chỉ còn</div>'
+    html += '<div class="v6DisplayTime" id=""><span>3 ngày 20:56’:45”</span></div>'
+    html += '</div></div>'
+
+    html += '<div class="v6BorderBot" style="border-bottom: none">'
+    html += product.description
+    html += '</div>'
+
+
+
+
+
+    html += '</div>'
+    html += '</div>'
+    html += '</li>'
+
+    $("#product_detail .p_detail").html(html);
+}
+
+function view_product_detail(pid) {
+
+    vteam_http.init();
+    vteam_http.makeHttpRequest("/product/getProductById",
+            {product_id: pid},
+    "POST",
+            function(result) {
+                if (result.status == "success")
+                {
+                    $('#product_list').hide();
+                    $("#product_detail").html(
+                            displayProductDetail(result.product_detail)
+                            ).show();
+                } else {
+                    alert("error");
+                }
+            });
+
+}
+
 function displaySearchProduct(productList) {
     var html = '';
     for (var i = 0; i < productList.length; i++) {
 
         html += '<li class= "span4">'
         html += '<div class= "thumbnail">'
-        html += '<img data-src="holder.js/300x200" src="' + productList[i].image + '"/>'
+        html += '<img src="' + productList[i].image + '"/>'
         html += '<div class= "caption">'
         html += '<h6>'
         html += '<a href>' + productList[i].name + '</a>'

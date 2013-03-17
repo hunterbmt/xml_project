@@ -83,8 +83,6 @@ public class UserAPI {
         boolean result = userService.createNewUser(newUser);
         if (result) {
             returnMap.put("status", "success");
-            returnMap.put("newEmail", email);
-            returnMap.put("newPass", password);
         } else {
             returnMap.put("status", "error");
         }

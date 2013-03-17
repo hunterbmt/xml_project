@@ -5,9 +5,8 @@
 package com.vteam.xml_project.api;
 
 import com.vteam.xml_project.controller.UserSession;
-import com.vteam.xml_project.dto.CategoryListDTO;
+import com.vteam.xml_project.dto.ProductDTO;
 import com.vteam.xml_project.dto.ProductListDTO;
-import com.vteam.xml_project.service.CategoryService;
 import com.vteam.xml_project.service.ProductService;
 import java.util.HashMap;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,4 +63,21 @@ public class ProductAPI {
         return returnMap;
         //return result;
     }
+    
+    @RequestMapping(value = "/getProductById", method = RequestMethod.POST)
+    public @ResponseBody 
+    HashMap<String, Object> getProductById( 
+            @RequestParam int product_id) {
+        HashMap<String, Object> returnMap = new HashMap<String, Object>();
+        
+        ProductDTO p = productService.getProductById(product_id);
+        if (p != null) {
+            returnMap.put("status", "success");
+            returnMap.put("product_detail", p);
+        } else {
+            returnMap.put("status", "error");
+            returnMap.put("msg", "Cannot get");
+        }
+        return returnMap;
+    } 
 }
