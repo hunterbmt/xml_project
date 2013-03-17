@@ -42,11 +42,9 @@ public class UserAPI {
         user.setPassword(password);
         boolean result = userService.checkLogin(user);
         if (result) {
-            //session.put("email", email);
+            session.put("email", email);
             returnMap.put("email", email);
             returnMap.put("status", "success");
-            returnMap.put("session", session.get("_email"));
-            
         } else {
             returnMap.put("status", "error");
         }

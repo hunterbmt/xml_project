@@ -40,7 +40,7 @@ public class UserService {
     private UserSession session;
 
     @Transactional
-    public boolean checkLogin(UserDTO user) throws NoSuchAlgorithmException {
+    public boolean checkLogin(UserDTO user) {
         try {
 
            String storagepass = StringUtil.createPasswordForDB(user.getPassword());
@@ -50,6 +50,8 @@ public class UserService {
                 return true;
             }
         } catch (HibernateException ex) {
+            log.error(ex);
+        } catch (NoSuchAlgorithmException ex) {
             log.error(ex);
         }
         return false;
