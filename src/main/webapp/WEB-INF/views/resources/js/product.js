@@ -7,7 +7,7 @@ function loadAndDisplayProduct(page, page_size) {
             function(result) {
                 if (result.status == 'success') {
                     loadAndDisplayCategory();
-                    displayProduct(result.result.productList)
+                    displayProduct(result.product_result.productList)
                 }
             });
 }
@@ -23,7 +23,7 @@ function searchProduct(){
                     loadAndDisplayCategory();
                     $('#product_list').hide();
                     $('#search_product_list').show();
-                    displaySearchProduct(result.result.productList)
+                    displaySearchProduct(result.search_result.productList)
                 }
             });
 }

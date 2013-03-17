@@ -64,7 +64,7 @@
                             <form class="navbar-form pull-left">
                                 <div class="input-append">
                                     <input class="span3" id="appendedInputButtons" type="text">
-                                    <button class="btn btn-primary" type="button" ><i class="icon-search" onclick="searchProduct()"></i></button>
+                                    <button onclick="searchProduct()" class="btn btn-primary" type="button" ><i class="icon-search" ></i></button>
                                 </div>           
                             </form>
                             <ul class="nav">

@@ -35,10 +35,10 @@ public class ProductAPI {
             @RequestParam int page, int pageSize) {
         HashMap<String, Object> returnMap = new HashMap<String, Object>();
         
-        ProductListDTO result = productService.getProductList(page,pageSize);
-        if (result != null) {
+        ProductListDTO product_result = productService.getProductList(page,pageSize);
+        if (product_result != null) {
             returnMap.put("status", "success");
-            returnMap.put("result", result);
+            returnMap.put("product_result", product_result);
         } else {
             returnMap.put("status", "error");
             returnMap.put("msg", "Cannot get");
@@ -49,14 +49,14 @@ public class ProductAPI {
     
     @RequestMapping(value = "/searchProduct", method = RequestMethod.POST)
     public @ResponseBody 
-    HashMap<String, Object> getProductList( 
+    HashMap<String, Object> getSearchProductList( 
             @RequestParam String txtSearch) {
         HashMap<String, Object> returnMap = new HashMap<String, Object>();
         
-        ProductListDTO result = productService.searchProduct(txtSearch);
-        if (result != null) {
+        ProductListDTO search_result = productService.searchProduct(txtSearch);
+        if (search_result != null) {
             returnMap.put("status", "success_search");
-            returnMap.put("result", result);
+            returnMap.put("search_result", search_result);
         } else {
             returnMap.put("status", "error");
             returnMap.put("msg", "Cannot get");
