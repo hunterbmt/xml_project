@@ -4,6 +4,7 @@
  */
 package com.vteam.xml_project.service;
 
+import com.vteam.xml_project.controller.UserSession;
 import com.vteam.xml_project.dto.UserDTO;
 
 //import com.vteam.xml_project.hibernate.dao.UserDAO;
@@ -35,6 +36,8 @@ public class UserService {
     private UserDAO userDAO;
     @Autowired
     private DateUtil util;
+    @Autowired
+    private UserSession session;
 
     @Transactional
     public boolean checkLogin(UserDTO user) throws NoSuchAlgorithmException {
@@ -43,6 +46,7 @@ public class UserService {
            String storagepass = StringUtil.createPasswordForDB(user.getPassword());
             Users dbUser = userDAO.findUserByEmailAndPassword(user.getEmail(), storagepass);
             if (dbUser != null) {
+                session.put("_email", user.getEmail());
                 return true;
             }
         } catch (HibernateException ex) {
@@ -108,6 +112,23 @@ public class UserService {
         try {
             Users dbUser = userDAO.findUserByUuid(id);
             UserDTO returnUser = new UserDTO();
+            returnUser.setFullname(dbUser.getFullname());
+            return returnUser;
+        } catch (NullPointerException ex) {
+            log.error(ex);
+        } catch (HibernateException ex) {
+            log.error(ex);
+        } catch (Exception ex) {
+            log.error(ex);
+        }
+        return null;
+    }
+     @Transactional
+    public UserDTO getUserByEmail(String email) {
+        try {
+            Users dbUser = userDAO.findUserByEmail(email);
+            UserDTO returnUser = new UserDTO();
+            returnUser.setEmail(dbUser.getEmail());
             returnUser.setFullname(dbUser.getFullname());
             return returnUser;
         } catch (NullPointerException ex) {

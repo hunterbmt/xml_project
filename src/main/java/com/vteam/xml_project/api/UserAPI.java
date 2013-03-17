@@ -42,9 +42,11 @@ public class UserAPI {
         user.setPassword(password);
         boolean result = userService.checkLogin(user);
         if (result) {
+            //session.put("email", email);
             returnMap.put("email", email);
             returnMap.put("status", "success");
-            session.put("email", email);
+            returnMap.put("session", session.get("_email"));
+            
         } else {
             returnMap.put("status", "error");
         }
@@ -60,7 +62,7 @@ public class UserAPI {
         String currentUUID = (String) session.get("UUID");
         if (currentUUID.equals(uuid)) {
             returnMap.put("status", "success");
-            session.remove("UUID");
+            session.remove("email");
         } else {
             returnMap.put("status", "error");
         }
@@ -119,6 +121,24 @@ public class UserAPI {
             returnMap.put("user", rs);
         } else {
             returnMap.put("status", "error");
+        }
+        return returnMap;
+    }
+    @RequestMapping(value = "/get_user_by_email", method = RequestMethod.POST)
+    public @ResponseBody
+    HashMap<String, Object> get_user_by_email(
+            @RequestParam String email) {
+        HashMap<String, Object> returnMap = new HashMap<String, Object>();
+        
+        UserDTO rs = userService.getUserByEmail(email);
+        if (rs!= null) {
+            
+            returnMap.put("status", "success");
+            returnMap.put("user", rs);
+            returnMap.put("session", session.get("email"));
+        } else {
+            returnMap.put("status", "error");
+            returnMap.put("session", "no");
         }
         return returnMap;
     }
