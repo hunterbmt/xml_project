@@ -43,6 +43,8 @@ public class ProductDAO extends BaseDAO {
                 .getCurrentSession()
                 .createQuery("FROM Product where productName LIKE :q" );
         query.setParameter("q", "%"+txtSearch+"%");
+//        query = query.setFirstResult(pageSize * (page - 1));
+//        query.setMaxResults(pageSize);
         return query.list();
     }
            

@@ -50,7 +50,7 @@ public class ProductService {
         }
 
     }
-    
+
     @Transactional
     public ProductListDTO searchProduct(String txtSearch) {
         try {
@@ -61,22 +61,25 @@ public class ProductService {
             for (Product d : dbProducts) {
                 p = new ProductDTO();
                 p.setName(d.getProductName());
+
+                p.setDescription(d.getDescription());
+                p.setImage("/resources/img/product/" + d.getImage());
                 tmpList.add(p);
             }
             list.setProductList(tmpList);
-            return list;            
-        }catch (HibernateException ex) {
+            return list;
+        } catch (HibernateException ex) {
             log.error(ex);
         }
         return null;
     }
-    
+
     @Transactional
     public ProductDTO getProductById(int id) {
         try {
             Product product = productDAO.getProductById(id);
-            
-        }catch (HibernateException ex) {
+
+        } catch (HibernateException ex) {
             log.error(ex);
         }
         return null;

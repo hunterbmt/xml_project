@@ -55,7 +55,7 @@ public class ProductAPI {
         
         ProductListDTO result = productService.searchProduct(txtSearch);
         if (result != null) {
-            returnMap.put("status", "success");
+            returnMap.put("status", "success_search");
             returnMap.put("result", result);
         } else {
             returnMap.put("status", "error");
