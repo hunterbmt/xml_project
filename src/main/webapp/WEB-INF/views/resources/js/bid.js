@@ -44,7 +44,7 @@ function displayBidDetails(bid) {
 }
 function insertOrUpdateBid() {
     var id = $("#bid_id").html();
-    var p_id = $("#product_id").val();
+    var p_id = $("#product_name").val();
     var start_date = $("#bid_start_date").val();
     var end_date = $("#bid_end_date").val();
     var status = $('#bid_status').val().toUpperCase();
@@ -64,7 +64,7 @@ function insertOrUpdateBid() {
         'POST', callback);
     } else {
         vteam_http.makeHttpRequest("/admin/insert_bid",
-                {product_id: 1,
+                {product_id: p_id,
                     start_date: start_date,
                     end_date: end_date},
         'POST', callback);
@@ -122,8 +122,25 @@ function populateProductNameList() {
 function populateList(list) {
     var b = "<select id=\"product_name\">";
 
-    for (var i = 0; i < list.length; i++) {
-        b += "<option value=''>" + list[i] + "</option>";
+//    Object.prototype.getKeyByValue = function( value ) {
+//    for( var prop in this ) {
+//        if( this.hasOwnProperty( prop ) ) {
+//             if( this[ prop ] === value )
+//                 return prop;
+//        }
+//    }
+
+//}
+
+    var array_keys = new Array();
+    var array_values = new Array();
+
+    for (var key in list) {
+        array_keys.push(key);
+        array_values.push(list[key]);
+    }
+    for (var i = 0; i < array_keys.length; i++) {
+        b += "<option value='" + array_keys[i] + "'>" + array_values[i] + "</option>";
     }
     b += "</select>"
     $('#product_name_container').html(b);

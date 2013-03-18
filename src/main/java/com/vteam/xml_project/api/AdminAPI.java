@@ -113,13 +113,13 @@ public class AdminAPI {
     }
     
     @RequestMapping(value = "/getProductNameList")
-    public @ResponseBody List<String> admin_bid_getPList(HttpServletRequest request) {
+    public @ResponseBody HashMap<Integer, String> admin_bid_getPList(HttpServletRequest request) {
         
         ProductListDTO productList = productService.getProductList(1, 99999);
         List<ProductDTO> list = productList.getProductList();
-        List<String> ProductNameList = new ArrayList<String>();
+        HashMap<Integer, String> ProductNameList = new HashMap<Integer, String>();
         for (int i=0; i<list.size(); i++) {
-            ProductNameList.add(list.get(i).getName());
+            ProductNameList.put(list.get(i).getId(), list.get(i).getName());
         }
         return ProductNameList;
     }
