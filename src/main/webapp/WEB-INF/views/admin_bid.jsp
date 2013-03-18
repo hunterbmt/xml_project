@@ -87,7 +87,7 @@
                                     <div class="control-group">
                                         <label class="control-label">ID</label>
                                         <div class="controls">
-                                            <span id="bid_id" class="input-medium uneditable-input">
+                                            <span id="bid_id" class="input-small uneditable-input">
                                                 
                                             </span>
                                         </div>
@@ -95,25 +95,25 @@
                                     <div class="control-group">
                                         <label class="control-label">Last user</label>
                                         <div class="controls">
-                                            <span id="bid_last_userid" class="input-medium uneditable-input"></span>
+                                            <span id="bid_last_userid" class="uneditable-input"></span>
                                         </div>
                                     </div>
                                     <div class="control-group">
                                         <label class="control-label">Product Name</label>
                                         <div class="controls">
-                                            <span id="bid_product_name" class="input-medium uneditable-input"></span>
+                                            <input id="bid_product_name" type="text">
                                         </div>
                                     </div>
                                     <div class="control-group">
                                         <label class="control-label">Current price</label>
                                         <div class="controls">
-                                            <span id="bid_current_price" class="input-medium uneditable-input"></span>
+                                            <span id="bid_current_price" class="uneditable-input"></span>
                                         </div>
                                     </div>
                                     <div class="control-group">
                                         <label class="control-label">Last edit</label>
                                         <div class="controls">
-                                            <span id="bid_last_edit" class="input-medium uneditable-input"></span>
+                                            <span id="bid_last_edit" class="uneditable-input"></span>
                                         </div>
                                     </div>
                                     <div class="control-group">
@@ -135,8 +135,8 @@
                                         </div>
                                     </div>
                                     <div class="controls-button">
-                                        <button type="submit" class="btn btn-warning">Save</button>
-                                        <button type="submit" class="btn">New</button>
+                                        <button type="submit" class="btn btn-warning" onclick="insertOrUpdateBid()">Save</button>
+                                        <button type="submit" class="btn" onclick="clearBidDetail()">New</button>
                                     </div>
                                 </form>
                             </div>

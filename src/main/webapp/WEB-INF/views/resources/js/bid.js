@@ -126,13 +126,14 @@ function _displayCompletedBids() {
 }
 
 function insertOrUpdateBid() {
-    var id = $("#bid_id").val();
-    var last_user = $("#bid_last_user").val();
+    var id = $("#bid_id").html();
+    var last_user = $("#bid_last_userid").html();
     var product_name = $("#bid_product_name").val();
-    var current_price = $("#bid_current_price").val();
-    var last_edit = $("#bid_last_edit").val();
+    var current_price = $("#bid_current_price").html();
+    var last_edit = $("#bid_last_edit").html();
     var start_date = $("#bid_start_date").val();
     var end_date = $("#bid_end_date").val();
+    var status = $('#bid_status').val();
     vteam_http.init();
     if (id) {
         vteam_http.makeHttpRequest("/admin/update_bid",
@@ -143,7 +144,8 @@ function insertOrUpdateBid() {
                     current_price: current_price,
                     last_edit: last_edit,
                     start_date: start_date,
-                    end_date: end_date
+                    end_date: end_date,
+                    status: status
                 },
         'POST', callback);
     } else {
@@ -160,14 +162,14 @@ function insertOrUpdateBid() {
 }
 function callback(result) {
     alert(result);
-    clearProductDetail()
+    clearBidDetail();
 }
-function clearProductDetail() {
-    $("#product_id").val('');
-    $("#product_name").val('');
-    var editor = CKEDITOR.instances.product_description;
-    editor.setData('');
-    $("#product_min_price").val('');
-    $("#product_max_price").val('');
-    $("#product_img").val('');
+function clearBidDetail() {
+    $("#bid_id").val('');
+    $("#bid_last_user").val('');
+    $("#bid_product_name").val('');
+    $("#bid_current_price").val('');
+    $("#bid_last_edit").val('');
+    $("#bid_start_date").val('');
+    $("#bid_end_date").val('');
 }

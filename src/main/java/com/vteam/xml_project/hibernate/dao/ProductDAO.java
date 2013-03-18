@@ -29,7 +29,7 @@ public class ProductDAO extends BaseDAO {
         return query.list();
     }
 
-    public Product getProductById(Integer product_id) throws HibernateException {
+    public Product getProductById(int product_id) throws HibernateException {
         Query query = this.sessionFactory
                 .getCurrentSession()
                 .createQuery("FROM Product where id = ?");

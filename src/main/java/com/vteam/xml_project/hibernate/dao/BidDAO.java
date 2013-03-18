@@ -48,7 +48,7 @@ public class BidDAO extends BaseDAO{
     }
 
     public List<Bids> getBidsFromDate(Date parseDate) {
-        String sql = "From Bids where start_date >= ?";
+        String sql = "From Bids where start_date > ?";
         Query query = this.sessionFactory.getCurrentSession().createQuery(sql);
         query.setDate(0, parseDate);        
         return query.list();
@@ -70,7 +70,7 @@ public class BidDAO extends BaseDAO{
     }
 
     public List<Bids> getOngoingBids(Date curDate) {
-        String sql = "From Bids where (start_date <= ?) and (end_date >= ?) and status = 0";
+        String sql = "From Bids where (start_date <= ?) and (end_date > ?) and status = 0";
         Query query = this.sessionFactory.getCurrentSession().createQuery(sql);
         query.setDate(0, curDate);        
         query.setDate(1, curDate);
