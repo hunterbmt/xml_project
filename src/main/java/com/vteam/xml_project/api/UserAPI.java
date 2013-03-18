@@ -55,10 +55,10 @@ public class UserAPI {
     @RequestMapping(value = "/logout", method = RequestMethod.POST)
     public @ResponseBody
     HashMap<String, Object> logout(
-            @RequestParam String uuid) {
+            @RequestParam String email) {
         HashMap<String, Object> returnMap = new HashMap<String, Object>();
-        String currentUUID = (String) session.get("UUID");
-        if (currentUUID.equals(uuid)) {
+        String currentUUID = (String) session.get("email");
+        if (currentUUID.equals(email)) {
             returnMap.put("status", "success");
             session.remove("email");
         } else {
@@ -132,8 +132,9 @@ public class UserAPI {
         if (rs!= null) {
             
             returnMap.put("status", "success");
-            returnMap.put("user", rs);
-            returnMap.put("session", session.get("email"));
+            returnMap.put("user_email", rs.getEmail());
+            returnMap.put("user_fullname", rs.getFullname());
+            //returnMap.put("session", session.get("email"));
         } else {
             returnMap.put("status", "error");
             returnMap.put("session", "no");

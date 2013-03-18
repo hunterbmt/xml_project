@@ -56,7 +56,7 @@
                                                             <a href="login.htm" class="navbar-link">login</a> or <a href="register.htm" class="navbar-link">register</a>
                                                         </p> -->
                             <ul class="nav pull-right">
-                                <div id="loginResult" style="display: none;margin-top: 10px"><c:out value = "${sessionScope.email}"/></div>
+                                <div id="loginResult" style="display: none;margin-top: 10px"></div>
                                 <li id="fat-menu" class="dropdown" >
                                     <a href="#" id="drop3" role="button" class="dropdown-toggle" data-toggle="dropdown">Login <b class="caret"></b></a>
                                     <ul class="dropdown-menu" role="menu" aria-labelledby="drop3" style="width: 300px">
@@ -100,27 +100,12 @@
                 </div>
             </div>
 
-            <div class="container" style="margin-top: 80px">
+        <div class="container" style="margin-top: 80px">
                 <div class="row-fluid" id="product">
                     <div id="side-section" class="span3">   
                         <ul id ="category_div" class="nav nav-list">
 
                         </ul>
-
-                        <div class="module-top" id="titleLogin"><i class="icon-lock"></i> Quick Login</div>
-                        <div class="module" id="quickLogin">
-                            <form >
-                                <fieldset>
-                                    <label class="label-main">Username</label>
-                                    <input name="miniusername" class="span10" id="miniusername" type="text">
-                                    <label class="label-main">Password</label>
-                                    <input name="minipassword" class="span10" id="minipassword" type="password">
-                                    <p><label class="checkbox"><input type="checkbox">remember me</label></p>
-                                    <button name="send" type="button" value="Submit" class="btn btn-primary btn-small" onclick="quickLogin()">Login</button>
-                                </fieldset>
-                                <input type="hidden" name="jkit-requireds" id="jkit-requireds">
-                            </form>
-                        </div>
                     </div>
                     <div class="span9" id="product_list">
                         <ul class="thumbnails">
@@ -171,17 +156,17 @@
                         <div class="tab-pane active in" id="home">
                             <form id="tab">
                                 <label>Email</label>
-                                <input type="text" id="email" class="input-xlarge" value="${user_email}">
+                                <input type="text" id="user_email" class="input-xlarge">
 
                                 <label>First Name</label>
-                                <input type="text"  class="input-xlarge" value="${user_fullname}">
+                                <input type="text" id="user_fullname" class="input-xlarge">
                                 <label>Phone</label>
-                                <input type="text" id="phone"  class="input-xlarge">
+                                <input type="text" id="user_phone"  class="input-xlarge">
 
                                 <label>Address</label>
-                                <input type="text" id="address"  class="input-xlarge">
+                                <input type="text" id="user_address"  class="input-xlarge">
                                 <label>Birthday</label>
-                                <input type="text" id="birthday" class="input-xlarge">
+                                <input type="text" id="user_birthday" class="input-xlarge">
                                 <div>
                                     <button class="btn btn-primary" onclick="updateInfo()">Update</button>
                                 </div>
@@ -192,14 +177,14 @@
                                 <label>Password</label>
                                 <input type="password" id="newpassword" class="input-xlarge">       
                                 <label>Old Password</label>
-                                <input type="Password" id="curr_password" class="input-xlarge">
+                                <input type="password" id="curr_password" class="input-xlarge">
                                 <div>
                                     <button class="btn btn-primary" onclick="updatePassword()">Update</button>
                                 </div>
 
                             </form>
                         </div>
-                        <div class="tab-pane fade" id="profile">
+                        <div class="tab-pane fade" id="profile2">
                             <form id="tab3">
                                 <label>Order History</label>
 
