@@ -51,6 +51,7 @@
         <script>
             $(document).ready(function() {
                 loadAndDisplayProduct(1, 5);
+                //displayProductDetail(pid);
             });
 
 
@@ -65,13 +66,13 @@
                         <div class="nav-collapse collapse">
                             <form class="navbar-form pull-left">
                                 <div class="input-append">
-                                    <input class="span3" id="appendedInputButtons" type="text">
+                                    <input class="span3" id="appendedInputButtons" type="text" onkeydown="searchOnKeyDown(event)">
                                     <button onclick="searchProduct()" class="btn btn-primary" type="button" ><i class="icon-search" ></i></button>
                                 </div>           
                             </form>
                             <ul class="nav">
 
-                                <li class="active" onclick="changeContext()" ><a href="#">Home</a></li>
+                                <li class="active"><a href="#" onclick="changeContext()">Home</a></li>
                                 <li><a href="#">Hot Bids</a></li>
                                 <li><a href="#">FAQ</a></li>
                             </ul>
@@ -158,6 +159,13 @@
                         </ul>
                     </div>
 
+                    <div class="span9" id="product_detail" style="display: none">
+                        <ul class="p_detail">
+
+
+                        </ul>
+                    </div>
+                    
                     <div class="span9" id="product_detail" style="display: none">
                         <ul class="p_detail">
 

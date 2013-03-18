@@ -1,13 +1,17 @@
+var current_page ;
+var current_page_size;
 
 function loadAndDisplayProduct(page, page_size) {
+    current_page = page;
+    current_page_size = page_size;
     vteam_http.init();
     vteam_http.makeHttpRequest("/product/getProductList",
             {page: page, pageSize: page_size},
     'POST',
             function(result) {
                 if (result.status == 'success') {
-                    loadAndDisplayCategory();
                     displayProduct(result.product_result.productList)
+                    loadAndDisplayCategory();
                 }
             });
 }
@@ -20,11 +24,9 @@ function searchProduct() {
     'POST',
             function(result) {
                 if (result.status == 'success_search') {
-                    loadAndDisplayCategory();
-                    $('#product_list').hide();
-                    $('#product_detail').hide();
-                    $('#search_product_list').show();
+                    
                     displaySearchProduct(result.search_result.productList)
+                    $('#search_product_list').show();
                 }
             });
 }
@@ -36,13 +38,10 @@ function displayProduct(productList) {
         html += '<li class= "span4">'
 
         html += '<div class= "thumbnail">'
-//        html += '<a href="javascript:view_product_detail('
-//        html += productList[i].id + ')">'
         html += '<img data-src="holder.js/320x280" src="' + productList[i].image + '"/>'
 
         html += '<div class= "caption">'
-        html += '<a href="/product/detail?pid='
-        html += productList[i].id + '">'
+        html += '<a href="#" onclick ="view_product_detail('+productList[i].id +')">'
         html += '<h6>'
 
         html += productList[i].name
@@ -52,7 +51,10 @@ function displayProduct(productList) {
         html += '</div>'
         html += '</li></a>'
     }
-    $(".thumbnails").html(html)
+    
+    $("#product_list .thumbnails").html(html)
+    hideAllDiv()
+    $('#product_list').show();
 }
 
 function displayProductDetail(product) {
@@ -82,20 +84,17 @@ function displayProductDetail(product) {
     html += '<div class="v6Gray fl">Chỉ còn</div>'
     html += '<div class="v6DisplayTime" id=""><span>3 ngày 20:56’:45”</span></div>'
     html += '</div></div>'
-
     html += '<div class="v6BorderBot" style="border-bottom: none">'
     html += product.description
     html += '</div>'
-
-
-
-
-
     html += '</div>'
     html += '</div>'
     html += '</li>'
 
     $("#product_detail .p_detail").html(html);
+    hideAllDiv()
+    $("#product_detail").show()
+   
 }
 
 function view_product_detail(pid) {
@@ -107,10 +106,7 @@ function view_product_detail(pid) {
             function(result) {
                 if (result.status == "success")
                 {
-                    $('#product_list').hide();
-                    $("#product_detail").html(
-                            displayProductDetail(result.product_detail)
-                            ).show();
+                    displayProductDetail(result.product_detail)
                 } else {
                     alert("error");
                 }
@@ -123,18 +119,40 @@ function displaySearchProduct(productList) {
     for (var i = 0; i < productList.length; i++) {
 
         html += '<li class= "span4">'
+
         html += '<div class= "thumbnail">'
-        html += '<img src="' + productList[i].image + '"/>'
+        html += '<img data-src="holder.js/320x280" src="' + productList[i].image + '"/>'
+
         html += '<div class= "caption">'
+        html += '<a href="#" onclick ="view_product_detail('+productList[i].id +')">'
         html += '<h6>'
-        html += '<a href>' + productList[i].name + '</a>'
-        html += '</h6>'
+
+        html += productList[i].name
+        html += '</h6></a>'
         html += '<p>' + productList[i].description + '<p>'
         html += '</div>'
         html += '</div>'
-        html += '</li>'
+        html += '</li></a>'
     }
-    $(".thumbnails").html(html)
+    $("#search_product_list .thumbnails").html(html);
+    hideAllDiv();
+    $("#search_product_list").show();
 }
 
+function searchOnKeyDown(e){
+    
+    if (e.keyCode == 13){
+        e.preventDefault()
+        searchProduct();
+    }
+}
 
+function changeContext() {
+    loadAndDisplayProduct(current_page,current_page_size)
+}
+
+function hideAllDiv(){
+    $("#search_product_list").hide();
+    $("#product_detail").hide();
+    $("#product_list").hide();
+}
