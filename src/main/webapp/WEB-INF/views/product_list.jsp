@@ -25,36 +25,12 @@
         <script src="/resources/js/vteam.js"></script>
         <script src="/resources/js/product.js"></script>
         <script src="/resources/js/category.js"></script>
-        <script src="/resources/js/login.js"></script>
-        <script type="text/javascript">
-            function updatePassword() {
-                var email = "<c:out value = "${user_email}"/>";
-                var currentPass = document.getElementById("curr_password").value;
-                var newPass = document.getElementById("newpassword").value;
-                vteam_http.init();
-                vteam_http.makeHttpRequest("/user/changePassword",
-                        {email: email,
-                            currentPass: currentPass,
-                            newPass: newPass},
-                "POST",
-                        function(result) {
-                            if (result.status == "success")
-                            {
-                                alert("Update successfully.");
-                            } else {
-                                alert("error");
-                            }
-                        });
-
-            }
-        </script>
+        <script src="/resources/js/login.js"></script>        
         <script>
             $(document).ready(function() {
                 loadAndDisplayProduct(1, 5);
                 //displayProductDetail(pid);
             });
-
-
         </script>
     </header>
     <body>
