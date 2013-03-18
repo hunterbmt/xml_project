@@ -28,8 +28,10 @@ public class CategoryAPI {
     private UserSession session;
     @Autowired
     private CategoryService categoryService;
+    @Autowired
+    private ProductService productService;
                    
-    @RequestMapping (value = "/getCategoryList", method = RequestMethod.GET)
+    @RequestMapping (value = "/getCategoryList")
     public @ResponseBody
     HashMap<String, Object> getCategoryList() {
         HashMap<String, Object> returnMap =  new HashMap<String, Object>();
@@ -38,6 +40,23 @@ public class CategoryAPI {
         if (result != null) {
             returnMap.put("status", "success");
             returnMap.put("result", result);
+        } else {
+            returnMap.put("status", "error");
+            returnMap.put("msg", "Cannot get");
+        }
+        return returnMap;
+    }
+    
+    @RequestMapping (value = "/searchProductByCategoryId", method = RequestMethod.POST)
+    public @ResponseBody
+    HashMap<String, Object> searchProductByCategoryId(
+            @RequestParam int category_id) {
+        HashMap<String, Object> returnMap =  new HashMap<String, Object>();
+        
+        ProductListDTO searchCategoryResult = productService.searchProductByCategoryId(category_id);
+        if (searchCategoryResult != null) {
+            returnMap.put("status", "successSearchProductByCategoryId");
+            returnMap.put("searchCategoryResult", searchCategoryResult);
         } else {
             returnMap.put("status", "error");
             returnMap.put("msg", "Cannot get");

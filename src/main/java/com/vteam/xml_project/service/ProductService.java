@@ -91,4 +91,27 @@ public class ProductService {
         }
         return null;
     }
+    
+    @Transactional
+    public ProductListDTO searchProductByCategoryId(int category_id) {
+        try {
+            List<Product> dbProducts = productDAO.searchProductByCategoryId(category_id);
+            ProductDTO pd;
+            ProductListDTO list = new ProductListDTO();
+            List<ProductDTO> tmpList = new ArrayList<ProductDTO>();
+            for (Product d : dbProducts) {
+                pd = new ProductDTO();
+                pd.setName(d.getProductName());
+                pd.setId(d.getId());
+                pd.setDescription(d.getDescription());
+                pd.setImage("/resources/img/product/" + d.getImage());
+                tmpList.add(pd);
+            }
+            list.setProductList(tmpList);
+            return list;
+        } catch (HibernateException ex){
+            log.error(ex);
+        }
+        return null;
+    }
 }

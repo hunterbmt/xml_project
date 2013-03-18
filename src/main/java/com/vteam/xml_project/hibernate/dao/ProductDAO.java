@@ -47,5 +47,14 @@ public class ProductDAO extends BaseDAO {
 //        query.setMaxResults(pageSize);
         return query.list();
     }
+    
+    public List<Product> searchProductByCategoryId (int category_id) throws HibernateException {
+        Query query =  this
+                .sessionFactory
+                .getCurrentSession()
+                .createQuery("FROM Product where category.id =:id");
+        query.setParameter("id", category_id);
+        return query.list();
+    }
            
 }

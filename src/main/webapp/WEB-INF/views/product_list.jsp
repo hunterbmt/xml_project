@@ -142,8 +142,8 @@
                         </ul>
                     </div>
                     
-                    <div class="span9" id="product_detail" style="display: none">
-                        <ul class="p_detail">
+                    <div class="span9" id="search_product_category_list" style="display: none">
+                        <ul class="p_search_by_category">
 
 
                         </ul>

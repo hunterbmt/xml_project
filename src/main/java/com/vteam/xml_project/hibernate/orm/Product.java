@@ -35,7 +35,7 @@ public class Product implements java.io.Serializable {
         AVAILABLE ,UNAVAILABLE, DELETE;
     }
     private Integer id;
-    private Category tblCategory;
+    private Category category;
     private String productName;
     private String description;
     private String image;
@@ -52,7 +52,7 @@ public class Product implements java.io.Serializable {
     }
 
     public Product(Category tblCategory, String productName, String description, String image, Status status, double minPrice, double maxPrice, boolean isActive) {
-        this.tblCategory = tblCategory;
+        this.category = tblCategory;
         this.productName = productName;
         this.description = description;
         this.image = image;
@@ -63,7 +63,7 @@ public class Product implements java.io.Serializable {
     }
 
     public Product(Category tblCategory, String productName, String description, String image, Status status, double minPrice, double maxPrice, Date lastUpdate, boolean isActive, Set tblTagses, Set tblBidses, Set tblOrderHistories) {
-        this.tblCategory = tblCategory;
+        this.category = tblCategory;
         this.productName = productName;
         this.description = description;
         this.image = image;
@@ -91,11 +91,11 @@ public class Product implements java.io.Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id", nullable = false)
     public Category getCategory() {
-        return this.tblCategory;
+        return this.category;
     }
 
     public void setCategory(Category tblCategory) {
-        this.tblCategory = tblCategory;
+        this.category = tblCategory;
     }
 
     @Column(name = "product_name", nullable = false, length = 100)
