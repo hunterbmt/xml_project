@@ -28,9 +28,9 @@ import javax.persistence.TemporalType;
 public class Bids implements java.io.Serializable {
 
     public enum Status {
+
         UNCOMPLETED, COMPLETED
     };
-    
     private Integer id;
     private Product product;
     private Integer lastUserid;
@@ -44,15 +44,25 @@ public class Bids implements java.io.Serializable {
     public Bids() {
     }
 
+    public Bids(Integer bid_id, Product product,
+            Date start_date, Date end_date, String status) {
+        this.id = bid_id;
+        this.product = product;
+        this.startDate = start_date;
+        this.endDate = end_date;
+        this.status = Status.valueOf(status);
+    }
+
     public Bids(Product product, Date startDate) {
         this.product = product;
         this.startDate = startDate;
     }
-    
-    public Bids(Product product, Date startDate, Date endDate) {
+
+    public Bids(Product product, Date startDate, Date endDate, Status s) {
         this.product = product;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.status = s;
     }
 
     @Enumerated(EnumType.ORDINAL)
@@ -81,7 +91,7 @@ public class Bids implements java.io.Serializable {
         this.lastEdit = lastEdit;
         this.bidHistories = tblBidHistories;
     }
-    
+
     public Bids(Product product, int lastUserid, double currentPrice, Date startDate, Date endDate, Date lastEdit) {
         this.product = product;
         this.lastUserid = lastUserid;
@@ -89,8 +99,9 @@ public class Bids implements java.io.Serializable {
         this.startDate = startDate;
         this.endDate = endDate;
         this.lastEdit = lastEdit;
-        
+
     }
+
     public Bids(int bid_id, Product product, int lastUserid, double currentPrice, Date startDate, Date endDate, Date lastEdit, String status) {
         this.id = bid_id;
         this.product = product;
@@ -100,7 +111,7 @@ public class Bids implements java.io.Serializable {
         this.endDate = endDate;
         this.lastEdit = lastEdit;
         this.status = Status.valueOf(status);
-        
+
     }
 
     @Id

@@ -2,7 +2,21 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
+function enableSave() {
+    var saveBtn = $('#btnSave');
+    if (saveBtn.hasClass('disabled')) {
+        saveBtn.removeClass('disabled');
+    }
+}
+
+function disableSave() {
+    var saveBtn = $('#btnSave');
+    if (!saveBtn.hasClass('disabled')) {
+        saveBtn.addClass('disabled');
+    }
+}
 function bid_details(bid_id) {
+    enableSave();
     vteam_http.makeHttpRequest(
             "/bid/get_bid_by_id",
             {
@@ -10,7 +24,7 @@ function bid_details(bid_id) {
             },
     "POST",
             function(data) {
-                if (data.status == "success") {
+                if (data.status === "success") {
                     displayBidDetails(data.bid);
                 }
             }
@@ -18,13 +32,101 @@ function bid_details(bid_id) {
 }
 function displayBidDetails(bid) {
     $('#bid_id').html(bid.id);
-    $('#bid_last_userid').html(bid.last_userid);
-    $('#bid_product_name').html(bid.product_name);
+    $('#bid_last_userid').html(bid.last_username);
+    $('#bid_product_name').val(bid.product_name);
     $('#bid_current_price').html(bid.current_price);
-    $('#bid_last_edit').html(toDateAndTime(bid.last_edit));
-    $('#bid_start_date').val(toDateAndTime(bid.start_date));
-    $('#bid_end_date').val(toDateAndTime(bid.end_date));
+    $('#bid_last_edit').html(toDateAndTime2(bid.last_edit));
+    $('#bid_start_date').val(toDateAndTime2(bid.start_date));
+    $('#bid_end_date').val(toDateAndTime2(bid.end_date));
     $('#bid_status').val(bid.status);
+
+    $('#product_id').val(bid.product_id);
+}
+function insertOrUpdateBid() {
+    var id = $("#bid_id").html();
+    var p_id = $("#product_id").val();
+    var start_date = $("#bid_start_date").val();
+    var end_date = $("#bid_end_date").val();
+    var status = $('#bid_status').val().toUpperCase();
+    if ((status !== 'UNCOMPLETED') && (status !== 'COMPLETED'))
+    {
+        status = 'UNCOMPLETED';
+    }
+    vteam_http.init();
+    if (id) {
+        vteam_http.makeHttpRequest("/admin/update_bid",
+                {bid_id: id,
+                    product_id: p_id,
+                    start_date: start_date,
+                    end_date: end_date,
+                    status: status
+                },
+        'POST', callback);
+    } else {
+        vteam_http.makeHttpRequest("/admin/insert_bid",
+                {product_id: 1,
+                    start_date: start_date,
+                    end_date: end_date},
+        'POST', callback);
+    }
+}
+function callback(result) {
+
+    if (result.status !== 'error') {
+        $('#result_IU_bid').html('Successful !').show();
+        $(function() {
+            setTimeout(function() {
+                $("#result_IU_bid").hide('blind', {}, 400)
+            }, 2000);
+        });
+        clearBidDetail();
+        disableSave();
+        update_lists();
+    } else {
+        $('#result_IU_bid').html('Error !').show();
+        $(function() {
+            setTimeout(function() {
+                $("#result_IU_bid").hide('blind', {}, 400)
+            }, 2000);
+        });
+        //alert("Insert/Update bid result: " + result.status);
+    }
+}
+
+function update_lists() {
+    _displayOngoingBid();
+}
+function clearBidDetail(self) {
+    $('#bid_id').html('');
+    $('#bid_last_userid').html('');
+    $('#bid_product_name').val('');
+    $('#bid_current_price').html('');
+    $('#bid_last_edit').html('');
+    $('#bid_start_date').val('');
+    $('#bid_end_date').val('');
+    $('#bid_status').val('');
+    if ($(self).hasClass('newBtn')) {
+        enableSave();
+        populateProductNameList();
+    }
+}
+
+function populateProductNameList() {
+    vteam_http.init();
+    vteam_http.makeHttpRequest("/admin/getProductNameList",
+            {
+            },
+            'POST', populateList);
+}
+
+function populateList(list) {
+    var b = "<select id=\"product_name\">";
+
+    for (var i = 0; i < list.length; i++) {
+        b += "<option value=''>" + list[i] + "</option>";
+    }
+    b += "</select>"
+    $('#product_name_container').html(b);
 }
 
 function _displayOngoingBid() {
@@ -34,7 +136,7 @@ function _displayOngoingBid() {
             },
             "POST",
             function(data) {
-                if (data.status == "success") {
+                if (data.status === "success") {
                     displayOngoingBid(data.ongoing_bid_list.lists);
                     _displayUpcomingBid();
                 }
@@ -70,7 +172,7 @@ function _displayUpcomingBid() {
             },
             "POST",
             function(data) {
-                if (data.status == "success") {
+                if (data.status === "success") {
                     displayUpcomingBid(data.upcoming_bid_list.lists);
                     _displayCompletedBids();
                 }
@@ -118,58 +220,10 @@ function _displayCompletedBids() {
             },
             "POST",
             function(data) {
-                if (data.status == "success") {
+                if (data.status === "success") {
                     displayCompletedBids(data.completed_bid_list.lists);
                 }
             }
     );
 }
 
-function insertOrUpdateBid() {
-    var id = $("#bid_id").html();
-    var last_user = $("#bid_last_userid").html();
-    var product_name = $("#bid_product_name").val();
-    var current_price = $("#bid_current_price").html();
-    var last_edit = $("#bid_last_edit").html();
-    var start_date = $("#bid_start_date").val();
-    var end_date = $("#bid_end_date").val();
-    var status = $('#bid_status').val();
-    vteam_http.init();
-    if (id) {
-        vteam_http.makeHttpRequest("/admin/update_bid",
-                {   
-                    id: id,
-                    last_user: last_user,
-                    product_name: product_name,
-                    current_price: current_price,
-                    last_edit: last_edit,
-                    start_date: start_date,
-                    end_date: end_date,
-                    status: status
-                },
-        'POST', callback);
-    } else {
-        vteam_http.makeHttpRequest("/admin/insert_bid",
-                {
-                    last_user: last_user,
-                    product_name: product_name,
-                    current_price: current_price,
-                    last_edit: last_edit,
-                    start_date: start_date,
-                    end_date: end_date},
-        'POST', callback);
-    }
-}
-function callback(result) {
-    alert(result);
-    clearBidDetail();
-}
-function clearBidDetail() {
-    $("#bid_id").val('');
-    $("#bid_last_user").val('');
-    $("#bid_product_name").val('');
-    $("#bid_current_price").val('');
-    $("#bid_last_edit").val('');
-    $("#bid_start_date").val('');
-    $("#bid_end_date").val('');
-}

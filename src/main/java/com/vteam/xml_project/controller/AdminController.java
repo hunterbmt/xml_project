@@ -36,8 +36,13 @@ public class AdminController {
     @Transactional
     public ModelAndView admin_bid(HttpServletRequest request) {
         ModelAndView mav = new ModelAndView("admin_bid");
+        
         return mav;
     }
+    
+    
+    
+    
     
     
     

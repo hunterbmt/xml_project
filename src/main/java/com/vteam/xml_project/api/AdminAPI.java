@@ -7,11 +7,17 @@ package com.vteam.xml_project.api;
 import com.vteam.xml_project.controller.UserSession;
 import com.vteam.xml_project.dto.BidDTO;
 import com.vteam.xml_project.dto.ProductDTO;
+import com.vteam.xml_project.dto.ProductListDTO;
 import com.vteam.xml_project.service.AdminService;
+import com.vteam.xml_project.service.ProductService;
 import com.vteam.xml_project.util.DateUtil;
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.logging.Level;
+import javax.servlet.http.HttpServletRequest;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -34,6 +40,8 @@ public class AdminAPI {
     @Autowired
     private AdminService adminService;
     @Autowired
+    private ProductService productService;
+    @Autowired
     private DateUtil dateUtil;
 
     @RequestMapping(value = "/insert_product", method = RequestMethod.POST)
@@ -54,16 +62,15 @@ public class AdminAPI {
     @RequestMapping(value = "/update_bid", method = RequestMethod.POST)
     public @ResponseBody
     HashMap<String, Object> updateBid(
-            @RequestParam int bid_id, int last_user, int product_id, double current_price, 
-            String last_edit,String start_date, String end_date, String status) {
+            @RequestParam int bid_id, int product_id,  
+            String start_date, String end_date,String status) {
         try {
             HashMap<String, Object> returnMap = new HashMap<String, Object>();
-            BidDTO bDTO = adminService.updateBid(bid_id, last_user, product_id,
-                    current_price,
-                    dateUtil.parseFromString(last_edit, "MM/dd/yyyy HH:mm"),
+            BidDTO bDTO = adminService.updateBid(bid_id, product_id, 
                     dateUtil.parseFromString(start_date, "MM/dd/yyyy HH:mm"),
                     dateUtil.parseFromString(end_date, "MM/dd/yyyy HH:mm"),
-                    status);
+                    status
+                    );
             if (bDTO == null) {
                 returnMap.put("status", "error");
             } else {
@@ -80,14 +87,16 @@ public class AdminAPI {
     @RequestMapping(value = "/insert_bid", method = RequestMethod.POST)
     public @ResponseBody
     HashMap<String, Object> insertBid(
-            @RequestParam int last_user, int product_id, double current_price, String last_edit,
+            @RequestParam int product_id, 
             String start_date,
             String end_date) {
         try {
             HashMap<String, Object> returnMap = new HashMap<String, Object>();
-            BidDTO bDTO = adminService.insertBid(last_user, product_id,
-                    current_price,
-                    dateUtil.parseFromString(last_edit, "MM/dd/yyyy HH:mm"),
+            Date currDate = new Date();
+            Date nextDate = new Date(currDate.getTime() + 3600*24);
+            start_date = (start_date.trim().equals("")?currDate.toString():start_date.trim());
+            end_date = (end_date.trim().equals("")?nextDate.toString():end_date.trim());
+            BidDTO bDTO = adminService.insertBid(product_id,                    
                     dateUtil.parseFromString(start_date, "MM/dd/yyyy HH:mm"),
                     dateUtil.parseFromString(end_date, "MM/dd/yyyy HH:mm"));
             if (bDTO == null) {
@@ -101,5 +110,17 @@ public class AdminAPI {
             java.util.logging.Logger.getLogger(AdminAPI.class.getName()).log(Level.SEVERE, null, ex);
             return null;
         }
+    }
+    
+    @RequestMapping(value = "/getProductNameList")
+    public @ResponseBody List<String> admin_bid_getPList(HttpServletRequest request) {
+        
+        ProductListDTO productList = productService.getProductList(1, 99999);
+        List<ProductDTO> list = productList.getProductList();
+        List<String> ProductNameList = new ArrayList<String>();
+        for (int i=0; i<list.size(); i++) {
+            ProductNameList.add(list.get(i).getName());
+        }
+        return ProductNameList;
     }
 }

@@ -13,12 +13,25 @@ function toDateAndTime(ts) {
 function toDateAndTime1(ts) {
     return formatDate(new Date(ts)) + ' ' + getTime(ts);
 }
+
+function toDateAndTime2(ts) {
+    return formatDate1(ts);
+}
+
 function formatDate(pubDate) {
     var weekday = new Array("Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat");
     var monthname = new Array("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec");
     var formattedDate = weekday[pubDate.getDay()] + ' '
             + monthname[pubDate.getMonth()] + ' '
-            + pubDate.getDate() + ', ' + pubDate.getFullYear();
+            + pubDate.getDate() + ', ' + pubDate.getFullYear() ;
+    return formattedDate;
+}
+
+function formatDate1(ts) {
+    var pubDate = new Date(ts);
+    var formattedDate = 
+            (pubDate.getMonth()+1) + '/' + (pubDate.getDate()) + '/'
+            +  pubDate.getFullYear() + ' ' + getTime(ts);
     return formattedDate;
 }
 

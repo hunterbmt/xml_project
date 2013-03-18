@@ -8,8 +8,6 @@ import com.vteam.xml_project.hibernate.orm.Product;
 import java.util.List;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
-import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -32,8 +30,8 @@ public class ProductDAO extends BaseDAO {
     public Product getProductById(int product_id) throws HibernateException {
         Query query = this.sessionFactory
                 .getCurrentSession()
-                .createQuery("FROM Product where id = ?");
-        query.setInteger(0, product_id);
+                .createQuery("FROM Product where id = :pid");
+        query.setParameter("pid", product_id);
         return (Product) query.uniqueResult();
     }
     

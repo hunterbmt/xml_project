@@ -9,7 +9,6 @@ import com.vteam.xml_project.dto.ProductDTO;
 import com.vteam.xml_project.hibernate.dao.BidDAO;
 import com.vteam.xml_project.hibernate.dao.CategoryDAO;
 import com.vteam.xml_project.hibernate.dao.ProductDAO;
-import com.vteam.xml_project.hibernate.dao.UserDAO;
 import com.vteam.xml_project.hibernate.orm.Bids;
 import com.vteam.xml_project.hibernate.orm.Category;
 import com.vteam.xml_project.hibernate.orm.Product;
@@ -34,8 +33,6 @@ public class AdminService {
     private CategoryDAO categoryDAO;
     @Autowired
     private BidDAO bidDAO;
-    @Autowired
-    private UserDAO userDAO;
 
     @Transactional
     public ProductDTO insertProduct(int categoryId, String productName, String description, String img, double minPrice, double maxPrice) {
@@ -55,22 +52,19 @@ public class AdminService {
         }
 
     }
-
-    public BidDTO insertBid(int last_user, int product_id, double current_price, Date last_edit, Date start_date, Date end_date) {
-        try {
+    @Transactional
+    public BidDTO insertBid(int product_id, Date start_date, Date end_date) {
+        try {            
             Product product = productDAO.getProductById(product_id);
-            Bids newBid = new Bids(product, last_user, current_price, last_edit, start_date, end_date);
+            Bids newBid = new Bids(product, start_date, end_date, Bids.Status.UNCOMPLETED);
             bidDAO.save(newBid);
             BidDTO bidDTO = new BidDTO();
             bidDTO.setId(newBid.getId());
-            bidDTO.setCurrent_price(current_price);
             bidDTO.setEnd_date(end_date);
-            bidDTO.setLast_edit(last_edit);
-            bidDTO.setLast_userid(last_user);
             bidDTO.setProduct_id(product_id);
             bidDTO.setProduct_name(product.getProductName());
             bidDTO.setStatus(newBid.getStatus().name());
-            bidDTO.setLast_username(userDAO.findUserByUuid(new Integer(last_user)).getFullname());
+
             return bidDTO;
         } catch (HibernateException ex) {
             log.error(ex);
@@ -80,22 +74,20 @@ public class AdminService {
             return null;
         }
     }
-    
-    public BidDTO updateBid(int bid_id, int last_user, int product_id, double current_price, Date last_edit, Date start_date, Date end_date, String status) {
+    @Transactional
+    public BidDTO updateBid(int bid_id, int product_id, Date start_date, Date end_date, String status) {
         try {
             Product product = productDAO.getProductById(product_id);
-            Bids newBid = new Bids(bid_id, product, last_user, current_price,
-                    start_date, end_date, last_edit, status);
+            Bids newBid = new Bids(bid_id, product,
+                    start_date, end_date, status);
             bidDAO.save(newBid);
             BidDTO bidDTO = new BidDTO();
-            bidDTO.setCurrent_price(current_price);
+
             bidDTO.setEnd_date(end_date);
-            bidDTO.setLast_edit(last_edit);
-            bidDTO.setLast_userid(last_user);
             bidDTO.setProduct_id(product_id);
             bidDTO.setProduct_name(product.getProductName());
             bidDTO.setStatus(newBid.getStatus().name());
-            bidDTO.setLast_username(userDAO.findUserByUuid(new Integer(last_user)).getFullname());
+
             return bidDTO;
         } catch (HibernateException ex) {
             log.error(ex);

@@ -21,15 +21,15 @@
         <script src="/resources/js/dateUtils.js"></script>
         <script src="/resources/js/bid.js"></script>
         <script src="/resources/js/jquery-ui-timepicker-addon.js"></script>
-        
+
         <script>
             $(document).ready(function() {
-                vteam_http.init();                
+                vteam_http.init();
                 _displayOngoingBid();
                 $('#bid_start_date').datetimepicker();
                 $('#bid_end_date').datetimepicker();
             });
-            
+
 
         </script>
     </head>
@@ -84,11 +84,14 @@
 
                             <div class="widget-content">
                                 <form action="#" method="get" class="form-horizontal">
+                                    <div>
+                                        <input type="hidden" id="product_id" value=""/>                                        
+                                    </div>
                                     <div class="control-group">
                                         <label class="control-label">ID</label>
                                         <div class="controls">
                                             <span id="bid_id" class="input-small uneditable-input">
-                                                
+
                                             </span>
                                         </div>
                                     </div>
@@ -100,7 +103,7 @@
                                     </div>
                                     <div class="control-group">
                                         <label class="control-label">Product Name</label>
-                                        <div class="controls">
+                                        <div id="product_name_container" class="controls">
                                             <input id="bid_product_name" type="text">
                                         </div>
                                     </div>
@@ -130,14 +133,38 @@
                                     </div>
                                     <div class="control-group">
                                         <label class="control-label">Status</label>
-                                        <div class="controls">
-                                            <input id ="bid_status" type="text">
+                                        <div class="controls">                                            
+                                            <select id ="bid_status">
+                                                <option value="UNCOMPLETED">UnCompleted</option>
+                                                <option value="COMPLETED">Competed</option>                                                
+                                            </select>
+                                            <script>
+//                                                (function($) {
+//                                                    $('#bid_status').change(function() {
+//                                                        var val = $(this).val();
+//                                                        //alert(val);
+//                                                        $('option[value=' + val + ']', this).val('changed');
+//                                                    });
+//                                                })(jQuery);
+                                            </script>
                                         </div>
                                     </div>
                                     <div class="controls-button">
-                                        <button type="submit" class="btn btn-warning" onclick="insertOrUpdateBid()">Save</button>
-                                        <button type="submit" class="btn" onclick="clearBidDetail()">New</button>
+                                        <button id="btnSave" type="submit" class="btn btn-warning disabled" onclick="insertOrUpdateBid()">Save</button>
+                                        <button type="submit" class="btn newBtn" onclick="clearBidDetail(this)">New</button>
                                     </div>
+                                    <div>
+                                        <span class="alert-info" id="result_IU_bid">VTeam - XML_Project</span>
+                                    </div>
+                                    <script>
+                                                
+                                                
+                                                $(function() {                                                    
+                                                    setTimeout(function() {
+                                                        $("#result_IU_bid").hide('blind', {}, 500)
+                                                    }, 2000);
+                                                });
+                                    </script>
                                 </form>
                             </div>
 
@@ -200,7 +227,7 @@
                                             <th>ID</th>
                                             <th>Product</th>
                                             <th>Start date</th>
-                                            
+
                                             <th class="td-actions"></th>
                                         </tr>
                                     </thead>
@@ -222,7 +249,7 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                         <!-- completed bids -->
                         <div class="widget widget-table action-table">
 
