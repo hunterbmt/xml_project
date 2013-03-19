@@ -40,8 +40,10 @@ public class ProductService {
                 p.setName(d.getProductName());
                 p.setDescription(d.getDescription());
                 p.setImage("/resources/img/product/" + d.getImage());
+                p.setImageName(d.getImage());
                 p.setId(d.getId());
                 p.setBid_id(d.getBid_id());
+                
                 tmpList.add(p);
             }
             list.setProductList(tmpList);
@@ -66,6 +68,8 @@ public class ProductService {
                 p.setId(d.getId());
                 p.setDescription(d.getDescription());
                 p.setImage("/resources/img/product/" + d.getImage());
+                p.setImageName(d.getImage());
+                p.setCategoryName(d.getCategory().getCategoryName());
                 p.setBid_id(d.getBid_id());
                 tmpList.add(p);
             }
@@ -89,6 +93,7 @@ public class ProductService {
             p.setMinPrice(product.getMinPrice());
             p.setMaxPrice(product.getMaxPrice());
             p.setImage("/resources/img/product/" + product.getImage());
+            p.setImageName(product.getImage());
             p.setBid_id(product.getBid_id());
             return p;
 

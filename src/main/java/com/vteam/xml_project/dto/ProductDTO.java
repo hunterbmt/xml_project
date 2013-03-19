@@ -15,6 +15,10 @@ public class ProductDTO {
     private String image;
     private int id;
     private Integer bid_id;
+    private String categoryName;
+    private double minPrice;
+    private double maxPrice;
+    private String imageName;
 
     public Integer getBid_id() {
         return bid_id;
@@ -23,9 +27,6 @@ public class ProductDTO {
     public void setBid_id(Integer bid_id) {
         this.bid_id = bid_id;
     }
-    private String categoryName;
-    private double minPrice;
-    private double maxPrice;
 
     public int getId() {
         return id;
@@ -99,5 +100,13 @@ public class ProductDTO {
      */
     public void setMaxPrice(double maxPrice) {
         this.maxPrice = maxPrice;
+    }
+
+    public String getImageName() {
+        return imageName;
+    }
+
+    public void setImageName(String imageName) {
+        this.imageName = imageName;
     }
 }

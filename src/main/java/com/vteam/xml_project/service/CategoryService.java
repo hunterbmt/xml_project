@@ -8,8 +8,6 @@ import com.vteam.xml_project.dto.CategoryListDTO;
 import com.vteam.xml_project.dto.CategoryDTO;
 import com.vteam.xml_project.hibernate.dao.CategoryDAO;
 import com.vteam.xml_project.hibernate.orm.Category;
-import com.vteam.xml_project.hibernate.orm.Product;
-import com.vteam.xml_project.util.DateUtil;
 import java.util.ArrayList;
 import java.util.List;
 import org.apache.log4j.Logger;
@@ -40,8 +38,6 @@ public class CategoryService {
                 c = new CategoryDTO();
                 c.setName(category.getCategoryName());
                 c.setId(category.getId());
-                //c.setName(category.getId());
-                //c.setImage("/resources/img/product/" + d.getImage());
                 tmpList.add(c);
             }
             categoryList.setCategoryList(tmpList);
@@ -54,10 +50,18 @@ public class CategoryService {
     }
     
     @Transactional
-    public CategoryDTO getProductByCategoryId(int id) {
+    public CategoryListDTO getCategoryNameList() {
         try {
-            Category category = categoryDAO.getCategoryById(id);
-            
+            List<Category> categories = categoryDAO.getCategoryList();
+            CategoryListDTO categoryList = new CategoryListDTO();
+            CategoryDTO category;
+            for(Category c:categories){
+                category = new CategoryDTO();
+                category.setName(c.getCategoryName());
+                category.setId(c.getId());
+                categoryList.getCategoryList().add(category);
+            }
+            return categoryList;
         }catch (HibernateException ex) {
             log.error(ex);
         }
