@@ -82,8 +82,11 @@ public class ProductService {
             ProductDTO p = new ProductDTO();
             p.setId(product.getId());
             p.setName(product.getProductName());
-            p.setImage("/resources/img/product/" + product.getImage());
+            p.setCategoryName(product.getCategory().getCategoryName());
             p.setDescription(product.getDescription());
+            p.setMinPrice(product.getMinPrice());
+            p.setMaxPrice(product.getMaxPrice());
+            p.setImage("/resources/img/product/" + product.getImage());
             return p;
 
         } catch (HibernateException ex) {
@@ -91,7 +94,7 @@ public class ProductService {
         }
         return null;
     }
-    
+
     @Transactional
     public ProductListDTO searchProductByCategoryId(int category_id) {
         try {
@@ -109,7 +112,7 @@ public class ProductService {
             }
             list.setProductList(tmpList);
             return list;
-        } catch (HibernateException ex){
+        } catch (HibernateException ex) {
             log.error(ex);
         }
         return null;

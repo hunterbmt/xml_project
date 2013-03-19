@@ -84,6 +84,13 @@
                                         </div>
                                     </div>
                                     <div class="control-group">
+                                        <label class="control-label">Category</label>
+                                        <div class="controls">
+                                            <input id="category_name" type="text"/>
+                                            <input id="category_id" type="hidden"/>
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
                                         <div class="row">
                                             <label class="control-label">Description</label>
                                         </div>

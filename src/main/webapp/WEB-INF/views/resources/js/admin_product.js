@@ -18,7 +18,7 @@ function insertOrUpdateProduct() {
                 {id: id,
                     productName: product_name,
                     description: description,
-                    img:img,
+                    img: img,
                     minPrice: parseFloat(min_price),
                     maxPrice: parseFloat(max_price)},
         'POST', callback);
@@ -27,7 +27,7 @@ function insertOrUpdateProduct() {
                 {
                     productName: product_name,
                     description: description,
-                    img:img,
+                    img: img,
                     minPrice: parseFloat(min_price),
                     maxPrice: parseFloat(max_price)},
         'POST', callback);
@@ -37,7 +37,7 @@ function callback(result) {
     alert(result);
     clearProductDetail()
 }
-function clearProductDetail(){
+function clearProductDetail() {
     $("#product_id").val('');
     $("#product_name").val('');
     var editor = CKEDITOR.instances.product_description;
@@ -45,4 +45,26 @@ function clearProductDetail(){
     $("#product_min_price").val('');
     $("#product_max_price").val('');
     $("#product_img").val('');
+}
+function getProductDetail(id) {
+    vteam_http.makeHttpRequest('/product/getProductById', {product_id: id}, 'POST',
+            function(resut) {
+                if (result.status == "success") {
+                    displayProductDetail(resut.product_detail);
+                }
+                else {
+                    alert(result.status);
+                }
+            })
+}
+function displayProductDetail(detail) {
+    $("#product_id").val(detail.id);
+    $("#product_name").val(detail.name);
+    $("#category_name").val(detail.categoryName);
+
+    var editor = CKEDITOR.instances.product_description;
+    editor.setData(detail.description);
+    $("#product_min_price").val(detail.minPrice);
+    $("#product_max_price").val(detail.maxPrice);
+    $("#product_img").val(detail.image);
 }
