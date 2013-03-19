@@ -32,6 +32,17 @@ public class Users implements java.io.Serializable {
     private Date birthday;
     private String address;
     private String phone;
+    private Integer balance;
+
+    
+    @Column(name = "balance", nullable = true)
+    public Integer getBalance() {
+        return balance;
+    }
+
+    public void setBalance(Integer balance) {
+        this.balance = balance;
+    }
     private Set<OrderHistory> orderHistories = new HashSet<OrderHistory>(0);
     private Set<UserPayment> userPayments = new HashSet<UserPayment>(0);
     private Set<CardCode> cardCodes = new HashSet<CardCode>(0);
