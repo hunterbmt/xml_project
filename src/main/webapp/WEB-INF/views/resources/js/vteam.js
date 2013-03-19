@@ -11,7 +11,7 @@ var vteam_http = {
                 "GET", url + "?" + queryString, true);
             http.onreadystatechange = function () {
                 if (http.readyState == 4 && http.status == 200) {
-                    callbackFunction(vteam_http.getResponseObj());
+                    callbackFunction(eval("(" + http.response + ")"));
                 }
             }
             http.send(null);
@@ -20,16 +20,13 @@ var vteam_http = {
             http.setRequestHeader("Content-type", " application/x-www-form-urlencoded");
             http.onreadystatechange = function () {
                 if (http.readyState == 4 && http.status == 200) {
-                    callbackFunction(vteam_http.getResponseObj());
+                    callbackFunction(eval("(" + http.response + ")"));
                 }
             }
             http.send(queryString);
         } else {
             throw new Error("Unsupport this method");
         }
-    },
-    getResponseObj: function () {
-        return eval("(" + vteam_http.req.response + ")");
     }
 }
 

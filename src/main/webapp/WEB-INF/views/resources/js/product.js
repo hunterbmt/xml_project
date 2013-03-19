@@ -4,14 +4,13 @@ var current_page_size;
 function loadAndDisplayProduct(page, page_size) {
     current_page = page;
     current_page_size = page_size;
-    vteam_http.init();
     vteam_http.makeHttpRequest("/product/getProductList",
             {page: page, pageSize: page_size},
     'POST',
             function(result) {
                 if (result.status == 'success') {
                     displayProduct(result.product_result.productList)
-                    loadAndDisplayCategory();
+                    loadAndDisplayCategory()
                 }
             });
 }

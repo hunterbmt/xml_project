@@ -3,13 +3,12 @@ var current_page_size;
 
 
 function loadAndDisplayCategory() {
-    vteam_http.init();
     vteam_http.makeHttpRequest("/category/getCategoryList", {},
             'GET',
             function(result) {
                 if (result.status == 'success') {
                     displayCategory(result.result.categoryList)
-                    displaySearchProductByCategoryId(productList)
+                    //displaySearchProductByCategoryId(productList)
                 }
             });
 }

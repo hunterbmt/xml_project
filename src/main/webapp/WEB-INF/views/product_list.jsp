@@ -29,6 +29,7 @@
         <script>
             $(document).ready(function() {
                 loadAndDisplayProduct(1, 5);
+                loadAndDisplayCategory();
                 //displayProductDetail(pid);
             });
         </script>
