@@ -55,6 +55,24 @@ function displayProduct(productList) {
     $('#product_list').show();
 }
 
+function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+function doBid(_id) {
+    vteam_http.makeHttpRequest("bid/do_bid", {
+        bid_id : _id
+    },
+            "POST", function(d) {
+            if (d.allowed === 'ok') {
+                alert('Successful! ' + d.message);
+                $("#current_price").html(numberWithCommas(d.price) + " VND");
+            } else {
+                alert('Unallowed! ' + d.message);
+            }
+                
+    });
+}
 function displayProductDetail(product) {
     var html = '';
 
@@ -72,10 +90,10 @@ function displayProductDetail(product) {
     html += '</div>'
     html += '<div class="price"><div class="price_view">'
     html += '<div class="v6Price mTop10" align="center">'
-    html += '<span>$60,000</span></div>'
+    html += '<span id="current_price">$60,000</span></div>'
     html += '<div class="v7inlinetype" align="center">20 nils per bid</div>'
     html += '<div class="v6BuyNow">'
-    html += '<a class=" fixPng" href="javascript:void(0)" onclick="bidNow(void);"></a></div>'
+    html += '<a class=" fixPng" href="javascript:doBid('+ product.bid_id + ')"></a></div>'
     html += "</div></div>"
 
     html += '<div class="v6BorderBot pTop5"><div class="v6Timer">'

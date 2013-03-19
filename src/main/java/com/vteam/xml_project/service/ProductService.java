@@ -41,6 +41,7 @@ public class ProductService {
                 p.setDescription(d.getDescription());
                 p.setImage("/resources/img/product/" + d.getImage());
                 p.setId(d.getId());
+                p.setBid_id(d.getBid_id());
                 tmpList.add(p);
             }
             list.setProductList(tmpList);
@@ -65,6 +66,7 @@ public class ProductService {
                 p.setId(d.getId());
                 p.setDescription(d.getDescription());
                 p.setImage("/resources/img/product/" + d.getImage());
+                p.setBid_id(d.getBid_id());
                 tmpList.add(p);
             }
             list.setProductList(tmpList);
@@ -87,6 +89,7 @@ public class ProductService {
             p.setMinPrice(product.getMinPrice());
             p.setMaxPrice(product.getMaxPrice());
             p.setImage("/resources/img/product/" + product.getImage());
+            p.setBid_id(product.getBid_id());
             return p;
 
         } catch (HibernateException ex) {
@@ -108,6 +111,7 @@ public class ProductService {
                 pd.setId(d.getId());
                 pd.setDescription(d.getDescription());
                 pd.setImage("/resources/img/product/" + d.getImage());
+                pd.setBid_id(d.getBid_id());
                 tmpList.add(pd);
             }
             list.setProductList(tmpList);

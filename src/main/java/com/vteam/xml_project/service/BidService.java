@@ -180,7 +180,7 @@ public class BidService {
     }
 
     @Transactional
-    public boolean doBid(UserDTO u, int bid_id) {
+    public double doBid(UserDTO u, int bid_id) {
         Bids dbBid = bidDAO.getBidById(bid_id);
         Date last_edit = dbBid.getLastEdit();
         Date current_date = new Date();
@@ -189,21 +189,21 @@ public class BidService {
         if (last_edit == null) {
             if (update_balance(user, dbBid.getCost())) {
                 update_bid(dbBid, current_date, user.getId());
-                return true;
+                return dbBid.getCurrentPrice();
             } else {
-                return false;
+                return -9.00;
             }
         } else { // not null
             long seconds = (current_date.getTime() - last_edit.getTime()) / 1000;
             if (seconds > BID_DURATION) {
                 if (update_balance(user, dbBid.getCost())) {
                     update_bid(dbBid, current_date, user.getId());
-                    return true;
+                    return dbBid.getCurrentPrice();
                 } else {
-                    return false;
+                    return -9.00;
                 }
             } else {
-                return false;
+                return -9.00;
             }
         }
     }

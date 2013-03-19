@@ -14,6 +14,15 @@ public class ProductDTO {
     private String description;
     private String image;
     private int id;
+    private Integer bid_id;
+
+    public Integer getBid_id() {
+        return bid_id;
+    }
+
+    public void setBid_id(Integer bid_id) {
+        this.bid_id = bid_id;
+    }
     private String categoryName;
     private double minPrice;
     private double maxPrice;
