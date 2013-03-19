@@ -40,6 +40,8 @@ public class TagsService {
             for (Tags t : dbTags) {
                 td = new TagsDTO();
                 td.setTagName(t.getName());
+                td.setTagId(t.getId());
+                td.setTagDescription(t.getDescription());
                 tmpListTags.add(td);
             }
             listTags.setTagsList(tmpListTags);
