@@ -566,7 +566,7 @@ select:active:enabled {background-image: url("data:image/png;base64,iVBORw0KGgoA
     float: right;
     width: 310px;
     border-left: 1px solid #e0e0e0;
-    height: 479px;
+    height: 400px;
 }
 .p_detail #right .title {
     color: #515151;
