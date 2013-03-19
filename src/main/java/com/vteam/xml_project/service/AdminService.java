@@ -52,6 +52,26 @@ public class AdminService {
         }
 
     }
+    
+    @Transactional
+    public boolean updateProduct(int productId,int categoryId, String productName, String description, String img, double minPrice, double maxPrice) {
+        try {
+            Product product = productDAO.getProductById(productId);
+            Category category = categoryDAO.getCategoryById(categoryId);
+            product.setCategory(category);
+            product.setProductName(productName);
+            product.setDescription(description);
+            product.setImage(img);
+            product.setMinPrice(minPrice);
+            product.setMaxPrice(maxPrice);
+            productDAO.save(product);
+            return true;
+        } catch (HibernateException ex) {
+            log.error(ex);
+            return false;
+        }
+    }
+    
     @Transactional
     public BidDTO insertBid(int product_id, Date start_date, Date end_date) {
         try {            
