@@ -30,6 +30,7 @@
             $(document).ready(function() {
                 loadAndDisplayProduct(1, 5);
                 loadAndDisplayCategory();
+                loadUserInfo();
                 //displayProductDetail(pid);
             });
         </script>

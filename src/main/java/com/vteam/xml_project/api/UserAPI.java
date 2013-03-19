@@ -9,6 +9,7 @@ import com.vteam.xml_project.dto.UserDTO;
 import com.vteam.xml_project.hibernate.orm.Users;
 import com.vteam.xml_project.service.UserService;
 import com.vteam.xml_project.util.DateUtil;
+import com.vteam.xml_project.util.StringUtil;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +31,6 @@ public class UserAPI {
     private UserSession session;
     @Autowired
     private UserService userService;
-    
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public @ResponseBody
@@ -54,16 +54,11 @@ public class UserAPI {
 
     @RequestMapping(value = "/logout", method = RequestMethod.POST)
     public @ResponseBody
-    HashMap<String, Object> logout(
-            @RequestParam String email) {
+    HashMap<String, Object> logout() {
         HashMap<String, Object> returnMap = new HashMap<String, Object>();
         String currentUUID = (String) session.get("email");
-        if (currentUUID.equals(email)) {
-            returnMap.put("status", "success");
-            session.remove("email");
-        } else {
-            returnMap.put("status", "error");
-        }
+        session.remove("email");
+        returnMap.put("status", "success");
         return returnMap;
     }
 
@@ -86,11 +81,11 @@ public class UserAPI {
         }
         return returnMap;
     }
-    
-      @RequestMapping(value = "/update", method = RequestMethod.POST)
+
+    @RequestMapping(value = "/update", method = RequestMethod.POST)
     public @ResponseBody
     HashMap<String, Object> update(
-            @RequestParam String email, String address, String birthday,String phone,String formatDate) {
+            @RequestParam String address, String birthday, String phone, String formatDate) {
         HashMap<String, Object> returnMap = new HashMap<String, Object>();
         UserDTO newUser = new UserDTO();
         //newUser.setEmail(email);
@@ -98,7 +93,12 @@ public class UserAPI {
         //newUser.setFullname(fullname);
         //UserInfoDTO newProfile = new UserInfoDTO();
         //newProfile.setFullname(fullname);
-        boolean result = userService.upadateUser(email, address,phone,birthday,formatDate);
+        String email = (String) session.get("email");
+        if (!StringUtil.validString(email)) {
+            returnMap.put("status", "unlogin");
+            return returnMap;
+        }
+        boolean result = userService.upadateUser(email, address, phone, birthday, formatDate);
         if (result) {
             returnMap.put("status", "success");
         } else {
@@ -106,15 +106,15 @@ public class UserAPI {
         }
         return returnMap;
     }
-      
+
     @RequestMapping(value = "/get_user_by_id", method = RequestMethod.POST)
     public @ResponseBody
     HashMap<String, Object> get_user_by_id(
             @RequestParam String id) {
         HashMap<String, Object> returnMap = new HashMap<String, Object>();
-        
+
         UserDTO rs = userService.getUserById(Integer.valueOf(id));
-        if (rs!= null) {
+        if (rs != null) {
             returnMap.put("status", "success");
             returnMap.put("user", rs);
         } else {
@@ -122,15 +122,19 @@ public class UserAPI {
         }
         return returnMap;
     }
+
     @RequestMapping(value = "/get_user_by_email", method = RequestMethod.POST)
     public @ResponseBody
-    HashMap<String, Object> get_user_by_email(
-            @RequestParam String email) {
+    HashMap<String, Object> get_user_by_email() {
         HashMap<String, Object> returnMap = new HashMap<String, Object>();
-        
+        String email = (String) session.get("email");
+        if (!StringUtil.validString(email)) {
+            returnMap.put("status", "unlogin");
+            return returnMap;
+        }
         UserDTO rs = userService.getUserByEmail(email);
-        if (rs!= null) {
-            
+        if (rs != null) {
+
             returnMap.put("status", "success");
             returnMap.put("user_email", rs.getEmail());
             returnMap.put("user_fullname", rs.getFullname());
@@ -141,20 +145,25 @@ public class UserAPI {
         }
         return returnMap;
     }
-    @RequestMapping(value="/changePassword", method= RequestMethod.POST)
+
+    @RequestMapping(value = "/changePassword", method = RequestMethod.POST)
     public @ResponseBody
     HashMap<String, Object> changePassword(
-             @RequestParam String email,String currentPass,String newPass) throws NoSuchAlgorithmException{
+            @RequestParam String currentPass, String newPass) throws NoSuchAlgorithmException {
         HashMap<String, Object> returnMap = new HashMap<String, Object>();
-        boolean result=userService.checkPassword(email,currentPass, newPass);
+        String email = (String) session.get("email");
+        if (!StringUtil.validString(email)) {
+            returnMap.put("status", "unlogin");
+            return returnMap;
+        }
+        boolean result = userService.checkPassword(email, currentPass, newPass);
         if (result) {
-            
+
             returnMap.put("status", "success");
-            
+
         } else {
             returnMap.put("status", "error");
         }
         return returnMap;
     }
-
 }
