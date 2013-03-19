@@ -6,17 +6,16 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.no-icons.min.css" rel="stylesheet">
+        <link href="/resources/css/bootstrap-combined.no-icons.min.css" rel="stylesheet">
         <link href="/resources/css/bootstrap-responsive.css" rel="stylesheet">
-        <link href="//netdna.bootstrapcdn.com/font-awesome/3.0.2/css/font-awesome.css" rel="stylesheet">
+        <link href="/resources/css/font-awesome.css" rel="stylesheet">
         <link href="/resources/css/admin.css" rel="stylesheet">
-        <!--<link rel="stylesheet" media="all" type="text/css" href="http://code.jquery.com/ui/1.10.0/themes/smoothness/jquery-ui.css" />-->
         <link href="/resources/css/jquery-ui-helper.css" rel="stylesheet">
         <link href="/resources/css/bid.css" rel="stylesheet">
         <script src="/resources/js/lib/jquery.js"></script>
         <script src="/resources/js/lib/jquery.url.js"></script>
         <script src="/resources/js/lib/jquery-ui.js"></script>
-        <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
+        <script src="/resources/js/lib/bootstrap.min.js"></script>
         <script src="/resources/js/vteam.js"></script>
         <script src="/resources/js/dateUtils.js"></script>
         <script src="/resources/js/bid.js"></script>
