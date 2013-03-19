@@ -7,7 +7,9 @@ package com.vteam.xml_project.api;
 import com.vteam.xml_project.controller.UserSession;
 import com.vteam.xml_project.dto.BidDTO;
 import com.vteam.xml_project.dto.BidListDTO;
+import com.vteam.xml_project.dto.UserDTO;
 import com.vteam.xml_project.service.BidService;
+import com.vteam.xml_project.service.UserService;
 import com.vteam.xml_project.util.DateUtil;
 import java.text.ParseException;
 import java.util.Date;
@@ -27,29 +29,30 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 @RequestMapping(value = "/bid")
 public class BidAPI {
-    
-    private static Logger logger = Logger.getLogger(BidAPI.class.getName());
 
+    private static Logger logger = Logger.getLogger(BidAPI.class.getName());
     @Autowired
     private UserSession userSession;
     @Autowired
     private BidService bidService;
     @Autowired
+    private UserService userService;
+    @Autowired
     private DateUtil dateUtil;
 
     /* ========== place bid ============ */
-    
     @RequestMapping(value = "/do_bid", method = RequestMethod.POST)
     public @ResponseBody
-    HashMap<String, Object> doBid (
-            @RequestParam int bid_id) {
+    HashMap<String, Object> doBid(
+            @RequestParam int p_id) {
         HashMap<String, Object> returnMap = new HashMap<String, Object>();
-        
+
         //String uuid = (String) userSession.get("uuid");
-        Integer uuid = 1;
-        logger.debug("do_bid: placing a bid, wait for respond ,from uuid :" + uuid);
-        
-        boolean is_allowed = bidService.doBid(uuid, bid_id);
+        String email = userSession.get("email").toString();
+        UserDTO u = userService.getUserByEmail(email);
+        logger.debug("do_bid: placing a bid, wait for respond ,from uuid :" + u.getId() + " - Name: " + u.getFullname() );
+
+        boolean is_allowed = bidService.doBid(u, p_id);
         if (is_allowed) {
             returnMap.put("allowed", "ok");
             returnMap.put("message", "The bid has been set");
@@ -59,10 +62,8 @@ public class BidAPI {
         }
         return returnMap;
     }
-    
-    
+
     /* =============== bid manipulations ================= */
-    
     @RequestMapping(value = "/get_bid_by_id", method = RequestMethod.POST)
     public @ResponseBody
     HashMap<String, Object> get_bid_by_id(
@@ -116,13 +117,12 @@ public class BidAPI {
         }
         return returnMap;
     }
-    
+
     @RequestMapping(value = "/get_upcoming_bids", method = RequestMethod.POST)
     public @ResponseBody
-    HashMap<String, Object> get_upcoming_bids(
-            ) throws ParseException {
+    HashMap<String, Object> get_upcoming_bids() throws ParseException {
 
-        HashMap<String, Object> returnMap = new HashMap<String, Object>();        
+        HashMap<String, Object> returnMap = new HashMap<String, Object>();
         Date curDate = dateUtil.getCurrentDate();
         BidListDTO result = bidService.getBidsFromDate(curDate);
         if (result != null) {
@@ -134,13 +134,12 @@ public class BidAPI {
         }
         return returnMap;
     }
-    
+
     @RequestMapping(value = "/get_ongoing_bids", method = RequestMethod.POST)
     public @ResponseBody
-    HashMap<String, Object> get_ongoing_bids (
-            ) throws ParseException {
+    HashMap<String, Object> get_ongoing_bids() throws ParseException {
 
-        HashMap<String, Object> returnMap = new HashMap<String, Object>();        
+        HashMap<String, Object> returnMap = new HashMap<String, Object>();
         Date curDate = new Date();
         BidListDTO result = bidService.getOngoingBids(curDate);
         if (result != null) {
@@ -152,14 +151,13 @@ public class BidAPI {
         }
         return returnMap;
     }
-    
+
     @RequestMapping(value = "/get_completed_bids", method = RequestMethod.POST)
     public @ResponseBody
-    HashMap<String, Object> get_completed_bids (
-            ) throws ParseException {
+    HashMap<String, Object> get_completed_bids() throws ParseException {
 
-        HashMap<String, Object> returnMap = new HashMap<String, Object>();        
-        
+        HashMap<String, Object> returnMap = new HashMap<String, Object>();
+
         BidListDTO result = bidService.getCompletedBids();
         if (result != null) {
             returnMap.put("status", "success");

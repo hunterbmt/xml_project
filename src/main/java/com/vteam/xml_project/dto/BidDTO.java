@@ -17,6 +17,15 @@ public class BidDTO implements Serializable {
     private Integer last_userid;
     private String last_username;
     private String status;
+    private Integer cost;
+
+    public Integer getCost() {
+        return cost;
+    }
+
+    public void setCost(Integer cost) {
+        this.cost = cost;
+    }
 
     public String getStatus() {
         return status;

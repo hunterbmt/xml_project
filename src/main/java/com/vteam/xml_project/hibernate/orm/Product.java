@@ -32,9 +32,19 @@ public class Product implements java.io.Serializable {
 
     public enum Status {
 
-        AVAILABLE ,UNAVAILABLE, DELETE;
+        AVAILABLE, UNAVAILABLE, DELETE;
     }
     private Integer id;
+    private Integer bid_id;
+
+    @Column(name = "bid_id", nullable = true)
+    public Integer getBid_id() {
+        return bid_id;
+    }
+
+    public void setBid_id(Integer bid_id) {
+        this.bid_id = bid_id;
+    }
     private Category category;
     private String productName;
     private String description;
@@ -45,7 +55,6 @@ public class Product implements java.io.Serializable {
     private Date lastUpdate;
     private boolean isActive;
     private Set<Tags> tagses = new HashSet(0);
-    private Set<Bids> bidses = new HashSet(0);
     private Set<OrderHistory> orderHistories = new HashSet(0);
 
     public Product() {
@@ -62,7 +71,7 @@ public class Product implements java.io.Serializable {
         this.isActive = isActive;
     }
 
-    public Product(Category tblCategory, String productName, String description, String image, Status status, double minPrice, double maxPrice, Date lastUpdate, boolean isActive, Set tblTagses, Set tblBidses, Set tblOrderHistories) {
+    public Product(Category tblCategory, String productName, String description, String image, Status status, double minPrice, double maxPrice, Date lastUpdate, boolean isActive, Set tblTagses, Set tblOrderHistories) {
         this.category = tblCategory;
         this.productName = productName;
         this.description = description;
@@ -73,7 +82,7 @@ public class Product implements java.io.Serializable {
         this.lastUpdate = lastUpdate;
         this.isActive = isActive;
         this.tagses = tblTagses;
-        this.bidses = tblBidses;
+
         this.orderHistories = tblOrderHistories;
     }
 
@@ -183,15 +192,6 @@ public class Product implements java.io.Serializable {
 
     public void setTagses(Set<Tags> tblTagses) {
         this.tagses = tblTagses;
-    }
-
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "product")
-    public Set<Bids> getBidses() {
-        return this.bidses;
-    }
-
-    public void setBidses(Set<Bids> tblBidses) {
-        this.bidses = tblBidses;
     }
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "product")

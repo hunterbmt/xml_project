@@ -132,6 +132,7 @@ public class UserService {
             UserDTO returnUser = new UserDTO();
             returnUser.setEmail(dbUser.getEmail());
             returnUser.setFullname(dbUser.getFullname());
+            returnUser.setId(dbUser.getId());
             return returnUser;
         } catch (NullPointerException ex) {
             log.error(ex);

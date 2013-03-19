@@ -40,6 +40,16 @@ public class Bids implements java.io.Serializable {
     private Date lastEdit;
     private Status status;
     private Set<BidHistory> bidHistories = new HashSet<BidHistory>();
+    private Integer cost;
+
+    @Column(name = "cost", nullable = false)
+    public Integer getCost() {
+        return cost;
+    }
+
+    public void setCost(Integer cost) {
+        this.cost = cost;
+    }
 
     public Bids() {
     }

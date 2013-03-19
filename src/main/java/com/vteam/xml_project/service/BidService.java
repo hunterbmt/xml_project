@@ -6,11 +6,13 @@ package com.vteam.xml_project.service;
 
 import com.vteam.xml_project.dto.BidDTO;
 import com.vteam.xml_project.dto.BidListDTO;
+import com.vteam.xml_project.dto.UserDTO;
 import com.vteam.xml_project.hibernate.dao.BidDAO;
 import com.vteam.xml_project.hibernate.dao.ProductDAO;
 import com.vteam.xml_project.hibernate.dao.UserDAO;
 import com.vteam.xml_project.hibernate.orm.Bids;
 import com.vteam.xml_project.hibernate.orm.Product;
+import com.vteam.xml_project.hibernate.orm.UserPayment;
 import com.vteam.xml_project.hibernate.orm.Users;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -37,7 +39,6 @@ public class BidService {
     private ProductDAO productDAO;
     @Autowired
     private UserDAO userDAO;
-    
     private Bids dbBid;
     private static long BID_DURATION = (long) 35.00;
 
@@ -47,7 +48,7 @@ public class BidService {
         for (Bids bid : bidList) {
             tmp = new BidDTO();
             Integer uuid = bid.getLastUserid();
-            
+
             tmp.setId(bid.getId());
             tmp.setCurrent_price(bid.getCurrentPrice());
             tmp.setLast_edit(bid.getLastEdit());
@@ -56,7 +57,7 @@ public class BidService {
             tmp.setProduct_id(bid.getProduct().getId());
             tmp.setProduct_name(bid.getProduct().getProductName());
             tmp.setEnd_date(bid.getEndDate());
-            
+
             if (uuid != null) {
                 Users u = userDAO.findUserByUuid(uuid);
                 tmp.setLast_username(u.getFullname());
@@ -167,20 +168,40 @@ public class BidService {
         dbBid.setCurrentPrice(price);
     }
 
+    private boolean update_balance(Users u, int cost) {
+        int currBalance = u.getBalance();
+        int left = currBalance - cost;
+        if (left < 0) {
+            return false;
+        }
+        u.setBalance(left);
+        userDAO.save(u);
+        return true;
+    }
+
     @Transactional
-    public boolean doBid(Integer uuid, int bid_id) {
+    public boolean doBid(UserDTO u, int bid_id) {
         Bids dbBid = bidDAO.getBidById(bid_id);
         Date last_edit = dbBid.getLastEdit();
         Date current_date = new Date();
+        Users user = userDAO.findUserByEmail(u.getEmail());
 
         if (last_edit == null) {
-            update_bid(dbBid, current_date, uuid);
-            return true;
+            if (update_balance(user, dbBid.getCost())) {
+                update_bid(dbBid, current_date, user.getId());
+                return true;
+            } else {
+                return false;
+            }
         } else { // not null
             long seconds = (current_date.getTime() - last_edit.getTime()) / 1000;
             if (seconds > BID_DURATION) {
-                update_bid(dbBid, current_date, uuid);
-                return true;
+                if (update_balance(user, dbBid.getCost())) {
+                    update_bid(dbBid, current_date, user.getId());
+                    return true;
+                } else {
+                    return false;
+                }
             } else {
                 return false;
             }
@@ -203,7 +224,7 @@ public class BidService {
         }
         return null;
     }
-    
+
     @Transactional
     public BidListDTO getOngoingBids(Date curDate) {
         try {
@@ -220,6 +241,7 @@ public class BidService {
         }
         return null;
     }
+
     @Transactional
     public BidListDTO getCompletedBids() {
         try {

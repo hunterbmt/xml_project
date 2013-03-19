@@ -18,6 +18,24 @@ public class UserDTO implements Serializable{
     private Date birthday;
     private String address;
     private String phone;
+    private Integer balance;
+    private Integer id;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getBalance() {
+        return balance;
+    }
+
+    public void setBalance(Integer balance) {
+        this.balance = balance;
+    }
 
     public String getFullname() {
         return fullname;

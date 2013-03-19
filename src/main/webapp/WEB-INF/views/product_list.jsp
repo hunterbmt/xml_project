@@ -23,6 +23,7 @@
         <script src="/resources/js/lib/bootstrap.min.js"></script>
         <script src="/resources/js/lib/holder.js"></script>
         <script src="/resources/js/vteam.js"></script>
+        <script src="/resources/js/bid.js"></script>
         <script src="/resources/js/product.js"></script>
         <script src="/resources/js/category.js"></script>
         <script src="/resources/js/login.js"></script>        

@@ -76,5 +76,14 @@ public class BidDAO extends BaseDAO{
         query.setDate(1, curDate);
         return query.list();
     }
+
+    public Bids getBidByProductId(int p_id) {
+        Bids returnObj ;
+        String sql = "From Bids where product.id = :id";
+        Query query = this.sessionFactory.getCurrentSession().createQuery(sql);
+        query.setParameter("id", p_id);
+        returnObj =  (Bids) query.uniqueResult();
+        return returnObj;
+    }
     
 }
