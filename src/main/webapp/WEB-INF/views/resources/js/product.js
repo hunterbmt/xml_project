@@ -9,8 +9,7 @@ function loadAndDisplayProduct(page, page_size) {
     'POST',
             function(result) {
                 if (result.status == 'success') {
-                    displayProduct(result.product_result.productList)
-                    loadAndDisplayCategory()
+                    displayProduct(result.product_result.productList);                    
                 }
             });
 }
@@ -63,7 +62,7 @@ function displayProductDetail(product) {
     html += '<li class= "span4">'
 
     html += '<div class= "p_detail" style="border:none; margin-top:0px">'
-
+    
     html += '<img src="' + product.image + '"/>'
 
     html += '<div id= "right">'
@@ -83,9 +82,19 @@ function displayProductDetail(product) {
     html += '<div class="v6Gray fl">Chỉ còn</div>'
     html += '<div class="v6DisplayTime" id=""><span>3 ngày 20:56’:45”</span></div>'
     html += '</div></div>'
-    html += '<div class="v6BorderBot" style="border-bottom: none">'
+    
+    html+= '<div class="v6BorderBot pTop5">'
+    html+= '<div class="v6Buyersnew pBottom5 mTop5 ">'
+    html+= 'Top 5 recent bidders<ul class="firstList">'
+    html+= '<li>Pro1</li>'
+    html+= '<li>Pro2</li>'
+    html+= '<li>Pro3</li>'
+    html+= '</ul></div></div>'
+    html+= '<div class="v6BorderBot pTop5" style="border-bottom:none">Spec2</div>'
+    
+    html += '</div> <div class="c"></div>' 
+    html += '<div class="v6BorderBot" style="border-top: 1px solid #e0e0e0">'
     html += product.description
-    html += '</div>'
     html += '</div>'
     html += '</div>'
     html += '</li>'

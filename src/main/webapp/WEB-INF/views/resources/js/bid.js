@@ -17,7 +17,6 @@ function disableSave() {
 }
 function bid_details(bid_id) {
     enableSave();
-    vteam_http.init();
     vteam_http.makeHttpRequest(
             "/bid/get_bid_by_id",
             {
@@ -53,7 +52,6 @@ function insertOrUpdateBid() {
     {
         status = 'UNCOMPLETED';
     }
-    vteam_http.init();
     if (id) {
         vteam_http.makeHttpRequest("/admin/update_bid",
                 {bid_id: id,
@@ -96,6 +94,8 @@ function callback(result) {
 
 function update_lists() {
     _displayOngoingBid();
+    _displayUpcomingBid();
+    _displayCompletedBids();
 }
 function clearBidDetail(self) {
     $('#bid_id').html('');
@@ -108,12 +108,10 @@ function clearBidDetail(self) {
     $('#bid_status').val('');
     if ($(self).hasClass('newBtn')) {
         enableSave();
-        
     }
 }
 
 function populateProductNameList() {
-    vteam_http.init();
     vteam_http.makeHttpRequest("/admin/getProductNameList",
             {
             },
@@ -136,12 +134,11 @@ function populateList(list) {
 //        b += "<option value='" + array_keys[i] + "'>" + array_values[i] + "</option>";
 //    }
 //    b += "</select>"
-    $( "#bid_product_name" ).autocomplete({
-      source: array_values
+    $("#bid_product_name").autocomplete({
+        source: array_values
     });
 //    $('#product_name_container').html(b);
 
-    _displayOngoingBid();
 }
 
 function _displayOngoingBid() {
@@ -153,7 +150,7 @@ function _displayOngoingBid() {
             function(data) {
                 if (data.status === "success") {
                     displayOngoingBid(data.ongoing_bid_list.lists);
-                    _displayUpcomingBid();
+
                 }
             }
     );
@@ -189,7 +186,7 @@ function _displayUpcomingBid() {
             function(data) {
                 if (data.status === "success") {
                     displayUpcomingBid(data.upcoming_bid_list.lists);
-                    _displayCompletedBids();
+
                 }
             }
     );

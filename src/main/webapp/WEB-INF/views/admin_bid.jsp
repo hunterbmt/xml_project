@@ -22,12 +22,13 @@
         <script src="/resources/js/jquery-ui-timepicker-addon.js"></script>
 
         <script>
-            $(document).ready(function() {  
+            $(document).ready(function() {
                 populateProductNameList();
-                
+                update_lists();
+
                 $('#bid_start_date').datetimepicker();
                 $('#bid_end_date').datetimepicker();
-                
+
             });
 
 
@@ -157,7 +158,7 @@
                                         <span class="alert-info" id="result_IU_bid">VTeam - XML_Project</span>
                                     </div>
                                     <script>
-                                        $(function() {                                                    
+                                                $(function() {
                                                     setTimeout(function() {
                                                         $("#result_IU_bid").hide('blind', {}, 500)
                                                     }, 2000);

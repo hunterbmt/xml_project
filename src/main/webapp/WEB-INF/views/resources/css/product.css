@@ -670,3 +670,43 @@ select:active:enabled {background-image: url("data:image/png;base64,iVBORw0KGgoA
     font-weight: bold;
     height: 35px;
 }
+
+.pBottom5, #pBottom5 {
+padding-bottom: 5px;
+}
+.mTop5, #mTop5 {
+margin-top: 5px;
+}
+.v6Buyersnew {
+background: url(resource/img/V6icon_deal.png) no-repeat left 5px;
+font-size: 14px;
+font-weight: bold;
+padding-bottom: 15px;
+border-bottom: none;
+}
+
+.firstList {
+line-height: 22px;
+color: #616161;
+font-size: 12px;
+font-weight: normal;
+}
+.firstList {
+line-height: 20px;
+}
+.firstList ul, li {
+    list-style: none;
+}
+ul, li {
+margin: 0;
+padding: 0;
+}
+user agent stylesheetul, menu, dir {
+display: block;
+list-style-type: disc;
+-webkit-margin-before: 1em;
+-webkit-margin-after: 1em;
+-webkit-margin-start: 0px;
+-webkit-margin-end: 0px;
+-webkit-padding-start: 40px;
+}
