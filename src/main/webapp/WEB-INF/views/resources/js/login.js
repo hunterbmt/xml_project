@@ -74,12 +74,25 @@ function updateInfo() {
             function(result) {
                 if (result.status == "success")
                 {
-                    alert(result.status);
+                    //$("#updateResult").show();
+                    $("#updateResult1").html(result.status);
+                    $("#updateResult1").hide().first().show('slow');
+                    setTimeout(showNotifications, 5000);
+
                 } else {
                     alert("error");
                 }
             });
 
+}
+function showNotifications(){
+    $("#updateResult1:visible").hide('fast', function(){
+        $(this).remove();
+        $(".#updateResult1").first().show('fast');
+        if($("#updateResult1").length > 0){
+           setTimeout(showNotifications, 3000);
+        }
+    });
 }
 function updatePassword() {
     var ollPass = document.getElementById("curr_password").value;
@@ -92,7 +105,9 @@ function updatePassword() {
             function(result) {
                 if (result.status == "success")
                 {
-                    alert(result.status);
+                    $("#updateResult1").html(result.status);
+                     $("#updateResult1").hide().first().show('fast');
+                    setTimeout(showNotifications, 3000);
                 } else {
                     alert("error");
                 }

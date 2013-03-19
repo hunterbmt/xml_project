@@ -158,9 +158,7 @@ public class UserAPI {
         }
         boolean result = userService.checkPassword(email, currentPass, newPass);
         if (result) {
-
             returnMap.put("status", "success");
-
         } else {
             returnMap.put("status", "error");
         }
