@@ -90,7 +90,7 @@ function displayProductDetail(product) {
     html+= '<li>Pro2</li>'
     html+= '<li>Pro3</li>'
     html+= '</ul></div></div>'
-    html+= '<div class="v6BorderBot pTop5" style="border-bottom:none">Spec2</div>'
+    html+= '<div class="v6BorderBot pTop5" style="border-bottom:none">Tags</div>'
     
     html += '</div> <div class="c"></div>' 
     html += '<div class="v6BorderBot" style="border-top: 1px solid #e0e0e0">'
