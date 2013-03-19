@@ -37,7 +37,7 @@ public class TagsAPI {
 
         TagsListDTO resultTags = tagsService.getTagsByProductId(product_id);
         if (resultTags != null) {
-            returnMap.put("status", "getTagsSuccess");
+            returnMap.put("status", "success");
             returnMap.put("result", resultTags);
         } else {
             returnMap.put("status", "error");

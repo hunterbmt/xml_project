@@ -108,8 +108,7 @@ function displayProductDetail(product) {
     html+= '<li>Pro2</li>'
     html+= '<li>Pro3</li>'
     html+= '</ul></div></div>'
-    html+= '<div class="v6BorderBot pTop5" style="border-bottom:none">Tags</div>'
-    
+    html+= '<div id="product_tags" class="v6BorderBot pTop5" style="border-bottom:none">Tags</div>'
     html += '</div> <div class="c"></div>' 
     html += '<div class="v6BorderBot" style="border-top: 1px solid #e0e0e0">'
     html += product.description
@@ -120,12 +119,10 @@ function displayProductDetail(product) {
     $("#product_detail .p_detail").html(html);
     hideAllDiv()
     $("#product_detail").show()
-   
+   loadProductTags(product.id)
 }
 
 function view_product_detail(pid) {
-
-    vteam_http.init();
     vteam_http.makeHttpRequest("/product/getProductById",
             {product_id: pid},
     "POST",
@@ -137,7 +134,6 @@ function view_product_detail(pid) {
                     alert("error");
                 }
             });
-
 }
 
 function displaySearchProduct(productList) {
@@ -163,6 +159,7 @@ function displaySearchProduct(productList) {
     $("#search_product_list .thumbnails").html(html);
     hideAllDiv();
     $("#search_product_list").show();
+    
 }
 
 function searchOnKeyDown(e){
@@ -181,4 +178,26 @@ function hideAllDiv(){
     $("#search_product_list").hide();
     $("#product_detail").hide();
     $("#product_list").hide();
+}
+function loadProductTags(id){
+    vteam_http.makeHttpRequest("/tags/getTagsByProductId",
+            {product_id: id},
+            "POST",
+            function(result) {
+                if (result.status == "success")
+                {
+                    displayProductTags(result.result.tagsList);
+                } else {
+                    alert("error");
+                }
+            });
+}
+function displayProductTags(tags){
+    html =""
+    for (var i = 0; i < tags.length; i++) {
+        html += '<span class= "span4">';
+        html += tags[i].tagName;
+        html += '</span>';
+    }
+    $('#product_tags').html(html);
 }
