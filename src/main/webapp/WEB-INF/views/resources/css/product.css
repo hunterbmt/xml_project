@@ -589,7 +589,7 @@ select:active:enabled {background-image: url("data:image/png;base64,iVBORw0KGgoA
     position: absolute;
     background: url(/resources/img/price.png?v=1) left top no-repeat;
     left: -20px;
-    z-index: 3;
+    z-index: 1 !important;
 }
 .v7inlinetype {
     text-transform: uppercase;

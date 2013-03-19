@@ -17,6 +17,7 @@ function disableSave() {
 }
 function bid_details(bid_id) {
     enableSave();
+    vteam_http.init();
     vteam_http.makeHttpRequest(
             "/bid/get_bid_by_id",
             {
@@ -44,7 +45,7 @@ function displayBidDetails(bid) {
 }
 function insertOrUpdateBid() {
     var id = $("#bid_id").html();
-    var p_id = $("#product_name").val();
+    var p_id = array_keys[array_values.indexOf($("#bid_product_name").val())];
     var start_date = $("#bid_start_date").val();
     var end_date = $("#bid_end_date").val();
     var status = $('#bid_status').val().toUpperCase();
@@ -107,7 +108,7 @@ function clearBidDetail(self) {
     $('#bid_status').val('');
     if ($(self).hasClass('newBtn')) {
         enableSave();
-        populateProductNameList();
+        
     }
 }
 
@@ -119,31 +120,28 @@ function populateProductNameList() {
             'POST', populateList);
 }
 
+var array_keys;
+var array_values;
 function populateList(list) {
-    var b = "<select id=\"product_name\">";
+    //var b = "<select id=\"product_name\">";
 
-//    Object.prototype.getKeyByValue = function( value ) {
-//    for( var prop in this ) {
-//        if( this.hasOwnProperty( prop ) ) {
-//             if( this[ prop ] === value )
-//                 return prop;
-//        }
-//    }
-
-//}
-
-    var array_keys = new Array();
-    var array_values = new Array();
+    array_keys = new Array();
+    array_values = new Array();
 
     for (var key in list) {
         array_keys.push(key);
         array_values.push(list[key]);
     }
-    for (var i = 0; i < array_keys.length; i++) {
-        b += "<option value='" + array_keys[i] + "'>" + array_values[i] + "</option>";
-    }
-    b += "</select>"
-    $('#product_name_container').html(b);
+//    for (var i = 0; i < array_keys.length; i++) {
+//        b += "<option value='" + array_keys[i] + "'>" + array_values[i] + "</option>";
+//    }
+//    b += "</select>"
+    $( "#bid_product_name" ).autocomplete({
+      source: array_values
+    });
+//    $('#product_name_container').html(b);
+
+    _displayOngoingBid();
 }
 
 function _displayOngoingBid() {

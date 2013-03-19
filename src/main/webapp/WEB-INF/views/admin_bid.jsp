@@ -22,11 +22,12 @@
         <script src="/resources/js/jquery-ui-timepicker-addon.js"></script>
 
         <script>
-            $(document).ready(function() {
-                vteam_http.init();
-                _displayOngoingBid();
+            $(document).ready(function() {  
+                populateProductNameList();
+                
                 $('#bid_start_date').datetimepicker();
                 $('#bid_end_date').datetimepicker();
+                
             });
 
 
@@ -150,7 +151,7 @@
                                     </div>
                                     <div class="controls-button">
                                         <button id="btnSave" type="submit" class="btn btn-warning disabled" onclick="insertOrUpdateBid()">Save</button>
-                                        <button type="submit" class="btn btn-primary newBtn" onclick="clearBidDetail(this)">New</button>
+                                        <button type="submit" class="btn newBtn" onclick="clearBidDetail(this)">New</button>
                                     </div>
                                     <div>
                                         <span class="alert-info" id="result_IU_bid">VTeam - XML_Project</span>
