@@ -9,6 +9,7 @@
         <link href="/resources/css/bootstrap-combined.no-icons.min.css" rel="stylesheet">
         <link href="/resources/css/bootstrap-responsive.css" rel="stylesheet">
         <link href="/resources/css/font-awesome.css" rel="stylesheet">
+        <link href="/resources/css/jquery-ui-helper.css" rel="stylesheet">
         <link href="/resources/css/admin.css" rel="stylesheet">
         <script src="/resources/js/lib/jquery.js"></script>
         <script src="/resources/js/lib/jquery.url.js"></script>
@@ -19,6 +20,12 @@
         <script src="/resources/js/lib/ckeditor/styles.js"></script>
         <script src="/resources/js/vteam.js"></script>
         <script src="/resources/js/admin_product.js"></script>
+        <script>
+            $(document).ready(function() {
+                 populateCategoryNameList()
+                 loadProductList(1,5);
+            });
+        </script>
     </head>
     <body>
         <div class="navbar navbar-fixed-top">
@@ -32,25 +39,25 @@
                             </a>	    				
                         </li>
                         <li  class="active">
-                            <a href="./admin/product">
+                            <a href="/admin/product">
                                 <i class="icon-book"></i>
                                 <span>Product</span>
                             </a>	    				
                         </li>
                         <li>
-                            <a href="./users">
+                            <a href="/admin/users">
                                 <i class="icon-group"></i>
                                 <span>Users</span>
                             </a>	    				
                         </li>
                         <li>
-                            <a href="./bid">
+                            <a href="/admin/bid">
                                 <i class="icon-legal"></i>
                                 <span>Bid</span>
                             </a>	    				
                         </li>
                         <li>
-                            <a href="./payment">
+                            <a href="/admin/payment">
                                 <i class="icon-money"></i>
                                 <span>Payment</span>
                             </a>	    				
@@ -81,6 +88,12 @@
                                         <label class="control-label">Name</label>
                                         <div class="controls">
                                             <input id="product_name" type="text">
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label">Category</label>
+                                        <div class="controls">
+                                            <input id="category_name" type="text"/>
                                         </div>
                                     </div>
                                     <div class="control-group">
@@ -169,49 +182,8 @@
                                             <th class="td-actions"></th>
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>1</td>
-                                            <td>IPhone4</td>
-                                            <td>Blabla</td>
-                                            <td class="td-actions">
-                                                <a href="javascript:;" class="btn btn-small btn-warning">
-                                                    <i class="btn-icon-only icon-edit"></i>										
-                                                </a>
-
-                                                <a href="javascript:;" class="btn btn-small">
-                                                    <i class="btn-icon-only icon-remove"></i>										
-                                                </a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>2</td>
-                                            <td>IPhone 5</td>
-                                            <td>Blabla</td>
-                                            <td class="td-actions">
-                                                <a href="javascript:;" class="btn btn-small btn-warning">
-                                                    <i class="btn-icon-only icon-edit"></i>										
-                                                </a>
-
-                                                <a href="javascript:;" class="btn btn-small">
-                                                    <i class="btn-icon-only icon-remove"></i>										
-                                                </a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>3</td>
-                                            <td>IPhone 6</td>
-                                            <td>Bla bla bla</td>
-                                            <td class="td-actions">
-                                                <a href="javascript:;" class="btn btn-small btn-warning">
-                                                    <i class="btn-icon-only  icon-edit"></i>										
-                                                </a>
-
-                                                <a href="javascript:;" class="btn btn-small">
-                                                    <i class="btn-icon-only icon-remove"></i>										
-                                                </a>
-                                            </td>
-                                        </tr>
+                                    <tbody id="product_list_tbody">
+                                      
                                     </tbody>
                                 </table>
                                 <div class="pagination-bar">

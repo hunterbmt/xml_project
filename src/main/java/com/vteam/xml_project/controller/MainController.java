@@ -105,4 +105,10 @@ public class MainController {
         model.put("user_fullname", user.getFullname());
         return viewName;
     }
+    @RequestMapping(value = "/test")
+    @Transactional
+    public ModelAndView testPage(HttpServletRequest request) {
+        ModelAndView mav = new ModelAndView("test");
+        return mav;
+    }
 }

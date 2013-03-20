@@ -6,13 +6,15 @@ package com.vteam.xml_project.api;
 
 import com.vteam.xml_project.controller.UserSession;
 import com.vteam.xml_project.dto.BidDTO;
+import com.vteam.xml_project.dto.CategoryDTO;
+import com.vteam.xml_project.dto.CategoryListDTO;
 import com.vteam.xml_project.dto.ProductDTO;
 import com.vteam.xml_project.dto.ProductListDTO;
 import com.vteam.xml_project.service.AdminService;
+import com.vteam.xml_project.service.CategoryService;
 import com.vteam.xml_project.service.ProductService;
 import com.vteam.xml_project.util.DateUtil;
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -42,12 +44,14 @@ public class AdminAPI {
     @Autowired
     private ProductService productService;
     @Autowired
+    private CategoryService categoryService;
+    @Autowired
     private DateUtil dateUtil;
 
     @RequestMapping(value = "/insert_product", method = RequestMethod.POST)
     public @ResponseBody
     HashMap<String, Object> insertProduct(
-            @RequestParam int categoryId,String productName, String description, String img, double minPrice, double maxPrice) {
+            @RequestParam int categoryId, String productName, String description, String img, double minPrice, double maxPrice) {
         HashMap<String, Object> returnMap = new HashMap<String, Object>();
         ProductDTO productDTO = adminService.insertProduct(categoryId, productName, description, img, minPrice, maxPrice);
         if (productDTO == null) {
@@ -136,5 +140,18 @@ public class AdminAPI {
             ProductNameList.put(list.get(i).getId(), list.get(i).getName());
         }
         return ProductNameList;
+    }
+
+    @RequestMapping(value = "/getCategoryNameList", method = RequestMethod.POST)
+    public @ResponseBody
+    HashMap<Integer, String> getCategoryNameList() {
+
+        CategoryListDTO categoryListDTO = categoryService.getCategoryNameList();
+        List<CategoryDTO> list = categoryListDTO.getCategoryList();
+        HashMap<Integer, String> categoryNameList = new HashMap<Integer, String>();
+        for (int i = 0; i < list.size(); i++) {
+            categoryNameList.put(list.get(i).getId(), list.get(i).getName());
+        }
+        return categoryNameList;
     }
 }

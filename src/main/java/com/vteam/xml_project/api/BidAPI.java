@@ -44,7 +44,7 @@ public class BidAPI {
     @RequestMapping(value = "/do_bid", method = RequestMethod.POST)
     public @ResponseBody
     HashMap<String, Object> doBid(
-            @RequestParam int p_id) {
+            @RequestParam int bid_id) {
         HashMap<String, Object> returnMap = new HashMap<String, Object>();
 
         //String uuid = (String) userSession.get("uuid");
@@ -52,10 +52,11 @@ public class BidAPI {
         UserDTO u = userService.getUserByEmail(email);
         logger.debug("do_bid: placing a bid, wait for respond ,from uuid :" + u.getId() + " - Name: " + u.getFullname() );
 
-        boolean is_allowed = bidService.doBid(u, p_id);
-        if (is_allowed) {
+        double price = bidService.doBid(u, bid_id);
+        if (price > 0) {
             returnMap.put("allowed", "ok");
             returnMap.put("message", "The bid has been set");
+            returnMap.put("price",price);
         } else {
             returnMap.put("allowed", "no");
             returnMap.put("message", "The bid has locked to other bidder");

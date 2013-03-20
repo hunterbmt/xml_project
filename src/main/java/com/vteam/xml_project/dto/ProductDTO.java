@@ -9,17 +9,31 @@ package com.vteam.xml_project.dto;
  * @author phitt60230
  */
 public class ProductDTO {
+
     private String name;
     private String description;
     private String image;
-    private Integer product_id;
+    private int id;
+    private Integer bid_id;
+    private String categoryName;
+    private double minPrice;
+    private double maxPrice;
+    private String imageName;
 
-    public Integer getId() {
-        return product_id;
+    public Integer getBid_id() {
+        return bid_id;
     }
 
-    public void setId(Integer id) {
-        this.product_id = id;
+    public void setBid_id(Integer bid_id) {
+        this.bid_id = bid_id;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -46,4 +60,53 @@ public class ProductDTO {
         this.image = image;
     }
 
+    /**
+     * @return the categoryName
+     */
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    /**
+     * @param categoryName the categoryName to set
+     */
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
+    }
+
+    /**
+     * @return the minPrice
+     */
+    public double getMinPrice() {
+        return minPrice;
+    }
+
+    /**
+     * @param minPrice the minPrice to set
+     */
+    public void setMinPrice(double minPrice) {
+        this.minPrice = minPrice;
+    }
+
+    /**
+     * @return the maxPrice
+     */
+    public double getMaxPrice() {
+        return maxPrice;
+    }
+
+    /**
+     * @param maxPrice the maxPrice to set
+     */
+    public void setMaxPrice(double maxPrice) {
+        this.maxPrice = maxPrice;
+    }
+
+    public String getImageName() {
+        return imageName;
+    }
+
+    public void setImageName(String imageName) {
+        this.imageName = imageName;
+    }
 }

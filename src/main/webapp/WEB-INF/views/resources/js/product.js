@@ -55,14 +55,23 @@ function displayProduct(productList) {
     $('#product_list').show();
 }
 
+function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
 
 function doBid(_id) {
-    vteam_http.makeHttpRequest("", {
-        p_id : _id
+    vteam_http.makeHttpRequest("bid/do_bid", {
+        bid_id: _id
     },
-            "POST", function() {
-        
-    })
+    "POST", function(d) {
+        if (d.allowed === 'ok') {
+            alert('Successful! ' + d.message);
+            $("#current_price").html(numberWithCommas(d.price) + " VND");
+        } else {
+            alert('Unallowed! ' + d.message);
+        }
+
+    });
 }
 function displayProductDetail(product) {
     var html = '';
@@ -81,10 +90,10 @@ function displayProductDetail(product) {
     html += '</div>'
     html += '<div class="price"><div class="price_view">'
     html += '<div class="v6Price mTop10" align="center">'
-    html += '<span>$60,000</span></div>'
+    html += '<span id="current_price">$60,000</span></div>'
     html += '<div class="v7inlinetype" align="center">20 nils per bid</div>'
     html += '<div class="v6BuyNow">'
-    html += '<a class=" fixPng" href="javascript:doBid('+ product.id + ')"></a></div>'
+    html += '<a class=" fixPng" href="javascript:doBid(' + product.bid_id + ')"></a></div>'
     html += "</div></div>"
 
     html += '<div class="v6BorderBot pTop5"><div class="v6Timer">'
@@ -99,8 +108,7 @@ function displayProductDetail(product) {
     html += '<li>Pro2</li>'
     html += '<li>Pro3</li>'
     html += '</ul></div></div>'
-    html += '<div class="v6BorderBot pTop5" style="border-bottom:none">Spec2</div>'
-
+    html += '<div id="product_tags" class="v6BorderBot pTop5" style="border-bottom:none">Tags</div>'
     html += '</div> <div class="c"></div>'
     html += '<div class="v6BorderBot" style="border-top: 1px solid #e0e0e0">'
     html += product.description
@@ -111,12 +119,10 @@ function displayProductDetail(product) {
     $("#product_detail .p_detail").html(html);
     hideAllDiv()
     $("#product_detail").show()
-
+    loadProductTags(product.id)
 }
 
 function view_product_detail(pid) {
-
-    vteam_http.init();
     vteam_http.makeHttpRequest("/product/getProductById",
             {product_id: pid},
     "POST",
@@ -128,7 +134,6 @@ function view_product_detail(pid) {
                     alert("error");
                 }
             });
-
 }
 
 function displaySearchProduct(productList) {
@@ -154,6 +159,7 @@ function displaySearchProduct(productList) {
     $("#search_product_list .thumbnails").html(html);
     hideAllDiv();
     $("#search_product_list").show();
+
 }
 
 function searchOnKeyDown(e) {
@@ -172,4 +178,45 @@ function hideAllDiv() {
     $("#search_product_list").hide();
     $("#product_detail").hide();
     $("#product_list").hide();
+}
+function loadProductTags(id) {
+    vteam_http.makeHttpRequest("/tags/getTagsByProductId",
+            {product_id: id},
+    "POST",
+            function(result) {
+                if (result.status == "success")
+                {
+                    displayProductTags(result.result.tagsList);
+                } else {
+                    alert("error");
+                }
+            });
+}
+function displayProductTags(tags) {
+    html = ""
+    html += '<div class="red">'
+    html += 'Tags: '
+    for (var i = 0; i < tags.length; i++) {
+        html += '<span class= "tags">';
+        html += '<a href="#" onclick="searchProductByTags(' + tags.id +')">'
+        html += '<strong>' + tags[i].tagName + '</strong>'
+        html += '</a>' + ' , ';
+        html += '</span>';
+    }
+    html += '</div>'
+    $('#product_tags').html(html);
+}
+
+function searchProductByTags(tags_id) {
+    
+    vteam_http.init();
+    vteam_http.makeHttpRequest("/product/searchProductByTags",
+            {tags_id: tags_id},
+    'POST',
+            function(result) {
+                if (result.status == 'success') {
+
+                    displayProduct(result.search_tags.productList);
+                }
+            });
 }

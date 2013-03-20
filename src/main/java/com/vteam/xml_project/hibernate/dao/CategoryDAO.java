@@ -5,12 +5,9 @@
 package com.vteam.xml_project.hibernate.dao;
 
 import com.vteam.xml_project.hibernate.orm.Category;
-import com.vteam.xml_project.hibernate.orm.Product;
 import java.util.List;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
-import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -33,5 +30,13 @@ public class CategoryDAO extends BaseDAO {
                 .createQuery("FROM Category where id = ?");
         query.setInteger(0, category_id);
         return (Category) query.uniqueResult();
+    }
+    public List<Category> searchCategoryByName(String name) throws HibernateException {
+        Query query = this
+                .sessionFactory
+                .getCurrentSession()
+                .createQuery("FROM Category where categoryName LIKE :name" );
+        query.setParameter("name", "%"+name+"%");
+        return query.list();
     }
 }

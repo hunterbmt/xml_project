@@ -10,6 +10,7 @@ import com.vteam.xml_project.hibernate.dao.ProductDAO;
 import com.vteam.xml_project.hibernate.orm.Product;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +41,10 @@ public class ProductService {
                 p.setName(d.getProductName());
                 p.setDescription(d.getDescription());
                 p.setImage("/resources/img/product/" + d.getImage());
+                p.setImageName(d.getImage());
                 p.setId(d.getId());
+                p.setBid_id(d.getBid_id());
+                
                 tmpList.add(p);
             }
             list.setProductList(tmpList);
@@ -65,6 +69,9 @@ public class ProductService {
                 p.setId(d.getId());
                 p.setDescription(d.getDescription());
                 p.setImage("/resources/img/product/" + d.getImage());
+                p.setImageName(d.getImage());
+                p.setCategoryName(d.getCategory().getCategoryName());
+                p.setBid_id(d.getBid_id());
                 tmpList.add(p);
             }
             list.setProductList(tmpList);
@@ -82,8 +89,13 @@ public class ProductService {
             ProductDTO p = new ProductDTO();
             p.setId(product.getId());
             p.setName(product.getProductName());
-            p.setImage("/resources/img/product/" + product.getImage());
+            p.setCategoryName(product.getCategory().getCategoryName());
             p.setDescription(product.getDescription());
+            p.setMinPrice(product.getMinPrice());
+            p.setMaxPrice(product.getMaxPrice());
+            p.setImage("/resources/img/product/" + product.getImage());
+            p.setImageName(product.getImage());
+            p.setBid_id(product.getBid_id());
             return p;
 
         } catch (HibernateException ex) {
@@ -91,7 +103,7 @@ public class ProductService {
         }
         return null;
     }
-    
+
     @Transactional
     public ProductListDTO searchProductByCategoryId(int category_id) {
         try {
@@ -105,11 +117,36 @@ public class ProductService {
                 pd.setId(d.getId());
                 pd.setDescription(d.getDescription());
                 pd.setImage("/resources/img/product/" + d.getImage());
+                pd.setBid_id(d.getBid_id());
                 tmpList.add(pd);
             }
             list.setProductList(tmpList);
             return list;
-        } catch (HibernateException ex){
+        } catch (HibernateException ex) {
+            log.error(ex);
+        }
+        return null;
+    }
+    
+    @Transactional
+    public ProductListDTO searchProductByTagsId(int tags_id) {
+        try {
+            List<Product> dbProducts = productDAO.searchProductByTagsId(tags_id);
+            ProductDTO pd;
+            ProductListDTO list = new ProductListDTO();
+            List<ProductDTO> tmpList = new ArrayList<ProductDTO>();
+            for (Product d : dbProducts) {
+                pd = new ProductDTO();
+                pd.setName(d.getProductName());
+                pd.setId(d.getId());
+                pd.setDescription(d.getDescription());
+                pd.setImage("/resources/img/product/" + d.getImage());
+                pd.setBid_id(d.getBid_id());
+                tmpList.add(pd);
+            }
+            list.setProductList(tmpList);
+            return list;
+        }catch (HibernateException ex) {
             log.error(ex);
         }
         return null;

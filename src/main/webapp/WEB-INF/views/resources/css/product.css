@@ -710,3 +710,11 @@ list-style-type: disc;
 -webkit-margin-end: 0px;
 -webkit-padding-start: 40px;
 }
+
+.tags a strong {
+color: #a4a4a4;
+font-family: Arial;
+font-size: 17px;
+text-decoration: none;
+font-weight: normal;
+}
