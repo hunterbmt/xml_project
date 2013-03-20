@@ -54,5 +54,14 @@ public class ProductDAO extends BaseDAO {
         query.setParameter("id", category_id);
         return query.list();
     }
+    
+    public List<Product> searchProductByTagsId (int tag_id) throws HibernateException {
+        Query query = this
+                .sessionFactory
+                .getCurrentSession()
+                .createQuery("FROM Product where tags.id =:id");
+        query.setParameter("id", tag_id);
+        return query.list();
+    }
            
 }

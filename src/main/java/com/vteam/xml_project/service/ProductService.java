@@ -10,6 +10,7 @@ import com.vteam.xml_project.hibernate.dao.ProductDAO;
 import com.vteam.xml_project.hibernate.orm.Product;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -122,6 +123,30 @@ public class ProductService {
             list.setProductList(tmpList);
             return list;
         } catch (HibernateException ex) {
+            log.error(ex);
+        }
+        return null;
+    }
+    
+    @Transactional
+    public ProductListDTO searchProductByTagsId(int tags_id) {
+        try {
+            List<Product> dbProducts = productDAO.searchProductByTagsId(tags_id);
+            ProductDTO pd;
+            ProductListDTO list = new ProductListDTO();
+            List<ProductDTO> tmpList = new ArrayList<ProductDTO>();
+            for (Product d : dbProducts) {
+                pd = new ProductDTO();
+                pd.setName(d.getProductName());
+                pd.setId(d.getId());
+                pd.setDescription(d.getDescription());
+                pd.setImage("/resources/img/product/" + d.getImage());
+                pd.setBid_id(d.getBid_id());
+                tmpList.add(pd);
+            }
+            list.setProductList(tmpList);
+            return list;
+        }catch (HibernateException ex) {
             log.error(ex);
         }
         return null;

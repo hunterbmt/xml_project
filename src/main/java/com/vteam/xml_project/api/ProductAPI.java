@@ -64,6 +64,22 @@ public class ProductAPI {
         //return result;
     }
     
+    @RequestMapping(value = "/searchProductByTags", method = RequestMethod.POST)
+    public @ResponseBody 
+    HashMap<String, Object> searchProductByTags( 
+            @RequestParam int tags_id) {
+        HashMap<String, Object> returnMap = new HashMap<String, Object>();
+        ProductDTO p = productService.getProductById(tags_id);
+        if (p != null) {
+            returnMap.put("status", "success");
+            returnMap.put("search_tags", p);
+        } else {
+            returnMap.put("status", "error");
+            returnMap.put("msg", "Cannot get");
+        }
+        return returnMap;
+    }
+    
     @RequestMapping(value = "/getProductById", method = RequestMethod.POST)
     public @ResponseBody 
     HashMap<String, Object> getProductById( 
