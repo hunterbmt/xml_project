@@ -5,6 +5,7 @@
 package com.vteam.xml_project.service;
 
 import com.vteam.xml_project.dto.BidDTO;
+import com.vteam.xml_project.dto.CategoryDTO;
 import com.vteam.xml_project.dto.ProductDTO;
 import com.vteam.xml_project.hibernate.dao.BidDAO;
 import com.vteam.xml_project.hibernate.dao.CategoryDAO;
@@ -144,5 +145,35 @@ public class AdminService {
             bidDTO.setMsg("Wrong date time format");
         }
         return bidDTO;
+    }
+    
+    @Transactional
+    public CategoryDTO insertCategory(String categoryName, String description) {
+        CategoryDTO categoryDTO = new CategoryDTO();
+        try {
+             Category category = new Category(categoryName, description);
+             categoryDAO.save(category);
+             categoryDTO.setStatus("success");
+        } catch (HibernateException ex) {
+            log.error(ex);
+            categoryDTO.setStatus("error");
+            categoryDTO.setMsg("Have some errors . Try again");
+        }
+        return categoryDTO;
+    }
+    @Transactional
+    public CategoryDTO updateCategory(int categoryID,String description) {
+        CategoryDTO categoryDTO = new CategoryDTO();
+        try {
+             Category category = categoryDAO.getCategoryById(categoryID);
+             category.setDescription(description);
+             categoryDAO.save(category);
+             categoryDTO.setStatus("success");
+        } catch (HibernateException ex) {
+            log.error(ex);
+            categoryDTO.setStatus("error");
+            categoryDTO.setMsg("Have some errors . Try again");
+        }
+        return categoryDTO;
     }
 }
