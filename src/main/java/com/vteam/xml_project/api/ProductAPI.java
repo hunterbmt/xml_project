@@ -53,10 +53,11 @@ public class ProductAPI {
     HashMap<String, Object> searchProductByTags(
             @RequestParam int tags_id) {
         HashMap<String, Object> returnMap = new HashMap<String, Object>();
-        ProductDTO p = productService.getProductById(tags_id);
-        if (p != null) {
+        ProductDTO search_tags = productService.getProductById(tags_id);
+        //ProductListDTO search_tags = productService.searchProductByTagsId(tags_id);
+        if (search_tags != null) {
             returnMap.put("status", "success");
-            returnMap.put("search_tags", p);
+            returnMap.put("search_tags", search_tags);
         } else {
             returnMap.put("status", "error");
             returnMap.put("msg", "Cannot get");
