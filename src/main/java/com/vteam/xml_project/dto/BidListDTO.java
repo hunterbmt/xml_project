@@ -11,7 +11,7 @@ import java.util.List;
  *
  * @author Crick
  */
-public class BidListDTO {
+public class BidListDTO extends BaseDTO{
     private List<BidDTO> list;
 
     public BidListDTO() {

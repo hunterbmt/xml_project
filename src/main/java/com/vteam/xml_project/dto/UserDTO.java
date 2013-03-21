@@ -11,7 +11,7 @@ import java.util.Date;
  *
  * @author HunterBMT
  */
-public class UserDTO implements Serializable{
+public class UserDTO extends BaseDTO{
     private String email;
     private String password;
    private String fullname;

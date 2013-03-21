@@ -29,9 +29,9 @@ public class CategoryService {
 
     @Transactional
     public CategoryListDTO getCategoryList() {
+        CategoryListDTO categoryList = new CategoryListDTO();
         try {
             List<Category> dbCategory = categoryDAO.getCategoryList();
-            CategoryListDTO categoryList = new CategoryListDTO();
             CategoryDTO c;
             List<CategoryDTO> tmpList = new ArrayList<CategoryDTO>();
             for (Category category : dbCategory) {
@@ -41,30 +41,34 @@ public class CategoryService {
                 tmpList.add(c);
             }
             categoryList.setCategoryList(tmpList);
-            return categoryList;
+            categoryList.setStatus("success");
+
         } catch (HibernateException ex) {
             log.error(ex);
-            return null;
+            categoryList.setMsg("Have some errors. Try again");
+            categoryList.setStatus("error");
         }
-
+        return categoryList;
     }
-    
+
     @Transactional
     public CategoryListDTO getCategoryNameList() {
+        CategoryListDTO categoryList = new CategoryListDTO();
         try {
             List<Category> categories = categoryDAO.getCategoryList();
-            CategoryListDTO categoryList = new CategoryListDTO();
             CategoryDTO category;
-            for(Category c:categories){
+            for (Category c : categories) {
                 category = new CategoryDTO();
                 category.setName(c.getCategoryName());
                 category.setId(c.getId());
                 categoryList.getCategoryList().add(category);
             }
-            return categoryList;
-        }catch (HibernateException ex) {
+            categoryList.setStatus("error");
+        } catch (HibernateException ex) {
             log.error(ex);
+            categoryList.setMsg("Have some errors. Try again");
+            categoryList.setStatus("error");
         }
-        return null;
+        return categoryList;
     }
 }

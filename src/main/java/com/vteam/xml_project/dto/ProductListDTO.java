@@ -11,7 +11,7 @@ import java.util.List;
  *
  * @author Crick
  */
-public class ProductListDTO {
+public class ProductListDTO extends BaseDTO{
     private List<ProductDTO> productList;
 
     public ProductListDTO() {

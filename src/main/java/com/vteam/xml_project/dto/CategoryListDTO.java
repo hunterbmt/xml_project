@@ -11,7 +11,7 @@ import java.util.List;
  *
  * @author phitt60230
  */
-public class CategoryListDTO {
+public class CategoryListDTO extends BaseDTO{
     List<CategoryDTO> categoryList;
     public CategoryListDTO() {
         categoryList = new ArrayList<CategoryDTO>();

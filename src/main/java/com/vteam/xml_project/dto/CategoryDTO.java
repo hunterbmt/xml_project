@@ -8,7 +8,7 @@ package com.vteam.xml_project.dto;
  *
  * @author phitt60230
  */
-public class CategoryDTO {
+public class CategoryDTO extends BaseDTO{
     private int id;
     private String name;
 

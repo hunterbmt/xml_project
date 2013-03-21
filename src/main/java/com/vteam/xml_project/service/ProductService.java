@@ -44,7 +44,7 @@ public class ProductService {
                 p.setImageName(d.getImage());
                 p.setId(d.getId());
                 p.setBid_id(d.getBid_id());
-                
+
                 tmpList.add(p);
             }
             list.setProductList(tmpList);
@@ -106,10 +106,11 @@ public class ProductService {
 
     @Transactional
     public ProductListDTO searchProductByCategoryId(int category_id) {
+        ProductListDTO list = new ProductListDTO();
         try {
             List<Product> dbProducts = productDAO.searchProductByCategoryId(category_id);
             ProductDTO pd;
-            ProductListDTO list = new ProductListDTO();
+
             List<ProductDTO> tmpList = new ArrayList<ProductDTO>();
             for (Product d : dbProducts) {
                 pd = new ProductDTO();
@@ -121,20 +122,23 @@ public class ProductService {
                 tmpList.add(pd);
             }
             list.setProductList(tmpList);
-            return list;
+            list.setStatus("success");
         } catch (HibernateException ex) {
             log.error(ex);
+            list.setStatus("error");
+            list.setMsg("Have some errors ! Try again");
         }
-        return null;
+        return list;
     }
-    
+
     @Transactional
     public ProductListDTO searchProductByTagsId(int tags_id) {
+        ProductListDTO list = new ProductListDTO();
         try {
             List<Product> dbProducts = productDAO.searchProductByTagsId(tags_id);
-            ProductDTO pd;
-            ProductListDTO list = new ProductListDTO();
+
             List<ProductDTO> tmpList = new ArrayList<ProductDTO>();
+            ProductDTO pd;
             for (Product d : dbProducts) {
                 pd = new ProductDTO();
                 pd.setName(d.getProductName());
@@ -145,10 +149,12 @@ public class ProductService {
                 tmpList.add(pd);
             }
             list.setProductList(tmpList);
-            return list;
-        }catch (HibernateException ex) {
+            list.setStatus("success");
+        } catch (HibernateException ex) {
             log.error(ex);
+            list.setStatus("error");
+            list.setMsg("Have some errors . Try again");
         }
-        return null;
+        return list;
     }
 }

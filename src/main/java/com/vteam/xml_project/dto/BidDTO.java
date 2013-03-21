@@ -4,14 +4,13 @@
  */
 package com.vteam.xml_project.dto;
 
-import java.io.Serializable;
 import java.util.Date;
 
 /**
  *
  * @author Crick
  */
-public class BidDTO implements Serializable {
+public class BidDTO extends BaseDTO{
 
     private Integer id;
     private Integer last_userid;

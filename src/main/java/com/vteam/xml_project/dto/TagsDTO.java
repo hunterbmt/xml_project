@@ -8,7 +8,7 @@ package com.vteam.xml_project.dto;
  *
  * @author phitt60230
  */
-public class TagsDTO {
+public class TagsDTO extends BaseDTO{
     private Integer tagId;
     private String tagName;
     private String tagDescription;

@@ -8,7 +8,7 @@ package com.vteam.xml_project.dto;
  *
  * @author phitt60230
  */
-public class ProductDTO {
+public class ProductDTO extends BaseDTO{
 
     private String name;
     private String description;

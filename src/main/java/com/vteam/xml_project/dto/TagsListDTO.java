@@ -11,7 +11,7 @@ import java.util.List;
  *
  * @author phitt60230
  */
-public class TagsListDTO {
+public class TagsListDTO extends BaseDTO{
     private List<TagsDTO> tagsList;
     
     public TagsListDTO() {
