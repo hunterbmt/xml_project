@@ -17,7 +17,6 @@
         <link href="/resources/css/bootstrap-responsive.css" rel="stylesheet">
         <link href="/resources/css/font-awesome.css" rel="stylesheet">
         <link href="/resources/css/product.css" rel="stylesheet">
-        <link href="/resources/css/user.css" rel="stylesheet">
         <script src="/resources/js/lib/jquery.js"></script>
         <script src="/resources/js/lib/jquery.url.js"></script>
         <script src="/resources/js/lib/jquery-ui.js"></script>
@@ -153,8 +152,8 @@
             </div>
         
         <div class="container" id="user_detail" style="position: absolute;width:60%;margin-left:100px;display: none">
-            <div class="alert alert-success" id="updateResult1" style="display: none;color: red;font-size: large;z-index: 9002">
-                <button type="button" class="close"></button>
+            <div class="alert" id="updateResult1" style="display: none;z-index: 9002">
+                
             </div>
             <div class="tabbable tabs-left">
               <ul class="nav nav-tabs">
@@ -178,6 +177,8 @@
                                 <input type="text" id="user_address"  class="input-xlarge">
                                 <label>Birthday</label>
                                 <input type="text" id="user_birthday" class="input-xlarge">
+                                <label>Balance</label>
+                                <input type="text" id="user_balance" class="input-xlarge" readonly="true">
                                 <div class="row" style="display: inline;margin-left: 0px" >
                                     <button type='button' class="btn btn-primary" onclick="updateInfo()">Update</button>
                                 </div>
@@ -205,4 +206,3 @@
         </div>
     </body>
 </html>
-

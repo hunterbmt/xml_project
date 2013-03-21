@@ -19,7 +19,8 @@ function login() {
                     $('#fat-menu').hide();
                     $('#quickLogin').hide();
                     $('#loginResult').html('<a class="btn btn-primary" id="email" style="margin-left:10px;margin-top:2px;" href="#" onclick="showUserInfo()"><i class="icon-user icon-white" ></i>' + result.email + ' </a>'
-                                            +'<a class="btn btn-primary" id="logout" style="margin-left:10px;margin-top:2px;" href="#" onclick="logout()"><i class="icon-off icon-white" ></i></a>').show();
+                            + '<a class="btn btn-primary" id="email" style="margin-left:10px;margin-top:2px;" href="#"><i class="icon-shopping-cart icon-white" ></i>' + result.balance + ' </a>'
+                            + '<a class="btn btn-primary" id="logout" style="margin-left:10px;margin-top:2px;" href="#" onclick="logout()"><i class="icon-off icon-white" ></i></a>').show();
 
                 }
                 else {
@@ -28,7 +29,7 @@ function login() {
             });
 
 }
-function logout(){
+function logout() {
     var email = document.getElementById("user_username").value;
     vteam_http.makeHttpRequest("/user/logout",
             {email: email},
@@ -53,7 +54,7 @@ function changeLogin() {
     $("#login").show();
     $("#sigin").hide();
 }
-function displayunLogin(){
+function displayunLogin() {
     $('#loginResult').hide();
     $('#fat-menu').show();
 }
@@ -64,7 +65,7 @@ function updateInfo() {
     var format_date = "MM/dd/yyyy";
     vteam_http.init();
     vteam_http.makeHttpRequest("/user/update",
-            {   address: address,
+            {address: address,
                 phone: phone,
                 birthday: birthday,
                 formatDate: format_date},
@@ -72,23 +73,27 @@ function updateInfo() {
             function(result) {
                 if (result.status == "success")
                 {
-                    //$("#updateResult").show();
-                    $("#updateResult1").html(result.status);
-                    $("#updateResult1").hide().first().show('slow');
-                    setTimeout(showNotifications, 5000);
-
+                   $("#updateResult1").html("<font style='color: green;font-size: large;'><strong>Well done! !</strong> You successfully updated.</font>");
+                    $("#updateResult1").hide().first().show('fast');
+                    setTimeout(showNotifications, 3000);
+                } else if (result.status == "unlogin") {
+                    $("#updateResult1").html("<font style='color: black;font-size: large;'><strong>Sesstion Times out! !</strong> Please log in again.</font>");
+                    $("#updateResult1").hide().first().show('fast');
+                    setTimeout(showNotifications, 3000);
                 } else {
-                    alert("error");
+                    $("#updateResult1").html("<font style='color: red;font-size: large;'><strong>Oh snap!!</strong> Change a few things up and try submitting again.</font>");
+                    $("#updateResult1").hide().first().show('fast');
+                    setTimeout(showNotifications, 3000);
                 }
             });
 
 }
-function showNotifications(){
-    $("#updateResult1:visible").hide('fast', function(){
+function showNotifications() {
+    $("#updateResult1:visible").hide('fast', function() {
         $(this).remove();
         $(".#updateResult1").first().show('fast');
-        if($("#updateResult1").length > 0){
-           setTimeout(showNotifications, 3000);
+        if ($("#updateResult1").length > 0) {
+            setTimeout(showNotifications, 3000);
         }
     });
 }
@@ -96,49 +101,56 @@ function updatePassword() {
     var ollPass = document.getElementById("curr_password").value;
     var newPass = document.getElementById("newpassword").value;
     vteam_http.makeHttpRequest("/user/changePassword",
-            {   currentPass: ollPass,
+            {currentPass: ollPass,
                 newPass: newPass},
     "POST",
             function(result) {
                 if (result.status == "success")
                 {
-                    $("#updateResult1").html(result.status);
-                     $("#updateResult1").hide().first().show('fast');
+                    $("#updateResult1").html("<font style='color: green;font-size: large;'><strong>Well done! !</strong> You successfully updated.</font>");
+                    $("#updateResult1").hide().first().show('fast');
+                    setTimeout(showNotifications, 3000);
+                } else if (result.status == "unlogin") {
+                    $("#updateResult1").html("<font style='color: black;font-size: large;'><strong>Sesstion Times out! !</strong> Please log in again.</font>");
+                    $("#updateResult1").hide().first().show('fast');
                     setTimeout(showNotifications, 3000);
                 } else {
-                    alert("error");
+                    $("#updateResult1").html("<font style='color: red;font-size: large;'><strong>Oh snap!!</strong> Change a few things up and try submitting again.</font>");
+                    $("#updateResult1").hide().first().show('fast');
+                    setTimeout(showNotifications, 3000);
                 }
             });
 
 }
 function showUserInfo() {
-     vteam_http.makeHttpRequest("/user/get_user_by_email",{},
-      "POST",
+    vteam_http.makeHttpRequest("/user/get_user_by_email", {},
+            "POST",
             function(result) {
                 if (result.status == "success")
                 {
                     $("#product").hide();
                     $("#user_detail").show();
-                    document.getElementById('user_email').value=result.email;
-                    document.getElementById('user_fullname').value=result.fullname;
+                    document.getElementById('user_email').value = result.email;
+                    document.getElementById('user_fullname').value = result.fullname;
                 } else {
                     alert("error");
                 }
             });
 }
 function loadUserInfo() {
-    vteam_http.makeHttpRequest("/user/get_user_by_email",{},
-                   "POST",
+    vteam_http.makeHttpRequest("/user/get_user_by_email", {},
+            "POST",
             function(result) {
                 if (result.status == "success")
                 {
                     $('#fat-menu').hide();
                     $('#quickLogin').hide();
                     $('#loginResult').html('<a class="btn btn-primary" id="email" style="margin-left:10px;margin-top:2px;" href="#" onclick="showUserInfo()"><i class="icon-user icon-white" ></i>' + result.email + ' </a>'
-                                            +'<a class="btn btn-primary" id="logout" style="margin-left:10px;margin-top:2px;" href="#" onclick="logout()"><i class="icon-off icon-white" ></i></a>').show();
-                }else if(result.status=="unlogin") {
+                            + '<a class="btn btn-primary" id="email" style="margin-left:10px;margin-top:2px;" href="#"><i class="icon-shopping-cart icon-white" ></i>' + result.balance + ' </a>'
+                            + '<a class="btn btn-primary" id="logout" style="margin-left:10px;margin-top:2px;" href="#" onclick="logout()"><i class="icon-off icon-white" ></i></a>').show();
+                } else if (result.status == "unlogin") {
                     displayunLogin()
-                }else {
+                } else {
                     alert("error");
                 }
             });
