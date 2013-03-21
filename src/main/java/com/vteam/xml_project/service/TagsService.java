@@ -30,11 +30,12 @@ public class TagsService {
 
     @Transactional
     public TagsListDTO getTagsByProductId(int product_id) {
+        TagsListDTO listTags = new TagsListDTO();
         try {
 
             Set<Tags> dbTags = productDAO.getProductById(product_id).getTagses();
             TagsDTO td;
-            TagsListDTO listTags = new TagsListDTO();
+
             List<TagsDTO> tmpListTags = new ArrayList<TagsDTO>();
 
             for (Tags t : dbTags) {
@@ -45,12 +46,13 @@ public class TagsService {
                 tmpListTags.add(td);
             }
             listTags.setTagsList(tmpListTags);
-            return listTags;
+            listTags.setStatus("success");
         } catch (HibernateException ex) {
-            log.error(ex);
-            return null;
+            log.error(ex.getStackTrace());
+            listTags.setStatus("error");
+            listTags.setMsg("Have some errors. Try again");
         }
-
+        return listTags;
     }
 //    @Transactional
 //    public ProductListDTO getProductList(int page, int pageSize) {

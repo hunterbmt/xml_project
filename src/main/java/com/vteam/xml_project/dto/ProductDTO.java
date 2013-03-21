@@ -8,25 +8,28 @@ package com.vteam.xml_project.dto;
  *
  * @author phitt60230
  */
-public class ProductDTO extends BaseDTO{
+public class ProductDTO extends BaseDTO {
 
     private String name;
     private String description;
     private String image;
     private int id;
-    private Integer bid_id;
+    private Integer bidId;
     private String categoryName;
     private double minPrice;
     private double maxPrice;
     private String imageName;
+    private int bidCost;
 
-    public Integer getBid_id() {
-        return bid_id;
+    public Integer getBidId() {
+        return bidId;
     }
 
-    public void setBid_id(Integer bid_id) {
-        this.bid_id = bid_id;
+    public void setBidId(Integer bidId) {
+        this.bidId = bidId;
     }
+
+    
 
     public int getId() {
         return id;
@@ -108,5 +111,13 @@ public class ProductDTO extends BaseDTO{
 
     public void setImageName(String imageName) {
         this.imageName = imageName;
+    }
+
+    public int getBidCost() {
+        return bidCost;
+    }
+
+    public void setBidCost(int bidCost) {
+        this.bidCost = bidCost;
     }
 }

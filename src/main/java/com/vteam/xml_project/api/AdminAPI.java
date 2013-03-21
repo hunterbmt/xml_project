@@ -13,14 +13,10 @@ import com.vteam.xml_project.dto.ProductListDTO;
 import com.vteam.xml_project.service.AdminService;
 import com.vteam.xml_project.service.CategoryService;
 import com.vteam.xml_project.service.ProductService;
-import com.vteam.xml_project.util.DateUtil;
-import java.text.ParseException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.logging.Level;
 import javax.servlet.http.HttpServletRequest;
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,7 +32,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequestMapping(value = "/admin")
 public class AdminAPI {
 
-    private static Logger logger = Logger.getLogger(AdminAPI.class.getName());
     @Autowired
     private UserSession userSession;
     @Autowired
@@ -45,98 +40,47 @@ public class AdminAPI {
     private ProductService productService;
     @Autowired
     private CategoryService categoryService;
-    @Autowired
-    private DateUtil dateUtil;
 
     @RequestMapping(value = "/insert_product", method = RequestMethod.POST)
     public @ResponseBody
-    HashMap<String, Object> insertProduct(
+    ProductDTO insertProduct(
             @RequestParam int categoryId, String productName, String description, String img, double minPrice, double maxPrice) {
-        HashMap<String, Object> returnMap = new HashMap<String, Object>();
         ProductDTO productDTO = adminService.insertProduct(categoryId, productName, description, img, minPrice, maxPrice);
-        if (productDTO == null) {
-            returnMap.put("status", "error");
-        } else {
-            returnMap.put("status", "success_ok");
-            returnMap.put("product", productDTO);
-        }
-        return returnMap;
+        return productDTO;
     }
 
     @RequestMapping(value = "/update_product", method = RequestMethod.POST)
     public @ResponseBody
-    HashMap<String, Object> updateProduct(
+    ProductDTO updateProduct(
             @RequestParam int productId, int categoryId, String productName, String description, String img, double minPrice, double maxPrice) {
-        HashMap<String, Object> returnMap = new HashMap<String, Object>();
-        boolean result = adminService.updateProduct(productId, categoryId, productName, description, img, minPrice, maxPrice);
-        if (!result) {
-            returnMap.put("status", "error");
-        } else {
-            returnMap.put("status", "success_ok");
-        }
-        return returnMap;
+        ProductDTO result = adminService.updateProduct(productId, categoryId, productName, description, img, minPrice, maxPrice);
+        return result;
     }
 
     @RequestMapping(value = "/update_bid", method = RequestMethod.POST)
     public @ResponseBody
-    HashMap<String, Object> updateBid(
+    BidDTO updateBid(
             @RequestParam int bid_id, int product_id,
             String start_date, String end_date, String status,
             int cost) {
-        HashMap<String, Object> returnMap = new HashMap<String, Object>();
-        try {
-
-            BidDTO bDTO = adminService.updateBid(bid_id, product_id,
-                    dateUtil.parseFromString(start_date, "MM/dd/yyyy HH:mm"),
-                    dateUtil.parseFromString(end_date, "MM/dd/yyyy HH:mm"),
-                    status, cost);
-            if (bDTO == null) {
-                returnMap.put("status", "error");
-            } else {
-                returnMap.put("status", "success_ok");
-                returnMap.put("bid", bDTO);
-            }
-        } catch (ParseException ex) {
-            java.util.logging.Logger.getLogger(AdminAPI.class.getName()).log(Level.SEVERE, null, ex);
-            returnMap.put("status", "error: " + ex.getMessage());
-        } catch (Exception ex) {
-            java.util.logging.Logger.getLogger(AdminAPI.class.getName()).log(Level.SEVERE, null, ex);
-            returnMap.put("status", "error: " + ex.getMessage());
-        }
-        return returnMap;
+        BidDTO bDTO = adminService.updateBid(bid_id, product_id,
+                start_date, end_date,
+                status, cost);
+        return bDTO;
     }
 
     @RequestMapping(value = "/insert_bid", method = RequestMethod.POST)
     public @ResponseBody
-    HashMap<String, Object> insertBid(
+    BidDTO insertBid(
             @RequestParam int product_id, String start_date,
             String end_date, int cost) {
-        HashMap<String, Object> returnMap = new HashMap<String, Object>();
-        try {
-            Date currDate = new Date();
-            Date nextDate = new Date(currDate.getTime() + 3600 * 24);
-            
-            start_date = (start_date.trim().equals("") ? currDate.toString() : start_date.trim());
-            end_date = (end_date.trim().equals("") ? nextDate.toString() : end_date.trim());
-            BidDTO bDTO = adminService.insertBid(product_id,
-                    dateUtil.parseFromString(start_date, "MM/dd/yyyy HH:mm"),
-                    dateUtil.parseFromString(end_date, "MM/dd/yyyy HH:mm"),
-                    cost);
-            if (bDTO == null) {
-                returnMap.put("status", "error");
-            } else {
-                returnMap.put("status", "success_ok");
-                returnMap.put("bid", bDTO);
-            }
+        Date currDate = new Date();
+        Date nextDate = new Date(currDate.getTime() + 3600 * 24);
 
-        } catch (ParseException ex) {
-            java.util.logging.Logger.getLogger(AdminAPI.class.getName()).log(Level.SEVERE, null, ex);
-            returnMap.put("status", "error: " + ex.getMessage());
-        } catch (Exception ex) {
-            java.util.logging.Logger.getLogger(AdminAPI.class.getName()).log(Level.SEVERE, null, ex);
-            returnMap.put("status", "error: " + ex.getMessage());
-        }
-        return returnMap;
+        start_date = (start_date.trim().equals("") ? currDate.toString() : start_date.trim());
+        end_date = (end_date.trim().equals("") ? nextDate.toString() : end_date.trim());
+        BidDTO bDTO = adminService.insertBid(product_id, start_date, end_date, cost);
+        return bDTO;
     }
 
     @RequestMapping(value = "/getProductNameList")

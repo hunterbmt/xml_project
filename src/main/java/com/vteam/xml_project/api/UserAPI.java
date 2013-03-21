@@ -6,9 +6,7 @@ package com.vteam.xml_project.api;
 
 import com.vteam.xml_project.controller.UserSession;
 import com.vteam.xml_project.dto.UserDTO;
-import com.vteam.xml_project.hibernate.orm.Users;
 import com.vteam.xml_project.service.UserService;
-import com.vteam.xml_project.util.DateUtil;
 import com.vteam.xml_project.util.StringUtil;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
@@ -35,12 +33,9 @@ public class UserAPI {
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public @ResponseBody
     HashMap<String, Object> login(
-            @RequestParam String email, String password) throws NoSuchAlgorithmException {
+            @RequestParam String email, String password) {
         HashMap<String, Object> returnMap = new HashMap<String, Object>();
-        UserDTO user = new UserDTO();
-        user.setEmail(email);
-        user.setPassword(password);
-        boolean result = userService.checkLogin(user);
+        boolean result = userService.checkLogin(email , password);
         if (result) {
             session.put("email", email);
             returnMap.put("email", email);
@@ -125,25 +120,16 @@ public class UserAPI {
 
     @RequestMapping(value = "/get_user_by_email", method = RequestMethod.POST)
     public @ResponseBody
-    HashMap<String, Object> get_user_by_email() {
-        HashMap<String, Object> returnMap = new HashMap<String, Object>();
+    UserDTO get_user_by_email() {
         String email = (String) session.get("email");
+        UserDTO result;
         if (!StringUtil.validString(email)) {
-            returnMap.put("status", "unlogin");
-            return returnMap;
+            result = new UserDTO();
+            result.setStatus("unlogin");
+            return result;
         }
-        UserDTO rs = userService.getUserByEmail(email);
-        if (rs != null) {
-
-            returnMap.put("status", "success");
-            returnMap.put("user_email", rs.getEmail());
-            returnMap.put("user_fullname", rs.getFullname());
-            //returnMap.put("session", session.get("email"));
-        } else {
-            returnMap.put("status", "error");
-            returnMap.put("session", "no");
-        }
-        return returnMap;
+        result = userService.getUserByEmail(email);
+        return result;
     }
 
     @RequestMapping(value = "/changePassword", method = RequestMethod.POST)

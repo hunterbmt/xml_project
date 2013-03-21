@@ -125,6 +125,9 @@
                                         <button type="button" class="btn btn-warning" onclick="insertOrUpdateProduct()">Save</button>
                                         <button type="button" class="btn" onclick="clearProductDetail()">New</button>
                                     </div>
+                                    <div>
+                                        <span class="alert-info hide" id="result_product"></span>
+                                    </div>
                                 </form>
                             </div>
 

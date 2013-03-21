@@ -9,7 +9,6 @@ import com.vteam.xml_project.dto.CategoryListDTO;
 import com.vteam.xml_project.dto.ProductListDTO;
 import com.vteam.xml_project.service.CategoryService;
 import com.vteam.xml_project.service.ProductService;
-import java.util.HashMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

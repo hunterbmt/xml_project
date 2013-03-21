@@ -4,11 +4,9 @@
  */
 package com.vteam.xml_project.controller;
 
-import com.vteam.xml_project.dto.ProductDTO;
 import com.vteam.xml_project.dto.UserDTO;
 import com.vteam.xml_project.hibernate.dao.UserDAO;
 import com.vteam.xml_project.hibernate.orm.Users;
-import com.vteam.xml_project.service.ProductService;
 import com.vteam.xml_project.service.UserService;
 import java.util.HashMap;
 import java.util.Map;
@@ -74,22 +72,6 @@ public class MainController {
     @Transactional
     public ModelAndView keywords(HttpServletRequest request) {
         ModelAndView mav = new ModelAndView("keywords");
-        return mav;
-    }
-
-    @RequestMapping(value = "/user/doLogin")
-    @Transactional
-    public ModelAndView test(HttpServletRequest request) {
-        ModelAndView mav = new ModelAndView("login");
-        UserDTO user = new UserDTO();
-        user.setEmail(request.getParameter("username"));
-        user.setPassword(request.getParameter("password"));
-        boolean rs = userService.checkLogin(user);
-        if (rs) {
-            mav.addObject("uuid", user.getEmail());            
-        } else {
-            mav.addObject("uuid", "-1");
-        }
         return mav;
     }
 

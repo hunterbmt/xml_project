@@ -7,7 +7,7 @@ function loadAndDisplayCategory() {
             'GET',
             function(result) {
                 if (result.status == 'success') {
-                    displayCategory(result.result.categoryList)
+                    displayCategory(result.categoryList)
                     //displaySearchProductByCategoryId(productList)
                 }
             });
@@ -34,9 +34,9 @@ function searchProductByCategory(id) {
             {category_id: id},
     'POST',
             function(result) {
-                if (result.status == 'successSearchProductByCategoryId') {
+                if (result.status == 'success') {
 
-                    displayProduct(result.searchCategoryResult.productList);
+                    displayProduct(result.productList);
                 }
             });
 }

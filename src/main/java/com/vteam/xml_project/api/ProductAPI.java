@@ -25,52 +25,32 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 @RequestMapping(value = "/product")
 public class ProductAPI {
+
     @Autowired
     private UserSession session;
     @Autowired
     private ProductService productService;
-    @Autowired
-    private BidService bidService;
 
     @RequestMapping(value = "/getProductList", method = RequestMethod.POST)
-    public @ResponseBody 
-    HashMap<String, Object> getProductList( 
+    public @ResponseBody
+    ProductListDTO getProductList(
             @RequestParam int page, int pageSize) {
-        HashMap<String, Object> returnMap = new HashMap<String, Object>();
-        
-        ProductListDTO product_result = productService.getProductList(page,pageSize);
-        if (product_result != null) {
-            returnMap.put("status", "success");
-            returnMap.put("product_result", product_result);
-        } else {
-            returnMap.put("status", "error");
-            returnMap.put("msg", "Cannot get");
-        }
-        return returnMap;
-        //return result;
-    } 
-    
-    @RequestMapping(value = "/searchProduct", method = RequestMethod.POST)
-    public @ResponseBody 
-    HashMap<String, Object> getSearchProductList( 
-            @RequestParam String txtSearch) {
-        HashMap<String, Object> returnMap = new HashMap<String, Object>();
-        
-        ProductListDTO search_result = productService.searchProduct(txtSearch);
-        if (search_result != null) {
-            returnMap.put("status", "success_search");
-            returnMap.put("search_result", search_result);
-        } else {
-            returnMap.put("status", "error");
-            returnMap.put("msg", "Cannot get");
-        }
-        return returnMap;
+        ProductListDTO productResult = productService.getProductList(page, pageSize);
+        return productResult;
         //return result;
     }
-    
+
+    @RequestMapping(value = "/searchProduct", method = RequestMethod.POST)
+    public @ResponseBody
+    ProductListDTO getSearchProductList(
+            @RequestParam String txtSearch) {
+        ProductListDTO result = productService.searchProduct(txtSearch);
+        return result;
+    }
+
     @RequestMapping(value = "/searchProductByTags", method = RequestMethod.POST)
-    public @ResponseBody 
-    HashMap<String, Object> searchProductByTags( 
+    public @ResponseBody
+    HashMap<String, Object> searchProductByTags(
             @RequestParam int tags_id) {
         HashMap<String, Object> returnMap = new HashMap<String, Object>();
         ProductDTO p = productService.getProductById(tags_id);
@@ -83,23 +63,14 @@ public class ProductAPI {
         }
         return returnMap;
     }
-    
+
     @RequestMapping(value = "/getProductById", method = RequestMethod.POST)
-    public @ResponseBody 
-    HashMap<String, Object> getProductById( 
+    public @ResponseBody
+    ProductDTO getProductById(
             @RequestParam int product_id) {
-        HashMap<String, Object> returnMap = new HashMap<String, Object>();
-        
-        ProductDTO p = productService.getProductById(product_id);
-        BidDTO bid = bidService.getBidByID(p.getBid_id());
-        if (p != null) {
-            returnMap.put("status", "success");
-            returnMap.put("product_detail", p);
-            returnMap.put("bid_cost", bid.getCost());
-        } else {
-            returnMap.put("status", "error");
-            returnMap.put("msg", "Cannot get");
-        }
-        return returnMap;
-    } 
+
+        ProductDTO result = productService.getProductById(product_id);
+
+        return result;
+    }
 }

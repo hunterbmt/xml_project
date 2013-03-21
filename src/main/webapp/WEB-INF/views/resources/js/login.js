@@ -8,7 +8,6 @@ function login() {
     var password = document.getElementById("user_password").value;
 
 
-    vteam_http.init();
     vteam_http.makeHttpRequest("/user/login",
             {email: email,
                 password: password},
@@ -31,7 +30,6 @@ function login() {
 }
 function logout(){
     var email = document.getElementById("user_username").value;
-    vteam_http.init();
     vteam_http.makeHttpRequest("/user/logout",
             {email: email},
     "POST",
@@ -97,7 +95,6 @@ function showNotifications(){
 function updatePassword() {
     var ollPass = document.getElementById("curr_password").value;
     var newPass = document.getElementById("newpassword").value;
-    vteam_http.init();
     vteam_http.makeHttpRequest("/user/changePassword",
             {   currentPass: ollPass,
                 newPass: newPass},
@@ -115,7 +112,6 @@ function updatePassword() {
 
 }
 function showUserInfo() {
-     vteam_http.init();
      vteam_http.makeHttpRequest("/user/get_user_by_email",{},
       "POST",
             function(result) {
@@ -123,15 +119,14 @@ function showUserInfo() {
                 {
                     $("#product").hide();
                     $("#user_detail").show();
-                    document.getElementById('user_email').value=result.user_email;
-                    document.getElementById('user_fullname').value=result.user_fullname;
+                    document.getElementById('user_email').value=result.email;
+                    document.getElementById('user_fullname').value=result.fullname;
                 } else {
                     alert("error");
                 }
             });
 }
 function loadUserInfo() {
-    vteam_http.init();
     vteam_http.makeHttpRequest("/user/get_user_by_email",{},
                    "POST",
             function(result) {
@@ -139,7 +134,7 @@ function loadUserInfo() {
                 {
                     $('#fat-menu').hide();
                     $('#quickLogin').hide();
-                    $('#loginResult').html('<a class="btn btn-primary" id="email" style="margin-left:10px;margin-top:2px;" href="#" onclick="showUserInfo()"><i class="icon-user icon-white" ></i>' + result.user_email + ' </a>'
+                    $('#loginResult').html('<a class="btn btn-primary" id="email" style="margin-left:10px;margin-top:2px;" href="#" onclick="showUserInfo()"><i class="icon-user icon-white" ></i>' + result.email + ' </a>'
                                             +'<a class="btn btn-primary" id="logout" style="margin-left:10px;margin-top:2px;" href="#" onclick="logout()"><i class="icon-off icon-white" ></i></a>').show();
                 }else if(result.status=="unlogin") {
                     displayunLogin()

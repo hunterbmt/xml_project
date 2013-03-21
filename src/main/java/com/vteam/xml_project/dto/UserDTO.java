@@ -4,7 +4,6 @@
  */
 package com.vteam.xml_project.dto;
 
-import java.io.Serializable;
 import java.util.Date;
 
 /**

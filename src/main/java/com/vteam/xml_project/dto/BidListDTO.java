@@ -12,19 +12,20 @@ import java.util.List;
  * @author Crick
  */
 public class BidListDTO extends BaseDTO{
-    private List<BidDTO> list;
+    private List<BidDTO> bidList;
 
     public BidListDTO() {
-        this.list = new ArrayList<BidDTO>();
+        this.bidList = new ArrayList<BidDTO>();
     }
 
-    public List<BidDTO> getLists() {
-        return list;
+    public List<BidDTO> getBidList() {
+        return bidList;
     }
 
-    public void setLists(List<BidDTO> list) {
-        this.list = list;
+    public void setBidList(List<BidDTO> bidList) {
+        this.bidList = bidList;
     }
+
     
     
 }

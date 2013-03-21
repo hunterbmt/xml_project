@@ -9,7 +9,7 @@ function loadAndDisplayProduct(page, page_size) {
     'POST',
             function(result) {
                 if (result.status == 'success') {
-                    displayProduct(result.product_result.productList);
+                    displayProduct(result.productList);
                 }
             });
 }
@@ -23,7 +23,7 @@ function searchProduct() {
             function(result) {
                 if (result.status == 'success_search') {
 
-                    displaySearchProduct(result.search_result.productList)
+                    displaySearchProduct(result.productList)
                     $('#search_product_list').show();
                 }
             });
@@ -73,7 +73,7 @@ function doBid(_id) {
 
     });
 }
-function displayProductDetail(product, cost) {
+function displayProductDetail(product) {
     var html = '';
 
 
@@ -91,9 +91,9 @@ function displayProductDetail(product, cost) {
     html += '<div class="price"><div class="price_view">'
     html += '<div class="v6Price mTop10" align="center">'
     html += '<span id="current_price">$60,000</span></div>'
-    html += '<div class="v7inlinetype" align="center"><span id="bid_cost">'+ cost + '</span> Nils/bid</div>'
+    html += '<div class="v7inlinetype" align="center"><span id="bid_cost">'+ product.bidCost + '</span> Nils/bid</div>'
     html += '<div class="v6BuyNow">'
-    html += '<a class=" fixPng" href="javascript:doBid(' + product.bid_id + ')"></a></div>'
+    html += '<a class=" fixPng" href="javascript:doBid(' + product.bidId + ')"></a></div>'
     html += "</div></div>"
 
     html += '<div class="v6BorderBot pTop5"><div class="v6Timer">'
@@ -129,7 +129,7 @@ function view_product_detail(pid) {
             function(result) {
                 if (result.status == "success")
                 {
-                    displayProductDetail(result.product_detail, result.bid_cost)
+                    displayProductDetail(result)
                 } else {
                     alert("error");
                 }
@@ -186,7 +186,7 @@ function loadProductTags(id) {
             function(result) {
                 if (result.status == "success")
                 {
-                    displayProductTags(result.result.tagsList);
+                    displayProductTags(result.tagsList);
                 } else {
                     alert("error");
                 }

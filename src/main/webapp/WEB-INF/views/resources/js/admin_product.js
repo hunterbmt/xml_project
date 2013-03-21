@@ -13,7 +13,7 @@ function loadProductList(page,page_size){
     'POST',
             function(result) {
                 if (result.status == 'success') {
-                    displayProduct(result.product_result.productList);                    
+                    displayProduct(result.productList);                    
                 }
             });
 }
@@ -69,8 +69,22 @@ function insertOrUpdateProduct() {
     }
 }
 function callback(result) {
-    alert(result);
-    clearProductDetail()
+    if (result.status === 'success') {
+        $('#result_product').html('Successful !').show();
+        $(function() {
+            setTimeout(function() {
+                $("#result_product").hide('blind', {}, 400)
+            }, 2000);
+        });
+    } else {
+        $('#result_product').html(result.msg).show();
+        $(function() {
+            setTimeout(function() {
+                $("#result_product").hide('blind', {}, 400)
+            }, 2000);
+        });
+    }
+    clearProductDetail();
 }
 function clearProductDetail() {
     $("#product_id").val('');
@@ -86,7 +100,7 @@ function getProductDetail(id) {
     vteam_http.makeHttpRequest('/product/getProductById', {product_id: id}, 'POST',
             function(result) {
                 if (result.status == "success") {
-                    displayProductDetail(result.product_detail);
+                    displayProductDetail(result);
                 }
                 else {
                     alert(result.status);

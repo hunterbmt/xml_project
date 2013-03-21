@@ -12,9 +12,10 @@ import com.vteam.xml_project.hibernate.dao.ProductDAO;
 import com.vteam.xml_project.hibernate.dao.UserDAO;
 import com.vteam.xml_project.hibernate.orm.Bids;
 import com.vteam.xml_project.hibernate.orm.Product;
-import com.vteam.xml_project.hibernate.orm.UserPayment;
 import com.vteam.xml_project.hibernate.orm.Users;
+import com.vteam.xml_project.util.DateUtil;
 import java.text.DecimalFormat;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -39,7 +40,9 @@ public class BidService {
     private ProductDAO productDAO;
     @Autowired
     private UserDAO userDAO;
-    private Bids dbBid;
+    @Autowired
+    private DateUtil dateUtil;
+
     private static long BID_DURATION = (long) 35.00;
 
     private List<BidDTO> getTmpList(List<Bids> bidList) {
@@ -72,10 +75,11 @@ public class BidService {
 
     @Transactional
     public BidDTO getBidByID(Integer _id) {
+        BidDTO bid = new BidDTO();
         try {
-            dbBid = bidDAO.getBidById(_id);
+            Bids dbBid = bidDAO.getBidById(_id);
 
-            BidDTO bid = new BidDTO();
+
             Integer uuid = dbBid.getLastUserid();
             bid.setId(dbBid.getId());
             bid.setProduct_name(dbBid.getProduct().getProductName());
@@ -93,70 +97,72 @@ public class BidService {
             } else {
                 bid.setLast_username("None");
             }
+            bid.setStatus("success");
 
-            return bid;
         } catch (HibernateException ex) {
             log.error(ex);
+            bid.setStatus("success");
+            bid.setMsg("Have some errors. Try again");
         }
-        return null;
+        return bid;
     }
 
     @Transactional
-    public BidListDTO getBidsByStartDate(Date _date) {
+    public BidListDTO getBidsByStartDate(String dateString, String formatStr) {
+        BidListDTO list = new BidListDTO();
         try {
-            BidListDTO list = new BidListDTO();
-            List<Bids> bidList = bidDAO.getBidsByStartDate(_date);
-            list.setLists(getTmpList(bidList));
-            return list;
+            Date startDate = dateUtil.parseFromString(dateString, formatStr);
+            List<Bids> bidList = bidDAO.getBidsByStartDate(startDate);
+            list.setBidList(getTmpList(bidList));
+            list.setStatus("success");
         } catch (HibernateException he) {
             log.error(he);
-        } catch (NullPointerException ne) {
-            log.error(ne);
-        } catch (Exception ex) {
+            list.setStatus("error");
+            list.setMsg("Have some errors. Try again");
+        } catch(ParseException ex){
             log.error(ex);
+            list.setStatus("error");
+            list.setMsg("Wrong date time format");
         }
-        return null;
+        return list;
     }
 
     @Transactional
     public BidListDTO getBidsList(int page, int page_size) {
+        BidListDTO list = new BidListDTO();
         try {
-            BidListDTO list = new BidListDTO();
             List<Bids> bidList = bidDAO.getBidsList(page, page_size);
-            list.setLists(getTmpList(bidList));
-            return list;
+            list.setBidList(getTmpList(bidList));
+            list.setStatus("success");
         } catch (HibernateException he) {
             log.error(he);
-        } catch (NullPointerException ne) {
-            log.error(ne);
-        } catch (Exception ex) {
-            log.error(ex);
+            list.setStatus("error");
+            list.setMsg("Have some errors. Try again");
         }
-        return null;
+        return list;
     }
 
     @Transactional
-    public boolean createNewBid(BidDTO newBid) {
-        boolean success = true;
+    public BidDTO createNewBid(int productID,String startDateStr,String formatStr) {
+        BidDTO bidDTO = new BidDTO();
         try {
-            Product product = productDAO.getProductById(newBid.getProduct_id());
-            dbBid = new Bids(
-                    product,  newBid.getStart_date(),
-                    newBid.getEnd_date(), newBid.getCost()
-                    );
+            Product product = productDAO.getProductById(productID);
+            Date startDate = dateUtil.parseFromString(startDateStr,formatStr);
+            Bids dbBid = new Bids(
+                    product, startDate,null, null);
             dbBid.setStatus(Bids.Status.UNCOMPLETED);
             bidDAO.save(dbBid);
-        } catch (NullPointerException ex) {
-            log.error(ex);
-            success = false;
+            bidDTO.setStatus("success");
         } catch (HibernateException ex) {
             log.error(ex);
-            success = false;
-        } catch (Exception ex) {
+            bidDTO.setStatus("error");
+            bidDTO.setMsg("Have some errors. Try again");
+        } catch (ParseException ex) {
             log.error(ex);
-            success = false;
+            bidDTO.setStatus("error");
+            bidDTO.setMsg("Wrong date time formate");
         }
-        return success;
+        return bidDTO;
     }
 
     private void update_bid(Bids dbBid, Date current_date, Integer uuid) {
@@ -211,54 +217,53 @@ public class BidService {
         }
     }
 
-    @Transactional
-    public BidListDTO getBidsFromDate(Date parseDate) {
+    private BidListDTO getBidsFromDate(Date parseDate) {
+        BidListDTO list = new BidListDTO();
         try {
-            BidListDTO list = new BidListDTO();
             List<Bids> bidList = bidDAO.getBidsFromDate(parseDate);
-            list.setLists(getTmpList(bidList));
-            return list;
+            list.setBidList(getTmpList(bidList));
+            list.setStatus("success");
         } catch (HibernateException he) {
             log.error(he);
-        } catch (NullPointerException ne) {
-            log.error(ne);
-        } catch (Exception ex) {
-            log.error(ex);
+            list.setStatus("error");
+            list.setMsg("Have some errors. Try again");
         }
-        return null;
+        return list;
+    }
+    
+    @Transactional
+    public BidListDTO getUpcommingBid(){
+        return getBidsFromDate(dateUtil.getCurrentDate());
     }
 
     @Transactional
-    public BidListDTO getOngoingBids(Date curDate) {
+    public BidListDTO getOngoingBids() {
+        BidListDTO list = new BidListDTO();
         try {
-            BidListDTO list = new BidListDTO();
-            List<Bids> bidList = bidDAO.getOngoingBids(curDate);
-            list.setLists(getTmpList(bidList));
-            return list;
+            List<Bids> bidList = bidDAO.getOngoingBids(dateUtil.getCurrentDate());
+            list.setBidList(getTmpList(bidList));
+            list.setStatus("success");
         } catch (HibernateException he) {
             log.error(he);
-        } catch (NullPointerException ne) {
-            log.error(ne);
-        } catch (Exception ex) {
-            log.error(ex);
+            list.setStatus("error");
+            list.setMsg("Have some errors. Try again");
         }
-        return null;
+        return list;
     }
 
     @Transactional
     public BidListDTO getCompletedBids() {
+        BidListDTO list = new BidListDTO();
         try {
-            BidListDTO list = new BidListDTO();
+
             List<Bids> bidList = bidDAO.getCompleteBids();
-            list.setLists(getTmpList(bidList));
-            return list;
+            list.setBidList(getTmpList(bidList));
+            list.setStatus("success");
         } catch (HibernateException he) {
             log.error(he);
-        } catch (NullPointerException ne) {
-            log.error(ne);
-        } catch (Exception ex) {
-            log.error(ex);
+            list.setStatus("error");
+            list.setMsg("Have some errors. Try again");
         }
-        return null;
+        return list;
     }
 }

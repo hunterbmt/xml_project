@@ -35,15 +35,15 @@ public class Product implements java.io.Serializable {
         AVAILABLE, UNAVAILABLE, DELETE;
     }
     private Integer id;
-    private Integer bid_id;
+    private Integer bidId;
 
     @Column(name = "bid_id", nullable = true)
-    public Integer getBid_id() {
-        return bid_id;
+    public Integer getBidId() {
+        return bidId;
     }
 
-    public void setBid_id(Integer bid_id) {
-        this.bid_id = bid_id;
+    public void setBidId(Integer bid_id) {
+        this.bidId = bid_id;
     }
     private Category category;
     private String productName;

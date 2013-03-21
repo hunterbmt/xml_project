@@ -23,9 +23,9 @@ function bid_details(bid_id) {
                 _id: bid_id
             },
     "POST",
-            function(data) {
-                if (data.status === "success") {
-                    displayBidDetails(data.bid);
+            function(result) {
+                if (result.status === "success") {
+                    displayBidDetails(result);
                 }
             }
     );
@@ -74,7 +74,7 @@ function insertOrUpdateBid() {
 }
 function callback(result) {
 
-    if (result.status !== 'error') {
+    if (result.status === 'success') {
         $('#result_IU_bid').html('Successful !').show();
         $(function() {
             setTimeout(function() {
@@ -85,7 +85,7 @@ function callback(result) {
         disableSave();
         update_lists();
     } else {
-        $('#result_IU_bid').html('Error !').show();
+        $('#result_IU_bid').html(result.msg).show();
         $(function() {
             setTimeout(function() {
                 $("#result_IU_bid").hide('blind', {}, 400)
@@ -151,9 +151,9 @@ function _displayOngoingBid() {
             {
             },
             "POST",
-            function(data) {
-                if (data.status === "success") {
-                    displayOngoingBid(data.ongoing_bid_list.lists);
+            function(result) {
+                if (result.status === "success") {
+                    displayOngoingBid(result.bidList);
 
                 }
             }
@@ -189,9 +189,9 @@ function _displayUpcomingBid() {
             {
             },
             "POST",
-            function(data) {
-                if (data.status === "success") {
-                    displayUpcomingBid(data.upcoming_bid_list.lists);
+            function(result) {
+                if (result.status === "success") {
+                    displayUpcomingBid(result.bidList);
 
                 }
             }
@@ -238,9 +238,9 @@ function _displayCompletedBids() {
             {
             },
             "POST",
-            function(data) {
-                if (data.status === "success") {
-                    displayCompletedBids(data.completed_bid_list.lists);
+            function(result) {
+                if (result.status === "success") {
+                    displayCompletedBids(result.bidList);
                 }
             }
     );

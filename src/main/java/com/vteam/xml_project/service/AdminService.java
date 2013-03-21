@@ -12,6 +12,8 @@ import com.vteam.xml_project.hibernate.dao.ProductDAO;
 import com.vteam.xml_project.hibernate.orm.Bids;
 import com.vteam.xml_project.hibernate.orm.Category;
 import com.vteam.xml_project.hibernate.orm.Product;
+import com.vteam.xml_project.util.DateUtil;
+import java.text.ParseException;
 import java.util.Date;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
@@ -33,28 +35,32 @@ public class AdminService {
     private CategoryDAO categoryDAO;
     @Autowired
     private BidDAO bidDAO;
+    @Autowired
+    private DateUtil dateUtil;
 
     @Transactional
     public ProductDTO insertProduct(int categoryId, String productName, String description, String img, double minPrice, double maxPrice) {
+        ProductDTO productDTO = new ProductDTO();;
         try {
             Category category = categoryDAO.getCategoryById(categoryId);
             Product newProduct = new Product(category, productName, description, img, Product.Status.AVAILABLE, minPrice, maxPrice, true);
-            ProductDTO productDTO;
             productDAO.save(newProduct);
-            productDTO = new ProductDTO();
             productDTO.setName(newProduct.getProductName());
             productDTO.setDescription(newProduct.getDescription());
             productDTO.setImage(newProduct.getImage());
-            return productDTO;
+            productDTO.setStatus("success");
         } catch (HibernateException ex) {
             log.error(ex);
-            return null;
+            productDTO.setStatus("error");
+            productDTO.setMsg("Have some errors . Try again");
         }
+        return productDTO;
 
     }
-    
+
     @Transactional
-    public boolean updateProduct(int productId,int categoryId, String productName, String description, String img, double minPrice, double maxPrice) {
+    public ProductDTO updateProduct(int productId, int categoryId, String productName, String description, String img, double minPrice, double maxPrice) {
+        ProductDTO productDTO = new ProductDTO();
         try {
             Product product = productDAO.getProductById(productId);
             Category category = categoryDAO.getCategoryById(categoryId);
@@ -65,63 +71,78 @@ public class AdminService {
             product.setMinPrice(minPrice);
             product.setMaxPrice(maxPrice);
             productDAO.save(product);
-            return true;
+            productDTO.setStatus("success");
         } catch (HibernateException ex) {
             log.error(ex);
-            return false;
+            productDTO.setStatus("error");
+            productDTO.setMsg("Have some errors . Try again");
         }
+        return productDTO;
     }
-    
+
     @Transactional
-    public BidDTO insertBid(int product_id, Date start_date, Date end_date, int cost) {
-        try {            
+    public BidDTO insertBid(int product_id, String startDateStr, String endDateStr, int cost) {
+        BidDTO bidDTO = new BidDTO();
+        try {
+            Date startDate = dateUtil.parseFromString(startDateStr, "MM/dd/yyyy HH:mm");
+            Date endDate = dateUtil.parseFromString(endDateStr, "MM/dd/yyyy HH:mm");
             Product product = productDAO.getProductById(product_id);
-            Bids newBid = new Bids(product, start_date, end_date, Bids.Status.UNCOMPLETED, cost);
+            Bids newBid = new Bids(product, startDate, endDate, Bids.Status.UNCOMPLETED, cost);
             bidDAO.save(newBid);
-            BidDTO bidDTO = new BidDTO();
+
             bidDTO.setId(newBid.getId());
-            bidDTO.setEnd_date(end_date);
+            bidDTO.setEnd_date(endDate);
             bidDTO.setProduct_id(product_id);
             bidDTO.setProduct_name(product.getProductName());
             bidDTO.setStatus(newBid.getStatus().name());
             bidDTO.setCost(cost);
-            
+
             // update bid_id of that product
-            product.setBid_id(newBid.getId());
+            product.setBidId(newBid.getId());
             productDAO.save(product);
-            
+            bidDTO.setStatus("success");
             return bidDTO;
         } catch (HibernateException ex) {
-            log.error(ex);
-            return null;
-        } catch (Exception ex) {
-            log.error(ex);
-            return null;
+            log.error(ex.getStackTrace());
+            bidDTO.setStatus("error");
+            bidDTO.setMsg("Have some errors. Try again");
+        } catch (ParseException ex) {
+            log.error(ex.getStackTrace());
+            bidDTO.setStatus("error");
+            bidDTO.setMsg("Wrong date time format");
         }
+        return bidDTO;
     }
+
     @Transactional
-    public BidDTO updateBid(int bid_id, int product_id, Date start_date, Date end_date, String status, int cost) {
+    public BidDTO updateBid(int bid_id, int product_id, String startDateStr, String endDateStr, String status, int cost) {
+        BidDTO bidDTO = new BidDTO();
         try {
+            Date startDate = dateUtil.parseFromString(startDateStr, "MM/dd/yyyy HH:mm");
+            Date endDate = dateUtil.parseFromString(endDateStr, "MM/dd/yyyy HH:mm");
             Product product = productDAO.getProductById(product_id);
             Bids newBid = bidDAO.getBidById(bid_id);
             newBid.setCost(cost);
             newBid.setProduct(product);
-            newBid.setStartDate(start_date);
-            newBid.setEndDate(end_date);
+            newBid.setStartDate(startDate);
+            newBid.setEndDate(endDate);
             newBid.setStatus(Bids.Status.valueOf(status));
             bidDAO.save(newBid);
-            BidDTO bidDTO = new BidDTO();
-
-            bidDTO.setEnd_date(end_date);
+            bidDTO.setEnd_date(endDate);
             bidDTO.setProduct_id(product_id);
             bidDTO.setProduct_name(product.getProductName());
             bidDTO.setStatus(newBid.getStatus().name());
             bidDTO.setCost(cost);
-
-            return bidDTO;
+            bidDTO.setStatus("success");
         } catch (HibernateException ex) {
-            log.error(ex);
-            return null;
+            log.error(ex.getStackTrace());
+            bidDTO.setStatus("error");
+            bidDTO.setMsg("Have some errors. Try again");
+        }catch (ParseException ex) {
+            log.error(ex.getStackTrace());
+            bidDTO.setStatus("error");
+            bidDTO.setMsg("Wrong date time format");
         }
+        return bidDTO;
     }
 }

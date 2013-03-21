@@ -6,11 +6,12 @@ package com.vteam.xml_project.service;
 
 import com.vteam.xml_project.dto.ProductDTO;
 import com.vteam.xml_project.dto.ProductListDTO;
+import com.vteam.xml_project.hibernate.dao.BidDAO;
 import com.vteam.xml_project.hibernate.dao.ProductDAO;
+import com.vteam.xml_project.hibernate.orm.Bids;
 import com.vteam.xml_project.hibernate.orm.Product;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,13 +28,16 @@ public class ProductService {
     private static Logger log = Logger.getLogger(UserService.class.getName());
     @Autowired
     private ProductDAO productDAO;
+    @Autowired
+    private BidDAO bidDAO;
 
     @Transactional
     public ProductListDTO getProductList(int page, int pageSize) {
+        ProductListDTO list = new ProductListDTO();
         try {
             List<Product> dbProducts = productDAO.getProductList(page, pageSize);
             ProductDTO p;
-            ProductListDTO list = new ProductListDTO();
+
             List<ProductDTO> tmpList = new ArrayList<ProductDTO>();
             for (Product d : dbProducts) {
 
@@ -43,25 +47,28 @@ public class ProductService {
                 p.setImage("/resources/img/product/" + d.getImage());
                 p.setImageName(d.getImage());
                 p.setId(d.getId());
-                p.setBid_id(d.getBid_id());
+                p.setBidId(d.getBidId());
 
                 tmpList.add(p);
             }
             list.setProductList(tmpList);
-            return list;
+            list.setStatus("success");
         } catch (HibernateException ex) {
-            log.error(ex);
-            return null;
+            log.error(ex.getStackTrace());
+            list.setStatus("error");
+            list.setMsg("Have some errors. Try again");
         }
+        return list;
 
     }
 
     @Transactional
     public ProductListDTO searchProduct(String txtSearch) {
+        ProductListDTO list = new ProductListDTO();
         try {
             List<Product> dbProducts = productDAO.searchProduct(txtSearch);
             ProductDTO p;
-            ProductListDTO list = new ProductListDTO();
+
             List<ProductDTO> tmpList = new ArrayList<ProductDTO>();
             for (Product d : dbProducts) {
                 p = new ProductDTO();
@@ -71,37 +78,45 @@ public class ProductService {
                 p.setImage("/resources/img/product/" + d.getImage());
                 p.setImageName(d.getImage());
                 p.setCategoryName(d.getCategory().getCategoryName());
-                p.setBid_id(d.getBid_id());
+                p.setBidId(d.getBidId());
                 tmpList.add(p);
             }
             list.setProductList(tmpList);
-            return list;
+            list.setStatus("success");
         } catch (HibernateException ex) {
-            log.error(ex);
+            log.error(ex.getStackTrace());
+            list.setStatus("error");
+            list.setMsg("Have some errors. Try again");
         }
-        return null;
+        return list;
     }
 
     @Transactional
     public ProductDTO getProductById(int id) {
+        ProductDTO productDTO = new ProductDTO();
         try {
             Product product = productDAO.getProductById(id);
-            ProductDTO p = new ProductDTO();
-            p.setId(product.getId());
-            p.setName(product.getProductName());
-            p.setCategoryName(product.getCategory().getCategoryName());
-            p.setDescription(product.getDescription());
-            p.setMinPrice(product.getMinPrice());
-            p.setMaxPrice(product.getMaxPrice());
-            p.setImage("/resources/img/product/" + product.getImage());
-            p.setImageName(product.getImage());
-            p.setBid_id(product.getBid_id());
-            return p;
+            productDTO.setId(product.getId());
+            productDTO.setName(product.getProductName());
+            productDTO.setCategoryName(product.getCategory().getCategoryName());
+            productDTO.setDescription(product.getDescription());
+            productDTO.setMinPrice(product.getMinPrice());
+            productDTO.setMaxPrice(product.getMaxPrice());
+            productDTO.setImage("/resources/img/product/" + product.getImage());
+            productDTO.setImageName(product.getImage());
+            productDTO.setBidId(product.getBidId());
+
+            Bids bids = bidDAO.getBidById(product.getBidId());
+            productDTO.setBidCost(bids.getCost());
+
+            productDTO.setStatus("success");
 
         } catch (HibernateException ex) {
-            log.error(ex);
+            log.error(ex.getStackTrace());
+            productDTO.setStatus("error");
+            productDTO.setMsg("Have some errors. Try again");
         }
-        return null;
+        return productDTO;
     }
 
     @Transactional
@@ -118,7 +133,7 @@ public class ProductService {
                 pd.setId(d.getId());
                 pd.setDescription(d.getDescription());
                 pd.setImage("/resources/img/product/" + d.getImage());
-                pd.setBid_id(d.getBid_id());
+                pd.setBidId(d.getBidId());
                 tmpList.add(pd);
             }
             list.setProductList(tmpList);
@@ -145,7 +160,7 @@ public class ProductService {
                 pd.setId(d.getId());
                 pd.setDescription(d.getDescription());
                 pd.setImage("/resources/img/product/" + d.getImage());
-                pd.setBid_id(d.getBid_id());
+                pd.setBidId(d.getBidId());
                 tmpList.add(pd);
             }
             list.setProductList(tmpList);
