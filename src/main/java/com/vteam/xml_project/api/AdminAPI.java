@@ -108,4 +108,19 @@ public class AdminAPI {
         }
         return categoryNameList;
     }
+    
+    @RequestMapping(value = "/insert_category", method = RequestMethod.POST)
+    public @ResponseBody
+    CategoryDTO insertCategory(
+            @RequestParam String categoryName, String description) {
+        CategoryDTO categoryDTO = adminService.insertCategory(categoryName,description);
+        return categoryDTO;
+    }
+    @RequestMapping(value = "/insert_product", method = RequestMethod.POST)
+    public @ResponseBody
+    CategoryDTO insertProduct(
+            @RequestParam int categoryId, String description) {
+        CategoryDTO categoryDTO = adminService.updateCategory(categoryId,description);
+        return categoryDTO;
+    }
 }
