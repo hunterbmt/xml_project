@@ -63,16 +63,19 @@ public class Bids implements java.io.Serializable {
         this.status = Status.valueOf(status);
     }
 
-    public Bids(Product product, Date startDate) {
+    public Bids(Product product, Date startDate, Date endDate, Integer cost) {
         this.product = product;
         this.startDate = startDate;
+        this.endDate = endDate;
+        this.cost = cost;
     }
 
-    public Bids(Product product, Date startDate, Date endDate, Status s) {
+    public Bids(Product product, Date startDate, Date endDate, Status s, Integer cost) {
         this.product = product;
         this.startDate = startDate;
         this.endDate = endDate;
         this.status = s;
+        this.cost = cost;
     }
 
     @Enumerated(EnumType.ORDINAL)

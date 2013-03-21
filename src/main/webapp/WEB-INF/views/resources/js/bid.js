@@ -40,13 +40,14 @@ function displayBidDetails(bid) {
     $('#bid_end_date').val(toDateAndTime2(bid.end_date));
     $('#bid_status').val(bid.status);
 
-    $('#product_id').val(bid.product_id);
+    $('#bid_cost').val(bid.cost);
 }
 function insertOrUpdateBid() {
     var id = $("#bid_id").html();
     var p_id = array_keys[array_values.indexOf($("#bid_product_name").val())];
     var start_date = $("#bid_start_date").val();
     var end_date = $("#bid_end_date").val();
+    var cost = $("#bid_cost").val();
     var status = $('#bid_status').val().toUpperCase();
     if ((status !== 'UNCOMPLETED') && (status !== 'COMPLETED'))
     {
@@ -58,14 +59,16 @@ function insertOrUpdateBid() {
                     product_id: p_id,
                     start_date: start_date,
                     end_date: end_date,
-                    status: status
+                    status: status,
+                    cost: cost
                 },
         'POST', callback);
     } else {
         vteam_http.makeHttpRequest("/admin/insert_bid",
                 {product_id: p_id,
                     start_date: start_date,
-                    end_date: end_date},
+                    end_date: end_date,
+                    cost: cost},
         'POST', callback);
     }
 }
@@ -106,6 +109,7 @@ function clearBidDetail(self) {
     $('#bid_start_date').val('');
     $('#bid_end_date').val('');
     $('#bid_status').val('');
+    $('#bid_cost').val('');
     if ($(self).hasClass('newBtn')) {
         enableSave();
     }
@@ -170,7 +174,9 @@ function displayOngoingBid(bidList) {
         cnt += "<td>" + toDateAndTime(bidList[i].last_edit) + "</td>";
         cnt += '<td class="td-actions">';
         cnt += '<a href="javascript:bid_details(';
-        cnt += bidList[i].id + ');" class="btn btn-small"><i class="btn-icon-only icon-stop"></i>';
+        cnt += bidList[i].id + ');" class="btn btn-warning btn-small"><i class="btn-icon-only icon-edit"></i></a>';
+        cnt += '<a href="javascript:bid_remove(';
+        cnt += bidList[i].id + ');" class="btn btn-small"><i class="btn-icon-only icon-remove"></i></a>';
         cnt += "</tr>";
     }
     $("#onGoingBid").html(
@@ -202,8 +208,9 @@ function displayUpcomingBid(bidList) {
         cnt += "<td>" + toDateAndTime(bidList[i].start_date) + "</td>";
         cnt += '<td class="td-actions">';
         cnt += '<a href="javascript:bid_details(';
-        cnt += bidList[i].id + ');" class="btn btn-small"><i class="btn-icon-only icon-stop"></i>';
-        cnt += '</a></td>';
+        cnt += bidList[i].id + ');" class="btn btn-warning btn-small"><i class="btn-icon-only icon-edit"></i></a>';
+        cnt += '<a href="javascript:bid_remove(';
+        cnt += bidList[i].id + ');" class="btn btn-small"><i class="btn-icon-only icon-remove"></i></a>';
         cnt += "</tr>";
     }
     $("#upComingBid").html(cnt);

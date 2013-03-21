@@ -57,7 +57,7 @@ public class BidService {
             tmp.setProduct_id(bid.getProduct().getId());
             tmp.setProduct_name(bid.getProduct().getProductName());
             tmp.setEnd_date(bid.getEndDate());
-
+            tmp.setCost(bid.getCost());
             if (uuid != null) {
                 Users u = userDAO.findUserByUuid(uuid);
                 tmp.setLast_username(u.getFullname());
@@ -86,6 +86,7 @@ public class BidService {
             bid.setEnd_date(dbBid.getEndDate());
             bid.setStatus(dbBid.getStatus().toString());
             bid.setLast_edit(dbBid.getLastEdit());
+            bid.setCost(dbBid.getCost());
             if (uuid != null) {
                 Users u = userDAO.findUserByUuid(uuid);
                 bid.setLast_username(u.getFullname());
@@ -140,8 +141,10 @@ public class BidService {
         try {
             Product product = productDAO.getProductById(newBid.getProduct_id());
             dbBid = new Bids(
-                    product,
-                    newBid.getStart_date());
+                    product,  newBid.getStart_date(),
+                    newBid.getEnd_date(), newBid.getCost()
+                    );
+            dbBid.setStatus(Bids.Status.UNCOMPLETED);
             bidDAO.save(dbBid);
         } catch (NullPointerException ex) {
             log.error(ex);

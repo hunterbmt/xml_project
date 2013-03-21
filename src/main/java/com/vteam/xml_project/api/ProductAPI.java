@@ -5,8 +5,10 @@
 package com.vteam.xml_project.api;
 
 import com.vteam.xml_project.controller.UserSession;
+import com.vteam.xml_project.dto.BidDTO;
 import com.vteam.xml_project.dto.ProductDTO;
 import com.vteam.xml_project.dto.ProductListDTO;
+import com.vteam.xml_project.service.BidService;
 import com.vteam.xml_project.service.ProductService;
 import java.util.HashMap;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +29,8 @@ public class ProductAPI {
     private UserSession session;
     @Autowired
     private ProductService productService;
+    @Autowired
+    private BidService bidService;
 
     @RequestMapping(value = "/getProductList", method = RequestMethod.POST)
     public @ResponseBody 
@@ -87,9 +91,11 @@ public class ProductAPI {
         HashMap<String, Object> returnMap = new HashMap<String, Object>();
         
         ProductDTO p = productService.getProductById(product_id);
+        BidDTO bid = bidService.getBidByID(p.getBid_id());
         if (p != null) {
             returnMap.put("status", "success");
             returnMap.put("product_detail", p);
+            returnMap.put("bid_cost", bid.getCost());
         } else {
             returnMap.put("status", "error");
             returnMap.put("msg", "Cannot get");

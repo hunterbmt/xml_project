@@ -81,52 +81,62 @@ public class AdminAPI {
     public @ResponseBody
     HashMap<String, Object> updateBid(
             @RequestParam int bid_id, int product_id,
-            String start_date, String end_date, String status) {
+            String start_date, String end_date, String status,
+            int cost) {
+        HashMap<String, Object> returnMap = new HashMap<String, Object>();
         try {
-            HashMap<String, Object> returnMap = new HashMap<String, Object>();
+
             BidDTO bDTO = adminService.updateBid(bid_id, product_id,
                     dateUtil.parseFromString(start_date, "MM/dd/yyyy HH:mm"),
                     dateUtil.parseFromString(end_date, "MM/dd/yyyy HH:mm"),
-                    status);
+                    status, cost);
             if (bDTO == null) {
                 returnMap.put("status", "error");
             } else {
                 returnMap.put("status", "success_ok");
                 returnMap.put("bid", bDTO);
             }
-            return returnMap;
         } catch (ParseException ex) {
             java.util.logging.Logger.getLogger(AdminAPI.class.getName()).log(Level.SEVERE, null, ex);
-            return null;
+            returnMap.put("status", "error: " + ex.getMessage());
+        } catch (Exception ex) {
+            java.util.logging.Logger.getLogger(AdminAPI.class.getName()).log(Level.SEVERE, null, ex);
+            returnMap.put("status", "error: " + ex.getMessage());
         }
+        return returnMap;
     }
 
     @RequestMapping(value = "/insert_bid", method = RequestMethod.POST)
     public @ResponseBody
     HashMap<String, Object> insertBid(
-            @RequestParam int product_id,
-            String start_date,
-            String end_date) {
+            @RequestParam int product_id, String start_date,
+            String end_date, int cost) {
+        HashMap<String, Object> returnMap = new HashMap<String, Object>();
         try {
-            HashMap<String, Object> returnMap = new HashMap<String, Object>();
             Date currDate = new Date();
             Date nextDate = new Date(currDate.getTime() + 3600 * 24);
+            
             start_date = (start_date.trim().equals("") ? currDate.toString() : start_date.trim());
             end_date = (end_date.trim().equals("") ? nextDate.toString() : end_date.trim());
             BidDTO bDTO = adminService.insertBid(product_id,
                     dateUtil.parseFromString(start_date, "MM/dd/yyyy HH:mm"),
-                    dateUtil.parseFromString(end_date, "MM/dd/yyyy HH:mm"));
+                    dateUtil.parseFromString(end_date, "MM/dd/yyyy HH:mm"),
+                    cost);
             if (bDTO == null) {
                 returnMap.put("status", "error");
             } else {
                 returnMap.put("status", "success_ok");
                 returnMap.put("bid", bDTO);
             }
-            return returnMap;
+
         } catch (ParseException ex) {
             java.util.logging.Logger.getLogger(AdminAPI.class.getName()).log(Level.SEVERE, null, ex);
-            return null;
+            returnMap.put("status", "error: " + ex.getMessage());
+        } catch (Exception ex) {
+            java.util.logging.Logger.getLogger(AdminAPI.class.getName()).log(Level.SEVERE, null, ex);
+            returnMap.put("status", "error: " + ex.getMessage());
         }
+        return returnMap;
     }
 
     @RequestMapping(value = "/getProductNameList")

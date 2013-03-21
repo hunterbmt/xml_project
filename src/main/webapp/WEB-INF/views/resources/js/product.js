@@ -65,15 +65,15 @@ function doBid(_id) {
     },
     "POST", function(d) {
         if (d.allowed === 'ok') {
-            alert('Successful! ' + d.message);
-            $("#current_price").html(numberWithCommas(d.price) + " VND");
+            alert(d.message);
+            $("#current_price").html(numberWithCommas(d.price) + " VND");            
         } else {
-            alert('Unallowed! ' + d.message);
+            alert(d.message);
         }
 
     });
 }
-function displayProductDetail(product) {
+function displayProductDetail(product, cost) {
     var html = '';
 
 
@@ -91,7 +91,7 @@ function displayProductDetail(product) {
     html += '<div class="price"><div class="price_view">'
     html += '<div class="v6Price mTop10" align="center">'
     html += '<span id="current_price">$60,000</span></div>'
-    html += '<div class="v7inlinetype" align="center">20 nils per bid</div>'
+    html += '<div class="v7inlinetype" align="center"><span id="bid_cost">'+ cost + '</span> Nils/bid</div>'
     html += '<div class="v6BuyNow">'
     html += '<a class=" fixPng" href="javascript:doBid(' + product.bid_id + ')"></a></div>'
     html += "</div></div>"
@@ -129,7 +129,7 @@ function view_product_detail(pid) {
             function(result) {
                 if (result.status == "success")
                 {
-                    displayProductDetail(result.product_detail)
+                    displayProductDetail(result.product_detail, result.bid_cost)
                 } else {
                     alert("error");
                 }

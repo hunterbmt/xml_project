@@ -14,6 +14,7 @@ import com.vteam.xml_project.util.DateUtil;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.logging.Level;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -46,20 +47,29 @@ public class BidAPI {
     HashMap<String, Object> doBid(
             @RequestParam int bid_id) {
         HashMap<String, Object> returnMap = new HashMap<String, Object>();
+        try {
+            //String uuid = (String) userSession.get("uuid");
+            String email = userSession.get("email").toString();
+            UserDTO u = userService.getUserByEmail(email);
+            logger.debug("do_bid: placing a bid, wait for respond ,from uuid :" + u.getId() + " - Name: " + u.getFullname());
 
-        //String uuid = (String) userSession.get("uuid");
-        String email = userSession.get("email").toString();
-        UserDTO u = userService.getUserByEmail(email);
-        logger.debug("do_bid: placing a bid, wait for respond ,from uuid :" + u.getId() + " - Name: " + u.getFullname() );
-
-        double price = bidService.doBid(u, bid_id);
-        if (price > 0) {
-            returnMap.put("allowed", "ok");
-            returnMap.put("message", "The bid has been set");
-            returnMap.put("price",price);
-        } else {
+            double price = bidService.doBid(u, bid_id);
+            if (price > 0) {
+                returnMap.put("allowed", "ok");
+                returnMap.put("message", "Chúc mừng, bạn đã đặt bid thành công!");
+                returnMap.put("price", price);
+            } else {
+                returnMap.put("allowed", "no");
+                returnMap.put("message", "Bid này hiện đang có người tạm giữ, vui lòng thử lại sau!");
+            }
+        } catch (NullPointerException ex) {
+            java.util.logging.Logger.getLogger(AdminAPI.class.getName()).log(Level.SEVERE, null, ex);
             returnMap.put("allowed", "no");
-            returnMap.put("message", "The bid has locked to other bidder");
+            returnMap.put("message", "Vui lòng đăng nhập để thực hiện được tính năng này!");
+        } catch (Exception ex) {
+            java.util.logging.Logger.getLogger(AdminAPI.class.getName()).log(Level.SEVERE, null, ex);
+            returnMap.put("allowed", "no");
+            returnMap.put("message", ex.getMessage());
         }
         return returnMap;
     }

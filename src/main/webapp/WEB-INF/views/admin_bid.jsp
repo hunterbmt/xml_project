@@ -133,26 +133,23 @@
                                         </div>
                                     </div>
                                     <div class="control-group">
+                                        <label class="control-label">Cost</label>
+                                        <div class="controls">
+                                            <input id="bid_cost" type="number" class="input-small">
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
                                         <label class="control-label">Status</label>
                                         <div class="controls">                                            
                                             <select id ="bid_status">
                                                 <option value="UNCOMPLETED">UnCompleted</option>
                                                 <option value="COMPLETED">Competed</option>                                                
                                             </select>
-                                            <script>
-//                                                (function($) {
-//                                                    $('#bid_status').change(function() {
-//                                                        var val = $(this).val();
-//                                                        //alert(val);
-//                                                        $('option[value=' + val + ']', this).val('changed');
-//                                                    });
-//                                                })(jQuery);
-                                            </script>
                                         </div>
                                     </div>
                                     <div class="controls-button">
-                                        <button id="btnSave" type="submit" class="btn btn-warning disabled" onclick="insertOrUpdateBid()">Save</button>
-                                        <button type="submit" class="btn newBtn" onclick="clearBidDetail(this)">New</button>
+                                        <button id="btnSave" type="submit" class="btn btn-warning disabled" onclick="insertOrUpdateBid();">Save</button>
+                                        <button type="submit" class="btn newBtn" onclick="clearBidDetail(this);">New</button>
                                     </div>
                                     <div>
                                         <span class="alert-info" id="result_IU_bid">VTeam - XML_Project</span>

@@ -73,10 +73,10 @@ public class AdminService {
     }
     
     @Transactional
-    public BidDTO insertBid(int product_id, Date start_date, Date end_date) {
+    public BidDTO insertBid(int product_id, Date start_date, Date end_date, int cost) {
         try {            
             Product product = productDAO.getProductById(product_id);
-            Bids newBid = new Bids(product, start_date, end_date, Bids.Status.UNCOMPLETED);
+            Bids newBid = new Bids(product, start_date, end_date, Bids.Status.UNCOMPLETED, cost);
             bidDAO.save(newBid);
             BidDTO bidDTO = new BidDTO();
             bidDTO.setId(newBid.getId());
@@ -84,7 +84,12 @@ public class AdminService {
             bidDTO.setProduct_id(product_id);
             bidDTO.setProduct_name(product.getProductName());
             bidDTO.setStatus(newBid.getStatus().name());
-
+            bidDTO.setCost(cost);
+            
+            // update bid_id of that product
+            product.setBid_id(newBid.getId());
+            productDAO.save(product);
+            
             return bidDTO;
         } catch (HibernateException ex) {
             log.error(ex);
@@ -95,11 +100,15 @@ public class AdminService {
         }
     }
     @Transactional
-    public BidDTO updateBid(int bid_id, int product_id, Date start_date, Date end_date, String status) {
+    public BidDTO updateBid(int bid_id, int product_id, Date start_date, Date end_date, String status, int cost) {
         try {
             Product product = productDAO.getProductById(product_id);
-            Bids newBid = new Bids(bid_id, product,
-                    start_date, end_date, status);
+            Bids newBid = bidDAO.getBidById(bid_id);
+            newBid.setCost(cost);
+            newBid.setProduct(product);
+            newBid.setStartDate(start_date);
+            newBid.setEndDate(end_date);
+            newBid.setStatus(Bids.Status.valueOf(status));
             bidDAO.save(newBid);
             BidDTO bidDTO = new BidDTO();
 
@@ -107,6 +116,7 @@ public class AdminService {
             bidDTO.setProduct_id(product_id);
             bidDTO.setProduct_name(product.getProductName());
             bidDTO.setStatus(newBid.getStatus().name());
+            bidDTO.setCost(cost);
 
             return bidDTO;
         } catch (HibernateException ex) {
