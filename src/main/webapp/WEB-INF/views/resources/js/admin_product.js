@@ -174,6 +174,7 @@ function clearCategoryDetail(){
     $('#category_detail_name').val('');
     $('#category_detail_description').val('');
     $('#category_detail_btn').html('Save');
+    category_current_id = null;
 }
 function insertOrUpdateCategory(){
     var categoryId = category_current_id;

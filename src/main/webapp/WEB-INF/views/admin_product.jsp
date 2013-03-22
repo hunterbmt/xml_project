@@ -1,5 +1,5 @@
 
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
@@ -200,8 +200,8 @@
                                         </div>
                                     </div>
                                     <div class="controls-button">
-                                        <button type="button" id="category_detail_btn" class="btn btn-warning">Save</button>
-                                        <button type="button" class="btn">New</button>
+                                        <button type="button" id="category_detail_btn" class="btn btn-warning" onclick="insertOrUpdateCategory()">Save</button>
+                                        <button type="button" class="btn" onclick="clearCategoryDetail()">New</button>
                                     </div>
                                     <div>
                                         <span class="alert-info hide" id="result_category"></span>
