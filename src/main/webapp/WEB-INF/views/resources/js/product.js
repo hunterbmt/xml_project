@@ -198,7 +198,7 @@ function displayProductTags(tags) {
     html += 'Tags: '
     for (var i = 0; i < tags.length; i++) {
         html += '<span class= "tags">';
-        html += '<a id="tags_product" href="#" onclick="searchProductByTags(' + tags.id +')">'
+        html += '<a id="tags_product" href="#" onclick="searchProductByTags(' + tags[i].tagId +')">'
         html += '<strong>' + tags[i].tagName + '</strong>'
         html += '</a>' + ' , ';
         html += '</span>';
@@ -211,11 +211,11 @@ function searchProductByTags(tags_id) {
     var input = document.getElementById("tags_product").value;
     vteam_http.init();
     vteam_http.makeHttpRequest("/product/searchProductByTags",
-            {tags_id: tags_id},
+            {tag_id: tags_id},
     'POST',
             function(result) {
                 if (result.status == 'success') {
-                    displayProduct(result.search_tags.productList);
+                    displaySearchProduct(result.productList);
                 }
             });
 }

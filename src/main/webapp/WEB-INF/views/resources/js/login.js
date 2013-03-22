@@ -74,32 +74,25 @@ function updateInfo() {
                 if (result.status == "success")
                 {
                    $("#updateResult1").html("<font style='color: green;font-size: large;'><strong>Well done! !</strong> You successfully updated.</font>");
-                    $("#updateResult1").hide().first().show('fast');
-                    setTimeout(showNotifications, 3000);
                 } else if (result.status == "unlogin") {
                     $("#updateResult1").html("<font style='color: black;font-size: large;'><strong>Sesstion Times out! !</strong> Please log in again.</font>");
-                    $("#updateResult1").hide().first().show('fast');
-                    setTimeout(showNotifications, 3000);
-                } else {
+                } else if (result.status == "error") {
                     $("#updateResult1").html("<font style='color: red;font-size: large;'><strong>Oh snap!!</strong> Change a few things up and try submitting again.</font>");
-                    $("#updateResult1").hide().first().show('fast');
-                    setTimeout(showNotifications, 3000);
                 }
+                $("#updateResult1").show('slow');
+                $("#updateResult1").hide(1500);
             });
 
 }
 function showNotifications() {
     $("#updateResult1:visible").hide('fast', function() {
-        $(this).remove();
-        $(".#updateResult1").first().show('fast');
-        if ($("#updateResult1").length > 0) {
-            setTimeout(showNotifications, 3000);
-        }
+    $("#updateResult1").first().show('fast');
     });
 }
 function updatePassword() {
     var ollPass = document.getElementById("curr_password").value;
     var newPass = document.getElementById("newpassword").value;
+    
     vteam_http.makeHttpRequest("/user/changePassword",
             {currentPass: ollPass,
                 newPass: newPass},
@@ -108,17 +101,20 @@ function updatePassword() {
                 if (result.status == "success")
                 {
                     $("#updateResult1").html("<font style='color: green;font-size: large;'><strong>Well done! !</strong> You successfully updated.</font>");
-                    $("#updateResult1").hide().first().show('fast');
-                    setTimeout(showNotifications, 3000);
+                   
+                    
                 } else if (result.status == "unlogin") {
                     $("#updateResult1").html("<font style='color: black;font-size: large;'><strong>Sesstion Times out! !</strong> Please log in again.</font>");
-                    $("#updateResult1").hide().first().show('fast');
-                    setTimeout(showNotifications, 3000);
-                } else {
+                    
+                    
+                } else if (result.status == "error") {
                     $("#updateResult1").html("<font style='color: red;font-size: large;'><strong>Oh snap!!</strong> Change a few things up and try submitting again.</font>");
-                    $("#updateResult1").hide().first().show('fast');
-                    setTimeout(showNotifications, 3000);
+                    
+                   
                 }
+                $("#updateResult1").show('slow');
+                $("#updateResult1").hide(1500);
+                 //showNotifications();
             });
 
 }

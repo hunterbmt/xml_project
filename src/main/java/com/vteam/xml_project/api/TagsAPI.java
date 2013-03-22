@@ -7,7 +7,6 @@ package com.vteam.xml_project.api;
 import com.vteam.xml_project.controller.UserSession;
 import com.vteam.xml_project.dto.TagsListDTO;
 import com.vteam.xml_project.service.TagsService;
-import java.util.HashMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
