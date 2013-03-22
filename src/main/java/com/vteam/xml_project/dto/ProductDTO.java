@@ -15,6 +15,7 @@ public class ProductDTO extends BaseDTO {
     private String image;
     private int id;
     private Integer bidId;
+    private int categoryId;
     private String categoryName;
     private double minPrice;
     private double maxPrice;
@@ -28,8 +29,6 @@ public class ProductDTO extends BaseDTO {
     public void setBidId(Integer bidId) {
         this.bidId = bidId;
     }
-
-    
 
     public int getId() {
         return id;
@@ -119,5 +118,13 @@ public class ProductDTO extends BaseDTO {
 
     public void setBidCost(int bidCost) {
         this.bidCost = bidCost;
+    }
+
+    public int getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(int categoryId) {
+        this.categoryId = categoryId;
     }
 }

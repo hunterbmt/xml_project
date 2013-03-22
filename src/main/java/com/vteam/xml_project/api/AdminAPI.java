@@ -98,15 +98,10 @@ public class AdminAPI {
 
     @RequestMapping(value = "/getCategoryNameList", method = RequestMethod.POST)
     public @ResponseBody
-    HashMap<Integer, String> getCategoryNameList() {
+    CategoryListDTO getCategoryNameList() {
 
-        CategoryListDTO categoryListDTO = categoryService.getCategoryNameList();
-        List<CategoryDTO> list = categoryListDTO.getCategoryList();
-        HashMap<Integer, String> categoryNameList = new HashMap<Integer, String>();
-        for (int i = 0; i < list.size(); i++) {
-            categoryNameList.put(list.get(i).getId(), list.get(i).getName());
-        }
-        return categoryNameList;
+        CategoryListDTO categoryListDTO = categoryService.getCategoryList();
+        return categoryListDTO;
     }
     
     @RequestMapping(value = "/insert_category", method = RequestMethod.POST)

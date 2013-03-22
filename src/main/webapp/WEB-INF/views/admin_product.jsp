@@ -22,8 +22,8 @@
         <script src="/resources/js/admin_product.js"></script>
         <script>
             $(document).ready(function() {
-                 populateCategoryNameList()
-                 loadProductList(1,5);
+                populateCategoryNameList()
+                loadProductList(1, 5);
             });
         </script>
     </head>
@@ -132,6 +132,47 @@
                             </div>
 
                         </div>
+
+                    </div>
+                    <div class="span7">
+                        <div class="widget widget-table action-table">
+
+                            <div class="widget-header">
+                                <i class="icon-list-alt"></i>
+                                <h3>Products</h3>
+                            </div>
+
+                            <div class="widget-content">
+                                <table class="table table-striped table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Name</th>
+                                            <th>Description</th>
+                                            <th class="td-actions"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="product_list_tbody">
+
+                                    </tbody>
+                                </table>
+                                <div class="pagination-bar">
+                                    <a tabindex="0" class="ui-button last">Last</a>
+                                    <a tabindex="0" class="ui-button next">Next</a>
+
+                                    <span>
+                                        <a tabindex="0" class="ui-button active">1</a>
+                                        <a tabindex="0" class="ui-button ">2</a>
+                                        <a tabindex="0" class="ui-button ">3</a>
+                                        <a tabindex="0" class="ui-button ">4</a>
+                                        <a tabindex="0" class="ui-button ">5</a>
+                                    </span>
+                                    <a tabindex="0" class="ui-button ui-button-diable">Previous</a>
+                                    <a tabindex="0" class="ui-button ui-button-diable first">First</a>
+
+                                </div>
+                            </div>
+                        </div>
                         <div class="widget">
                             <div class="widget-header">
                                 <i class="icon-tasks"></i>
@@ -159,52 +200,15 @@
                                         </div>
                                     </div>
                                     <div class="controls-button">
-                                        <button type="submit" id="category_detail_btn" class="btn btn-warning">Save</button>
-                                        <button type="submit" class="btn">New</button>
+                                        <button type="button" id="category_detail_btn" class="btn btn-warning">Save</button>
+                                        <button type="button" class="btn">New</button>
+                                    </div>
+                                    <div>
+                                        <span class="alert-info hide" id="result_category"></span>
                                     </div>
                                 </form>
                             </div>
 
-                        </div>
-                    </div>
-                    <div class="span7">
-                        <div class="widget widget-table action-table">
-
-                            <div class="widget-header">
-                                <i class="icon-list-alt"></i>
-                                <h3>Recent Payment</h3>
-                            </div>
-
-                            <div class="widget-content">
-                                <table class="table table-striped table-bordered">
-                                    <thead>
-                                        <tr>
-                                            <th>ID</th>
-                                            <th>Name</th>
-                                            <th>Description</th>
-                                            <th class="td-actions"></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="product_list_tbody">
-                                      
-                                    </tbody>
-                                </table>
-                                <div class="pagination-bar">
-                                    <a tabindex="0" class="ui-button last">Last</a>
-                                    <a tabindex="0" class="ui-button next">Next</a>
-
-                                    <span>
-                                        <a tabindex="0" class="ui-button active">1</a>
-                                        <a tabindex="0" class="ui-button ">2</a>
-                                        <a tabindex="0" class="ui-button ">3</a>
-                                        <a tabindex="0" class="ui-button ">4</a>
-                                        <a tabindex="0" class="ui-button ">5</a>
-                                    </span>
-                                    <a tabindex="0" class="ui-button ui-button-diable">Previous</a>
-                                    <a tabindex="0" class="ui-button ui-button-diable first">First</a>
-
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>    

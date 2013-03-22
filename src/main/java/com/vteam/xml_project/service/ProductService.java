@@ -104,6 +104,7 @@ public class ProductService {
             productDTO.setId(product.getId());
             productDTO.setName(product.getProductName());
             productDTO.setCategoryName(product.getCategory().getCategoryName());
+            productDTO.setCategoryId(product.getCategory().getId());
             productDTO.setDescription(product.getDescription());
             productDTO.setMinPrice(product.getMinPrice());
             productDTO.setMaxPrice(product.getMaxPrice());
