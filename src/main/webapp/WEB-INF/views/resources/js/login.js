@@ -15,16 +15,20 @@ function login() {
             function(result) {
                 if (result.status == "success")
                 {
+                    if(result.admin=="admin"){
+                        window.location.href="/admin";
+                    }else{
                     $("#titleLogin").hide();
                     $('#fat-menu').hide();
                     $('#quickLogin').hide();
                     $('#loginResult').html('<a class="btn btn-primary" id="email" style="margin-left:10px;margin-top:2px;" href="#" onclick="showUserInfo()"><i class="icon-user icon-white" ></i>' + result.email + ' </a>'
                             + '<a class="btn btn-primary" id="email" style="margin-left:10px;margin-top:2px;" href="#"><i class="icon-shopping-cart icon-white" ></i>' + result.balance + ' </a>'
                             + '<a class="btn btn-primary" id="logout" style="margin-left:10px;margin-top:2px;" href="#" onclick="logout()"><i class="icon-off icon-white" ></i></a>').show();
-
-                }
-                else {
-                    alert("Error");
+                    }
+                }else {
+                    $("#error").html('Wrong username or password');
+                    $("#error").show('fast');
+                    $("#error").hide(2000);
                 }
             });
 

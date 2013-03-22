@@ -75,9 +75,10 @@
                                                             <p/>
                                                             <button name="send" type="button"  class="btn btn-primary btn-small" onclick="login()">Login</button>
                                                             <button name="send" type="button"  class="btn  btn-small" onclick="changeSigin()">Sig up</button>
+                                                            
                                                         </fieldset>
                                                     </form>
-
+                                                    <div id="error" style="color: red;display: none"></div>
                                                 </div>
                                                 <div id="sigin" style="display: none">Sig up
                                                     <form  method="post" accept-charset="UTF-8">
@@ -102,7 +103,7 @@
                     </div>
                 </div>
             </div>
-
+        
         <div class="container" style="margin-top: 80px">
                 <div class="row-fluid" id="product">
                     <div id="side-section" class="span3">   
@@ -197,7 +198,9 @@
                             </form>
                 </div>
                 <div class="tab-pane" id="lC">
-                 <label>Order History</label>
+                    <table class="table-hover">
+                        
+                    </table>
                 </div>
               </div>
             </div>
