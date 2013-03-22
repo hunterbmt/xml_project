@@ -8,10 +8,13 @@ import com.vteam.xml_project.dto.ProductDTO;
 import com.vteam.xml_project.dto.ProductListDTO;
 import com.vteam.xml_project.hibernate.dao.BidDAO;
 import com.vteam.xml_project.hibernate.dao.ProductDAO;
+import com.vteam.xml_project.hibernate.dao.TagsDAO;
 import com.vteam.xml_project.hibernate.orm.Bids;
 import com.vteam.xml_project.hibernate.orm.Product;
+import com.vteam.xml_project.hibernate.orm.Tags;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +33,8 @@ public class ProductService {
     private ProductDAO productDAO;
     @Autowired
     private BidDAO bidDAO;
+    @Autowired
+    private TagsDAO tagsDAO;
 
     @Transactional
     public ProductListDTO getProductList(int page, int pageSize) {
@@ -105,10 +110,10 @@ public class ProductService {
             productDTO.setImage("/resources/img/product/" + product.getImage());
             productDTO.setImageName(product.getImage());
             productDTO.setBidId(product.getBidId());
-
-            Bids bids = bidDAO.getBidById(product.getBidId());
-            productDTO.setBidCost(bids.getCost());
-
+            if (product.getBidId()!=null) {
+                Bids bids = bidDAO.getBidById(product.getBidId());
+                productDTO.setBidCost(bids.getCost());
+            }
             productDTO.setStatus("success");
 
         } catch (HibernateException ex) {
@@ -150,8 +155,8 @@ public class ProductService {
     public ProductListDTO searchProductByTagsId(int tags_id) {
         ProductListDTO list = new ProductListDTO();
         try {
-            List<Product> dbProducts = productDAO.searchProductByTagsId(tags_id);
-
+            Tags tag = tagsDAO.getTagById(tags_id);
+            Set<Product> dbProducts = tag.getProducts();
             List<ProductDTO> tmpList = new ArrayList<ProductDTO>();
             ProductDTO pd;
             for (Product d : dbProducts) {
