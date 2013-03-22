@@ -116,9 +116,9 @@ public class AdminAPI {
         CategoryDTO categoryDTO = adminService.insertCategory(categoryName,description);
         return categoryDTO;
     }
-    @RequestMapping(value = "/insert_product", method = RequestMethod.POST)
+    @RequestMapping(value = "/update_category", method = RequestMethod.POST)
     public @ResponseBody
-    CategoryDTO insertProduct(
+    CategoryDTO updateCategory(
             @RequestParam int categoryId, String description) {
         CategoryDTO categoryDTO = adminService.updateCategory(categoryId,description);
         return categoryDTO;
