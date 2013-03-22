@@ -5,6 +5,7 @@
 package com.vteam.xml_project.api;
 
 import com.vteam.xml_project.controller.UserSession;
+import com.vteam.xml_project.dto.CategoryDTO;
 import com.vteam.xml_project.dto.CategoryListDTO;
 import com.vteam.xml_project.dto.ProductListDTO;
 import com.vteam.xml_project.service.CategoryService;
@@ -45,5 +46,11 @@ public class CategoryAPI {
             @RequestParam int category_id) {
         ProductListDTO searchCategoryResult = productService.searchProductByCategoryId(category_id);
         return searchCategoryResult;
+    }
+    @RequestMapping(value = "/getCategoryDetail", method = RequestMethod.POST)
+    public @ResponseBody CategoryDTO getCategoryDetail(
+            @RequestParam int category_id) {
+        CategoryDTO result = categoryService.getCategoryDetail(category_id);
+        return result;
     }
 }

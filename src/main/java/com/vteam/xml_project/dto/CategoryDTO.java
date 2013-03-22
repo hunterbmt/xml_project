@@ -8,9 +8,11 @@ package com.vteam.xml_project.dto;
  *
  * @author phitt60230
  */
-public class CategoryDTO extends BaseDTO{
+public class CategoryDTO extends BaseDTO {
+
     private int id;
     private String name;
+    private String description;
 
     public int getId() {
         return id;
@@ -26,5 +28,13 @@ public class CategoryDTO extends BaseDTO{
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

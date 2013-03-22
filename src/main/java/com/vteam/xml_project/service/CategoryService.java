@@ -71,4 +71,20 @@ public class CategoryService {
         }
         return categoryList;
     }
+
+    @Transactional
+    public CategoryDTO getCategoryDetail(int categoryID) {
+        CategoryDTO categoryDTO = new CategoryDTO();
+        try {
+            Category dbCategory = categoryDAO.getCategoryById(categoryID);
+            categoryDTO.setName(dbCategory.getCategoryName());
+            categoryDTO.setDescription(dbCategory.getDescription());
+            categoryDTO.setStatus("success");
+        } catch (HibernateException ex) {
+            log.error(ex);
+            categoryDTO.setMsg("Have some errors. Try again");
+            categoryDTO.setStatus("error");
+        }
+        return categoryDTO;
+    }
 }

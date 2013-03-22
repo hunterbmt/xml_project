@@ -138,4 +138,28 @@ function populateList(list) {
     $("#category_name").autocomplete({
         source: array_values
     });
+    $("#category_detail_name").autocomplete({
+        source: array_values,
+        select: function( event, ui ) {
+            var category_id = array_keys[array_values.indexOf(ui.item.toString())];
+            loadAndDisplatCategoryDetail(category_id);
+        }
+    });
+}
+function loadAndDisplatCategoryDetail(id){
+     vteam_http.makeHttpRequest("/category/getCategoryDetail",
+            {
+                category_id:id
+            },
+            'POST', function(result){
+                if(result.status ==='success'){
+                    displayCategoryDetail(result);
+                }
+            });
+}
+function displayCategoryDetail(category){
+    $('#category_detail_id').html(category.id);
+    $('#category_detail_description').val(category.description);
+    $('#category_detail_btn').val('Update');
+    
 }

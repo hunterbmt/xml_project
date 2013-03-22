@@ -143,23 +143,23 @@
                                     <div class="control-group">
                                         <label class="control-label">Id</label>
                                         <div class="controls">
-                                            <span class="input-medium uneditable-input"></span>
+                                            <span id="category_detail_id"class="input-medium uneditable-input"></span>
                                         </div>
                                     </div>
                                     <div class="control-group">
                                         <label class="control-label">Name</label>
                                         <div class="controls">
-                                            <input type="text">
+                                            <input id="category_detail_name" type="text"/>
                                         </div>
                                     </div>
                                     <div class="control-group">
                                         <label class="control-label">Description</label>
                                         <div class="row">
-                                            <textarea style="height: 120px"></textarea>
+                                            <textarea id="category_detail_description" style="height: 120px"></textarea>
                                         </div>
                                     </div>
                                     <div class="controls-button">
-                                        <button type="submit" class="btn btn-warning">Save</button>
+                                        <button type="submit" id="category_detail_btn" class="btn btn-warning">Save</button>
                                         <button type="submit" class="btn">New</button>
                                     </div>
                                 </form>
