@@ -39,13 +39,15 @@ public class UserAPI {
         boolean result = userService.checkLogin(email , password);
         UserDTO user=new UserDTO();
         if (result) {
-            session.put("email", email);
-            returnMap.put("email", email);
+            session.put("email", email);        
             returnMap.put("status", "success");
             user=userService.getUserByEmail(email);
             if(user.getId()==1){
                 returnMap.put("admin", "admin");
+            }else{
+                returnMap.put("email", email);
             }
+            
         } else {
             returnMap.put("status", "error");
         }
