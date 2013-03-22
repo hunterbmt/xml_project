@@ -149,15 +149,20 @@
                         </ul>
                     </div>
                 </div>
-                <div class="container" id="user_detail" style="position: absolute;margin-top:60px;width:60%;margin-left:200px;display: none">
-                    <ul class="nav nav-tabs">
-                        <li class="active"><a href="#home" data-toggle="tab">Profile</a></li>
-                        <li><a href="#profile" data-toggle="tab">Change Password</a></li>
-                        <li><a href="#profile" data-toggle="tab">Order History</a></li>
-                    </ul>
-                    <div id="myTabContent" class="tab-content">
-                        <div class="tab-pane active in" id="home">
-                            <form id="tab">
+        <div class="container" id="user_detail" style="position: absolute;width:60%;margin-left:100px;display: none">
+            <div class="alert" id="updateResult1" style="display: none;z-index: 9002">
+                
+            </div>
+            <div class="tabbable tabs-left">
+              <ul class="nav nav-tabs">
+                <li class="active"><a href="#lA" data-toggle="tab">Profile</a></li>
+                <li class=""><a href="#lB" data-toggle="tab">Change Password</a></li>
+                <li class=""><a href="#lC" data-toggle="tab">Orders History</a></li>
+              </ul>
+              <div class="tab-content">
+                
+                <div class="tab-pane active" id="lA">
+                  <form id="tab">
                                 <label>Email</label>
                                 <input type="text" id="user_email" class="input-xlarge">
 
@@ -170,32 +175,33 @@
                                 <input type="text" id="user_address"  class="input-xlarge">
                                 <label>Birthday</label>
                                 <input type="text" id="user_birthday" class="input-xlarge">
-                                <div>
-                                    <button class="btn btn-primary" onclick="updateInfo()">Update</button>
+                                <label>Balance</label>
+                                <input type="text" id="user_balance" class="input-xlarge" readonly="true">
+                                <div class="row" style="display: inline;margin-left: 0px" >
+                                    <button type='button' class="btn btn-primary" onclick="updateInfo()">Update</button>
                                 </div>
+                                </span>
                             </form>
-                        </div>
-                        <div class="tab-pane fade" id="profile">
-                            <form id="tab2">
+                </div>
+                <div class="tab-pane" id="lB">
+                  <form id="tab2">
                                 <label>Password</label>
                                 <input type="password" id="newpassword" class="input-xlarge">       
                                 <label>Old Password</label>
                                 <input type="password" id="curr_password" class="input-xlarge">
-                                <div>
-                                    <button class="btn btn-primary" onclick="updatePassword()">Update</button>
+                                <div>   
+                                    <button type='button' class="btn btn-primary" onclick="updatePassword()">Update</button>
+                                    
                                 </div>
-
+                                
                             </form>
-                        </div>
-                        <div class="tab-pane fade" id="profile2">
-                            <form id="tab3">
-                                <label>Order History</label>
-
-                            </form>
-                        </div>
-
-                    </div>
                 </div>
+                <div class="tab-pane" id="lC">
+                 <label>Order History</label>
+                </div>
+              </div>
+            </div>
+        </div>
             </div>
     </body>
 </html>

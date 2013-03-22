@@ -6,6 +6,7 @@ package com.vteam.xml_project.api;
 
 import com.vteam.xml_project.controller.UserSession;
 import com.vteam.xml_project.dto.UserDTO;
+import com.vteam.xml_project.hibernate.orm.Users;
 import com.vteam.xml_project.service.UserService;
 import com.vteam.xml_project.util.StringUtil;
 import java.security.NoSuchAlgorithmException;
@@ -36,10 +37,15 @@ public class UserAPI {
             @RequestParam String email, String password) {
         HashMap<String, Object> returnMap = new HashMap<String, Object>();
         boolean result = userService.checkLogin(email , password);
+        UserDTO user=new UserDTO();
         if (result) {
             session.put("email", email);
             returnMap.put("email", email);
             returnMap.put("status", "success");
+            user=userService.getUserByEmail(email);
+            if(user.getId()==1){
+                returnMap.put("admin", "admin");
+            }
         } else {
             returnMap.put("status", "error");
         }
