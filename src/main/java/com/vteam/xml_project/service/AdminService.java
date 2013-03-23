@@ -41,7 +41,7 @@ public class AdminService {
 
     @Transactional
     public ProductDTO insertProduct(int categoryId, String productName, String description, String img, double minPrice, double maxPrice) {
-        ProductDTO productDTO = new ProductDTO();;
+        ProductDTO productDTO = new ProductDTO();
         try {
             Category category = categoryDAO.getCategoryById(categoryId);
             Product newProduct = new Product(category, productName, description, img, Product.Status.AVAILABLE, minPrice, maxPrice, true);
@@ -100,6 +100,7 @@ public class AdminService {
 
             // update bid_id of that product
             product.setBidId(newBid.getId());
+            product.setStatus(Product.Status.UNAVAILABLE);
             productDAO.save(product);
             bidDTO.setStatus("success");
             return bidDTO;
@@ -127,7 +128,14 @@ public class AdminService {
             newBid.setProduct(product);
             newBid.setStartDate(startDate);
             newBid.setEndDate(endDate);
+            
             newBid.setStatus(Bids.Status.valueOf(status));
+            if (newBid.getStatus().toString().equalsIgnoreCase("completed")) {
+                product.setStatus(Product.Status.AVAILABLE);  
+                product.setBidId(null);
+            }
+            product.setBidId(newBid.getId());
+            productDAO.save(product);
             bidDAO.save(newBid);
             bidDTO.setEnd_date(endDate);
             bidDTO.setProduct_id(product_id);

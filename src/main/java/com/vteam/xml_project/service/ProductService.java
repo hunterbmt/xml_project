@@ -111,9 +111,11 @@ public class ProductService {
             productDTO.setImage("/resources/img/product/" + product.getImage());
             productDTO.setImageName(product.getImage());
             productDTO.setBidId(product.getBidId());
-            if (product.getBidId()!=null) {
+            if (product.getBidId() != null) {
                 Bids bids = bidDAO.getBidById(product.getBidId());
-                productDTO.setBidCost(bids.getCost());
+                if (bids != null) {
+                    productDTO.setBidCost(bids.getCost());
+                }
             }
             productDTO.setStatus("success");
 
@@ -175,6 +177,60 @@ public class ProductService {
             log.error(ex);
             list.setStatus("error");
             list.setMsg("Have some errors . Try again");
+        }
+        return list;
+    }
+
+    @Transactional
+    public ProductListDTO getProductNameList(int page, int pageSize) {
+        ProductListDTO list = new ProductListDTO();
+        try {
+            List<Product> dbProducts = productDAO.getProductNameList(page, pageSize);
+            ProductDTO p;
+
+            List<ProductDTO> tmpList = new ArrayList<ProductDTO>();
+            for (Product d : dbProducts) {
+
+                p = new ProductDTO();
+                p.setName(d.getProductName());
+                p.setId(d.getId());
+                p.setBidId(d.getBidId());
+
+                tmpList.add(p);
+            }
+            list.setProductList(tmpList);
+            list.setStatus("success");
+        } catch (HibernateException ex) {
+            log.error(ex.getMessage());
+            list.setStatus("error");
+            list.setMsg("Have some errors. Try again");
+        }
+        return list;
+    }
+
+    @Transactional
+    public ProductListDTO getAllProductNameList(int page, int pageSize) {
+        ProductListDTO list = new ProductListDTO();
+        try {
+            List<Product> dbProducts = productDAO.getAllProductNameList(page, pageSize);
+            ProductDTO p;
+
+            List<ProductDTO> tmpList = new ArrayList<ProductDTO>();
+            for (Product d : dbProducts) {
+
+                p = new ProductDTO();
+                p.setName(d.getProductName());
+                p.setId(d.getId());
+                p.setBidId(d.getBidId());
+
+                tmpList.add(p);
+            }
+            list.setProductList(tmpList);
+            list.setStatus("success");
+        } catch (HibernateException ex) {
+            log.error(ex.getMessage());
+            list.setStatus("error");
+            list.setMsg("Have some errors. Try again");
         }
         return list;
     }

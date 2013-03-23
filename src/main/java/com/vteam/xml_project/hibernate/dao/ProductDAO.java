@@ -20,8 +20,9 @@ public class ProductDAO extends BaseDAO {
     public List<Product> getProductList(int page, int pageSize) throws HibernateException {
         Query query = this.sessionFactory
                 .getCurrentSession()
-                .createQuery("FROM Product");
-
+                .createQuery("FROM Product WHERE status = :s");
+        // get only the on-going bid products ( status = 1)
+        query.setParameter("s", Product.Status.UNAVAILABLE);
         query = query.setFirstResult(pageSize * (page - 1));
         query.setMaxResults(pageSize);
         return query.list();
@@ -54,4 +55,25 @@ public class ProductDAO extends BaseDAO {
         query.setParameter("id", category_id);
         return query.list();
     }      
+
+    public List<Product> getProductNameList(int page, int pageSize) {
+        Query query = this.sessionFactory
+                .getCurrentSession()
+                .createQuery("FROM Product where status = :s");
+        query.setParameter("s", Product.Status.AVAILABLE);
+
+        query = query.setFirstResult(pageSize * (page - 1));
+        query.setMaxResults(pageSize);
+        return query.list();
+    }
+
+    public List<Product> getAllProductNameList(int page, int pageSize) {
+        Query query = this.sessionFactory
+                .getCurrentSession()
+                .createQuery("FROM Product ");
+
+        query = query.setFirstResult(pageSize * (page - 1));
+        query.setMaxResults(pageSize);
+        return query.list();
+    }
 }

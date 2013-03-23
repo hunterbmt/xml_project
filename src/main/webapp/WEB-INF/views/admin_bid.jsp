@@ -25,13 +25,9 @@
             $(document).ready(function() {
                 populateProductNameList();
                 update_lists();
-
                 $('#bid_start_date').datetimepicker();
                 $('#bid_end_date').datetimepicker();
-
             });
-
-
         </script>
     </head>
     <body>
@@ -46,7 +42,7 @@
                             </a>	    				
                         </li>
                         <li>
-                            <a href="./admin/product">
+                            <a href="./product">
                                 <i class="icon-book"></i>
                                 <span>Product</span>
                             </a>	    				
@@ -91,8 +87,7 @@
                                     <div class="control-group">
                                         <label class="control-label">ID</label>
                                         <div class="controls">
-                                            <span id="bid_id" class="input-small uneditable-input">
-
+                                            <span id="bid_id" class="input-small uneditable-input">                                             
                                             </span>
                                         </div>
                                     </div>
@@ -148,8 +143,8 @@
                                         </div>
                                     </div>
                                     <div class="controls-button">
-                                        <button id="btnSave" type="submit" class="btn btn-warning disabled" onclick="insertOrUpdateBid();">Save</button>
-                                        <button type="submit" class="btn newBtn" onclick="clearBidDetail(this);">New</button>
+                                        <button type="button" id="btnSave" class="btn btn-warning disabled" onclick="insertOrUpdateBid()">Save</button>
+                                        <button type="button" class="btn newBtn" onclick="clearBidDetail(this)">New</button>
                                     </div>
                                     <div>
                                         <span class="alert-info" id="result_IU_bid">VTeam - XML_Project</span>
