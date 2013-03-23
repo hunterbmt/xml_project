@@ -10,7 +10,6 @@ import com.vteam.xml_project.dto.CategoryDTO;
 import com.vteam.xml_project.dto.CategoryListDTO;
 import com.vteam.xml_project.dto.ProductDTO;
 import com.vteam.xml_project.dto.ProductListDTO;
-import com.vteam.xml_project.hibernate.orm.Product;
 import com.vteam.xml_project.service.AdminService;
 import com.vteam.xml_project.service.CategoryService;
 import com.vteam.xml_project.service.ProductService;
@@ -42,6 +41,14 @@ public class AdminAPI {
     @Autowired
     private CategoryService categoryService;
 
+    @RequestMapping(value = "/getProductList", method = RequestMethod.POST)
+    public @ResponseBody
+    ProductListDTO insertProduct(
+            @RequestParam int page, int pageSize) {
+        ProductListDTO productsDTO = adminService.getProductList(page, pageSize);
+        return productsDTO;
+    }
+    
     @RequestMapping(value = "/insert_product", method = RequestMethod.POST)
     public @ResponseBody
     ProductDTO insertProduct(

@@ -5,12 +5,9 @@
 package com.vteam.xml_project.api;
 
 import com.vteam.xml_project.controller.UserSession;
-import com.vteam.xml_project.dto.BidDTO;
 import com.vteam.xml_project.dto.ProductDTO;
 import com.vteam.xml_project.dto.ProductListDTO;
-import com.vteam.xml_project.service.BidService;
 import com.vteam.xml_project.service.ProductService;
-import java.util.HashMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,7 +34,6 @@ public class ProductAPI {
             @RequestParam int page, int pageSize) {
         ProductListDTO productResult = productService.getProductList(page, pageSize);
         return productResult;
-        //return result;
     }
 
     @RequestMapping(value = "/searchProduct", method = RequestMethod.POST)

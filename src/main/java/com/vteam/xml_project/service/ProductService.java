@@ -42,8 +42,6 @@ public class ProductService {
         try {
             List<Product> dbProducts = productDAO.getProductList(page, pageSize);
             ProductDTO p;
-
-            List<ProductDTO> tmpList = new ArrayList<ProductDTO>();
             for (Product d : dbProducts) {
 
                 p = new ProductDTO();
@@ -54,9 +52,9 @@ public class ProductService {
                 p.setId(d.getId());
                 p.setBidId(d.getBidId());
 
-                tmpList.add(p);
+                list.getProductList().add(p);
             }
-            list.setProductList(tmpList);
+            list.setNumberOfProduct(productDAO.getNumberOfProduct());
             list.setStatus("success");
         } catch (HibernateException ex) {
             log.error(ex.getStackTrace());

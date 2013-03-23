@@ -22,7 +22,15 @@ public class ProductDAO extends BaseDAO {
                 .getCurrentSession()
                 .createQuery("FROM Product WHERE status = :s");
         // get only the on-going bid products ( status = 1)
-        query.setParameter("s", Product.Status.UNAVAILABLE);
+        query.setParameter("s", Product.Status.AVAILABLE);
+        query = query.setFirstResult(pageSize * (page - 1));
+        query.setMaxResults(pageSize);
+        return query.list();
+    }
+     public List<Product> getProductListInorgeStatus(int page, int pageSize) throws HibernateException {
+        Query query = this.sessionFactory
+                .getCurrentSession()
+                .createQuery("FROM Product");
         query = query.setFirstResult(pageSize * (page - 1));
         query.setMaxResults(pageSize);
         return query.list();
@@ -35,26 +43,24 @@ public class ProductDAO extends BaseDAO {
         query.setParameter("pid", product_id);
         return (Product) query.uniqueResult();
     }
-    
+
     public List<Product> searchProduct(String txtSearch) throws HibernateException {
-        Query query = this
-                .sessionFactory
+        Query query = this.sessionFactory
                 .getCurrentSession()
-                .createQuery("FROM Product where productName LIKE :q" );
-        query.setParameter("q", "%"+txtSearch+"%");
+                .createQuery("FROM Product where productName LIKE :q");
+        query.setParameter("q", "%" + txtSearch + "%");
 //        query = query.setFirstResult(pageSize * (page - 1));
 //        query.setMaxResults(pageSize);
         return query.list();
     }
-    
-    public List<Product> searchProductByCategoryId (int category_id) throws HibernateException {
-        Query query =  this
-                .sessionFactory
+
+    public List<Product> searchProductByCategoryId(int category_id) throws HibernateException {
+        Query query = this.sessionFactory
                 .getCurrentSession()
                 .createQuery("FROM Product where category.id =:id");
         query.setParameter("id", category_id);
         return query.list();
-    }      
+    }
 
     public List<Product> getProductNameList(int page, int pageSize) {
         Query query = this.sessionFactory
@@ -75,5 +81,12 @@ public class ProductDAO extends BaseDAO {
         query = query.setFirstResult(pageSize * (page - 1));
         query.setMaxResults(pageSize);
         return query.list();
+    }
+
+    public int getNumberOfProduct() {
+        return ((Long) this.getSessionFactory()
+                .getCurrentSession()
+                .createQuery("Select count(product) from Product product")
+                .uniqueResult()).intValue();
     }
 }

@@ -7,6 +7,7 @@ package com.vteam.xml_project.service;
 import com.vteam.xml_project.dto.BidDTO;
 import com.vteam.xml_project.dto.CategoryDTO;
 import com.vteam.xml_project.dto.ProductDTO;
+import com.vteam.xml_project.dto.ProductListDTO;
 import com.vteam.xml_project.hibernate.dao.BidDAO;
 import com.vteam.xml_project.hibernate.dao.CategoryDAO;
 import com.vteam.xml_project.hibernate.dao.ProductDAO;
@@ -16,6 +17,7 @@ import com.vteam.xml_project.hibernate.orm.Product;
 import com.vteam.xml_project.util.DateUtil;
 import java.text.ParseException;
 import java.util.Date;
+import java.util.List;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -81,6 +83,35 @@ public class AdminService {
         return productDTO;
     }
 
+    @Transactional
+    public ProductListDTO getProductList(int page, int pageSize) {
+        ProductListDTO list = new ProductListDTO();
+        try {
+            List<Product> dbProducts = productDAO.getProductListInorgeStatus(page, pageSize);
+            ProductDTO p;
+            for (Product d : dbProducts) {
+
+                p = new ProductDTO();
+                p.setName(d.getProductName());
+                p.setDescription(d.getDescription());
+                p.setImage("/resources/img/product/" + d.getImage());
+                p.setImageName(d.getImage());
+                p.setId(d.getId());
+                p.setBidId(d.getBidId());
+
+                list.getProductList().add(p);
+            }
+            list.setNumberOfProduct(productDAO.getNumberOfProduct());
+            list.setStatus("success");
+        } catch (HibernateException ex) {
+            log.error(ex.getStackTrace());
+            list.setStatus("error");
+            list.setMsg("Have some errors. Try again");
+        }
+        return list;
+
+    }
+    
     @Transactional
     public BidDTO insertBid(int product_id, String startDateStr, String endDateStr, int cost) {
         BidDTO bidDTO = new BidDTO();

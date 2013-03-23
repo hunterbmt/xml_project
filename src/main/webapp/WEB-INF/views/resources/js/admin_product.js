@@ -3,19 +3,32 @@
  * and open the template in the editor.
  */
 var current_page;
-var current_page_size;
+var page_size =5;
 
-function loadProductList(page, page_size) {
+function loadProductList(page) {
     current_page = page;
-    current_page_size = page_size;
-    vteam_http.makeHttpRequest("/product/getProductList",
+    vteam_http.makeHttpRequest("/admin/getProductList",
             {page: page, pageSize: page_size},
     'POST',
             function(result) {
                 if (result.status == 'success') {
                     displayProduct(result.productList);
+                    if(result.numberOfProduct > page_size){
+                        displayPagination(page,result.numberOfProduct);
+                    }
                 }
             });
+}
+function displayPagination(currentPage,total_number){
+    $("#pagination_bar").pagination({
+        items: total_number,
+        itemsOnPage: page_size,
+        currentPage:currentPage,
+        cssStyle: 'light-theme',
+        onPageClick:function (pageNumber,event){
+            loadProductList(pageNumber);
+        }
+    });
 }
 function displayProduct(productList) {
     var html = '';
@@ -75,6 +88,7 @@ function callback(result) {
                 $("#result_product").hide('blind', {}, 400)
             }, 2000);
         });
+        loadProductList(current_page);
     } else {
         $('#result_product').html(result.msg).show();
         $(function() {
@@ -86,7 +100,7 @@ function callback(result) {
     clearProductDetail();
 }
 function clearProductDetail() {
-    $("#product_id").val('');
+    $("#product_id").html('');
     $("#product_name").val('');
     $('#category_name').val('');
     var editor = CKEDITOR.instances.product_description;
@@ -195,7 +209,8 @@ function insertOrUpdateCategory(){
 }
 function callbackCategoryEdit(result){
     if(result.status ==='success'){
-        displayCategoryMsg("Successfull")
+        displayCategoryMsg("Successfull");
+        populateCategoryNameList();
     }else {
         displayCategoryMsg(result.msg);
     }
