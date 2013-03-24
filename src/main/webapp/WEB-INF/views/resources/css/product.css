@@ -711,8 +711,8 @@ list-style-type: disc;
 -webkit-padding-start: 40px;
 }
 
-.tags a strong {
-color: #a4a4a4;
+.tags a strong{
+color: #0088cc;
 font-family: Arial;
 font-size: 17px;
 text-decoration: none;

@@ -200,7 +200,7 @@ function displayProductTags(tags) {
         html += '<span class= "tags">';
         html += '<a id="tags_product" href="#" onclick="searchProductByTags(' + tags[i].tagId +')">'
         html += '<strong>' + tags[i].tagName + '</strong>'
-        html += '</a>' + ' , ';
+        html += '</a>' + ' ';
         html += '</span>';
     }
     html += '</div>'
