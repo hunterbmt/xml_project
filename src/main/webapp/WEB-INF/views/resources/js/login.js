@@ -131,6 +131,7 @@ function showUserInfo() {
                     $("#product").hide();
                     $("#user_detail").show();
                     document.getElementById('user_email').value = result.email;
+                    document.getElementById('user_id').value = result.id;
                     document.getElementById('user_fullname').value = result.fullname;
                 } else {
                     alert("error");

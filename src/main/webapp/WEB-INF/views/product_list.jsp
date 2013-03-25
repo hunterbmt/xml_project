@@ -17,6 +17,7 @@
         <link href="/resources/css/bootstrap-responsive.css" rel="stylesheet">
         <link href="/resources/css/font-awesome.css" rel="stylesheet">
         <link href="/resources/css/product.css" rel="stylesheet">
+        <link href="/resources/css/jquery-ui-helper.css" rel="stylesheet">
         <script src="/resources/js/lib/jquery.js"></script>
         <script src="/resources/js/lib/jquery.url.js"></script>
         <script src="/resources/js/lib/jquery-ui.js"></script>
@@ -26,12 +27,20 @@
         <script src="/resources/js/bid.js"></script>
         <script src="/resources/js/product.js"></script>
         <script src="/resources/js/category.js"></script>
-        <script src="/resources/js/login.js"></script>        
+        <script src="/resources/js/login.js"></script>   
+        <script src="/resources/js/order.js"></script> 
+        <script src="/resources/js/jquery-ui-timepicker-addon.js"></script>
+        <script src="/resources/js/dateUtils.js"></script>
         <script>
             $(document).ready(function() {
                 loadAndDisplayProduct(1);
                 loadAndDisplayCategory();
                 loadUserInfo();
+                $('#user_birthday').datepicker({
+                        showMonthAfterYear:false,
+                        minDate:'-90Y', maxDate:'-9Y',
+                        yearRange: '1930:2000',
+                        showOn:'focus', changeYear: true});
             });
         </script>
     </header>
@@ -134,7 +143,7 @@
                         </ul>
                     </div>
                 </div>
-        <div class="container" id="user_detail" style="position: absolute;width:60%;margin-left:100px;display: none">
+        <div class="container" id="user_detail" style="position: absolute;width:70%;display: none">
             <div class="alert" id="updateResult1" style="display: none;z-index: 9002">
                 
             </div>
@@ -142,7 +151,8 @@
               <ul class="nav nav-tabs">
                 <li class="active"><a href="#lA" data-toggle="tab">Profile</a></li>
                 <li class=""><a href="#lB" data-toggle="tab">Change Password</a></li>
-                <li class=""><a href="#lC" data-toggle="tab">Orders History</a></li>
+                <li class=""><a href="#lC" data-toggle="tab" onclick="loadAndDisplayOrder()">Orders History</a></li>
+                <li class=""><a href="#lD" data-toggle="tab">Payment</a></li>
               </ul>
               <div class="tab-content">
                 
@@ -150,7 +160,7 @@
                   <form id="tab">
                                 <label>Email</label>
                                 <input type="text" id="user_email" class="input-xlarge">
-
+                                <input type="hidden" id="user_id" class="input-xlarge">
                                 <label>First Name</label>
                                 <input type="text" id="user_fullname" class="input-xlarge">
                                 <label>Phone</label>
@@ -181,10 +191,32 @@
                                 
                             </form>
                 </div>
-                <div class="tab-pane" id="lC">
-                    <table class="table-hover">
-                        
+                  <div class="tab-pane" id="lC" style="width: 100%" >
+                      <table class="table table-hover">
+                          <caption><h3>User's Order History</h3> </caption>
+                          <thead>
+                              <tr>
+                                  <td><h4>Product's Name</h4></td>
+                                  <td><h4>Address</h4></td>
+                                  <td><h4>Date</h4></td>
+                                  <td><h4>Amount</h4></td> 
+                              </tr>
+                          </thead>
+                          <tbody id="orderResult">
+                              
+                          </tbody>
                     </table>
+                </div>
+               <div class="tab-pane" id="lD">
+                  <form id="tab4">
+                                <label>Enter your code here:</label>
+                                <input type="password" id="newpassword" class="input-xlarge">       
+                                <div>   
+                                    <button type='button' class="btn btn-primary" onclick="updatePassword()">Update</button>
+                                    
+                                </div>
+                                
+                            </form>
                 </div>
               </div>
             </div>
