@@ -10,6 +10,7 @@
         <link href="/resources/css/bootstrap-responsive.css" rel="stylesheet">
         <link href="/resources/css/font-awesome.css" rel="stylesheet">
         <link href="/resources/css/admin.css" rel="stylesheet">
+        <link href="/resources/css/simplePagination.css" rel="stylesheet">
         <link href="/resources/css/jquery-ui-helper.css" rel="stylesheet">
         <link href="/resources/css/bid.css" rel="stylesheet">
         <script src="/resources/js/lib/jquery.js"></script>
@@ -20,10 +21,10 @@
         <script src="/resources/js/dateUtils.js"></script>
         <script src="/resources/js/bid.js"></script>
         <script src="/resources/js/jquery-ui-timepicker-addon.js"></script>
+        <script type="text/javascript" src="/resources/js/lib/jquery.simplePagination.js"></script>
 
         <script>
             $(document).ready(function() {
-                vteam_http.init();
                 populateProductNameList();
                 update_lists();
                 $('#bid_start_date').datetimepicker();
@@ -37,13 +38,13 @@
                 <div class="container">
                     <ul>
                         <li>
-                            <a href="./">
+                            <a href="/admin/">
                                 <i class="icon-dashboard"></i>
                                 <span>Dash Board</span>
                             </a>	    				
                         </li>
                         <li>
-                            <a href="./product">
+                            <a href="/admin/product">
                                 <i class="icon-book"></i>
                                 <span>Product</span>
                             </a>	    				
@@ -55,7 +56,7 @@
                             </a>	    				
                         </li>
                         <li class="active">
-                            <a href="./bid">
+                            <a href="/admin/bid">
                                 <i class="icon-legal"></i>
                                 <span>Bid</span>
                             </a>	    				
@@ -190,17 +191,9 @@
                                     </tbody>
                                 </table>
                                 <div class="pagination-bar">
-                                    <a tabindex="0" class="ui-button last">Last</a>
-                                    <a tabindex="0" class="ui-button next">Next</a>
-
-                                    <span>
-                                        <a tabindex="0" class="ui-button active">1</a>
-                                        <a tabindex="0" class="ui-button ">2</a>
-                                        <a tabindex="0" class="ui-button ">3</a>                                        
-                                    </span>
-                                    <a tabindex="0" class="ui-button ui-button-diable">Previous</a>
-                                    <a tabindex="0" class="ui-button ui-button-diable first">First</a>
-
+                                    <div id="ongoing_pagination_bar" style="float: right">
+                                        
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -227,17 +220,9 @@
                                     </tbody>
                                 </table>
                                 <div class="pagination-bar">
-                                    <a tabindex="0" class="ui-button last">Last</a>
-                                    <a tabindex="0" class="ui-button next">Next</a>
-
-                                    <span>
-                                        <a tabindex="0" class="ui-button active">1</a>
-                                        <a tabindex="0" class="ui-button ">2</a>
-                                        <a tabindex="0" class="ui-button ">3</a>                                        
-                                    </span>
-                                    <a tabindex="0" class="ui-button ui-button-diable">Previous</a>
-                                    <a tabindex="0" class="ui-button ui-button-diable first">First</a>
-
+                                    <div id="upcoming_pagination_bar" style="float: right">
+                                        
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -267,17 +252,9 @@
                                     </tbody>
                                 </table>
                                 <div class="pagination-bar">
-                                    <a tabindex="0" class="ui-button last">Last</a>
-                                    <a tabindex="0" class="ui-button next">Next</a>
-
-                                    <span>
-                                        <a tabindex="0" class="ui-button active">1</a>
-                                        <a tabindex="0" class="ui-button ">2</a>
-                                        <a tabindex="0" class="ui-button ">3</a>                                        
-                                    </span>
-                                    <a tabindex="0" class="ui-button ui-button-diable">Previous</a>
-                                    <a tabindex="0" class="ui-button ui-button-diable first">First</a>
-
+                                    <div id="completed_pagination_bar" style="float: right">
+                                        
+                                    </div>
                                 </div>
                             </div>
                         </div>

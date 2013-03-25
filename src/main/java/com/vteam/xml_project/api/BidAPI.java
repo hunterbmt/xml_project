@@ -86,36 +86,24 @@ public class BidAPI {
         return result;
     }
 
-    @RequestMapping(value = "/get_bids_by_start_date", method = RequestMethod.POST)
-    public @ResponseBody
-    BidListDTO get_bids_by_start_date(
-            @RequestParam String start_date, String format_date) {
-
-        if (format_date == null) {
-            format_date = "MM/dd/yyyy HH:mm:ss";
-        }
-        BidListDTO result = bidService.getBidsByStartDate(start_date, format_date);
-        return result;
-    }
-
     @RequestMapping(value = "/get_upcoming_bids", method = RequestMethod.POST)
     public @ResponseBody
-    BidListDTO get_upcoming_bids() {
-        BidListDTO result = bidService.getUpcommingBid();
+    BidListDTO get_upcoming_bids(@RequestParam int page,int pageSize) {
+        BidListDTO result = bidService.getUpcommingBid(page,pageSize);
         return result;
     }
 
     @RequestMapping(value = "/get_ongoing_bids", method = RequestMethod.POST)
     public @ResponseBody
-    BidListDTO get_ongoing_bids() {
-        BidListDTO result = bidService.getOngoingBids();
+    BidListDTO get_ongoing_bids(@RequestParam int page,int pageSize) {
+        BidListDTO result = bidService.getOngoingBids(page,pageSize);
         return result;
     }
 
     @RequestMapping(value = "/get_completed_bids", method = RequestMethod.POST)
     public @ResponseBody
-    BidListDTO get_completed_bids(){
-        BidListDTO result = bidService.getCompletedBids();
+    BidListDTO get_completed_bids(@RequestParam int page,int pageSize){
+        BidListDTO result = bidService.getCompletedBids(page,pageSize);
         return result;
     }
 

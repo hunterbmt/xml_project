@@ -8,6 +8,7 @@ import com.vteam.xml_project.controller.UserSession;
 import com.vteam.xml_project.dto.BidDTO;
 import com.vteam.xml_project.dto.CategoryDTO;
 import com.vteam.xml_project.dto.CategoryListDTO;
+import com.vteam.xml_project.dto.NinCodeListDTO;
 import com.vteam.xml_project.dto.ProductDTO;
 import com.vteam.xml_project.dto.ProductListDTO;
 import com.vteam.xml_project.service.AdminService;
@@ -142,5 +143,13 @@ public class AdminAPI {
             @RequestParam int categoryId, String description) {
         CategoryDTO categoryDTO = adminService.updateCategory(categoryId, description);
         return categoryDTO;
+    }
+    
+    @RequestMapping(value = "/generate_nin", method = RequestMethod.POST)
+    public @ResponseBody
+    NinCodeListDTO generateNin(
+            @RequestParam int amount, int quantity) {
+        NinCodeListDTO ninCodeListDTO = adminService.generateNin(amount, quantity);
+        return ninCodeListDTO;
     }
 }

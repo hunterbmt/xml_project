@@ -108,11 +108,11 @@ public class BidService {
     }
 
     @Transactional
-    public BidListDTO getBidsByStartDate(String dateString, String formatStr) {
+    public BidListDTO getBidsByStartDate(int page,int pageSize,String dateString, String formatStr) {
         BidListDTO list = new BidListDTO();
         try {
             Date startDate = dateUtil.parseFromString(dateString, formatStr);
-            List<Bids> bidList = bidDAO.getBidsByStartDate(startDate);
+            List<Bids> bidList = bidDAO.getBidsByStartDate(page,pageSize,startDate);
             list.setBidList(getTmpList(bidList));
             list.setStatus("success");
         } catch (HibernateException he) {
@@ -217,31 +217,14 @@ public class BidService {
         }
     }
 
-    private BidListDTO getBidsFromDate(Date parseDate) {
+    @Transactional
+    public BidListDTO getUpcommingBid(int page,int pageSize){
+        Date currentDate = dateUtil.getCurrentDate();
         BidListDTO list = new BidListDTO();
         try {
-            List<Bids> bidList = bidDAO.getBidsFromDate(parseDate);
+            List<Bids> bidList = bidDAO.getBidsFromDate(page,pageSize,currentDate);
             list.setBidList(getTmpList(bidList));
-            list.setStatus("success");
-        } catch (HibernateException he) {
-            log.error(he);
-            list.setStatus("error");
-            list.setMsg("Have some errors. Try again");
-        }
-        return list;
-    }
-    
-    @Transactional
-    public BidListDTO getUpcommingBid(){
-        return getBidsFromDate(dateUtil.getCurrentDate());
-    }
-
-    @Transactional
-    public BidListDTO getOngoingBids() {
-        BidListDTO list = new BidListDTO();
-        try {
-            List<Bids> bidList = bidDAO.getOngoingBids(dateUtil.getCurrentDate());
-            list.setBidList(getTmpList(bidList));
+            list.setNumberOfBid(bidDAO.getNumberOfUpcomingBid(currentDate));
             list.setStatus("success");
         } catch (HibernateException he) {
             log.error(he);
@@ -252,12 +235,30 @@ public class BidService {
     }
 
     @Transactional
-    public BidListDTO getCompletedBids() {
+    public BidListDTO getOngoingBids(int page,int pageSize) {
+        Date currentDate = dateUtil.getCurrentDate();
+        BidListDTO list = new BidListDTO();
+        try {
+            List<Bids> bidList = bidDAO.getOngoingBids(page,pageSize,currentDate);
+            list.setBidList(getTmpList(bidList));
+            list.setNumberOfBid(bidDAO.getNumberOfOngoingBid(currentDate));
+            list.setStatus("success");
+        } catch (HibernateException he) {
+            log.error(he);
+            list.setStatus("error");
+            list.setMsg("Have some errors. Try again");
+        }
+        return list;
+    }
+
+    @Transactional
+    public BidListDTO getCompletedBids(int page,int pageSize) {
         BidListDTO list = new BidListDTO();
         try {
 
-            List<Bids> bidList = bidDAO.getCompleteBids();
+            List<Bids> bidList = bidDAO.getCompleteBids(page,pageSize);
             list.setBidList(getTmpList(bidList));
+            list.setNumberOfBid(bidDAO.getNumberOfCompleteBid());
             list.setStatus("success");
         } catch (HibernateException he) {
             log.error(he);

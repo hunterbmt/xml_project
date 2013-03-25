@@ -22,11 +22,9 @@ public class BaseDAO {
     public void save(Object entity) throws HibernateException {
 
         sessionFactory.getCurrentSession().saveOrUpdate(entity);
-        sessionFactory.getCurrentSession().flush();
     }
 
     public void delete(Object entity) throws HibernateException {
         sessionFactory.getCurrentSession().delete(entity);
-        sessionFactory.getCurrentSession().flush();
     }
 }

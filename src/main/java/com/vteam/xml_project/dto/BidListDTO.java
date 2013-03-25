@@ -11,7 +11,9 @@ import java.util.List;
  *
  * @author Crick
  */
-public class BidListDTO extends BaseDTO{
+public class BidListDTO extends BaseDTO {
+
+    private int numberOfBid;
     private List<BidDTO> bidList;
 
     public BidListDTO() {
@@ -26,6 +28,11 @@ public class BidListDTO extends BaseDTO{
         this.bidList = bidList;
     }
 
-    
-    
+    public int getNumberOfBid() {
+        return numberOfBid;
+    }
+
+    public void setNumberOfBid(int numberOfBid) {
+        this.numberOfBid = numberOfBid;
+    }
 }
