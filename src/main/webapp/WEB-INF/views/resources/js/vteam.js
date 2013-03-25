@@ -17,7 +17,7 @@ var vteam_http = {
             http.send(null);
         } else if (method.toUpperCase() == 'POST') {
             http.open("POST", url, true);
-            http.setRequestHeader("Content-type", " application/x-www-form-urlencoded");
+            http.setRequestHeader("Content-type", "application/x-www-form-urlencoded; charset=UTF-8");
             http.onreadystatechange = function () {
                 if (http.readyState == 4 && http.status == 200) {
                     callbackFunction(eval("(" + http.response + ")"));

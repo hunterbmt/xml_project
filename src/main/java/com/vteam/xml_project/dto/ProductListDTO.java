@@ -11,7 +11,9 @@ import java.util.List;
  *
  * @author Crick
  */
-public class ProductListDTO extends BaseDTO{
+public class ProductListDTO extends BaseDTO {
+
+    private int numberOfProduct;
     private List<ProductDTO> productList;
 
     public ProductListDTO() {
@@ -25,6 +27,12 @@ public class ProductListDTO extends BaseDTO{
     public void setProductList(List<ProductDTO> list) {
         this.productList = list;
     }
-    
-    
+
+    public int getNumberOfProduct() {
+        return numberOfProduct;
+    }
+
+    public void setNumberOfProduct(int numberOfProduct) {
+        this.numberOfProduct = numberOfProduct;
+    }
 }

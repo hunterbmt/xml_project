@@ -39,12 +39,11 @@ function displayBidDetails(bid) {
     $('#bid_start_date').val(toDateAndTime2(bid.start_date));
     $('#bid_end_date').val(toDateAndTime2(bid.end_date));
     $('#bid_status').val(bid.status);
-
     $('#bid_cost').val(bid.cost);
 }
 function insertOrUpdateBid() {
     var id = $("#bid_id").html();
-    var p_id = array_keys[array_values.indexOf($("#bid_product_name").val())];
+    
     var start_date = $("#bid_start_date").val();
     var end_date = $("#bid_end_date").val();
     var cost = $("#bid_cost").val();
@@ -53,7 +52,8 @@ function insertOrUpdateBid() {
     {
         status = 'UNCOMPLETED';
     }
-    if (id) {
+    if (id) { // update
+        var p_id = all_keys[all_values.indexOf($("#bid_product_name").val())];
         vteam_http.makeHttpRequest("/admin/update_bid",
                 {bid_id: id,
                     product_id: p_id,
@@ -63,7 +63,8 @@ function insertOrUpdateBid() {
                     cost: cost
                 },
         'POST', callback);
-    } else {
+    } else { // insert
+        var p_id = array_keys[array_values.indexOf($("#bid_product_name").val())];
         vteam_http.makeHttpRequest("/admin/insert_bid",
                 {product_id: p_id,
                     start_date: start_date,
@@ -82,7 +83,7 @@ function callback(result) {
             }, 2000);
         });
         clearBidDetail();
-        disableSave();
+        //disableSave();
         update_lists();
     } else {
         $('#result_IU_bid').html(result.msg).show();
@@ -112,6 +113,7 @@ function clearBidDetail(self) {
     $('#bid_cost').val('');
     if ($(self).hasClass('newBtn')) {
         enableSave();
+        $('#bid_cost').val(1);
     }
 }
 
@@ -120,28 +122,38 @@ function populateProductNameList() {
             {
             },
             'POST', populateList);
+    getAllProductNamList();
+}
+
+function getAllProductNamList() {
+    vteam_http.makeHttpRequest("/admin/getAllProductNameList",
+            {
+            },
+            'POST', getAllProductNameList);
+}
+var all_keys;
+var all_values;
+function getAllProductNameList(list) {
+    all_keys = new Array();
+    all_values = new Array();
+    for (var key in list) {
+        all_keys.push(key);
+        all_values.push(list[key]);
+    }
 }
 
 var array_keys;
 var array_values;
 function populateList(list) {
-    //var b = "<select id=\"product_name\">";
-
     array_keys = new Array();
     array_values = new Array();
-
     for (var key in list) {
         array_keys.push(key);
         array_values.push(list[key]);
     }
-//    for (var i = 0; i < array_keys.length; i++) {
-//        b += "<option value='" + array_keys[i] + "'>" + array_values[i] + "</option>";
-//    }
-//    b += "</select>"
     $("#bid_product_name").autocomplete({
         source: array_values
     });
-//    $('#product_name_container').html(b);
 
 }
 
@@ -175,8 +187,8 @@ function displayOngoingBid(bidList) {
         cnt += '<td class="td-actions">';
         cnt += '<a href="javascript:bid_details(';
         cnt += bidList[i].id + ');" class="btn btn-warning btn-small"><i class="btn-icon-only icon-edit"></i></a>';
-        cnt += '<a href="javascript:bid_remove(';
-        cnt += bidList[i].id + ');" class="btn btn-small"><i class="btn-icon-only icon-remove"></i></a>';
+//        cnt += '<a href="javascript:bid_remove(';
+//        cnt += bidList[i].id + ');" class="btn btn-small"><i class="btn-icon-only icon-remove"></i></a>';
         cnt += "</tr>";
     }
     $("#onGoingBid").html(

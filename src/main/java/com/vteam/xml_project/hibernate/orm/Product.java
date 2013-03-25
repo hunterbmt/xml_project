@@ -31,7 +31,6 @@ import javax.persistence.TemporalType;
 public class Product implements java.io.Serializable {
 
     public enum Status {
-
         AVAILABLE, UNAVAILABLE, DELETE;
     }
     private Integer id;

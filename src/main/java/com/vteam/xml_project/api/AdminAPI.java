@@ -41,6 +41,14 @@ public class AdminAPI {
     @Autowired
     private CategoryService categoryService;
 
+    @RequestMapping(value = "/getProductList", method = RequestMethod.POST)
+    public @ResponseBody
+    ProductListDTO insertProduct(
+            @RequestParam int page, int pageSize) {
+        ProductListDTO productsDTO = adminService.getProductList(page, pageSize);
+        return productsDTO;
+    }
+    
     @RequestMapping(value = "/insert_product", method = RequestMethod.POST)
     public @ResponseBody
     ProductDTO insertProduct(
@@ -79,7 +87,8 @@ public class AdminAPI {
 
         start_date = (start_date.trim().equals("") ? currDate.toString() : start_date.trim());
         end_date = (end_date.trim().equals("") ? nextDate.toString() : end_date.trim());
-        BidDTO bDTO = adminService.insertBid(product_id, start_date, end_date, cost);
+        BidDTO bDTO = adminService.insertBid(product_id,
+                start_date.toString(), end_date.toString(), cost);
         return bDTO;
     }
 
@@ -87,14 +96,29 @@ public class AdminAPI {
     public @ResponseBody
     HashMap<Integer, String> admin_bid_getPList(HttpServletRequest request) {
 
-        ProductListDTO productList = productService.getProductList(1, 99999);
+        ProductListDTO productList = productService.getProductNameList(1, 99999);
         List<ProductDTO> list = productList.getProductList();
         HashMap<Integer, String> ProductNameList = new HashMap<Integer, String>();
         for (int i = 0; i < list.size(); i++) {
-            ProductNameList.put(list.get(i).getId(), list.get(i).getName());
+                ProductNameList.put(list.get(i).getId(), list.get(i).getName());           
         }
         return ProductNameList;
     }
+    
+    @RequestMapping(value = "/getAllProductNameList")
+    public @ResponseBody
+    HashMap<Integer, String> admin_bid_getAllProductNameList(HttpServletRequest request) {
+
+        ProductListDTO productList = productService.getAllProductNameList(1, 99999);
+        List<ProductDTO> list = productList.getProductList();
+        HashMap<Integer, String> ProductNameList = new HashMap<Integer, String>();
+        for (int i = 0; i < list.size(); i++) {
+                ProductNameList.put(list.get(i).getId(), list.get(i).getName());           
+        }
+        return ProductNameList;
+    }
+    
+    
 
     @RequestMapping(value = "/getCategoryNameList", method = RequestMethod.POST)
     public @ResponseBody
@@ -103,19 +127,20 @@ public class AdminAPI {
         CategoryListDTO categoryListDTO = categoryService.getCategoryList();
         return categoryListDTO;
     }
-    
+
     @RequestMapping(value = "/insert_category", method = RequestMethod.POST)
     public @ResponseBody
     CategoryDTO insertCategory(
             @RequestParam String categoryName, String description) {
-        CategoryDTO categoryDTO = adminService.insertCategory(categoryName,description);
+        CategoryDTO categoryDTO = adminService.insertCategory(categoryName, description);
         return categoryDTO;
     }
+
     @RequestMapping(value = "/update_category", method = RequestMethod.POST)
     public @ResponseBody
     CategoryDTO updateCategory(
             @RequestParam int categoryId, String description) {
-        CategoryDTO categoryDTO = adminService.updateCategory(categoryId,description);
+        CategoryDTO categoryDTO = adminService.updateCategory(categoryId, description);
         return categoryDTO;
     }
 }

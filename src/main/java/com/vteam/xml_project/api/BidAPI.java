@@ -60,7 +60,7 @@ public class BidAPI {
         } catch (NullPointerException ex) {
             java.util.logging.Logger.getLogger(AdminAPI.class.getName()).log(Level.SEVERE, null, ex);
             returnMap.put("allowed", "no");
-            returnMap.put("message", "Vui lòng đăng nhập để thực hiện được tính năng này!");
+            returnMap.put("message", "Vui lòng đăng nhập để thực hiện tính năng này!");
         } catch (Exception ex) {
             java.util.logging.Logger.getLogger(AdminAPI.class.getName()).log(Level.SEVERE, null, ex);
             returnMap.put("allowed", "no");
@@ -83,7 +83,6 @@ public class BidAPI {
     BidListDTO get_bids_list(
             @RequestParam int page, int page_size) {
         BidListDTO result = bidService.getBidsList(page, page_size);
-
         return result;
     }
 

@@ -1,5 +1,5 @@
 
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
@@ -10,8 +10,10 @@
         <link href="/resources/css/bootstrap-responsive.css" rel="stylesheet">
         <link href="/resources/css/font-awesome.css" rel="stylesheet">
         <link href="/resources/css/jquery-ui-helper.css" rel="stylesheet">
+        <link href="/resources/css/simplePagination.css" rel="stylesheet">
         <link href="/resources/css/admin.css" rel="stylesheet">
         <script src="/resources/js/lib/jquery.js"></script>
+        <script type="text/javascript" src="/resources/js/lib/jquery.simplePagination.js"></script>
         <script src="/resources/js/lib/jquery.url.js"></script>
         <script src="/resources/js/lib/jquery-ui.js"></script>
         <script src="/resources/js/lib/bootstrap.min.js"></script>
@@ -23,7 +25,7 @@
         <script>
             $(document).ready(function() {
                 populateCategoryNameList()
-                loadProductList(1, 5);
+                loadProductList(1);
             });
         </script>
     </head>
@@ -157,19 +159,9 @@
                                     </tbody>
                                 </table>
                                 <div class="pagination-bar">
-                                    <a tabindex="0" class="ui-button last">Last</a>
-                                    <a tabindex="0" class="ui-button next">Next</a>
-
-                                    <span>
-                                        <a tabindex="0" class="ui-button active">1</a>
-                                        <a tabindex="0" class="ui-button ">2</a>
-                                        <a tabindex="0" class="ui-button ">3</a>
-                                        <a tabindex="0" class="ui-button ">4</a>
-                                        <a tabindex="0" class="ui-button ">5</a>
-                                    </span>
-                                    <a tabindex="0" class="ui-button ui-button-diable">Previous</a>
-                                    <a tabindex="0" class="ui-button ui-button-diable first">First</a>
-
+                                    <div id="pagination_bar" style="float: right">
+                                        
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -200,8 +192,8 @@
                                         </div>
                                     </div>
                                     <div class="controls-button">
-                                        <button type="button" id="category_detail_btn" class="btn btn-warning">Save</button>
-                                        <button type="button" class="btn">New</button>
+                                        <button type="button" id="category_detail_btn" class="btn btn-warning" onclick="insertOrUpdateCategory()">Save</button>
+                                        <button type="button" class="btn" onclick="clearCategoryDetail()">New</button>
                                     </div>
                                     <div>
                                         <span class="alert-info hide" id="result_category"></span>

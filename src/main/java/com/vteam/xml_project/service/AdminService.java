@@ -7,6 +7,7 @@ package com.vteam.xml_project.service;
 import com.vteam.xml_project.dto.BidDTO;
 import com.vteam.xml_project.dto.CategoryDTO;
 import com.vteam.xml_project.dto.ProductDTO;
+import com.vteam.xml_project.dto.ProductListDTO;
 import com.vteam.xml_project.hibernate.dao.BidDAO;
 import com.vteam.xml_project.hibernate.dao.CategoryDAO;
 import com.vteam.xml_project.hibernate.dao.ProductDAO;
@@ -16,6 +17,7 @@ import com.vteam.xml_project.hibernate.orm.Product;
 import com.vteam.xml_project.util.DateUtil;
 import java.text.ParseException;
 import java.util.Date;
+import java.util.List;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +43,7 @@ public class AdminService {
 
     @Transactional
     public ProductDTO insertProduct(int categoryId, String productName, String description, String img, double minPrice, double maxPrice) {
-        ProductDTO productDTO = new ProductDTO();;
+        ProductDTO productDTO = new ProductDTO();
         try {
             Category category = categoryDAO.getCategoryById(categoryId);
             Product newProduct = new Product(category, productName, description, img, Product.Status.AVAILABLE, minPrice, maxPrice, true);
@@ -82,6 +84,35 @@ public class AdminService {
     }
 
     @Transactional
+    public ProductListDTO getProductList(int page, int pageSize) {
+        ProductListDTO list = new ProductListDTO();
+        try {
+            List<Product> dbProducts = productDAO.getProductListInorgeStatus(page, pageSize);
+            ProductDTO p;
+            for (Product d : dbProducts) {
+
+                p = new ProductDTO();
+                p.setName(d.getProductName());
+                p.setDescription(d.getDescription());
+                p.setImage("/resources/img/product/" + d.getImage());
+                p.setImageName(d.getImage());
+                p.setId(d.getId());
+                p.setBidId(d.getBidId());
+
+                list.getProductList().add(p);
+            }
+            list.setNumberOfProduct(productDAO.getNumberOfProduct());
+            list.setStatus("success");
+        } catch (HibernateException ex) {
+            log.error(ex.getStackTrace());
+            list.setStatus("error");
+            list.setMsg("Have some errors. Try again");
+        }
+        return list;
+
+    }
+    
+    @Transactional
     public BidDTO insertBid(int product_id, String startDateStr, String endDateStr, int cost) {
         BidDTO bidDTO = new BidDTO();
         try {
@@ -100,6 +131,7 @@ public class AdminService {
 
             // update bid_id of that product
             product.setBidId(newBid.getId());
+            product.setStatus(Product.Status.UNAVAILABLE);
             productDAO.save(product);
             bidDTO.setStatus("success");
             return bidDTO;
@@ -127,7 +159,14 @@ public class AdminService {
             newBid.setProduct(product);
             newBid.setStartDate(startDate);
             newBid.setEndDate(endDate);
+            
             newBid.setStatus(Bids.Status.valueOf(status));
+            if (newBid.getStatus().toString().equalsIgnoreCase("completed")) {
+                product.setStatus(Product.Status.AVAILABLE);  
+                product.setBidId(null);
+            }
+            product.setBidId(newBid.getId());
+            productDAO.save(product);
             bidDAO.save(newBid);
             bidDTO.setEnd_date(endDate);
             bidDTO.setProduct_id(product_id);

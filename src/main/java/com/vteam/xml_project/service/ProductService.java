@@ -13,6 +13,7 @@ import com.vteam.xml_project.hibernate.orm.Bids;
 import com.vteam.xml_project.hibernate.orm.Product;
 import com.vteam.xml_project.hibernate.orm.Tags;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import org.apache.log4j.Logger;
@@ -42,21 +43,23 @@ public class ProductService {
         try {
             List<Product> dbProducts = productDAO.getProductList(page, pageSize);
             ProductDTO p;
-
-            List<ProductDTO> tmpList = new ArrayList<ProductDTO>();
+            Bids bid;
+            long time = 0;
+            Date currentDate = new Date();
             for (Product d : dbProducts) {
-
+                bid = bidDAO.getBidById(d.getBidId());
+                time = bid.getStartDate().getTime() - currentDate.getTime();
                 p = new ProductDTO();
+                p.setBidTimeRemain(time);
                 p.setName(d.getProductName());
                 p.setDescription(d.getDescription());
                 p.setImage("/resources/img/product/" + d.getImage());
                 p.setImageName(d.getImage());
                 p.setId(d.getId());
                 p.setBidId(d.getBidId());
-
-                tmpList.add(p);
+                list.getProductList().add(p);
             }
-            list.setProductList(tmpList);
+            list.setNumberOfProduct(productDAO.getNumberOfProduct());
             list.setStatus("success");
         } catch (HibernateException ex) {
             log.error(ex.getStackTrace());
@@ -99,8 +102,15 @@ public class ProductService {
     @Transactional
     public ProductDTO getProductById(int id) {
         ProductDTO productDTO = new ProductDTO();
+        Bids bid;
+        long time = 0;
+        Date currentDate = new Date();
         try {
             Product product = productDAO.getProductById(id);
+            bid = bidDAO.getBidById(product.getBidId());
+            time = bid.getStartDate().getTime() - currentDate.getTime();
+
+            productDTO.setBidTimeRemain(time);
             productDTO.setId(product.getId());
             productDTO.setName(product.getProductName());
             productDTO.setCategoryName(product.getCategory().getCategoryName());
@@ -111,9 +121,11 @@ public class ProductService {
             productDTO.setImage("/resources/img/product/" + product.getImage());
             productDTO.setImageName(product.getImage());
             productDTO.setBidId(product.getBidId());
-            if (product.getBidId()!=null) {
+            if (product.getBidId() != null) {
                 Bids bids = bidDAO.getBidById(product.getBidId());
-                productDTO.setBidCost(bids.getCost());
+                if (bids != null) {
+                    productDTO.setBidCost(bids.getCost());
+                }
             }
             productDTO.setStatus("success");
 
@@ -175,6 +187,60 @@ public class ProductService {
             log.error(ex);
             list.setStatus("error");
             list.setMsg("Have some errors . Try again");
+        }
+        return list;
+    }
+
+    @Transactional
+    public ProductListDTO getProductNameList(int page, int pageSize) {
+        ProductListDTO list = new ProductListDTO();
+        try {
+            List<Product> dbProducts = productDAO.getProductNameList(page, pageSize);
+            ProductDTO p;
+
+            List<ProductDTO> tmpList = new ArrayList<ProductDTO>();
+            for (Product d : dbProducts) {
+
+                p = new ProductDTO();
+                p.setName(d.getProductName());
+                p.setId(d.getId());
+                p.setBidId(d.getBidId());
+
+                tmpList.add(p);
+            }
+            list.setProductList(tmpList);
+            list.setStatus("success");
+        } catch (HibernateException ex) {
+            log.error(ex.getMessage());
+            list.setStatus("error");
+            list.setMsg("Have some errors. Try again");
+        }
+        return list;
+    }
+
+    @Transactional
+    public ProductListDTO getAllProductNameList(int page, int pageSize) {
+        ProductListDTO list = new ProductListDTO();
+        try {
+            List<Product> dbProducts = productDAO.getAllProductNameList(page, pageSize);
+            ProductDTO p;
+
+            List<ProductDTO> tmpList = new ArrayList<ProductDTO>();
+            for (Product d : dbProducts) {
+
+                p = new ProductDTO();
+                p.setName(d.getProductName());
+                p.setId(d.getId());
+                p.setBidId(d.getBidId());
+
+                tmpList.add(p);
+            }
+            list.setProductList(tmpList);
+            list.setStatus("success");
+        } catch (HibernateException ex) {
+            log.error(ex.getMessage());
+            list.setStatus("error");
+            list.setMsg("Have some errors. Try again");
         }
         return list;
     }
