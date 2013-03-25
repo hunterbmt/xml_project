@@ -75,10 +75,36 @@ function doBid(_id) {
 
     });
 }
+var count = 9999;
+var c;
+
+function displayCounter() {
+  count=count-1000;
+  if (count <= 0)
+  {
+     clearInterval(c);
+     $('#timer').html("<strong>Sản phẩm có thể bid</strong>");
+     return;
+  }
+  $("#timer").html(toHMS(count));
+  //alert(count);
+}
+
+function toHMS(diff) {
+    if (diff < 0) return 0;
+    var diffSeconds = diff / 1000 % 60;  
+    var diffMinutes = diff / (60 * 1000) % 60; 
+    var diffHours = diff / (60 * 60 * 1000);
+    return Number(diffHours).toFixed(0) + " Giờ " 
+            + Number(diffMinutes).toFixed(0) + " Phút " 
+            + Number(diffSeconds).toFixed(0) + " Giây ";
+}
+
 function displayProductDetail(product) {
+    clearInterval(c);
     var html = '';
-
-
+    count = product.bidTimeRemain;
+    c = setInterval(displayCounter, 1000);
     html += '<li class= "span4">'
 
     html += '<div class= "p_detail" style="border:none; margin-top:0px">'
@@ -92,15 +118,15 @@ function displayProductDetail(product) {
     html += '</div>'
     html += '<div class="price"><div class="price_view">'
     html += '<div class="v6Price mTop10" align="center">'
-    html += '<span id="current_price">$60,000</span></div>'
+    html += '<span id="current_price">??,??? VND</span></div>'
     html += '<div class="v7inlinetype" align="center"><span id="bid_cost">'+ product.bidCost + '</span> Nils/bid</div>'
     html += '<div class="v6BuyNow">'
     html += '<a class=" fixPng" href="javascript:doBid(' + product.bidId + ')"></a></div>'
     html += "</div></div>"
 
     html += '<div class="v6BorderBot pTop5"><div class="v6Timer">'
-    html += '<div class="v6Gray fl">Chỉ còn</div>'
-    html += '<div class="v6DisplayTime" id=""><span>3 ngày 20:56’:45”</span></div>'
+    html += '<div class="v6Gray fl"></div>'
+    html += '<div class="v6DisplayTime" id="timer">'+ toHMS(product.bidTimeRemain) +'</span></div>'
     html += '</div></div>'
 
     html += '<div class="v6BorderBot pTop5">'
@@ -119,9 +145,10 @@ function displayProductDetail(product) {
     html += '</li>'
 
     $("#product_detail .p_detail").html(html);
-    hideAllDiv()
-    $("#product_detail").show()
-    loadProductTags(product.id)
+    hideAllDiv();
+    $("#product_detail").show();
+    loadProductTags(product.id);
+    
 }
 
 function view_product_detail(pid) {
