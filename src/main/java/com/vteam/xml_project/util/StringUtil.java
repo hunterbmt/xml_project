@@ -148,7 +148,7 @@ public class StringUtil {
 
     public static String generateNin() {
         String accessToken = UUID.randomUUID().toString().replaceAll("-", "")
-                .substring(0, 10);
+                .substring(0, 10).toUpperCase();
         return accessToken;
     }
 }

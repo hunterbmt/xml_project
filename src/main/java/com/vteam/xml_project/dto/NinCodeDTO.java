@@ -14,7 +14,7 @@ public class NinCodeDTO extends BaseDTO {
 
     private int id;
     private int amount;
-
+    private String code;
     public NinCodeDTO() {
     }
 
@@ -33,4 +33,13 @@ public class NinCodeDTO extends BaseDTO {
     public void setId(int id) {
         this.id = id;
     }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+    
 }

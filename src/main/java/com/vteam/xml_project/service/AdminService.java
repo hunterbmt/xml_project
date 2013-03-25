@@ -6,6 +6,7 @@ package com.vteam.xml_project.service;
 
 import com.vteam.xml_project.dto.BidDTO;
 import com.vteam.xml_project.dto.CategoryDTO;
+import com.vteam.xml_project.dto.NinCodeDTO;
 import com.vteam.xml_project.dto.NinCodeListDTO;
 import com.vteam.xml_project.dto.ProductDTO;
 import com.vteam.xml_project.dto.ProductListDTO;
@@ -226,10 +227,16 @@ public class AdminService {
         NinCodeListDTO ninCodeList = new NinCodeListDTO();
         try{
             CardCode cardCode;
+            NinCodeDTO ninCodeDTO;
             for(int i = 0;i<quantity;i++){
                 cardCode = new CardCode(StringUtil.generateNin(), amount);
                 cardCodeDAO.save(cardCode);
+                ninCodeDTO = new NinCodeDTO();
+                ninCodeDTO.setAmount(amount);
+                ninCodeDTO.setCode(cardCode.getCode());
+                ninCodeList.getNinList().add(ninCodeDTO);
             }
+            ninCodeList.setStatus("success");
         }catch(HibernateException ex){
             log.error(ex.getStackTrace());
             ninCodeList.setStatus("error");
