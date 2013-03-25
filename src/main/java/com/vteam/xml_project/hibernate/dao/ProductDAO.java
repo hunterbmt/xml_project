@@ -22,7 +22,7 @@ public class ProductDAO extends BaseDAO {
                 .getCurrentSession()
                 .createQuery("FROM Product WHERE status = :s");
         // get only the on-going bid products ( status = 1)
-        query.setParameter("s", Product.Status.AVAILABLE);
+        query.setParameter("s", Product.Status.UNAVAILABLE);
         query = query.setFirstResult(pageSize * (page - 1));
         query.setMaxResults(pageSize);
         return query.list();

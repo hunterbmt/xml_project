@@ -13,6 +13,7 @@ import com.vteam.xml_project.hibernate.orm.Bids;
 import com.vteam.xml_project.hibernate.orm.Product;
 import com.vteam.xml_project.hibernate.orm.Tags;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import org.apache.log4j.Logger;
@@ -42,9 +43,14 @@ public class ProductService {
         try {
             List<Product> dbProducts = productDAO.getProductList(page, pageSize);
             ProductDTO p;
+            Bids bid;
+            long time = 0;
+            Date currentDate = new Date();
             for (Product d : dbProducts) {
-
+                bid = bidDAO.getBidById(d.getBidId());
+                time = bid.getStartDate().getTime() - currentDate.getTime();
                 p = new ProductDTO();
+                p.setBidTimeRemain(time);
                 p.setName(d.getProductName());
                 p.setDescription(d.getDescription());
                 p.setImage("/resources/img/product/" + d.getImage());
@@ -97,8 +103,15 @@ public class ProductService {
     @Transactional
     public ProductDTO getProductById(int id) {
         ProductDTO productDTO = new ProductDTO();
+        Bids bid;
+        long time = 0;
+        Date currentDate = new Date();
         try {
             Product product = productDAO.getProductById(id);
+            bid = bidDAO.getBidById(product.getBidId());
+            time = bid.getStartDate().getTime() - currentDate.getTime();
+
+            productDTO.setBidTimeRemain(time);
             productDTO.setId(product.getId());
             productDTO.setName(product.getProductName());
             productDTO.setCategoryName(product.getCategory().getCategoryName());

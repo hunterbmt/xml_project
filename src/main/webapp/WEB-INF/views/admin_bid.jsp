@@ -23,6 +23,7 @@
 
         <script>
             $(document).ready(function() {
+                vteam_http.init();
                 populateProductNameList();
                 update_lists();
                 $('#bid_start_date').datetimepicker();

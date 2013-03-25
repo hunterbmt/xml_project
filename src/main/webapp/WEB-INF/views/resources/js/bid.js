@@ -39,7 +39,6 @@ function displayBidDetails(bid) {
     $('#bid_start_date').val(toDateAndTime2(bid.start_date));
     $('#bid_end_date').val(toDateAndTime2(bid.end_date));
     $('#bid_status').val(bid.status);
-
     $('#bid_cost').val(bid.cost);
 }
 function insertOrUpdateBid() {
@@ -188,8 +187,8 @@ function displayOngoingBid(bidList) {
         cnt += '<td class="td-actions">';
         cnt += '<a href="javascript:bid_details(';
         cnt += bidList[i].id + ');" class="btn btn-warning btn-small"><i class="btn-icon-only icon-edit"></i></a>';
-        cnt += '<a href="javascript:bid_remove(';
-        cnt += bidList[i].id + ');" class="btn btn-small"><i class="btn-icon-only icon-remove"></i></a>';
+//        cnt += '<a href="javascript:bid_remove(';
+//        cnt += bidList[i].id + ');" class="btn btn-small"><i class="btn-icon-only icon-remove"></i></a>';
         cnt += "</tr>";
     }
     $("#onGoingBid").html(
