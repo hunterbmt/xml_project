@@ -29,10 +29,9 @@
         <script src="/resources/js/login.js"></script>        
         <script>
             $(document).ready(function() {
-                loadAndDisplayProduct(1, 5);
+                loadAndDisplayProduct(1);
                 loadAndDisplayCategory();
                 loadUserInfo();
-                //displayProductDetail(pid);
             });
         </script>
     </header>
@@ -55,9 +54,6 @@
                                 <li><a href="#">Hot Bids</a></li>
                                 <li><a href="#">FAQ</a></li>
                             </ul>
-                            <!--                            <p class="navbar-text pull-right">
-                                                            <a href="login.htm" class="navbar-link">login</a> or <a href="register.htm" class="navbar-link">register</a>
-                                                        </p> -->
                             <ul class="nav pull-right">
                                 <div id="loginResult" style="display: none;margin-top: 10px"></div>
                                 <li id="fat-menu" class="dropdown" >
@@ -106,7 +102,7 @@
         
         <div class="container" style="margin-top: 80px">
                 <div class="row-fluid" id="product">
-                    <div id="side-section" class="span3">   
+                    <div id="side-section" class="span3 category">   
                         <ul id ="category_div" class="nav nav-list">
 
                         </ul>
@@ -117,14 +113,14 @@
 
                         </ul>
                     </div>
-                    <div class="span9" id="search_product_list" style="display: none">
+                    <div class="span9 hide" id="search_product_list">
                         <ul class="thumbnails">
 
 
                         </ul>
                     </div>
 
-                    <div class="span9" id="product_detail" style="display: none">
+                    <div class="span9 hide" id="product_detail">
                         <ul class="p_detail">
 
 

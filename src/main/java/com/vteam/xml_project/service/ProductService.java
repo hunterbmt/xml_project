@@ -51,7 +51,6 @@ public class ProductService {
                 p.setImageName(d.getImage());
                 p.setId(d.getId());
                 p.setBidId(d.getBidId());
-
                 list.getProductList().add(p);
             }
             list.setNumberOfProduct(productDAO.getNumberOfProduct());

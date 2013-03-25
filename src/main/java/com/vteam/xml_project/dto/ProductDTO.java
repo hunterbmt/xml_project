@@ -4,6 +4,8 @@
  */
 package com.vteam.xml_project.dto;
 
+import org.codehaus.jackson.annotate.JsonValue;
+
 /**
  *
  * @author phitt60230
@@ -126,5 +128,25 @@ public class ProductDTO extends BaseDTO {
 
     public void setCategoryId(int categoryId) {
         this.categoryId = categoryId;
+    }
+
+    public String getShortDescription() {
+        if (description == null||description.trim().equals("")){
+            return null;
+        }
+        int start = description.indexOf("<p>");
+        int end = description.indexOf("</p>");
+        if(start == -1){
+            if(description.length()<25){
+                return description;
+            }
+            else {
+                return description.substring(0, 25);
+            }
+        }
+        else if (end - start > 25) {
+            return description.substring(start+4, start + 28);
+        }
+        return description.substring(start+3, end);
     }
 }

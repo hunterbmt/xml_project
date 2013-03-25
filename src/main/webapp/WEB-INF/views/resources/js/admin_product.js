@@ -36,7 +36,7 @@ function displayProduct(productList) {
         html += "<tr>"
         html += "<td>" + productList[i].id + "</td>"
         html += "<td>" + productList[i].name + "</td>"
-        html += "<td>" + productList[i].description + "</td>"
+        html += "<td>" + productList[i].shortDescription + "</td>"
         html += '<td class="td-actions">'
         html += '<a href="javascript:;" class="btn btn-small btn-warning" onclick="getProductDetail(' + productList[i].id + ')" >'
         html += '<i class="btn-icon-only icon-edit"></i>'

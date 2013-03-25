@@ -1,9 +1,14 @@
 var current_page;
-var current_page_size;
+var page_size = 9;
 
-function loadAndDisplayProduct(page, page_size) {
+$(window).scroll(function(){  
+         if  ($(window).scrollTop() == $(document).height() - $(window).height()){
+             loadAndDisplayProduct(current_page+1);
+         }  
+  });   
+
+function loadAndDisplayProduct(page) {
     current_page = page;
-    current_page_size = page_size;
     vteam_http.makeHttpRequest("/product/getProductList",
             {page: page, pageSize: page_size},
     'POST',
@@ -16,7 +21,6 @@ function loadAndDisplayProduct(page, page_size) {
 
 function searchProduct() {
     var input = document.getElementById("appendedInputButtons").value;
-    vteam_http.init();
     vteam_http.makeHttpRequest("/product/searchProduct",
             {txtSearch: input},
     'POST',
@@ -33,24 +37,22 @@ function displayProduct(productList) {
     var html = '';
     for (var i = 0; i < productList.length; i++) {
 
-        html += '<li class= "span4">'
+        html += '<div class= "span4">'
 
-        html += '<div class= "thumbnail">'
-        html += '<img data-src="holder.js/320x280" src="' + productList[i].image + '"/>'
+        html +=    '<div class= "thumbnail">'
+        html +=       '<img data-src="holder.js/320x280" src="' + productList[i].image + '"/>'
 
-        html += '<div class= "caption">'
-        html += '<a href="#" onclick ="view_product_detail(' + productList[i].id + ')">'
-        html += '<h6>'
-
-        html += productList[i].name
-        html += '</h6></a>'
-        html += '<p>' + productList[i].description + '<p>'
-        html += '</div>'
-        html += '</div>'
-        html += '</li></a>'
+        html +=       '<div class= "caption">'
+        html +=          '<a href="#" onclick ="view_product_detail(' + productList[i].id + ')">'
+        html +=             '<h6>'+productList[i].name+'</h6>'
+        html +=           '</a>'
+        html +=            '<p>' + productList[i].shortDescription + '<p>'
+        html +=       '</div>'
+        html +=    '</div>'
+        html += '</div>';
     }
 
-    $("#product_list .thumbnails").html(html)
+    $(html).appendTo('#product_list .thumbnails');
     hideAllDiv()
     $('#product_list').show();
 }
