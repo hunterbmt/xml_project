@@ -133,18 +133,6 @@
 
                         </ul>
                     </div>
-
-                    <div class="pagination pagination-small pull-right">
-                        <ul>
-                            <li><a href="#">«</a></li>
-                            <li><a href="#">1</a></li>
-                            <li><a href="#">2</a></li>
-                            <li><a href="#">3</a></li>
-                            <li><a href="#">4</a></li>
-                            <li><a href="#">5</a></li>
-                            <li><a href="#">»</a></li>
-                        </ul>
-                    </div>
                 </div>
         <div class="container" id="user_detail" style="position: absolute;width:60%;margin-left:100px;display: none">
             <div class="alert" id="updateResult1" style="display: none;z-index: 9002">

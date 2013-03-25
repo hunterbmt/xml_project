@@ -47,8 +47,10 @@ public class ProductService {
             long time = 0;
             Date currentDate = new Date();
             for (Product d : dbProducts) {
-                bid = bidDAO.getBidById(d.getBidId());
-                time = bid.getStartDate().getTime() - currentDate.getTime();
+                if (d.getBidId() != null) {
+                    bid = bidDAO.getBidById(d.getBidId());
+                    time = bid.getStartDate().getTime() - currentDate.getTime();
+                }
                 p = new ProductDTO();
                 p.setBidTimeRemain(time);
                 p.setName(d.getProductName());
