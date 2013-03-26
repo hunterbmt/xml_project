@@ -13,7 +13,7 @@ import org.springframework.stereotype.Repository;
 
 /**
  *
- * @author TH31012013
+ * @author Crick
  */
 @Repository
 public class BidDAO extends BaseDAO{

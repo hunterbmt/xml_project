@@ -53,6 +53,7 @@ public class BidAPI {
                 returnMap.put("allowed", "ok");
                 returnMap.put("message", "Chúc mừng, bạn đã đặt bid thành công!");
                 returnMap.put("price", price);
+                returnMap.put("bidId", bid_id);
             } else {
                 String message = "";
                 if (price == -113) {
@@ -70,6 +71,39 @@ public class BidAPI {
         } catch (Exception ex) {
             java.util.logging.Logger.getLogger(AdminAPI.class.getName()).log(Level.SEVERE, null, ex);
             returnMap.put("allowed", "no");
+            returnMap.put("message", ex.getMessage());
+        }
+        return returnMap;
+    }
+    
+    @RequestMapping(value = "/do_buy", method = RequestMethod.POST)
+    public @ResponseBody
+    HashMap<String, Object> doBuy(
+            @RequestParam int bid_id) {
+        HashMap<String, Object> returnMap = new HashMap<String, Object>();
+        try {
+            //String uuid = (String) userSession.get("uuid");
+            String email = userSession.get("email").toString();
+            UserDTO u = userService.getUserByEmail(email);
+            logger.debug("do_bid: buying a bid, wait for respond ,from uuid :" + u.getId() + " - Name: " + u.getFullname());
+
+            boolean ok = bidService.doBuy(u, bid_id);
+            if (ok) {
+                returnMap.put("success", "yes");
+                returnMap.put("message", "Chúc mừng, sản phẩm đã thuộc về bạn! ^_^");
+                returnMap.put("bidId", bid_id);
+            } else {
+                String message = "Có lỗi trong quá trình xử lý! Vui lòng liên hệ admin";
+                returnMap.put("success", "no");
+                returnMap.put("message", message);
+            }
+        } catch (NullPointerException ex) {
+            java.util.logging.Logger.getLogger(AdminAPI.class.getName()).log(Level.SEVERE, null, ex);
+            returnMap.put("success", "no");
+            returnMap.put("message", "Vui lòng đăng nhập để thực hiện tính năng này!");
+        } catch (Exception ex) {
+            java.util.logging.Logger.getLogger(AdminAPI.class.getName()).log(Level.SEVERE, null, ex);
+            returnMap.put("success", "no");
             returnMap.put("message", ex.getMessage());
         }
         return returnMap;

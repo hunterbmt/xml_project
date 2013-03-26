@@ -6,23 +6,23 @@
 function login() {
     var email = document.getElementById("user_username").value;
     var password = document.getElementById("user_password").value;
-    var html='';
-    html+='<ul class="dropdown-menu" role="menu" aria-labelledby="drop3" style="width: 250px">'
-     html+='<li ><div role="menuitem" tabindex="-1" style="padding: 3px 20px;display: block">'
+    var html = '';
+    html += '<ul class="dropdown-menu" role="menu" aria-labelledby="drop3" style="width: 250px">'
+    html += '<li ><div role="menuitem" tabindex="-1" style="padding: 3px 20px;display: block">'
 
-     html+='<div id="payment">'
-     html+='<form >'
-     html+='<fieldset>'
-     html+='<label class="label-main">Insert your code here:</label>'
-     html+='<input name="miniusername"  id="user_paymentCode" type="text">'
-      html+='<button name="send" type="button" class="btn btn-primary btn-small" onclick="inputCode()">Insert</button>'                                                            
-      html+='</fieldset>'
-       html+='</form>'
-       html+='<div id="result" style="color: red;display: none"></div>'
-        html+='</div>'
-       html+='</div>'
-        html+='</li>'
-        html+='</ul>'
+    html += '<div id="payment">'
+    html += '<form >'
+    html += '<fieldset>'
+    html += '<label class="label-main">Insert your code here:</label>'
+    html += '<input name="miniusername"  id="user_paymentCode" type="text">'
+    html += '<button name="send" type="button" class="btn btn-primary btn-small" onclick="inputCode()">Insert</button>'
+    html += '</fieldset>'
+    html += '</form>'
+    html += '<div id="result" style="color: red;display: none"></div>'
+    html += '</div>'
+    html += '</div>'
+    html += '</li>'
+    html += '</ul>'
 
 
     vteam_http.makeHttpRequest("/user/login",
@@ -39,9 +39,9 @@ function login() {
                         $('#fat-menu').hide();
                         $('#quickLogin').hide();
                         $('#loginResult').html('<a class="btn btn-primary" id="email" style="margin-left:10px;margin-top:2px;" href="#" onclick="showUserInfo()"><i class="icon-user icon-white" ></i>' + result.email + ' </a>'
-                        +'<li id="fat-menu1" class="btn btn-primary dropdown" style="width:50px;height:20px;margin-left:10px;" ><a href="#" id="drop4" role="button" class="dropdown-toggle" data-toggle="dropdown">'+result.balance+'</a>'+html+'</li>'
+                                + '<li id="fat-menu1" class="btn btn-primary dropdown" style="width:50px;height:20px;margin-left:10px;" ><a href="#" id="drop4" role="button" class="dropdown-toggle" data-toggle="dropdown">' + result.balance + '</a>' + html + '</li>'
                                 + '<a class="btn btn-primary" id="logout" style="margin-left:10px;margin-top:2px;" href="#" onclick="logout()"><i class="icon-off icon-white" ></i></a>').show();
-                        
+
 //                        $("#drop4").html(result.balance);
 //                        $("#balanceResult").show();
                     }
@@ -158,22 +158,22 @@ function showUserInfo() {
             });
 }
 function loadUserInfo() {
-     var html='';
-    html+='<ul class="dropdown-menu" role="menu" aria-labelledby="drop3" style="width: 250px">'
-     html+='<li ><div role="menuitem" tabindex="-1" style="padding: 3px 20px;display: block">'
+    var html = '';
+    html += '<ul class="dropdown-menu" role="menu" aria-labelledby="drop3" style="width: 250px">'
+    html += '<li ><div role="menuitem" tabindex="-1" style="padding: 3px 20px;display: block">'
 
-     html+='<div id="payment">'
-     html+='<form >'
-     html+='<fieldset>'
-     html+='<label class="label-main">Insert your code here:</label>'
-     html+='<input name="miniusername"  id="user_paymentCode" type="text">'
-      html+='<button name="send" type="button"  class="btn btn-primary btn-small" onclick="inputCode()">Insert</button>'                                                            
-      html+='</fieldset>'
-       html+='</form>'
-        html+='</div>'
-       html+='</div>'
-        html+='</li>'
-        html+='</ul>'
+    html += '<div id="payment">'
+    html += '<form >'
+    html += '<fieldset>'
+    html += '<label class="label-main">Insert your code here:</label>'
+    html += '<input name="miniusername"  id="user_paymentCode" type="text">'
+    html += '<button name="send" type="button"  class="btn btn-primary btn-small" onclick="inputCode()">Insert</button>'
+    html += '</fieldset>'
+    html += '</form>'
+    html += '</div>'
+    html += '</div>'
+    html += '</li>'
+    html += '</ul>'
     vteam_http.makeHttpRequest("/user/get_user_by_email", {},
             "POST",
             function(result) {
@@ -182,7 +182,7 @@ function loadUserInfo() {
                     $('#fat-menu').hide();
                     $('#quickLogin').hide();
                     $('#loginResult').html('<a class="btn btn-primary" id="email" style="margin-left:10px;margin-top:2px;" href="#" onclick="showUserInfo()"><i class="icon-user icon-white" ></i>' + result.email + ' </a>'
-                            +'<li id="fat-menu1" class="btn btn-primary dropdown" style="width:30px;height:20px;margin-left:10px;" ><a href="#" id="drop4" role="button" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-shopping-cart icon-white" ></i>'+result.balance+'</a>'+html+'</li>'
+                            + '<li id="fat-menu1" class="btn btn-primary dropdown" style="width:50px;height:20px;margin-left:10px;" ><a href="#" id="drop4" role="button" class="dropdown-toggle" data-toggle="dropdown">' + result.balance + '</a>' + html + '</li>'
                             + '<a class="btn btn-primary" id="logout" style="margin-left:10px;margin-top:2px;" href="#" onclick="logout()"><i class="icon-off icon-white" ></i></a>').show();
                 } else if (result.status == "unlogin") {
                     displayunLogin()
@@ -191,21 +191,21 @@ function loadUserInfo() {
                 }
             });
 }
-function inputCode(){
-    var input_code=document.getElementById("user_paymentCode").value;
-     vteam_http.makeHttpRequest("/user/input_payment_code", {
-         code:input_code
-     },
-            "POST",
+function inputCode() {
+    var input_code = document.getElementById("user_paymentCode").value;
+    vteam_http.makeHttpRequest("/user/input_payment_code", {
+        code: input_code
+    },
+    "POST",
             function(result) {
                 if (result.status == "success")
                 {
                     $("#result").html("Insert succesfully!!");
                     $("#result").show();
-                } else if(result.status == "unlogin") {
+                } else if (result.status == "unlogin") {
                     $("#result").html("You need login again to insert");
                     $("#result").show();
-                }else{
+                } else {
                     $("#result").html("Error when insert");
                     $("#result").show();
                 }
