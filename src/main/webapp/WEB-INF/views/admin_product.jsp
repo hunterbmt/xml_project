@@ -103,8 +103,10 @@
                                         <div class="row">
                                             <label class="control-label">Description</label>
                                         </div>
-                                        <textarea class="textarea" id="product_description"></textarea>
-
+                                        <textarea class="textarea" id="product_description" style="width: 430px;height: 300px"></textarea>
+                                        <script>
+                                            $('#product_description').wysihtml5();
+                                        </script>
                                     </div>
                                     <div class="control-group">
                                         <label class="control-label">Min price</label>

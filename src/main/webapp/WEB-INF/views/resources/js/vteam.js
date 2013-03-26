@@ -33,7 +33,7 @@ var vteam_http = {
     function converJSonToQueryString(json) {
         str = '';
         for (key in json) {
-            str += key + '=' + escape(json[key]) + '&';
+            str += key + '=' + json[key] + '&';
         }
         str = str.slice(0, str.length - 1);
         return str;

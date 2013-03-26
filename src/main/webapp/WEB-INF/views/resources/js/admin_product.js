@@ -53,7 +53,7 @@ function insertOrUpdateProduct() {
     var id = parseInt($("#product_id").html());
     var product_name = $("#product_name").val();
     var category_id = product_current_category_id;
-    var description = $("product_description").html();
+    var description = encodeURI(editor.getValue());
     var min_price = $("#product_min_price").val();
     var max_price = $("#product_max_price").val();
     var img = $("#product_img").val();
@@ -102,7 +102,7 @@ function clearProductDetail() {
     $("#product_id").html('');
     $("#product_name").val('');
     $('#category_name').val('');
-    $("product_description").html('');
+    editor.setValue('');
     $("#product_min_price").val('');
     $("#product_max_price").val('');
     $("#product_img").val('');
@@ -123,7 +123,7 @@ function displayProductDetail(detail) {
     $("#product_name").val(detail.name);
     $("#category_name").val(detail.categoryName);
     product_current_category_id = detail.categoryId;
-    $("product_description").html(detail.description);
+    editor.setValue(detail.description);
     $("#product_min_price").val(detail.minPrice);
     $("#product_max_price").val(detail.maxPrice);
     $("#product_img").val(detail.imageName);
@@ -221,4 +221,3 @@ function displayCategoryMsg(msg) {
         }, 10000);
     });
 }
-$('#product_description').wysihtml5();
