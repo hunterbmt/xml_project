@@ -15,9 +15,10 @@ function login() {
      html+='<fieldset>'
      html+='<label class="label-main">Insert your code here:</label>'
      html+='<input name="miniusername"  id="user_paymentCode" type="text">'
-      html+='<button name="send" type="button"  class="btn btn-primary btn-small">Insert</button>'                                                            
+      html+='<button name="send" type="button" class="btn btn-primary btn-small" onclick="inputCode()">Insert</button>'                                                            
       html+='</fieldset>'
        html+='</form>'
+       html+='<div id="result" style="color: red;display: none"></div>'
         html+='</div>'
        html+='</div>'
         html+='</li>'
@@ -38,7 +39,7 @@ function login() {
                         $('#fat-menu').hide();
                         $('#quickLogin').hide();
                         $('#loginResult').html('<a class="btn btn-primary" id="email" style="margin-left:10px;margin-top:2px;" href="#" onclick="showUserInfo()"><i class="icon-user icon-white" ></i>' + result.email + ' </a>'
-                        +'<li id="fat-menu1" class="btn btn-primary dropdown" style="width:30px;height:20px;margin-left:10px;" ><a href="#" id="drop4" role="button" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-shopping-cart icon-white" ></i>'+result.balance+'</a>'+html+'</li>'
+                        +'<li id="fat-menu1" class="btn btn-primary dropdown" style="width:50px;height:20px;margin-left:10px;" ><a href="#" id="drop4" role="button" class="dropdown-toggle" data-toggle="dropdown">'+result.balance+'</a>'+html+'</li>'
                                 + '<a class="btn btn-primary" id="logout" style="margin-left:10px;margin-top:2px;" href="#" onclick="logout()"><i class="icon-off icon-white" ></i></a>').show();
                         
 //                        $("#drop4").html(result.balance);
@@ -166,7 +167,7 @@ function loadUserInfo() {
      html+='<fieldset>'
      html+='<label class="label-main">Insert your code here:</label>'
      html+='<input name="miniusername"  id="user_paymentCode" type="text">'
-      html+='<button name="send" type="button"  class="btn btn-primary btn-small">Insert</button>'                                                            
+      html+='<button name="send" type="button"  class="btn btn-primary btn-small" onclick="inputCode()">Insert</button>'                                                            
       html+='</fieldset>'
        html+='</form>'
         html+='</div>'
@@ -187,6 +188,26 @@ function loadUserInfo() {
                     displayunLogin()
                 } else {
                     alert("error");
+                }
+            });
+}
+function inputCode(){
+    var input_code=document.getElementById("user_paymentCode").value;
+     vteam_http.makeHttpRequest("/user/input_payment_code", {
+         code:input_code
+     },
+            "POST",
+            function(result) {
+                if (result.status == "success")
+                {
+                    $("#result").html("Insert succesfully!!");
+                    $("#result").show();
+                } else if(result.status == "unlogin") {
+                    $("#result").html("You need login again to insert");
+                    $("#result").show();
+                }else{
+                    $("#result").html("Error when insert");
+                    $("#result").show();
                 }
             });
 }
