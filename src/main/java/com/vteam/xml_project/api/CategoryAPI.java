@@ -43,8 +43,8 @@ public class CategoryAPI {
     @RequestMapping(value = "/searchProductByCategoryId", method = RequestMethod.POST)
     public @ResponseBody
     ProductListDTO searchProductByCategoryId(
-            @RequestParam int category_id) {
-        ProductListDTO searchCategoryResult = productService.searchProductByCategoryId(category_id);
+            @RequestParam int category_id, int page,int pageSize) {
+        ProductListDTO searchCategoryResult = productService.searchProductByCategoryId(category_id,page,pageSize);
         return searchCategoryResult;
     }
     @RequestMapping(value = "/getCategoryDetail", method = RequestMethod.POST)

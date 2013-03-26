@@ -39,17 +39,17 @@ public class ProductAPI {
     @RequestMapping(value = "/searchProduct", method = RequestMethod.POST)
     public @ResponseBody
     ProductListDTO getSearchProductList(
-            @RequestParam String txtSearch) {
-        ProductListDTO result = productService.searchProduct(txtSearch);
+            @RequestParam String txtSearch, int page, int pageSize) {
+        ProductListDTO result = productService.searchProduct(txtSearch, page, pageSize);
         return result;
     }
 
     @RequestMapping(value = "/searchProductByTags", method = RequestMethod.POST)
     public @ResponseBody
     ProductListDTO searchProductByTags(
-            @RequestParam int tag_id) {
-        ProductListDTO result = productService.searchProductByTagsId(tag_id);
-        return result ;
+            @RequestParam int tag_id, int page, int pageSize) {
+        ProductListDTO result = productService.searchProductByTagsId(tag_id, page, pageSize);
+        return result;
     }
 
     @RequestMapping(value = "/getProductById", method = RequestMethod.POST)
