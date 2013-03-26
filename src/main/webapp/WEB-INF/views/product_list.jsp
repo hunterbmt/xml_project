@@ -89,17 +89,20 @@
                                                     </form>
                                                     <div id="error" style="color: red;display: none"></div>
                                                 </div>
-                                                <div id="sigin" style="display: none">Sig up
+                                                <div id="sigin" style="display: none">
                                                     <form  method="post" accept-charset="UTF-8">
                                                         <label > Username:</label>
-                                                        <input id="user_username"  type="text" name="username" />
+                                                        <input id="new_username"  type="text" name="username" />
                                                         <label > Password:</label>
-                                                        <input id="user_password"  type="password" name="password" />
+                                                        <input id="new_password"  type="password" name="password" />
                                                         <label > Re-Password:</label>
-                                                        <input id="user_repassword"  type="password" name="password" /><p/>
-                                                        <input class="btn btn-primary btn-small"  type="button" value="Sin In" />
+                                                        <input id="new_repassword"  type="password" name="password" />
+                                                        <label > Fullname:</label>
+                                                        <input id="user_fullname"  type="text" name="fullname" /><p/>
+                                                        <input class="btn btn-primary btn-small"  type="button" value="Sig In" onclick="create()" />
                                                         <input type="button" class="btn-group btn-small" value="Back" onclick="changeLogin()"/>
-
+                                                    </form>
+                                                    <div id="result" style="display: none"></div>
                                                 </div>
                                             </div>
 

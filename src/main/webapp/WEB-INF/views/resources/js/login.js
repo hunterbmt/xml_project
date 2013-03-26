@@ -211,3 +211,24 @@ function inputCode() {
                 }
             });
 }
+function create(){
+    var email = document.getElementById("new_username").value;
+    var password = document.getElementById("new_password").value;
+    var fullname = document.getElementById("user_fullname").value;
+    vteam_http.makeHttpRequest("/user/create", {
+        email: email,
+        password:password,
+        fullname:fullname
+    },
+    "POST",
+            function(result) {
+                if (result.status == "success")
+                {
+                    $("#result").html("<h4 style='color:green;'>Insert succesfully!!</h4>");
+                    $("#result").show();
+                } else {
+                    $("#result").html("<h4 style='color:red;'>Error when insert</h4>");
+                    $("#result").show();
+                }
+            });
+}
