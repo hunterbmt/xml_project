@@ -111,13 +111,13 @@
                                     <div class="control-group">
                                         <label class="control-label">Min price</label>
                                         <div class="controls">
-                                            <input type="text" id="product_min_price">
+                                            <input type="number" id="product_min_price">
                                         </div>
                                     </div>
                                     <div class="control-group">
                                         <label class="control-label">Max price</label>
                                         <div class="controls">
-                                            <input type="text" id="product_max_price">
+                                            <input type="number" id="product_max_price">
                                         </div>
                                     </div>
                                     <div class="control-group">
