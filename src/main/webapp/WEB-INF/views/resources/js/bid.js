@@ -91,6 +91,7 @@ function callback(result) {
         clearBidDetail();
         //disableSave();
         update_lists();
+        getAllProductNamList();
     } else {
         $('#result_IU_bid').html(result.msg).show();
         $(function() {

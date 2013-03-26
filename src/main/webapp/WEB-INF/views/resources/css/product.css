@@ -616,6 +616,51 @@ select:active:enabled {background-image: url("data:image/png;base64,iVBORw0KGgoA
 }
 .v6BuyNow a:hover{background-position:left -53px}
 
+.v6Buy {
+    margin: 10px 0 0 44px;
+}
+.v6Buy a {
+    background: url('/resources/img/buy.png') no-repeat 0 0;
+    width: 244px;
+    height: 48px;
+    display: block;
+}
+.v6Buy a:hover{background-position:left -53px}
+
+.v6BidAvoid {
+    margin: 10px 0 0 44px;
+}
+.v6BidAvoid {
+    background: url('/resources/img/bid.png') no-repeat 0 0;
+    background-position:left -106px;
+    width: 244px;
+    height: 48px;
+    display: block;
+}
+
+#buyNowLeft {
+    font-weight: bold;
+    font-size: xx-large;
+    display: inline;
+    position: relative;
+    top: 10px;
+    left: 20px;
+}
+
+
+
+.v6BidAvoid strong {
+    position: relative;
+    top: 24px;
+    left: 36px;
+}
+
+.clockNumber {
+    font-weight: bold;
+    font-size: x-large;
+}
+
+
 .pTop5, #pTop5 {
     padding-top: 5px;
 }

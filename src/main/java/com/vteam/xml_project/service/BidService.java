@@ -8,8 +8,10 @@ import com.vteam.xml_project.dto.BidDTO;
 import com.vteam.xml_project.dto.BidListDTO;
 import com.vteam.xml_project.dto.UserDTO;
 import com.vteam.xml_project.hibernate.dao.BidDAO;
+import com.vteam.xml_project.hibernate.dao.BidHistoryDAO;
 import com.vteam.xml_project.hibernate.dao.ProductDAO;
 import com.vteam.xml_project.hibernate.dao.UserDAO;
+import com.vteam.xml_project.hibernate.orm.BidHistory;
 import com.vteam.xml_project.hibernate.orm.Bids;
 import com.vteam.xml_project.hibernate.orm.Product;
 import com.vteam.xml_project.hibernate.orm.Users;
@@ -37,13 +39,15 @@ public class BidService {
     @Autowired
     private BidDAO bidDAO;
     @Autowired
+    private BidHistoryDAO bhDAO;
+    
+    @Autowired
     private ProductDAO productDAO;
     @Autowired
     private UserDAO userDAO;
     @Autowired
     private DateUtil dateUtil;
-
-    private static long BID_DURATION = (long) 35.00;
+    private static long BID_DURATION = (long) 25.00;
 
     private List<BidDTO> getTmpList(List<Bids> bidList) {
         BidDTO tmp;
@@ -126,7 +130,6 @@ public class BidService {
 //        }
 //        return list;
 //    }
-
     @Transactional
     public BidListDTO getBidsList(int page, int page_size) {
         BidListDTO list = new BidListDTO();
@@ -143,13 +146,13 @@ public class BidService {
     }
 
     @Transactional
-    public BidDTO createNewBid(int productID,String startDateStr,String formatStr) {
+    public BidDTO createNewBid(int productID, String startDateStr, String formatStr) {
         BidDTO bidDTO = new BidDTO();
         try {
             Product product = productDAO.getProductById(productID);
-            Date startDate = dateUtil.parseFromString(startDateStr,formatStr);
+            Date startDate = dateUtil.parseFromString(startDateStr, formatStr);
             Bids dbBid = new Bids(
-                    product, startDate,null, null);
+                    product, startDate, null, null);
             dbBid.setStatus(Bids.Status.UNCOMPLETED);
             bidDAO.save(dbBid);
             bidDTO.setStatus("success");
@@ -175,6 +178,24 @@ public class BidService {
         DecimalFormat df = new DecimalFormat("0");
         Double price = Double.valueOf(df.format(randomPrice));
         dbBid.setCurrentPrice(price);
+    }
+
+    private void update_bought_bid(Bids dbBid, Date current_date, Integer uuid, double price) {
+        DecimalFormat df = new DecimalFormat("0");
+        Double _price = Double.valueOf(df.format(price));
+        dbBid.setLastEdit(current_date);
+        dbBid.setLastUserid(uuid);
+        dbBid.setCurrentPrice(_price);
+        dbBid.setStatus(Bids.Status.COMPLETED);
+    }
+
+    private void updateBidsHistory(Users user, Bids dbBid, Date date, double price) {
+        BidHistory bh = bhDAO.getBidHistoryByBidId(dbBid.getId());
+        bh.setBid(dbBid);
+        bh.setBidTime(date);
+        bh.setPrice(price);
+        bh.setUser(user);
+        bhDAO.save(bh);
     }
 
     private boolean update_balance(Users u, int cost) {
@@ -203,6 +224,7 @@ public class BidService {
         if (last_edit == null) {
             if (update_balance(user, dbBid.getCost())) {
                 update_bid(dbBid, current_date, user.getId());
+                updateBidsHistory(user, dbBid, current_date, dbBid.getCurrentPrice());
                 return dbBid.getCurrentPrice();
             } else {
                 return -113;
@@ -212,6 +234,7 @@ public class BidService {
             if (seconds > BID_DURATION) {
                 if (update_balance(user, dbBid.getCost())) {
                     update_bid(dbBid, current_date, user.getId());
+                    updateBidsHistory(user, dbBid, current_date, dbBid.getCurrentPrice());
                     return dbBid.getCurrentPrice();
                 } else {
                     return -113;
@@ -223,15 +246,34 @@ public class BidService {
     }
 
     @Transactional
-    public BidListDTO getUpcommingBid(int page,int pageSize){
+    public boolean doBuy(UserDTO u, int bid_id) {
+
+        Bids dbBid = bidDAO.getBidById(bid_id);
+        Date last_edit = dbBid.getLastEdit();
+        Date current_date = new Date();
+        Users user = userDAO.findUserByEmail(u.getEmail());
+
+        if (last_edit == null) {
+            return false;
+        } else { // not null
+            update_bought_bid(dbBid, current_date, user.getId(), dbBid.getCurrentPrice());
+            updateBidsHistory(user, dbBid, current_date, dbBid.getCurrentPrice());
+        }
+        return true;
+    }
+
+    @Transactional
+    public BidListDTO getUpcommingBid(int page, int pageSize) {
         Date currentDate = dateUtil.getCurrentDate();
         BidListDTO list = new BidListDTO();
         try {
-            List<Bids> bidList = bidDAO.getBidsList(page,pageSize);
+            List<Bids> bidList = bidDAO.getBidsList(page, pageSize);
             List<Bids> filteredList = new ArrayList<Bids>();
             for (Bids b : bidList) {
-                if (b.getStartDate().getTime() - currentDate.getTime() > 0) {
-                    filteredList.add(b);
+                if (b.getStatus() != Bids.Status.COMPLETED) {
+                    if (b.getStartDate().getTime() - currentDate.getTime() > 0) {
+                        filteredList.add(b);
+                    }
                 }
             }
             list.setBidList(getTmpList(filteredList));
@@ -246,16 +288,18 @@ public class BidService {
     }
 
     @Transactional
-    public BidListDTO getOngoingBids(int page,int pageSize) {
+    public BidListDTO getOngoingBids(int page, int pageSize) {
         Date currentDate = dateUtil.getCurrentDate();
         BidListDTO list = new BidListDTO();
         try {
-            List<Bids> bidList = bidDAO.getBidsList(page,pageSize);
+            List<Bids> bidList = bidDAO.getBidsList(page, pageSize);
             List<Bids> filteredList = new ArrayList<Bids>();
             for (Bids b : bidList) {
-                if ( (b.getStartDate().getTime() - currentDate.getTime() <= 0)
-                        && (b.getEndDate().getTime() - currentDate.getTime() > 0)){
-                    filteredList.add(b);
+                if (b.getStatus() != Bids.Status.COMPLETED) {
+                    if ((b.getStartDate().getTime() - currentDate.getTime() <= 0)
+                            && (b.getEndDate().getTime() - currentDate.getTime() > 0)) {
+                        filteredList.add(b);
+                    }
                 }
             }
             list.setBidList(getTmpList(filteredList));
@@ -270,11 +314,11 @@ public class BidService {
     }
 
     @Transactional
-    public BidListDTO getCompletedBids(int page,int pageSize) {
+    public BidListDTO getCompletedBids(int page, int pageSize) {
         BidListDTO list = new BidListDTO();
         try {
 
-            List<Bids> bidList = bidDAO.getBidsList(page,pageSize);
+            List<Bids> bidList = bidDAO.getBidsList(page, pageSize);
             List<Bids> filteredList = new ArrayList<Bids>();
             for (Bids b : bidList) {
                 if (b.getStatus() == Bids.Status.COMPLETED) {
