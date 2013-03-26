@@ -200,7 +200,8 @@ function searchOnKeyDown(e) {
 }
 
 function changeContext() {
-    loadAndDisplayProduct(current_page, current_page_size)
+    $('#product_list .thumbnails').html('');
+    loadAndDisplayProduct(current_page, current_page_size);
 }
 
 function hideAllDiv() {

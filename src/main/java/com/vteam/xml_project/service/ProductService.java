@@ -73,10 +73,10 @@ public class ProductService {
     }
 
     @Transactional
-    public ProductListDTO searchProduct(String txtSearch) {
+    public ProductListDTO searchProduct(String txtSearch, int page, int pageSize) {
         ProductListDTO list = new ProductListDTO();
         try {
-            List<Product> dbProducts = productDAO.searchProduct(txtSearch);
+            List<Product> dbProducts = productDAO.searchProduct(txtSearch, page, pageSize);
             ProductDTO p;
 
             List<ProductDTO> tmpList = new ArrayList<ProductDTO>();
@@ -141,10 +141,10 @@ public class ProductService {
     }
 
     @Transactional
-    public ProductListDTO searchProductByCategoryId(int category_id) {
+    public ProductListDTO searchProductByCategoryId(int category_id, int page, int pageSize) {
         ProductListDTO list = new ProductListDTO();
         try {
-            List<Product> dbProducts = productDAO.searchProductByCategoryId(category_id);
+            List<Product> dbProducts = productDAO.searchProductByCategoryId(category_id, page, pageSize);
             ProductDTO pd;
 
             List<ProductDTO> tmpList = new ArrayList<ProductDTO>();
@@ -168,11 +168,11 @@ public class ProductService {
     }
 
     @Transactional
-    public ProductListDTO searchProductByTagsId(int tags_id) {
+    public ProductListDTO searchProductByTagsId(int tags_id, int page, int pageSize) {
         ProductListDTO list = new ProductListDTO();
         try {
             Tags tag = tagsDAO.getTagById(tags_id);
-            Set<Product> dbProducts = tag.getProducts();
+            List<Product> dbProducts = productDAO.searchProductByTagID(tag, page, pageSize);
             List<ProductDTO> tmpList = new ArrayList<ProductDTO>();
             ProductDTO pd;
             for (Product d : dbProducts) {
