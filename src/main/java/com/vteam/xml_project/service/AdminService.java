@@ -138,7 +138,7 @@ public class AdminService {
 
             // update bid_id of that product
             product.setBidId(newBid.getId());
-            product.setStatus(Product.Status.UNAVAILABLE);
+            product.setStatus(Product.Status.ONBID);
             productDAO.save(product);
             bidDTO.setStatus("success");
             return bidDTO;
