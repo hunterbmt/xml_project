@@ -1,9 +1,13 @@
 var current_page;
 var page_size = 9;
-
+var currentDiv;
 $(window).scroll(function() {
     if ($(window).scrollTop() == $(document).height() - $(window).height()) {
-        loadAndDisplayProduct(current_page + 1);
+        if(currentDiv =="product_list") {
+            loadAndDisplayProduct(current_page + 1);
+        }else if(currentDiv =="search_product_list"){
+            searchProduct();
+        }
     }
 });
 
@@ -55,6 +59,7 @@ function displayProduct(productList) {
     $(html).appendTo('#product_list .thumbnails');
     hideAllDiv()
     $('#product_list').show();
+    currentDiv="product_list";
 }
 
 function numberWithCommas(x) {
@@ -193,6 +198,7 @@ function displayProductDetail(product) {
     $("#product_detail .p_detail").html(html);
     hideAllDiv();
     $("#product_detail").show();
+    currentDiv = "product_detail"
     loadProductTags(product.id);
     getRecentBidder(product.bidId);
 
@@ -261,7 +267,7 @@ function displaySearchProduct(productList) {
     $("#search_product_list .thumbnails").html(html);
     hideAllDiv();
     $("#search_product_list").show();
-
+    currentDiv = "search_product_list";
 }
 
 function searchOnKeyDown(e) {
@@ -274,7 +280,7 @@ function searchOnKeyDown(e) {
 
 function changeContext() {
     $('#product_list .thumbnails').html('');
-    loadAndDisplayProduct(current_page, current_page_size);
+    loadAndDisplayProduct(1);
 }
 
 function hideAllDiv() {
