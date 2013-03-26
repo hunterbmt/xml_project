@@ -9,11 +9,13 @@
         <link href="/resources/css/bootstrap-combined.no-icons.min.css" rel="stylesheet">
         <link href="/resources/css/bootstrap-responsive.css" rel="stylesheet">
         <link href="/resources/css/font-awesome.css" rel="stylesheet">
+        <link href="/resources/css/jquery-ui-helper.css" rel="stylesheet">
         <link href="/resources/css/admin.css" rel="stylesheet">
         <script src="/resources/js/lib/jquery.js"></script>
         <script src="/resources/js/lib/jquery.url.js"></script>
         <script src="/resources/js/lib/jquery-ui.js"></script>
         <script src="/resources/js/lib/bootstrap.min.js"></script>
+        <script src="/resources/js/admin.js"></script>
     </head>
     <body>
         <div class="navbar navbar-fixed-top">
@@ -99,7 +101,7 @@
                                         <span class="shortcut-label">Download report as PDF</span>	
                                     </a>
 
-                                    <a href="javascript:;" class="shortcut">
+                                    <a href="javascript:;" class="shortcut" onclick="generateNinOnClick()">
                                         <i class="shortcut-icon  icon-magic"></i>
                                         <span class="shortcut-label">Generate Nin code</span>	
                                     </a>
@@ -111,7 +113,17 @@
                                 </div> <!-- /shortcuts -->	
 
                             </div> <!-- /widget-content -->
-
+                            <div id="nin_code_modal" class="hide" title="Generate Nin code">
+                                <p id ="nin_result"class="validateTips hide">All form fields are required.</p>
+                                <form>
+                                    <fieldset>
+                                        <label for="Amount">Amount</label>
+                                        <input type="number" name="Amount" id="nin_amount" class="number ui-widget-content ui-corner-all"/>
+                                        <label for="Quantity">Quantity</label>
+                                        <input type="number" name="Quantity" id="nin_quantity" class="number ui-widget-content ui-corner-all"/>
+                                    </fieldset>
+                                </form>
+                            </div>
                         </div>
                     </div>
                     <div class="span6">
