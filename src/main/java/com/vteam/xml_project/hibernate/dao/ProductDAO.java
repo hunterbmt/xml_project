@@ -71,7 +71,7 @@ public class ProductDAO extends BaseDAO {
         Query query = this.sessionFactory
                 .getCurrentSession()
                 .createQuery("FROM Product product where :tag in elements(product.tagses) AND product.status = :s");
-        query.setParameter("tag", tag);
+        query.setParameter("tag", tag.getId());
         query.setParameter("s", Product.Status.ONBID);
         query = query.setFirstResult(pageSize * (page - 1));
         query.setMaxResults(pageSize);
