@@ -1,6 +1,3 @@
-var current_page;
-var current_page_size;
-
 
 function loadAndDisplayCategory() {
     vteam_http.makeHttpRequest("/category/getCategoryList", {},
@@ -8,7 +5,6 @@ function loadAndDisplayCategory() {
             function(result) {
                 if (result.status == 'success') {
                     displayCategory(result.categoryList)
-                    //displaySearchProductByCategoryId(productList)
                 }
             });
 }
@@ -19,7 +15,7 @@ function displayCategory(categoryList) {
     for (var i = 0; i < categoryList.length; i++) {
 
         html += '   <li> <a href="#" onclick="searchProductByCategory('
-        html += categoryList[i].id
+        html += categoryList[i].id +',1'
         html += ')" id= "category_id"> <i class = "icon-star-empty" > </i> ' + categoryList[i].name + '</a> </li>'
 
     }
@@ -27,16 +23,19 @@ function displayCategory(categoryList) {
     $("#side-section > ul").html(html)
 }
 
-function searchProductByCategory(id) {
-    
-    vteam_http.init();
+function searchProductByCategory(id,page) {
+    $("#loading").show();
+    product_search_current_page = page;
+    product_search_current_keyword = id;
+    product_search_current_search_function = searchProductByCategory;
     vteam_http.makeHttpRequest("/category/searchProductByCategoryId",
-            {category_id: id},
+            {category_id: id,page:page,pageSize:page_size},
     'POST',
             function(result) {
+                $("#loading").hide();
                 if (result.status == 'success') {
 
-                    displayProduct(result.productList);
+                    displaySearchProduct(result.productList);
                 }
             });
 }
