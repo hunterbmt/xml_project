@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 var current_page;
-var page_size =5;
+var page_size = 5;
 
 function loadProductList(page) {
     current_page = page;
@@ -13,19 +13,19 @@ function loadProductList(page) {
             function(result) {
                 if (result.status == 'success') {
                     displayProduct(result.productList);
-                    if(result.numberOfProduct > page_size){
-                        displayPagination(page,result.numberOfProduct);
+                    if (result.numberOfProduct > page_size) {
+                        displayPagination(page, result.numberOfProduct);
                     }
                 }
             });
 }
-function displayPagination(currentPage,total_number){
+function displayPagination(currentPage, total_number) {
     $("#pagination_bar").pagination({
         items: total_number,
         itemsOnPage: page_size,
-        currentPage:currentPage,
+        currentPage: currentPage,
         cssStyle: 'light-theme',
-        onPageClick:function (pageNumber,event){
+        onPageClick: function(pageNumber, event) {
             loadProductList(pageNumber);
         }
     });
@@ -53,8 +53,7 @@ function insertOrUpdateProduct() {
     var id = parseInt($("#product_id").html());
     var product_name = $("#product_name").val();
     var category_id = product_current_category_id;
-    var editor = CKEDITOR.instances.product_description;
-    var description = escape(editor.getData().toString());
+    var description = $("product_description").html();
     var min_price = $("#product_min_price").val();
     var max_price = $("#product_max_price").val();
     var img = $("#product_img").val();
@@ -103,8 +102,7 @@ function clearProductDetail() {
     $("#product_id").html('');
     $("#product_name").val('');
     $('#category_name').val('');
-    var editor = CKEDITOR.instances.product_description;
-    editor.setData('');
+    $("product_description").html('');
     $("#product_min_price").val('');
     $("#product_max_price").val('');
     $("#product_img").val('');
@@ -124,9 +122,8 @@ function displayProductDetail(detail) {
     $("#product_id").html(detail.id);
     $("#product_name").val(detail.name);
     $("#category_name").val(detail.categoryName);
-    product_current_category_id = detail.categoryId
-    var editor = CKEDITOR.instances.product_description;
-    editor.setData(detail.description);
+    product_current_category_id = detail.categoryId;
+    $("product_description").html(detail.description);
     $("#product_min_price").val(detail.minPrice);
     $("#product_max_price").val(detail.maxPrice);
     $("#product_img").val(detail.imageName);
@@ -150,7 +147,7 @@ function populateList(list) {
     category_array_source = new Array();
 
     for (i = 0; i < list.length; i++) {
-        category_array_source.push({label: list[i].name, value: list[i].name,id:list[i].id});
+        category_array_source.push({label: list[i].name, value: list[i].name, id: list[i].id});
     }
     $("#category_name").autocomplete({
         source: category_array_source,
@@ -183,21 +180,21 @@ function displayCategoryDetail(category) {
     $('#category_detail_btn').html('Update');
 
 }
-function clearCategoryDetail(){
+function clearCategoryDetail() {
     $('#category_detail_id').html('');
     $('#category_detail_name').val('');
     $('#category_detail_description').val('');
     $('#category_detail_btn').html('Save');
     category_current_id = null;
 }
-function insertOrUpdateCategory(){
+function insertOrUpdateCategory() {
     var categoryId = category_current_id;
     var description = $('#category_detail_description').val();
     var name = $('#category_detail_name').val();
     if (categoryId) {
         vteam_http.makeHttpRequest("/admin/update_category",
                 {categoryId: categoryId,
-                 description: description},
+                    description: description},
         'POST', callbackCategoryEdit);
     } else {
         vteam_http.makeHttpRequest("/admin/insert_category",
@@ -207,20 +204,21 @@ function insertOrUpdateCategory(){
         'POST', callbackCategoryEdit);
     }
 }
-function callbackCategoryEdit(result){
-    if(result.status ==='success'){
+function callbackCategoryEdit(result) {
+    if (result.status === 'success') {
         displayCategoryMsg("Successfull");
         populateCategoryNameList();
-    }else {
+    } else {
         displayCategoryMsg(result.msg);
     }
     clearCategoryDetail();
 }
-function displayCategoryMsg(msg){
+function displayCategoryMsg(msg) {
     $('#result_category').html(msg).show();
-        $(function() {
-            setTimeout(function() {
-                $("#result_category").hide('blind', {}, 400)
-            }, 10000);
-        });
+    $(function() {
+        setTimeout(function() {
+            $("#result_category").hide('blind', {}, 400)
+        }, 10000);
+    });
 }
+$('#product_description').wysihtml5();

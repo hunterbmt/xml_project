@@ -7,7 +7,9 @@ package com.vteam.xml_project.api;
 import com.vteam.xml_project.controller.UserSession;
 import com.vteam.xml_project.dto.ProductDTO;
 import com.vteam.xml_project.dto.ProductListDTO;
+import com.vteam.xml_project.service.BidHistoryService;
 import com.vteam.xml_project.service.ProductService;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,6 +29,8 @@ public class ProductAPI {
     private UserSession session;
     @Autowired
     private ProductService productService;
+    @Autowired
+    private BidHistoryService bhService;
 
     @RequestMapping(value = "/getProductList", method = RequestMethod.POST)
     public @ResponseBody
@@ -43,6 +47,16 @@ public class ProductAPI {
         ProductListDTO result = productService.searchProduct(txtSearch, page, pageSize);
         return result;
     }
+    
+    @RequestMapping(value = "/getRecentBidder", method = RequestMethod.POST)
+    public @ResponseBody
+    List<String> getRecentBidder(
+            @RequestParam int bid_id) {
+        List<String> result = bhService.getRecentBidderList(bid_id);
+        return result;
+    }
+    
+    
 
     @RequestMapping(value = "/searchProductByTags", method = RequestMethod.POST)
     public @ResponseBody

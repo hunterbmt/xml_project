@@ -177,14 +177,14 @@ function displayProductDetail(product) {
 
     html += '<div class="v6BorderBot pTop5">'
     html += '<div class="v6Buyersnew pBottom5 mTop5 ">'
-    html += 'Top 5 recent bidders<ul class="firstList">'
-    html += '<li>Pro1</li>'
-    html += '<li>Pro2</li>'
-    html += '<li>Pro3</li>'
+    html += 'Top recent bidders<ul id="topBidders" class="firstList">'
+//    html += '<li>Pro1</li>'
+//    html += '<li>Pro2</li>'
+//    html += '<li>Pro3</li>'
     html += '</ul></div></div>'
     html += '<div id="product_tags" class="v6BorderBot pTop5" style="border-bottom:none">Tags</div>'
     html += '</div> <div class="c"></div>'
-    html += '<div class="v6BorderBot" style="border-top: 1px solid #e0e0e0">'
+    html += '<div class="v6BorderBot productDes" style="border-top: 1px solid #e0e0e0">'
     html += product.description
     html += '</div>'
     html += '</div>'
@@ -194,12 +194,34 @@ function displayProductDetail(product) {
     hideAllDiv();
     $("#product_detail").show();
     loadProductTags(product.id);
+    getRecentBidder(product.bidId);
 
     if (product.bidTimeRemain > 0) {
         $('#bidButton').removeClass("v6BuyNow");
         $('#bidButton').addClass("v6BidAvoid");
         $('#bidButton').html('');
     }
+}
+
+function getRecentBidder(bidId) {
+    vteam_http.makeHttpRequest("/product/getRecentBidder",
+            {bid_id: bidId},
+    "POST",
+            function(result) {                
+                    displayRecentBidder(result);                
+            });
+}
+
+function displayRecentBidder(rs) {
+    var body = "";
+    for (var i=0; i<rs.length; i++) {
+        body += '<li>' ;
+        body += rs[i];
+        body += '</li>' ;
+    }
+    
+    $('#topBidders').html(body);
+    
 }
 
 function view_product_detail(pid) {

@@ -6,20 +6,20 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="/resources/css/bootstrap-wysihtml5.css" rel="stylesheet">
         <link href="/resources/css/bootstrap-combined.no-icons.min.css" rel="stylesheet">
         <link href="/resources/css/bootstrap-responsive.css" rel="stylesheet">
         <link href="/resources/css/font-awesome.css" rel="stylesheet">
         <link href="/resources/css/jquery-ui-helper.css" rel="stylesheet">
         <link href="/resources/css/simplePagination.css" rel="stylesheet">
         <link href="/resources/css/admin.css" rel="stylesheet">
+        <script src="/resources/js/lib/wysihtml5-0.3.0.js"></script>
         <script src="/resources/js/lib/jquery.js"></script>
         <script type="text/javascript" src="/resources/js/lib/jquery.simplePagination.js"></script>
         <script src="/resources/js/lib/jquery.url.js"></script>
         <script src="/resources/js/lib/jquery-ui.js"></script>
         <script src="/resources/js/lib/bootstrap.min.js"></script>
-        <script src="/resources/js/lib/ckeditor/ckeditor.js"></script>
-        <script src="/resources/js/lib/ckeditor/config.js"></script>
-        <script src="/resources/js/lib/ckeditor/styles.js"></script>
+        <script src="/resources/js/lib/bootstrap-wysihtml5.js"></script>
         <script src="/resources/js/vteam.js"></script>
         <script src="/resources/js/admin_product.js"></script>
         <script>
@@ -27,6 +27,7 @@
                 populateCategoryNameList()
                 loadProductList(1);
             });
+
         </script>
     </head>
     <body>
@@ -102,7 +103,7 @@
                                         <div class="row">
                                             <label class="control-label">Description</label>
                                         </div>
-                                        <textarea class="ckeditor" id="product_description"></textarea>
+                                        <textarea class="textarea" id="product_description"></textarea>
 
                                     </div>
                                     <div class="control-group">
@@ -160,7 +161,7 @@
                                 </table>
                                 <div class="pagination-bar">
                                     <div id="pagination_bar" style="float: right">
-                                        
+
                                     </div>
                                 </div>
                             </div>
