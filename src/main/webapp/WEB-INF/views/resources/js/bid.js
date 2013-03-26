@@ -2,6 +2,12 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
+var bid_completed_current_page = 1;
+var bid_completed_page_size = 5;
+var bid_ongoing_current_page = 1;
+var bid_ongoing_page_size = 5;
+var bid_upcoming_current_page = 1;
+var bid_upcoming_page_size = 5;
 function enableSave() {
     var saveBtn = $('#btnSave');
     if (saveBtn.hasClass('disabled')) {
@@ -43,7 +49,7 @@ function displayBidDetails(bid) {
 }
 function insertOrUpdateBid() {
     var id = $("#bid_id").html();
-    
+
     var start_date = $("#bid_start_date").val();
     var end_date = $("#bid_end_date").val();
     var cost = $("#bid_cost").val();
@@ -97,9 +103,9 @@ function callback(result) {
 }
 
 function update_lists() {
-    _displayOngoingBid();
-    _displayUpcomingBid();
-    _displayCompletedBids();
+    _displayOngoingBid(bid_ongoing_current_page);
+    _displayUpcomingBid(bid_upcoming_current_page);
+    _displayCompletedBids(bid_completed_current_page);
 }
 function clearBidDetail(self) {
     $('#bid_id').html('');
@@ -157,23 +163,36 @@ function populateList(list) {
 
 }
 
-function _displayOngoingBid() {
+function _displayOngoingBid(page) {
+    bid_ongoing_current_page = page;
     vteam_http.makeHttpRequest(
             "/bid/get_ongoing_bids",
             {
+                page: bid_ongoing_current_page,
+                pageSize: bid_ongoing_page_size
             },
-            "POST",
+    "POST",
             function(result) {
                 if (result.status === "success") {
                     displayOngoingBid(result.bidList);
-
+                    if (result.numberOfBid > bid_ongoing_page_size) {
+                        displayOngoingPagination(bid_ongoing_current_page, result.numberOfBid);
+                    }
                 }
             }
     );
 }
-
-
-
+function displayOngoingPagination(currentPage, total_number) {
+    $("#ongoing_pagination_bar").pagination({
+        items: total_number,
+        itemsOnPage: bid_ongoing_page_size,
+        currentPage: currentPage,
+        cssStyle: 'light-theme',
+        onPageClick: function(pageNumber, event) {
+            _displayOngoingBid(pageNumber);
+        }
+    });
+}
 function displayOngoingBid(bidList) {
     var cnt = '';
     for (var i = 0; i < bidList.length; i++) {
@@ -195,21 +214,36 @@ function displayOngoingBid(bidList) {
             cnt
             );
 }
-function _displayUpcomingBid() {
+function _displayUpcomingBid(page) {
+    bid_upcoming_current_page = page;
     vteam_http.makeHttpRequest(
             "/bid/get_upcoming_bids",
             {
+                page: page,
+                pageSize: bid_upcoming_page_size
             },
-            "POST",
+    "POST",
             function(result) {
                 if (result.status === "success") {
                     displayUpcomingBid(result.bidList);
-
+                    if (result.numberOfBid > bid_upcoming_page_size) {
+                        displayUpcomingPagination(bid_upcoming_current_page, result.numberOfBid);
+                    }
                 }
             }
     );
 }
-
+function displayUpcomingPagination(currentPage, total_number) {
+    $("#upcoming_pagination_bar").pagination({
+        items: total_number,
+        itemsOnPage: bid_upcoming_page_size,
+        currentPage: currentPage,
+        cssStyle: 'light-theme',
+        onPageClick: function(pageNumber, event) {
+            _displayUpcomingBid(pageNumber);
+        }
+    });
+}
 
 function displayUpcomingBid(bidList) {
     var cnt = '';
@@ -243,18 +277,33 @@ function displayCompletedBids(bidList) {
     $("#completedBids").html(cnt);
 }
 
-function _displayCompletedBids() {
-
+function _displayCompletedBids(page) {
+    bid_completed_current_page = page;
     vteam_http.makeHttpRequest(
             "/bid/get_completed_bids",
             {
+                page: page,
+                pageSize: bid_completed_page_size
             },
-            "POST",
+    "POST",
             function(result) {
                 if (result.status === "success") {
                     displayCompletedBids(result.bidList);
+                    if (result.numberOfBid > bid_completed_page_size) {
+                        displayCompletedPagination(bid_completed_current_page, result.numberOfBid);
+                    }
                 }
             }
     );
 }
-
+function displayCompletedPagination(currentPage, total_number) {
+    $("#completed_pagination_bar").pagination({
+        items: total_number,
+        itemsOnPage: bid_completed_page_size,
+        currentPage: currentPage,
+        cssStyle: 'light-theme',
+        onPageClick: function(pageNumber, event) {
+            _displayCompletedBids(pageNumber);
+        }
+    });
+}

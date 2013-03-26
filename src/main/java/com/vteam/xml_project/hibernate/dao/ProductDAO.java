@@ -21,8 +21,8 @@ public class ProductDAO extends BaseDAO {
         Query query = this.sessionFactory
                 .getCurrentSession()
                 .createQuery("FROM Product WHERE status = :s");
-        // get only the on-going bid products ( status = 1)
-        query.setParameter("s", Product.Status.UNAVAILABLE);
+        // get only the on-going bid products ( status = 2)
+        query.setParameter("s", Product.Status.ONBID);
         query = query.setFirstResult(pageSize * (page - 1));
         query.setMaxResults(pageSize);
         return query.list();
@@ -47,8 +47,9 @@ public class ProductDAO extends BaseDAO {
     public List<Product> searchProduct(String txtSearch) throws HibernateException {
         Query query = this.sessionFactory
                 .getCurrentSession()
-                .createQuery("FROM Product where productName LIKE :q");
+                .createQuery("FROM Product where productName LIKE :q AND status = :s");
         query.setParameter("q", "%" + txtSearch + "%");
+        query.setParameter("s", Product.Status.ONBID );
 //        query = query.setFirstResult(pageSize * (page - 1));
 //        query.setMaxResults(pageSize);
         return query.list();
@@ -57,8 +58,9 @@ public class ProductDAO extends BaseDAO {
     public List<Product> searchProductByCategoryId(int category_id) throws HibernateException {
         Query query = this.sessionFactory
                 .getCurrentSession()
-                .createQuery("FROM Product where category.id =:id");
+                .createQuery("FROM Product where category.id =:id AND status = :s");
         query.setParameter("id", category_id);
+        query.setParameter("s", Product.Status.ONBID );
         return query.list();
     }
 

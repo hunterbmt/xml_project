@@ -4,8 +4,6 @@
  */
 package com.vteam.xml_project.dto;
 
-import org.codehaus.jackson.annotate.JsonValue;
-
 /**
  *
  * @author phitt60230

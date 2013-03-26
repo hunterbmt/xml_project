@@ -146,6 +146,7 @@
                     <ul class="p_search_by_category">
 
 
+
                     </ul>
                 </div>
 
@@ -159,6 +160,10 @@
                         <li><a href="#">5</a></li>
                         <li><a href="#">»</a></li>
                     </ul>
+
+                        </ul>
+                    </div>
+
                 </div>
             </div>
             <div class="container" id="user_detail" style="position: absolute;width:70%;display: none">

@@ -107,25 +107,25 @@ public class BidService {
         return bid;
     }
 
-    @Transactional
-    public BidListDTO getBidsByStartDate(String dateString, String formatStr) {
-        BidListDTO list = new BidListDTO();
-        try {
-            Date startDate = dateUtil.parseFromString(dateString, formatStr);
-            List<Bids> bidList = bidDAO.getBidsByStartDate(startDate);
-            list.setBidList(getTmpList(bidList));
-            list.setStatus("success");
-        } catch (HibernateException he) {
-            log.error(he);
-            list.setStatus("error");
-            list.setMsg("Have some errors. Try again");
-        } catch(ParseException ex){
-            log.error(ex);
-            list.setStatus("error");
-            list.setMsg("Wrong date time format");
-        }
-        return list;
-    }
+//    @Transactional
+//    public BidListDTO getBidsByStartDate(int page,int pageSize,String dateString, String formatStr) {
+//        BidListDTO list = new BidListDTO();
+//        try {
+//            Date startDate = dateUtil.parseFromString(dateString, formatStr);
+//            List<Bids> bidList = bidDAO.getBidsByStartDate(page,pageSize,startDate);
+//            list.setBidList(getTmpList(bidList));
+//            list.setStatus("success");
+//        } catch (HibernateException he) {
+//            log.error(he);
+//            list.setStatus("error");
+//            list.setMsg("Have some errors. Try again");
+//        } catch(ParseException ex){
+//            log.error(ex);
+//            list.setStatus("error");
+//            list.setMsg("Wrong date time format");
+//        }
+//        return list;
+//    }
 
     @Transactional
     public BidListDTO getBidsList(int page, int page_size) {
@@ -190,6 +190,11 @@ public class BidService {
 
     @Transactional
     public double doBid(UserDTO u, int bid_id) {
+        /*
+         * Error code:
+         * -113 : unefficient balance
+         * -100 : on hold by the other
+         */
         Bids dbBid = bidDAO.getBidById(bid_id);
         Date last_edit = dbBid.getLastEdit();
         Date current_date = new Date();
@@ -200,7 +205,7 @@ public class BidService {
                 update_bid(dbBid, current_date, user.getId());
                 return dbBid.getCurrentPrice();
             } else {
-                return -9.00;
+                return -113;
             }
         } else { // not null
             long seconds = (current_date.getTime() - last_edit.getTime()) / 1000;
@@ -209,39 +214,28 @@ public class BidService {
                     update_bid(dbBid, current_date, user.getId());
                     return dbBid.getCurrentPrice();
                 } else {
-                    return -9.00;
+                    return -113;
                 }
             } else {
-                return -9.00;
+                return -100;
             }
         }
     }
 
-    private BidListDTO getBidsFromDate(Date parseDate) {
+    @Transactional
+    public BidListDTO getUpcommingBid(int page,int pageSize){
+        Date currentDate = dateUtil.getCurrentDate();
         BidListDTO list = new BidListDTO();
         try {
-            List<Bids> bidList = bidDAO.getBidsFromDate(parseDate);
-            list.setBidList(getTmpList(bidList));
-            list.setStatus("success");
-        } catch (HibernateException he) {
-            log.error(he);
-            list.setStatus("error");
-            list.setMsg("Have some errors. Try again");
-        }
-        return list;
-    }
-    
-    @Transactional
-    public BidListDTO getUpcommingBid(){
-        return getBidsFromDate(dateUtil.getCurrentDate());
-    }
-
-    @Transactional
-    public BidListDTO getOngoingBids() {
-        BidListDTO list = new BidListDTO();
-        try {
-            List<Bids> bidList = bidDAO.getOngoingBids(dateUtil.getCurrentDate());
-            list.setBidList(getTmpList(bidList));
+            List<Bids> bidList = bidDAO.getBidsList(page,pageSize);
+            List<Bids> filteredList = new ArrayList<Bids>();
+            for (Bids b : bidList) {
+                if (b.getStartDate().getTime() - currentDate.getTime() > 0) {
+                    filteredList.add(b);
+                }
+            }
+            list.setBidList(getTmpList(filteredList));
+            list.setNumberOfBid(filteredList.size());
             list.setStatus("success");
         } catch (HibernateException he) {
             log.error(he);
@@ -252,12 +246,43 @@ public class BidService {
     }
 
     @Transactional
-    public BidListDTO getCompletedBids() {
+    public BidListDTO getOngoingBids(int page,int pageSize) {
+        Date currentDate = dateUtil.getCurrentDate();
+        BidListDTO list = new BidListDTO();
+        try {
+            List<Bids> bidList = bidDAO.getBidsList(page,pageSize);
+            List<Bids> filteredList = new ArrayList<Bids>();
+            for (Bids b : bidList) {
+                if ( (b.getStartDate().getTime() - currentDate.getTime() <= 0)
+                        && (b.getEndDate().getTime() - currentDate.getTime() > 0)){
+                    filteredList.add(b);
+                }
+            }
+            list.setBidList(getTmpList(filteredList));
+            list.setNumberOfBid(filteredList.size());
+            list.setStatus("success");
+        } catch (HibernateException he) {
+            log.error(he);
+            list.setStatus("error");
+            list.setMsg("Have some errors. Try again");
+        }
+        return list;
+    }
+
+    @Transactional
+    public BidListDTO getCompletedBids(int page,int pageSize) {
         BidListDTO list = new BidListDTO();
         try {
 
-            List<Bids> bidList = bidDAO.getCompleteBids();
-            list.setBidList(getTmpList(bidList));
+            List<Bids> bidList = bidDAO.getBidsList(page,pageSize);
+            List<Bids> filteredList = new ArrayList<Bids>();
+            for (Bids b : bidList) {
+                if (b.getStatus() == Bids.Status.COMPLETED) {
+                    filteredList.add(b);
+                }
+            }
+            list.setBidList(getTmpList(filteredList));
+            list.setNumberOfBid(filteredList.size());
             list.setStatus("success");
         } catch (HibernateException he) {
             log.error(he);

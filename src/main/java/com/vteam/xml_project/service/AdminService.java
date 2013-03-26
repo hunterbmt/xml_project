@@ -6,15 +6,20 @@ package com.vteam.xml_project.service;
 
 import com.vteam.xml_project.dto.BidDTO;
 import com.vteam.xml_project.dto.CategoryDTO;
+import com.vteam.xml_project.dto.NinCodeDTO;
+import com.vteam.xml_project.dto.NinCodeListDTO;
 import com.vteam.xml_project.dto.ProductDTO;
 import com.vteam.xml_project.dto.ProductListDTO;
 import com.vteam.xml_project.hibernate.dao.BidDAO;
+import com.vteam.xml_project.hibernate.dao.CardCodeDAO;
 import com.vteam.xml_project.hibernate.dao.CategoryDAO;
 import com.vteam.xml_project.hibernate.dao.ProductDAO;
 import com.vteam.xml_project.hibernate.orm.Bids;
+import com.vteam.xml_project.hibernate.orm.CardCode;
 import com.vteam.xml_project.hibernate.orm.Category;
 import com.vteam.xml_project.hibernate.orm.Product;
 import com.vteam.xml_project.util.DateUtil;
+import com.vteam.xml_project.util.StringUtil;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
@@ -38,6 +43,8 @@ public class AdminService {
     private CategoryDAO categoryDAO;
     @Autowired
     private BidDAO bidDAO;
+    @Autowired
+    private CardCodeDAO cardCodeDAO;
     @Autowired
     private DateUtil dateUtil;
 
@@ -131,7 +138,7 @@ public class AdminService {
 
             // update bid_id of that product
             product.setBidId(newBid.getId());
-            product.setStatus(Product.Status.UNAVAILABLE);
+            product.setStatus(Product.Status.ONBID);
             productDAO.save(product);
             bidDTO.setStatus("success");
             return bidDTO;
@@ -211,8 +218,30 @@ public class AdminService {
         } catch (HibernateException ex) {
             log.error(ex);
             categoryDTO.setStatus("error");
-            categoryDTO.setMsg("Have some errors . Try again");
+            categoryDTO.setMsg("Have some errors. Try again");
         }
         return categoryDTO;
+    }
+    @Transactional
+    public NinCodeListDTO generateNin(int amount,int quantity){
+        NinCodeListDTO ninCodeList = new NinCodeListDTO();
+        try{
+            CardCode cardCode;
+            NinCodeDTO ninCodeDTO;
+            for(int i = 0;i<quantity;i++){
+                cardCode = new CardCode(StringUtil.generateNin(), amount);
+                cardCodeDAO.save(cardCode);
+                ninCodeDTO = new NinCodeDTO();
+                ninCodeDTO.setAmount(amount);
+                ninCodeDTO.setCode(cardCode.getCode());
+                ninCodeList.getNinList().add(ninCodeDTO);
+            }
+            ninCodeList.setStatus("success");
+        }catch(HibernateException ex){
+            log.error(ex.getStackTrace());
+            ninCodeList.setStatus("error");
+            ninCodeList.setMsg("Have some errors. Try again");
+        }
+        return ninCodeList;
     }
 }

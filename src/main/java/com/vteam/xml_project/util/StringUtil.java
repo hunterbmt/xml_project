@@ -11,8 +11,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -140,10 +139,16 @@ public class StringUtil {
         MessageDigest md = MessageDigest.getInstance("SHA-256");
         md.update(password.getBytes());
         byte shaDigest[] = md.digest();
-        StringBuffer newPassword = new StringBuffer() ;
+        StringBuffer newPassword = new StringBuffer();
         for (byte b : shaDigest) {
             newPassword.append(String.format("%02x", b));
         }
         return newPassword.toString();
+    }
+
+    public static String generateNin() {
+        String accessToken = UUID.randomUUID().toString().replaceAll("-", "")
+                .substring(0, 10).toUpperCase();
+        return accessToken;
     }
 }
