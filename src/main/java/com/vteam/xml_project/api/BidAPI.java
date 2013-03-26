@@ -54,8 +54,14 @@ public class BidAPI {
                 returnMap.put("message", "Chúc mừng, bạn đã đặt bid thành công!");
                 returnMap.put("price", price);
             } else {
+                String message = "";
+                if (price == -113) {
+                    message = "Tài khoản bạn không đủ NIL để thực hiện, vui lòng nạp thêm ^_^ !";
+                } else {
+                    message = "Bid này hiện đang được tạm giữ, vui lòng thử lại sau";
+                }
                 returnMap.put("allowed", "no");
-                returnMap.put("message", "Bid này hiện đang có người tạm giữ, vui lòng thử lại sau!");
+                returnMap.put("message", message);
             }
         } catch (NullPointerException ex) {
             java.util.logging.Logger.getLogger(AdminAPI.class.getName()).log(Level.SEVERE, null, ex);

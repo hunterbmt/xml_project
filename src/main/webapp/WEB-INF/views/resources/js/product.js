@@ -83,7 +83,7 @@ function displayCounter() {
   if (count <= 0)
   {
      clearInterval(c);
-     $('#timer').html("<strong>Sản phẩm có thể bid</strong>");
+     $('#timer').html("Sản phẩm có thể bid");
      return;
   }
   $("#timer").html(toHMS(count));
@@ -126,7 +126,7 @@ function displayProductDetail(product) {
 
     html += '<div class="v6BorderBot pTop5"><div class="v6Timer">'
     html += '<div class="v6Gray fl"></div>'
-    html += '<div class="v6DisplayTime" id="timer">'+ toHMS(product.bidTimeRemain) +'</span></div>'
+    html += '<div class="v6DisplayTime" id="timer">'+ (toHMS(product.bidTimeRemain) == 0? "Sản phẩm có thể bid": toHMS(product.bidTimeRemain)  ) +'</span></div>'
     html += '</div></div>'
 
     html += '<div class="v6BorderBot pTop5">'

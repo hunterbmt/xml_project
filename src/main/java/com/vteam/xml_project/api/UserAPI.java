@@ -46,6 +46,7 @@ public class UserAPI {
                 returnMap.put("admin", "admin");
             }else{
                 returnMap.put("email", email);
+                returnMap.put("balance", user.getBalance());
             }
             
         } else {
