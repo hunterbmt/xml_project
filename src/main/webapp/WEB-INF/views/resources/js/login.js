@@ -6,6 +6,22 @@
 function login() {
     var email = document.getElementById("user_username").value;
     var password = document.getElementById("user_password").value;
+    var html='';
+    html+='<ul class="dropdown-menu" role="menu" aria-labelledby="drop3" style="width: 250px">'
+     html+='<li ><div role="menuitem" tabindex="-1" style="padding: 3px 20px;display: block">'
+
+     html+='<div id="payment">'
+     html+='<form >'
+     html+='<fieldset>'
+     html+='<label class="label-main">Insert your code here:</label>'
+     html+='<input name="miniusername"  id="user_paymentCode" type="text">'
+      html+='<button name="send" type="button"  class="btn btn-primary btn-small">Insert</button>'                                                            
+      html+='</fieldset>'
+       html+='</form>'
+        html+='</div>'
+       html+='</div>'
+        html+='</li>'
+        html+='</ul>'
 
 
     vteam_http.makeHttpRequest("/user/login",
@@ -15,20 +31,22 @@ function login() {
             function(result) {
                 if (result.status == "success")
                 {
-                    if(result.admin=="admin"){
-                        window.location.href="/admin";
-                    }else{
-                    $("#titleLogin").hide();
-                    $('#fat-menu').hide();
-                    $('#quickLogin').hide();
-                    $('#loginResult').html('<a class="btn btn-primary" id="email" style="margin-left:10px;margin-top:2px;" href="#" onclick="showUserInfo()"><i class="icon-user icon-white" ></i>' + result.email + ' </a>'
-                            + '<a class="btn btn-primary" id="email" style="margin-left:10px;margin-top:2px;" href="#"><i class="icon-shopping-cart icon-white" ></i>' + result.balance + ' </a>'
-                            + '<a class="btn btn-primary" id="logout" style="margin-left:10px;margin-top:2px;" href="#" onclick="logout()"><i class="icon-off icon-white" ></i></a>').show();
+                    if (result.admin == "admin") {
+                        window.location.href = "/admin";
+                    } else {
+                        $("#titleLogin").hide();
+                        $('#fat-menu').hide();
+                        $('#quickLogin').hide();
+                        $('#loginResult').html('<a class="btn btn-primary" id="email" style="margin-left:10px;margin-top:2px;" href="#" onclick="showUserInfo()"><i class="icon-user icon-white" ></i>' + result.email + ' </a>'
+                        +'<li id="fat-menu1" class="btn btn-primary dropdown" style="width:30px;height:20px;margin-left:10px;" ><a href="#" id="drop4" role="button" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-shopping-cart icon-white" ></i>'+result.balance+'</a>'+html+'</li>'
+                                + '<a class="btn btn-primary" id="logout" style="margin-left:10px;margin-top:2px;" href="#" onclick="logout()"><i class="icon-off icon-white" ></i></a>').show();
+                        
+//                        $("#drop4").html(result.balance);
+//                        $("#balanceResult").show();
                     }
-                }else {
+                } else {
                     $("#error").html('Wrong username or password');
                     $("#error").show('fast');
-                    $("#error").hide(2000);
                 }
             });
 
@@ -77,7 +95,7 @@ function updateInfo() {
             function(result) {
                 if (result.status == "success")
                 {
-                   $("#updateResult1").html("<font style='color: green;font-size: large;'><strong>Well done! !</strong> You successfully updated.</font>");
+                    $("#updateResult1").html("<font style='color: green;font-size: large;'><strong>Well done! !</strong> You successfully updated.</font>");
                 } else if (result.status == "unlogin") {
                     $("#updateResult1").html("<font style='color: black;font-size: large;'><strong>Sesstion Times out! !</strong> Please log in again.</font>");
                 } else if (result.status == "error") {
@@ -90,13 +108,13 @@ function updateInfo() {
 }
 function showNotifications() {
     $("#updateResult1:visible").hide('fast', function() {
-    $("#updateResult1").first().show('fast');
+        $("#updateResult1").first().show('fast');
     });
 }
 function updatePassword() {
     var ollPass = document.getElementById("curr_password").value;
     var newPass = document.getElementById("newpassword").value;
-    
+
     vteam_http.makeHttpRequest("/user/changePassword",
             {currentPass: ollPass,
                 newPass: newPass},
@@ -105,20 +123,20 @@ function updatePassword() {
                 if (result.status == "success")
                 {
                     $("#updateResult1").html("<font style='color: green;font-size: large;'><strong>Well done! !</strong> You successfully updated.</font>");
-                   
-                    
+
+
                 } else if (result.status == "unlogin") {
                     $("#updateResult1").html("<font style='color: black;font-size: large;'><strong>Sesstion Times out! !</strong> Please log in again.</font>");
-                    
-                    
+
+
                 } else if (result.status == "error") {
                     $("#updateResult1").html("<font style='color: red;font-size: large;'><strong>Oh snap!!</strong> Change a few things up and try submitting again.</font>");
-                    
-                   
+
+
                 }
                 $("#updateResult1").show('slow');
                 $("#updateResult1").hide(1500);
-                 //showNotifications();
+                //showNotifications();
             });
 
 }
@@ -139,6 +157,22 @@ function showUserInfo() {
             });
 }
 function loadUserInfo() {
+     var html='';
+    html+='<ul class="dropdown-menu" role="menu" aria-labelledby="drop3" style="width: 250px">'
+     html+='<li ><div role="menuitem" tabindex="-1" style="padding: 3px 20px;display: block">'
+
+     html+='<div id="payment">'
+     html+='<form >'
+     html+='<fieldset>'
+     html+='<label class="label-main">Insert your code here:</label>'
+     html+='<input name="miniusername"  id="user_paymentCode" type="text">'
+      html+='<button name="send" type="button"  class="btn btn-primary btn-small">Insert</button>'                                                            
+      html+='</fieldset>'
+       html+='</form>'
+        html+='</div>'
+       html+='</div>'
+        html+='</li>'
+        html+='</ul>'
     vteam_http.makeHttpRequest("/user/get_user_by_email", {},
             "POST",
             function(result) {
@@ -147,7 +181,7 @@ function loadUserInfo() {
                     $('#fat-menu').hide();
                     $('#quickLogin').hide();
                     $('#loginResult').html('<a class="btn btn-primary" id="email" style="margin-left:10px;margin-top:2px;" href="#" onclick="showUserInfo()"><i class="icon-user icon-white" ></i>' + result.email + ' </a>'
-                            + '<a class="btn btn-primary" id="email" style="margin-left:10px;margin-top:2px;" href="#"><i class="icon-shopping-cart icon-white" ></i>' + result.balance + ' </a>'
+                            +'<li id="fat-menu1" class="btn btn-primary dropdown" style="width:30px;height:20px;margin-left:10px;" ><a href="#" id="drop4" role="button" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-shopping-cart icon-white" ></i>'+result.balance+'</a>'+html+'</li>'
                             + '<a class="btn btn-primary" id="logout" style="margin-left:10px;margin-top:2px;" href="#" onclick="logout()"><i class="icon-off icon-white" ></i></a>').show();
                 } else if (result.status == "unlogin") {
                     displayunLogin()
