@@ -182,7 +182,7 @@ function loadUserInfo() {
                     $('#fat-menu').hide();
                     $('#quickLogin').hide();
                     $('#loginResult').html('<a class="btn btn-primary" id="email" style="margin-left:10px;margin-top:2px;" href="#" onclick="showUserInfo()"><i class="icon-user icon-white" ></i>' + result.email + ' </a>'
-                            +'<li id="fat-menu1" class="btn btn-primary dropdown" style="width:30px;height:20px;margin-left:10px;" ><a href="#" id="drop4" role="button" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-shopping-cart icon-white" ></i>'+result.balance+'</a>'+html+'</li>'
+                            +'<li id="fat-menu1" class="btn btn-primary dropdown" style="width:50px;height:20px;margin-left:10px;" ><a href="#" id="drop4" role="button" class="dropdown-toggle" data-toggle="dropdown">'+result.balance+'</a>'+html+'</li>'
                             + '<a class="btn btn-primary" id="logout" style="margin-left:10px;margin-top:2px;" href="#" onclick="logout()"><i class="icon-off icon-white" ></i></a>').show();
                 } else if (result.status == "unlogin") {
                     displayunLogin()

@@ -121,7 +121,9 @@
                     <ul id ="category_div" class="nav nav-list">
 
                     </ul>
+                    
                 </div>
+                
                 <div class="span9" id="product_list">
                     <ul class="thumbnails">
 
@@ -148,6 +150,10 @@
 
 
                     </ul>
+                </div>
+                <div class="span9" id="product_list">
+                   <a href="#" class="btn btn-primary btn-small" style="margin-top: 10px;margin-left: 300px;"><i class="icon-white icon-arrow-left"></i> Back</a>
+                   <a href="#" class="btn btn-primary btn-small" style="margin-top: 10px;margin-left: 100px;"><i class="icon-white icon-arrow-right"></i> Next</a>
                 </div>
             </div>
         </div>
