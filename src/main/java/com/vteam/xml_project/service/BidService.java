@@ -187,14 +187,15 @@ public class BidService {
         dbBid.setLastUserid(uuid);
         dbBid.setCurrentPrice(_price);
         dbBid.setStatus(Bids.Status.COMPLETED);
+        
+        Product product = productDAO.getProductById(dbBid.getProduct().getId());
+        product.setBidId(dbBid.getId());
+        product.setStatus(Product.Status.SOLD);
+        productDAO.save(product);
     }
 
-    private void updateBidsHistory(Users user, Bids dbBid, Date date, double price) {
-        BidHistory bh = bhDAO.getBidHistoryByBidId(dbBid.getId());
-        bh.setBid(dbBid);
-        bh.setBidTime(date);
-        bh.setPrice(price);
-        bh.setUser(user);
+    private void updateBidsHistory(Users user, Bids dbBid) {
+        BidHistory bh= new BidHistory(user, dbBid, dbBid.getCurrentPrice(), dbBid.getLastEdit());
         bhDAO.save(bh);
     }
 
@@ -224,7 +225,7 @@ public class BidService {
         if (last_edit == null) {
             if (update_balance(user, dbBid.getCost())) {
                 update_bid(dbBid, current_date, user.getId());
-                updateBidsHistory(user, dbBid, current_date, dbBid.getCurrentPrice());
+                updateBidsHistory(user, dbBid);
                 return dbBid.getCurrentPrice();
             } else {
                 return -113;
@@ -234,7 +235,7 @@ public class BidService {
             if (seconds > BID_DURATION) {
                 if (update_balance(user, dbBid.getCost())) {
                     update_bid(dbBid, current_date, user.getId());
-                    updateBidsHistory(user, dbBid, current_date, dbBid.getCurrentPrice());
+                    updateBidsHistory(user, dbBid);
                     return dbBid.getCurrentPrice();
                 } else {
                     return -113;
@@ -257,7 +258,7 @@ public class BidService {
             return false;
         } else { // not null
             update_bought_bid(dbBid, current_date, user.getId(), dbBid.getCurrentPrice());
-            updateBidsHistory(user, dbBid, current_date, dbBid.getCurrentPrice());
+            updateBidsHistory(user, dbBid);
         }
         return true;
     }
