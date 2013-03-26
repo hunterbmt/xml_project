@@ -37,10 +37,10 @@
                 loadAndDisplayCategory();
                 loadUserInfo();
                 $('#user_birthday').datepicker({
-                        showMonthAfterYear:false,
-                        minDate:'-90Y', maxDate:'-9Y',
-                        yearRange: '1930:2000',
-                        showOn:'focus', changeYear: true});
+                    showMonthAfterYear: false,
+                    minDate: '-90Y', maxDate: '-9Y',
+                    yearRange: '1930:2000',
+                    showOn: 'focus', changeYear: true});
             });
         </script>
     </header>
@@ -64,7 +64,11 @@
                                 <li><a href="#">FAQ</a></li>
                             </ul>
                             <ul class="nav pull-right">
-                                <div id="loginResult" style="display: none;margin-top: 10px"></div>
+                                <div id="loginResult" style="display: none;margin-top: 10px">
+
+                                </div>
+
+
                                 <li id="fat-menu" class="dropdown" >
                                     <a href="#" id="drop3" role="button" class="dropdown-toggle" data-toggle="dropdown">Login <b class="caret"></b></a>
                                     <ul class="dropdown-menu" role="menu" aria-labelledby="drop3" style="width: 300px">
@@ -80,7 +84,7 @@
                                                             <p/>
                                                             <button name="send" type="button"  class="btn btn-primary btn-small" onclick="login()">Login</button>
                                                             <button name="send" type="button"  class="btn  btn-small" onclick="changeSigin()">Sig up</button>
-                                                            
+
                                                         </fieldset>
                                                     </form>
                                                     <div id="error" style="color: red;display: none"></div>
@@ -98,129 +102,133 @@
 
                                                 </div>
                                             </div>
-                                            </div>
+
+
                                         </li>
 
                                     </ul>
                                 </li>
                             </ul>
-                        </div><!--/.nav-collapse -->
-                    </div>
+                        </div>
+                    </div><!--/.nav-collapse -->
                 </div>
-            </div>
-        
-        <div class="container" style="margin-top: 80px">
-                <div class="row-fluid" id="product">
-                    <div id="side-section" class="span3 category">   
-                        <ul id ="category_div" class="nav nav-list">
-
-                        </ul>
-                    </div>
-                    <div class="span9" id="product_list">
-                        <ul class="thumbnails">
-
-
-                        </ul>
-                    </div>
-                    <div class="span9 hide" id="search_product_list">
-                        <ul class="thumbnails">
-
-
-                        </ul>
-                    </div>
-
-                    <div class="span9 hide" id="product_detail">
-                        <ul class="p_detail">
-
-
-                        </ul>
-                    </div>
-                    
-                    <div class="span9" id="search_product_category_list" style="display: none">
-                        <ul class="p_search_by_category">
-
-
-                        </ul>
-                    </div>
-                </div>
-        <div class="container" id="user_detail" style="position: absolute;width:70%;display: none">
-            <div class="alert" id="updateResult1" style="display: none;z-index: 9002">
-                
-            </div>
-            <div class="tabbable tabs-left">
-              <ul class="nav nav-tabs">
-                <li class="active"><a href="#lA" data-toggle="tab">Profile</a></li>
-                <li class=""><a href="#lB" data-toggle="tab">Change Password</a></li>
-                <li class=""><a href="#lC" data-toggle="tab" onclick="loadAndDisplayOrder()">Orders History</a></li>
-                <li class=""><a href="#lD" data-toggle="tab">Payment</a></li>
-              </ul>
-              <div class="tab-content">
-                
-                <div class="tab-pane active" id="lA">
-                  <form id="tab">
-                                <label>Email</label>
-                                <input type="text" id="user_email" class="input-xlarge">
-                                <input type="hidden" id="user_id" class="input-xlarge">
-                                <label>First Name</label>
-                                <input type="text" id="user_fullname" class="input-xlarge">
-                                <label>Phone</label>
-                                <input type="text" id="user_phone"  class="input-xlarge">
-
-                                <label>Address</label>
-                                <input type="text" id="user_address"  class="input-xlarge">
-                                <label>Birthday</label>
-                                <input type="text" id="user_birthday" class="input-xlarge">
-                                <label>Balance</label>
-                                <input type="text" id="user_balance" class="input-xlarge" readonly="true">
-                                <div class="row" style="display: inline;margin-left: 0px" >
-                                    <button type='button' class="btn btn-primary" onclick="updateInfo()">Update</button>
-                                </div>
-                                </span>
-                            </form>
-                </div>
-                <div class="tab-pane" id="lB">
-                  <form id="tab2">
-                                <label>Password</label>
-                                <input type="password" id="newpassword" class="input-xlarge">       
-                                <label>Old Password</label>
-                                <input type="password" id="curr_password" class="input-xlarge">
-                                <div>   
-                                    <button type='button' class="btn btn-primary" onclick="updatePassword()">Update</button>
-                                    
-                                </div>
-                                
-                            </form>
-                </div>
-                  <div class="tab-pane" id="lC" style="width: 100%" >
-                      <table class="table table-hover">
-                          <caption><h3>User's Order History</h3> </caption>
-                          <thead>
-                              <tr>
-                                  <td><h4>Product's Name</h4></td>
-                                  <td><h4>Address</h4></td>
-                                  <td><h4>Date</h4></td>
-                                  <td><h4>Amount</h4></td> 
-                              </tr>
-                          </thead>
-                          <tbody id="orderResult">
-                              
-                          </tbody>
-                    </table>
-                </div>
-               <div class="tab-pane" id="lD">
-                  <form id="tab4">
-                                <label>Enter your code here:</label>
-                                <input type="password" id="newpassword" class="input-xlarge">       
-                                <div>   
-                                    <button type='button' class="btn btn-primary" onclick="updatePassword()">Update</button>
-                                    
-                                </div>
-                                
-                            </form>
-                </div>
-              </div>
             </div>
         </div>
+
+        <div class="container" style="margin-top: 80px">
+            <div class="row-fluid" id="product">
+                <div id="side-section" class="span3 category">   
+                    <ul id ="category_div" class="nav nav-list">
+
+                    </ul>
+                </div>
+                <div class="span9" id="product_list">
+                    <ul class="thumbnails">
+
+
+                    </ul>
+                </div>
+                <div class="span9 hide" id="search_product_list">
+                    <ul class="thumbnails">
+
+
+                    </ul>
+                </div>
+
+                <div class="span9 hide" id="product_detail">
+                    <ul class="p_detail">
+
+
+                    </ul>
+                </div>
+
+                <div class="span9" id="search_product_category_list" style="display: none">
+                    <ul class="p_search_by_category">
+
+
+
+                    </ul>
+                </div>
             </div>
-    </body>
+        </div>
+        <div class="container" id="user_detail" style="position: absolute;width:70%;display: none">
+            <div class="alert" id="updateResult1" style="display: none;z-index: 9002">
+
+            </div>
+            <div class="tabbable tabs-left">
+                <ul class="nav nav-tabs">
+                    <li class="active"><a href="#lA" data-toggle="tab">Profile</a></li>
+                    <li class=""><a href="#lB" data-toggle="tab">Change Password</a></li>
+                    <li class=""><a href="#lC" data-toggle="tab" onclick="loadAndDisplayOrder()">Orders History</a></li>
+                    <li class=""><a href="#lD" data-toggle="tab">Payment</a></li>
+                </ul>
+                <div class="tab-content">
+
+                    <div class="tab-pane active" id="lA">
+                        <form id="tab">
+                            <label>Email</label>
+                            <input type="text" id="user_email" class="input-xlarge">
+                            <input type="hidden" id="user_id" class="input-xlarge">
+                            <label>First Name</label>
+                            <input type="text" id="user_fullname" class="input-xlarge">
+                            <label>Phone</label>
+                            <input type="text" id="user_phone"  class="input-xlarge">
+
+                            <label>Address</label>
+                            <input type="text" id="user_address"  class="input-xlarge">
+                            <label>Birthday</label>
+                            <input type="text" id="user_birthday" class="input-xlarge">
+                            <label>Balance</label>
+                            <input type="text" id="user_balance" class="input-xlarge" readonly="true">
+                            <div class="row" style="display: inline;margin-left: 0px" >
+                                <button type='button' class="btn btn-primary" onclick="updateInfo()">Update</button>
+                            </div>
+                            </span>
+                        </form>
+                    </div>
+                    <div class="tab-pane" id="lB">
+                        <form id="tab2">
+                            <label>Password</label>
+                            <input type="password" id="newpassword" class="input-xlarge">       
+                            <label>Old Password</label>
+                            <input type="password" id="curr_password" class="input-xlarge">
+                            <div>   
+                                <button type='button' class="btn btn-primary" onclick="updatePassword()">Update</button>
+
+                            </div>
+
+                        </form>
+                    </div>
+                    <div class="tab-pane" id="lC" style="width: 100%" >
+                        <table class="table table-hover">
+                            <caption><h3>User's Order History</h3> </caption>
+                            <thead>
+                                <tr>
+                                    <td><h4>Product's Name</h4></td>
+                                    <td><h4>Address</h4></td>
+                                    <td><h4>Date</h4></td>
+                                    <td><h4>Amount</h4></td> 
+                                </tr>
+                            </thead>
+                            <tbody id="orderResult">
+
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="tab-pane" id="lD">
+                        <form id="tab4">
+                            <label>Enter your code here:</label>
+                            <input type="password" id="newpassword" class="input-xlarge">       
+                            <div>   
+                                <button type='button' class="btn btn-primary" onclick="updatePassword()">Update</button>
+
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
 </html>

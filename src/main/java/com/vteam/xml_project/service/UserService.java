@@ -4,11 +4,13 @@
  */
 package com.vteam.xml_project.service;
 
-import com.vteam.xml_project.controller.UserSession;
+import com.vteam.xml_project.dto.NinCodeDTO;
 import com.vteam.xml_project.dto.UserDTO;
+import com.vteam.xml_project.hibernate.dao.CardCodeDAO;
 
 import com.vteam.xml_project.hibernate.orm.Users;
 import com.vteam.xml_project.hibernate.dao.UserDAO;
+import com.vteam.xml_project.hibernate.orm.CardCode;
 import com.vteam.xml_project.util.DateUtil;
 import com.vteam.xml_project.util.StringUtil;
 import java.security.NoSuchAlgorithmException;
@@ -30,6 +32,8 @@ public class UserService {
     private static Logger log = Logger.getLogger(UserService.class.getName());
     @Autowired
     private UserDAO userDAO;
+    @Autowired
+    private CardCodeDAO cardCodeDAO;
     @Autowired
     private DateUtil util;
 
@@ -124,7 +128,7 @@ public class UserService {
     }
 
     @Transactional
-    public boolean checkPassword(String email, String currentPass, String newPassword) throws NoSuchAlgorithmException {
+    public boolean checkPassword(String email, String currentPass, String newPassword) {
         try {
             Users user = userDAO.findUserByEmail(email);
             String storagepass = StringUtil.createPasswordForDB(currentPass);
@@ -134,9 +138,39 @@ public class UserService {
                 userDAO.save(user);
                 return true;
             }
-        } catch (HibernateException ex) {
-            log.error(ex);
+        } catch (NoSuchAlgorithmException nx) {
+            log.error(nx.getStackTrace());
         }
         return false;
+    }
+
+    @Transactional
+    public NinCodeDTO inputPayment(String email, String code) {
+        NinCodeDTO ninCode = new NinCodeDTO();
+        try {
+            Users currentUser = userDAO.findUserByEmail(email);
+            if (currentUser != null) {
+                CardCode cardCode = cardCodeDAO.getCardCodeByCode(code);
+                if (cardCode != null) {
+                    currentUser.setBalance(currentUser.getBalance() + cardCode.getAmount());
+                    userDAO.save(currentUser);
+                    cardCode.setUsedDay(util.getCurrentDate());
+                    cardCode.setUser(currentUser);
+                    cardCodeDAO.save(cardCode);
+                    ninCode.setStatus("success");
+                } else {
+                    ninCode.setStatus("error");
+                    ninCode.setMsg("Sai mã hoặc mã đã được sử dụng");
+                }
+            } else {
+                ninCode.setStatus("error");
+                ninCode.setMsg("Không tìm thấy người dùng");
+            }
+        } catch (HibernateException ex) {
+            log.error(ex.getStackTrace());
+            ninCode.setStatus("error");
+            ninCode.setMsg("Có lỗi xẩy ra");
+        }
+        return ninCode;
     }
 }

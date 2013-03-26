@@ -5,6 +5,7 @@
 package com.vteam.xml_project.hibernate.dao;
 
 import com.vteam.xml_project.hibernate.orm.Product;
+import com.vteam.xml_project.hibernate.orm.Tags;
 import java.util.List;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -27,7 +28,8 @@ public class ProductDAO extends BaseDAO {
         query.setMaxResults(pageSize);
         return query.list();
     }
-     public List<Product> getProductListInorgeStatus(int page, int pageSize) throws HibernateException {
+
+    public List<Product> getProductListInorgeStatus(int page, int pageSize) throws HibernateException {
         Query query = this.sessionFactory
                 .getCurrentSession()
                 .createQuery("FROM Product");
@@ -44,23 +46,35 @@ public class ProductDAO extends BaseDAO {
         return (Product) query.uniqueResult();
     }
 
-    public List<Product> searchProduct(String txtSearch) throws HibernateException {
+    public List<Product> searchProduct(String txtSearch, int page, int pageSize) throws HibernateException {
         Query query = this.sessionFactory
                 .getCurrentSession()
                 .createQuery("FROM Product where productName LIKE :q AND status = :s");
         query.setParameter("q", "%" + txtSearch + "%");
-        query.setParameter("s", Product.Status.ONBID );
-//        query = query.setFirstResult(pageSize * (page - 1));
-//        query.setMaxResults(pageSize);
+        query.setParameter("s", Product.Status.ONBID);
+        query = query.setFirstResult(pageSize * (page - 1));
+        query.setMaxResults(pageSize);
         return query.list();
     }
 
-    public List<Product> searchProductByCategoryId(int category_id) throws HibernateException {
+    public List<Product> searchProductByCategoryId(int category_id, int page, int pageSize) throws HibernateException {
         Query query = this.sessionFactory
                 .getCurrentSession()
                 .createQuery("FROM Product where category.id =:id AND status = :s");
         query.setParameter("id", category_id);
-        query.setParameter("s", Product.Status.ONBID );
+        query.setParameter("s", Product.Status.ONBID);
+        query = query.setFirstResult(pageSize * (page - 1));
+        query.setMaxResults(pageSize);
+        return query.list();
+    }
+    public List<Product> searchProductByTagID(Tags tag, int page,int pageSize) throws HibernateException{
+        Query query = this.sessionFactory
+                .getCurrentSession()
+                .createQuery("FROM Product product where :tag in elements(product.tagses) AND product.status = :s");
+        query.setParameter("tag", tag);
+        query.setParameter("s", Product.Status.ONBID);
+        query = query.setFirstResult(pageSize * (page - 1));
+        query.setMaxResults(pageSize);
         return query.list();
     }
 

@@ -329,3 +329,9 @@ body {
 .control-group .row{
     margin-left: 0px;
 }
+.modal-header{
+    border: 1px solid #aaaaaa;
+    background: #cccccc url(ui-image-icon/ui-bg_highlight.png) 50% 50% repeat-x;
+    color: #222222;
+    font-weight: bold;
+}

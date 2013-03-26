@@ -15,6 +15,7 @@
         <script src="/resources/js/lib/jquery.url.js"></script>
         <script src="/resources/js/lib/jquery-ui.js"></script>
         <script src="/resources/js/lib/bootstrap.min.js"></script>
+        <script src="/resources/js/vteam.js"></script>
         <script src="/resources/js/admin.js"></script>
     </head>
     <body>
@@ -109,21 +110,30 @@
                                     <a href="javascript:;" class="shortcut">
                                         <i class="shortcut-icon icon-envelope"></i>
                                         <span class="shortcut-label">Send email to users</span>
-                                    </a>				
+                                    </a>
                                 </div> <!-- /shortcuts -->	
-
+                                <div id="nin_modal" style="width: 30%" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                        <h3 id="myModalLabel">Generate Nin Code</h3>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form>
+                                            <fieldset>
+                                                <div id ="nin_result" class="hide">All form fields are required.</div>
+                                                <label>Amount</label>
+                                                <input type="number" name="Amount" id="nin_amount" class="number" />
+                                                <label>Quantity</label>
+                                                <input type="number" name="Quantity" id="nin_quantity" class="number"/>
+                                            </fieldset>
+                                        </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+                                        <button class="btn btn-warning" onclick="generateNinCode()">Generate</button>
+                                    </div>
+                                </div>
                             </div> <!-- /widget-content -->
-                            <div id="nin_code_modal" class="hide" title="Generate Nin code">
-                                <p id ="nin_result"class="validateTips hide">All form fields are required.</p>
-                                <form>
-                                    <fieldset>
-                                        <label for="Amount">Amount</label>
-                                        <input type="number" name="Amount" id="nin_amount" class="number ui-widget-content ui-corner-all"/>
-                                        <label for="Quantity">Quantity</label>
-                                        <input type="number" name="Quantity" id="nin_quantity" class="number ui-widget-content ui-corner-all"/>
-                                    </fieldset>
-                                </form>
-                            </div>
                         </div>
                     </div>
                     <div class="span6">
