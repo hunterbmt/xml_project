@@ -16,12 +16,12 @@ public class BidHistoryDAO extends BaseDAO{
     public BidHistoryDAO() {
     }
     
-    public BidHistory getBidHistoryByBidId(int id) throws HibernateException {
-        BidHistory returnObj ;
+    public List<BidHistory> getBidHistoryByBidId(int id) throws HibernateException {
+        List<BidHistory> returnObj ;
         String sql = "From BidHistory where bid.id = :id";
         Query query = this.sessionFactory.getCurrentSession().createQuery(sql);
         query.setParameter("id", id);
-        returnObj =  (BidHistory) query.uniqueResult();
+        returnObj =  query.list();
         return returnObj;
     }
 }
