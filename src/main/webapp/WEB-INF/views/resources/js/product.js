@@ -290,7 +290,7 @@ function searchOnKeyDown(e) {
 }
 
 function changeContext() {
-    $('#product_list .thumbnails').html('');
+    $('#product_list').html('');
     loadAndDisplayProduct(1);
 }
 
