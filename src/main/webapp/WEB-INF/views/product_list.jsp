@@ -1,8 +1,3 @@
-<%-- 
-    Document   : product_list
-    Created on : Mar 12, 2013, 4:26:06 PM
-    Author     : phitt60230
---%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
