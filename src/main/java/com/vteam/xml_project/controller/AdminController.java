@@ -31,6 +31,12 @@ public class AdminController {
         ModelAndView mav = new ModelAndView("admin_product");
         return mav;
     }
+    @RequestMapping(value = "/test2")
+    @Transactional
+    public ModelAndView test2(HttpServletRequest request) {
+        ModelAndView mav = new ModelAndView("test2");
+        return mav;
+    }
     
     @RequestMapping(value = "/bid")
     @Transactional
