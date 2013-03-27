@@ -51,14 +51,15 @@ function displayProduct(productList) {
     var html = '';
     for (var i = 0; i < productList.length; i++) {
 
-        html += '<div class= "span4">'
+        html += '<div class= "bid span4" style="height: 400px">'
 
-        html += '<div class= "thumbnail">'
-        html += '<img onclick ="view_product_detail(' + productList[i].id + ')" data-src="holder.js/320x280" src="' + productList[i].image + '"/>'
-
-        html += '<div class= "caption">'
-        html += '<a href="#" onclick ="view_product_detail(' + productList[i].id + ')">'
-        html += '<h6>' + productList[i].name + '</h6>'
+        html += '<div class= "bidHolder">'
+        html +='<a style ="margin-left: 14%;"href="javascript:void(0)" class="bidImage imgLink" onclick ="view_product_detail(' + productList[i].id + ')">'
+        html += '<img src="' + productList[i].image + '" style="height:286px"/>'
+        html +='</a>'
+        html += '<div class= "convo attribution clearfix">'
+        html += '<a href="javascript:void(0)" onclick ="view_product_detail(' + productList[i].id + ')">'
+        html += '<h5>' + productList[i].name + '</h5>'
         html += '</a>'
         html += '<p>' + productList[i].shortDescription + '<p>'
         html += '</div>'
@@ -66,7 +67,7 @@ function displayProduct(productList) {
         html += '</div>';
     }
 
-    $(html).appendTo('#product_list .thumbnails');
+    $(html).appendTo('#product_list');
     hideAllDiv()
     $('#product_list').show();
     currentDiv = "product_list";
@@ -167,12 +168,13 @@ function displayProductDetail(product) {
     var html = '';
     count = product.bidTimeRemain;
     c = setInterval(displayCounter, 1000);
-    html += '<li class= "span4">'
+    html += '<div class="row-fluid">'
 
     html += '<div class= "p_detail" style="border:none; margin-top:0px">'
-
+    
+    html +='<div class="product-detail-img">'
     html += '<img src="' + product.image + '"/>'
-
+    html +='</div>'
     html += '<div id= "right">'
 
     html += '<div class="title">'
@@ -195,17 +197,17 @@ function displayProductDetail(product) {
     html += '<div class="v6Buyersnew pBottom5 mTop5 ">'
     html += 'Top recent bidders<ul id="topBidders" class="firstList">'
     html += '</ul></div></div>'
-    html += '<div id="product_tags" class="v6BorderBot pTop5" style="border-bottom:none">Tags</div>'
+    html += '<div id="product_tags" class="v6BorderBot pTop5" style="border-bottom:none"></div>'
     html += '</div> <div class="c"></div>'
     html += '<div class="v6BorderBot productDes" style="border-top: 1px solid #e0e0e0">'
     html += product.description
     html += '</div>'
     html += '</div>'
-    html += '</li>'
+    html += '</div>'
 
-    $("#product_detail .p_detail").html(html);
+    $("#product_detail").html(html);
     hideAllDiv();
-    $("#product_detail").show("slide",1000);
+    $("#product_detail").show();
     loadProductTags(product.id);
     getRecentBidder(product.bidId);
 
@@ -269,12 +271,12 @@ function displaySearchProduct(productList) {
 
         html += productList[i].name
         html += '</h6></a>'
-        html += '<p>' + productList[i].description + '<p>'
+        html += '<p>' + productList[i].shortDescription + '<p>'
         html += '</div>'
         html += '</div>'
         html += '</li></a>'
     }
-    $("#search_product_list .thumbnails").html(html);
+    $("#search_product_list").html(html);
     hideAllDiv();
     $("#search_product_list").show("slide", { direction: "left" },1000);
 }
@@ -288,7 +290,7 @@ function searchOnKeyDown(e) {
 }
 
 function changeContext() {
-    $('#product_list .thumbnails').html('');
+    $('#product_list').html('');
     loadAndDisplayProduct(1);
 }
 
@@ -313,7 +315,7 @@ function loadProductTags(id) {
 function displayProductTags(tags) {
     html = ""
     html += '<div class="red">'
-    html += 'Tags: '
+    html += '<i class="icon-tags"/> '
     for (var i = 0; i < tags.length; i++) {
         html += '<span class= "tags">';
         html += '<a id="tags_product" href="#" onclick="searchProductByTags(' + tags[i].tagId + ',1)">'

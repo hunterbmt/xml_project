@@ -11,16 +11,14 @@ function loadAndDisplayCategory() {
 function displayCategory(categoryList) {
     var html = '';
     //html += '<ul class="nav nav-list>'
-    html += '<li class = "nav-header" >Category</li>'
     for (var i = 0; i < categoryList.length; i++) {
 
         html += '   <li> <a href="#" onclick="searchProductByCategory('
         html += categoryList[i].id +',1'
-        html += ')" id= "category_id"> <i class = "icon-star-empty" > </i> ' + categoryList[i].name + '</a> </li>'
+        html += ')" id= "category_id">' + categoryList[i].name + '</a> </li>'
 
     }
-    //html += '   </ul>'
-    $("#side-section > ul").html(html)
+    $("#menu").append(html);
 }
 
 function searchProductByCategory(id,page) {
