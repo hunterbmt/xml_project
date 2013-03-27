@@ -58,7 +58,7 @@ body {
     overflow: visible;}
 #header .navbar-inner {
     min-height: 50px;
-    background: rgba(255, 255, 255, 0.95);
+    background-color: #faf7f7;
     background-image: none;
     border: 1px solid #DDDDDD;
 }
