@@ -1,46 +1,60 @@
-var current_page;
+var product_list_current_page;
+var product_search_current_keyword;
+var product_search_current_page;
+var product_search_current_search_function;
 var page_size = 9;
-
+var divArray = ["#product_list", "#search_product_list", "#product_detail"];
+var currentPosition = 0;
 $(window).scroll(function() {
     if ($(window).scrollTop() == $(document).height() - $(window).height()) {
-        loadAndDisplayProduct(current_page + 1);
+        if (currentPosition == 0) {
+            loadAndDisplayProduct(product_list_current_page + 1);
+        } else if (currentPosition == 1) {
+            product_search_current_search_function(product_search_current_keyword, product_search_current_page + q);
+        }
     }
 });
 
 function loadAndDisplayProduct(page) {
-    current_page = page;
+    product_list_current_page = page;
     vteam_http.makeHttpRequest("/product/getProductList",
             {page: page, pageSize: page_size},
     'POST',
             function(result) {
+                $("#loading").hide();
                 if (result.status == 'success') {
                     displayProduct(result.productList);
                 }
             });
 }
 
-function searchProduct() {
+function searchProduct(page) {
+    $("#loading").show();
     var input = document.getElementById("appendedInputButtons").value;
+    product_search_current_keyword = input;
+    product_search_current_page = page;
+    product_search_current_search_function = searchProduct;
     vteam_http.makeHttpRequest("/product/searchProduct",
-            {txtSearch: input},
+            {txtSearch: input, page: page, pageSize: page_size},
     'POST',
             function(result) {
-                if (result.status == 'success_search') {
+                $("#loading").hide();
+                if (result.status == 'success') {
 
                     displaySearchProduct(result.productList)
-                    $('#search_product_list').show();
                 }
             });
 }
 
 function displayProduct(productList) {
+    currentPosition = 0;
     var html = '';
     for (var i = 0; i < productList.length; i++) {
 
         html += '<div class= "span4">'
 
         html += '<div class= "thumbnail">'
-        html += '<img data-src="holder.js/320x280" src="' + productList[i].image + '"/>'
+        html += '<img onclick ="view_product_detail(' + productList[i].id + ')" data-src="holder.js/320x280" src="' + productList[i].image + '"/>'
 
         html += '<div class= "caption">'
         html += '<a href="#" onclick ="view_product_detail(' + productList[i].id + ')">'
@@ -55,6 +69,7 @@ function displayProduct(productList) {
     $(html).appendTo('#product_list .thumbnails');
     hideAllDiv()
     $('#product_list').show();
+    currentDiv = "product_list";
 }
 
 function numberWithCommas(x) {
@@ -85,7 +100,7 @@ function doBuy(_id) {
     "POST", function(d) {
         if (d.allowed === 'ok') {
             alert(d.message);
-            
+
         } else {
             alert(d.message);
         }
@@ -101,11 +116,11 @@ function startBuyingNow(bidId) {
     $('#bidButton').addClass('v6Buy');
     var buy_link = '<a href="javascript:doBuy(' + bidId + ')"><span id="buyNowLeft"></span></a>';
     $('#bidButton').html(buy_link);
-    
+
     cc = setInterval(buyCountDown, 1000);
 }
 
-function buyCountDown() {      
+function buyCountDown() {
     if (bcount <= 0) {
         clearInterval(cc);
         isInBidTime = false;
@@ -115,7 +130,7 @@ function buyCountDown() {
         $('#bidButton').addClass('v6BuyNow');
         return;
     }
-    $("#buyNowLeft").html((bcount) / 1000); 
+    $("#buyNowLeft").html((bcount) / 1000);
     bcount -= 1000;
 }
 
@@ -147,6 +162,7 @@ function toHMS(diff) {
 
 var isInBidTime = false;
 function displayProductDetail(product) {
+    currentPosition = 2;
     clearInterval(c);
     var html = '';
     count = product.bidTimeRemain;
@@ -178,9 +194,6 @@ function displayProductDetail(product) {
     html += '<div class="v6BorderBot pTop5">'
     html += '<div class="v6Buyersnew pBottom5 mTop5 ">'
     html += 'Top recent bidders<ul id="topBidders" class="firstList">'
-//    html += '<li>Pro1</li>'
-//    html += '<li>Pro2</li>'
-//    html += '<li>Pro3</li>'
     html += '</ul></div></div>'
     html += '<div id="product_tags" class="v6BorderBot pTop5" style="border-bottom:none">Tags</div>'
     html += '</div> <div class="c"></div>'
@@ -192,7 +205,7 @@ function displayProductDetail(product) {
 
     $("#product_detail .p_detail").html(html);
     hideAllDiv();
-    $("#product_detail").show();
+    $("#product_detail").show("slide",1000);
     loadProductTags(product.id);
     getRecentBidder(product.bidId);
 
@@ -207,28 +220,30 @@ function getRecentBidder(bidId) {
     vteam_http.makeHttpRequest("/product/getRecentBidder",
             {bid_id: bidId},
     "POST",
-            function(result) {                
-                    displayRecentBidder(result);                
+            function(result) {
+                displayRecentBidder(result);
             });
 }
 
 function displayRecentBidder(rs) {
     var body = "";
-    for (var i=0; i<rs.length; i++) {
-        body += '<li>' ;
+    for (var i = 0; i < rs.length; i++) {
+        body += '<li>';
         body += rs[i];
-        body += '</li>' ;
+        body += '</li>';
     }
-    
+
     $('#topBidders').html(body);
-    
+
 }
 
 function view_product_detail(pid) {
+    $("#loading").show();
     vteam_http.makeHttpRequest("/product/getProductById",
             {product_id: pid},
     "POST",
             function(result) {
+                $("#loading").hide();
                 if (result.status == "success")
                 {
                     displayProductDetail(result)
@@ -239,6 +254,7 @@ function view_product_detail(pid) {
 }
 
 function displaySearchProduct(productList) {
+    currentPosition = 1;
     var html = '';
     for (var i = 0; i < productList.length; i++) {
 
@@ -260,21 +276,20 @@ function displaySearchProduct(productList) {
     }
     $("#search_product_list .thumbnails").html(html);
     hideAllDiv();
-    $("#search_product_list").show();
-
+    $("#search_product_list").show("slide", { direction: "left" },1000);
 }
 
 function searchOnKeyDown(e) {
 
     if (e.keyCode == 13) {
         e.preventDefault()
-        searchProduct();
+        searchProduct(1);
     }
 }
 
 function changeContext() {
     $('#product_list .thumbnails').html('');
-    loadAndDisplayProduct(current_page, current_page_size);
+    loadAndDisplayProduct(1);
 }
 
 function hideAllDiv() {
@@ -301,7 +316,7 @@ function displayProductTags(tags) {
     html += 'Tags: '
     for (var i = 0; i < tags.length; i++) {
         html += '<span class= "tags">';
-        html += '<a id="tags_product" href="#" onclick="searchProductByTags(' + tags[i].tagId + ')">'
+        html += '<a id="tags_product" href="#" onclick="searchProductByTags(' + tags[i].tagId + ',1)">'
         html += '<strong>' + tags[i].tagName + '</strong>'
         html += '</a>' + ' ';
         html += '</span>';
@@ -310,15 +325,43 @@ function displayProductTags(tags) {
     $('#product_tags').html(html);
 }
 
-function searchProductByTags(tags_id) {
-    var input = document.getElementById("tags_product").value;
+function searchProductByTags(tags_id, page) {
+    $("#loading").show();
+    product_search_current_keyword = tags_id;
+    product_search_current_page = page;
+    product_search_current_search_function = searchProductByTags;
     vteam_http.init();
     vteam_http.makeHttpRequest("/product/searchProductByTags",
-            {tag_id: tags_id},
+            {tag_id: tags_id, page: page, pageSize: page_size},
     'POST',
             function(result) {
+                $("#loading").hide();
                 if (result.status == 'success') {
                     displaySearchProduct(result.productList);
                 }
             });
+}
+function backOnClick() {
+    if (currentPosition > 0) {
+        currentPosition = currentPosition - 1;
+        hideAllDiv();
+        $(divArray[currentPosition]).show();
+        generateBackAndNext()
+    }
+}
+function nextOnClick() {
+    if (currentPosition < 2) {
+        currentPosition = currentPosition + 1;
+        hideAllDiv();
+        $(divArray[currentPosition]).show();
+        generateBackAndNext()
+    }
+}
+function generateBackAndNext(){
+    if(currentPosition = 0){
+        // hide back button;
+    }
+    if(currentPosition =2){
+        //hide next button
+    }
 }

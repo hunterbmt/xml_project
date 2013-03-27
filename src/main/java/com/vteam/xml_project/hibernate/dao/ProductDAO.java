@@ -23,7 +23,7 @@ public class ProductDAO extends BaseDAO {
                 .getCurrentSession()
                 .createQuery("FROM Product WHERE status = :s");
         // get only the on-going bid products ( status = 2)
-        query.setParameter("s", Product.Status.ONBID);
+        query.setParameter("s", Product.Status.AVAILABLE);
         query = query.setFirstResult(pageSize * (page - 1));
         query.setMaxResults(pageSize);
         return query.list();
@@ -67,11 +67,11 @@ public class ProductDAO extends BaseDAO {
         query.setMaxResults(pageSize);
         return query.list();
     }
-    public List<Product> searchProductByTagID(Tags tag, int page,int pageSize) throws HibernateException{
+    public List<Product> searchProductByTagID(int tagId, int page,int pageSize) throws HibernateException{
         Query query = this.sessionFactory
                 .getCurrentSession()
                 .createQuery("FROM Product product where :tag in elements(product.tagses) AND product.status = :s");
-        query.setParameter("tag", tag.getId());
+        query.setParameter("tag", tagId);
         query.setParameter("s", Product.Status.ONBID);
         query = query.setFirstResult(pageSize * (page - 1));
         query.setMaxResults(pageSize);

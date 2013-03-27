@@ -171,8 +171,7 @@ public class ProductService {
     public ProductListDTO searchProductByTagsId(int tags_id, int page, int pageSize) {
         ProductListDTO list = new ProductListDTO();
         try {
-            Tags tag = tagsDAO.getTagById(tags_id);
-            List<Product> dbProducts = productDAO.searchProductByTagID(tag, page, pageSize);
+            List<Product> dbProducts = productDAO.searchProductByTagID(tags_id, page, pageSize);
             List<ProductDTO> tmpList = new ArrayList<ProductDTO>();
             ProductDTO pd;
             for (Product d : dbProducts) {

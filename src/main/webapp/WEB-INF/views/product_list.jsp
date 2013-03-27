@@ -47,6 +47,9 @@
         </script>
     </header>
     <body>
+        <div id="loading">
+                <img id="loading-image" src="/resources/img/loading.gif" alt="Đang tải dữ liệu" />
+        </div>
         <div id="header">
             <div class="navbar navbar-fixed-top">
                 <div class="navbar-inner">
@@ -56,7 +59,7 @@
                             <form class="navbar-form pull-left">
                                 <div class="input-append">
                                     <input class="span3" id="appendedInputButtons" type="text" onkeydown="searchOnKeyDown(event)">
-                                    <button onclick="searchProduct()" class="btn btn-primary" type="button" ><i class="icon-search" ></i></button>
+                                    <button onclick="searchProduct(1)" class="btn btn-primary" type="button" ><i class="icon-search" ></i></button>
                                 </div>           
                             </form>
                             <ul class="nav">
@@ -121,13 +124,15 @@
         </div>
 
         <div class="container" style="margin-top: 80px">
+            
             <div class="row-fluid" id="product">
                 <div id="side-section" class="span3 category">   
                     <ul id ="category_div" class="nav nav-list">
 
                     </ul>
-                    
+
                 </div>
+
                 <div class="span9" id="sequence-theme" style="width: 80%;height: auto;overflow: hidden;position: absolute;margin-top: 200px;margin-left: 100px;">
                     <li class="prev" style>
                         <i class="e-icon-left-open-big-open-big">
@@ -168,7 +173,10 @@
 
                     </ul>
                 </div>
-                
+                <div class="span9" id="back" style="margin-left: 300px">
+                    <a href="#" class="btn btn-primary btn-small" style="margin-top: 10px;margin-left: 300px;"><i class="icon-white icon-arrow-left"></i> Back</a>
+                    <a href="#" class="btn btn-primary btn-small" style="margin-top: 10px;margin-left: 100px;"><i class="icon-white icon-arrow-right"></i> Next</a>
+                </div>
             </div>
         </div>
         <div class="container" id="user_detail" style="position: absolute;width:70%;display: none">
