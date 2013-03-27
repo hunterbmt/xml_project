@@ -8,7 +8,7 @@
 
 body { 
     background:#fbfaf9 url('../img/bg-wrapper.jpg') repeat top left;;
-    font-family: arial;
+    font-family: Arial, serif;
     color: #525252;
 }
 .btn.btn-small, input[type="submit"].btn.btn-small {font-family: inherit;}
@@ -914,4 +914,8 @@ a:hover{
 }
 #product_detail{
     margin-left: 23%;
+}
+.carousel img{
+    width: 100%;
+    height: 50% ;
 }

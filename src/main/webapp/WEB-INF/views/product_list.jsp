@@ -118,8 +118,39 @@
                 </div>
             </div>
         </div>
-
-        <div class="container" style="margin-top: 80px">
+        <div class="row-fluid" style="position: relative">
+            <div id="myCarousel" class="carousel slide" data-interval="3000">
+                <!-- Carousel items -->
+                <div class="carousel-inner">
+                    <div class="item active left">
+                        <img src="http://wbpreview.com/previews/WB0G1X0T6/assets/app/img/banner2.jpg" alt="">
+                        <div class="carousel-caption">
+                            <h4>Nhanh chóng, tiện lợi</h4>
+                            <p>Mua hàng nhanh chóng và tiện lợi</p>
+                        </div>
+                    </div>
+                    <div class="item next left">
+                        <img src="http://wbpreview.com/previews/WB0G1X0T6/assets/app/img/banner1.jpg" alt="">
+                        <div class="carousel-caption">
+                            <h4>
+                                Thoải mái</h4>
+                            <p>Mua hàng siêu rẻ chỉ với chi phí ít</p>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <img src="http://wbpreview.com/previews/WB0G1X0T6/assets/app/img/banner3.jpg" alt="">
+                        <div class="carousel-caption">
+                            <h4>Hiện đại</h4>
+                            <p>Mua sắm theo cách cực hot</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Carousel nav -->
+                <a class="carousel-control left" href="#myCarousel" data-slide="prev">‹</a>
+                <a class="carousel-control right" href="#myCarousel" data-slide="next">›</a>
+            </div>
+        </div>
+        <div class="container" style="position: relative">
 
             <div id="wrapper">
                 <div id="columnContainer" class="row-fluid">
