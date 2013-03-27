@@ -18,6 +18,8 @@
         <link href="/resources/css/font-awesome.css" rel="stylesheet">
         <link href="/resources/css/product.css" rel="stylesheet">
         <link href="/resources/css/jquery-ui-helper.css" rel="stylesheet">
+        <link href="/resources/css/animated-slider.css" rel="stylesheet">
+        <link href="/resources/css/entypo.css" rel="stylesheet">
         <script src="/resources/js/lib/jquery.js"></script>
         <script src="/resources/js/lib/jquery.url.js"></script>
         <script src="/resources/js/lib/jquery-ui.js"></script>
@@ -126,7 +128,19 @@
                     </ul>
                     
                 </div>
-                
+                <div class="span9" id="sequence-theme" style="width: 80%;height: auto;overflow: hidden;position: absolute;margin-top: 200px;margin-left: 100px;">
+                    <li class="prev" style>
+                        <i class="e-icon-left-open-big-open-big">
+                            <i class="icon-reply" style="margin-top: 5px;"></i>
+                        </i>
+                    </li>
+                    <li class="next" style>
+                        <i class="e-icon-right-open-big-open-big">
+                            <i class="icon-share-alt" style="margin-top: 5px;">
+                            </i>    
+                            </i>
+                    </li>
+                </div>
                 <div class="span9" id="product_list">
                     <ul class="thumbnails">
 
@@ -154,10 +168,7 @@
 
                     </ul>
                 </div>
-                <div class="span9" id="back" style="margin-left: 300px">
-                   <a href="#" class="btn btn-primary btn-small" style="margin-top: 10px;margin-left: 300px;"><i class="icon-white icon-arrow-left"></i> Back</a>
-                   <a href="#" class="btn btn-primary btn-small" style="margin-top: 10px;margin-left: 100px;"><i class="icon-white icon-arrow-right"></i> Next</a>
-                </div>
+                
             </div>
         </div>
         <div class="container" id="user_detail" style="position: absolute;width:70%;display: none">
