@@ -46,25 +46,28 @@
     </header>
     <body>
         <div id="loading">
-                <img id="loading-image" src="/resources/img/loading.gif" alt="Đang tải dữ liệu" />
+            <img id="loading-image" src="/resources/img/loading.gif" alt="Đang tải dữ liệu" />
         </div>
         <div id="header">
             <div class="navbar navbar-fixed-top">
                 <div class="navbar-inner">
                     <div class="container">
-                        <a href="index.htm"> <h1>VTeam</h1></a>
+                        <h1 class="brand">
+                            <a href="index.html">
+                                Bid 20!
+                                <i class="icon-legal"></i>
+                            </a>
+                        </h1>
                         <div class="nav-collapse collapse">
                             <form class="navbar-form pull-left">
                                 <div class="input-append">
                                     <input class="span3" id="appendedInputButtons" type="text" onkeydown="searchOnKeyDown(event)">
-                                    <button onclick="searchProduct(1)" class="btn btn-primary" type="button" ><i class="icon-search" ></i></button>
+                                    <button onclick="searchProduct(1)" class="btn btn-success" type="button" ><i class="icon-search" ></i></button>
                                 </div>           
                             </form>
-                            <ul class="nav">
-
+                            <ul id ="menu"class="nav">
                                 <li class="active"><a href="#" onclick="changeContext()">Home</a></li>
                                 <li><a href="#">Hot Bids</a></li>
-                                <li><a href="#">FAQ</a></li>
                             </ul>
                             <ul class="nav pull-right">
                                 <div id="loginResult" style="display: none;margin-top: 10px">
@@ -122,45 +125,16 @@
         </div>
 
         <div class="container" style="margin-top: 80px">
-            
-            <div class="row-fluid" id="product">
-                <div id="side-section" class="span3 category">   
-                    <ul id ="category_div" class="nav nav-list">
 
-                    </ul>
+            <div id="wrapper">
+                <div id="columnContainer" class="row-fluid">
+                    <div  class="span10 offset1" id="product_list">
+                    </div>
+                    <div class="span10 offset1 hide" id="search_product_list">
+                    </div>
 
-                </div>
-
-                <div class="span9" id="product_list">
-                    <ul class="thumbnails">
-
-
-                    </ul>
-                </div>
-                <div class="span9 hide" id="search_product_list">
-                    <ul class="thumbnails">
-
-
-                    </ul>
-                </div>
-
-                <div class="span9 hide" id="product_detail">
-                    <ul class="p_detail">
-
-
-                    </ul>
-                </div>
-
-                <div class="span9" id="search_product_category_list" style="display: none">
-                    <ul class="p_search_by_category">
-
-
-
-                    </ul>
-                </div>
-                <div class="span9" id="back" style="margin-left: 300px">
-                    <a href="#" class="btn btn-primary btn-small" style="margin-top: 10px;margin-left: 300px;"><i class="icon-white icon-arrow-left"></i> Back</a>
-                    <a href="#" class="btn btn-primary btn-small" style="margin-top: 10px;margin-left: 100px;"><i class="icon-white icon-arrow-right"></i> Next</a>
+                    <div class="span10 offset1 hide" id="product_detail">
+                    </div>
                 </div>
             </div>
         </div>
