@@ -934,8 +934,6 @@ a:hover{
     width: 100%;
     height: 50% ;
 }
-<<<<<<< HEAD
-
 .onBidType {
     z-index: 2;
     top: 0;
@@ -957,7 +955,7 @@ a:hover{
     width: 145px;
     height: 103px;
     background: url(/resources/img/upcoming-bid.png) no-repeat 0 0;
-=======
+}
 #CategoriesBar {
     /*position: relative;*/
     z-index: 101;
@@ -1006,5 +1004,9 @@ a:hover{
 }
 .container{
     
+<<<<<<< HEAD
 >>>>>>> 7138698d0620722b2394122776e8b3f9c65d0b56
+=======
+
+>>>>>>> 4b908b7b413079c9d729dad5d9fefaf18eeb8ffa
 }
