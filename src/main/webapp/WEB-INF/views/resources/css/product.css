@@ -544,7 +544,6 @@ select:active:enabled {background-image: url("data:image/png;base64,iVBORw0KGgoA
 .p_detail {
     background: rgb(252, 252, 252); 
     border: 1px solid #EEE;
-    margin-top: 20px;
 }
 .p_detail p {font-size: 18 px;line-height: 20px;}
 .p_detail #right {
