@@ -212,11 +212,7 @@ function displayProductDetail(product) {
 
     $("#product_detail").html(html);
     hideAllDiv();
-<<<<<<< HEAD
     $("#product_detail").show("slide", 1000);
-=======
-    $("#product_detail").show();
->>>>>>> eb4c6ee05216ad4a97cf1ee814bc76a2841e0ab5
     loadProductTags(product.id);
     getRecentBidder(product.bidId);
 
