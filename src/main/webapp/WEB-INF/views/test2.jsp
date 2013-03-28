@@ -1,3 +1,9 @@
+<%-- 
+    Document   : test2
+    Created on : Mar 27, 2013, 8:11:02 PM
+    Author     : TH11032013
+--%>
+
 
 <%@page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -23,14 +29,20 @@
         <script src="/resources/js/lib/jquery.validate.js"></script>
         <script src="/resources/js/vteam.js"></script>
         <script src="/resources/js/admin_product.js"></script>
+        <script src="/resources/js/lib/jqBootstrapValidation.js"></script>
         <script>
             $(document).ready(function() {
                 populateCategoryNameList()
                 loadProductList(1);
-                valid();
+                
             });
 
         </script>
+        <script>
+        $(function () { 
+            $("input,select,textarea").not("[type=button]").jqBootstrapValidation(); } 
+        );
+    </script>
     </head>
     <body>
         <div class="navbar navbar-fixed-top">
@@ -92,13 +104,15 @@
                                     <div class="control-group">
                                         <label class="control-label">Name</label>
                                         <div class="controls">
-                                            <input id="product_name" type="text">
+                                            <input id="product_name" type="text" required>
+                                            <p class="help-block"></p>
                                         </div>
                                     </div>
                                     <div class="control-group">
                                         <label class="control-label">Category</label>
                                         <div class="controls">
-                                            <input id="category_name" type="text"/>
+                                            <input id="category_name" type="text" required>
+                                            <p class="help-block"></p>
                                         </div>
                                     </div>
                                     <div class="control-group">
@@ -113,19 +127,21 @@
                                     <div class="control-group">
                                         <label class="control-label">Min price</label>
                                         <div class="controls">
-                                            <input type="number" id="product_min_price">
+                                            <input type="number" id="product_min_price"required>
+                                            <p class="help-block"></p>
                                         </div>
                                     </div>
                                     <div class="control-group">
                                         <label class="control-label">Max price</label>
                                         <div class="controls">
-                                            <input type="number" id="product_max_price">
+                                            <input type="number" id="product_max_price" required>
+                                            <p class="help-block"></p>
                                         </div>
                                     </div>
                                     <div class="control-group">
                                         <label class="control-label">Image</label>
                                         <div class="controls">
-                                            <input type="text" id="product_img">
+                                            <input type="text" id="product_img" required>
                                         </div>
                                     </div>
                                     <div class="controls-button">
@@ -187,17 +203,17 @@
                                     <div class="control-group">
                                         <label class="control-label">Name</label>
                                         <div class="controls">
-                                            <input id="category_detail_name" type="text"/>
+                                            <input id="category_detail_name" type="text" required=""/>
                                         </div>
                                     </div>
                                     <div class="control-group">
                                         <label class="control-label">Description</label>
                                         <div class="row">
-                                            <textarea id="category_detail_description" style="height: 120px"></textarea>
+                                            <textarea id="category_detail_description" style="height: 120px" required=""></textarea>
                                         </div>
                                     </div>
                                     <div class="controls-button">
-                                        <button type="button" id="category_detail_btn" class="btn btn-warning" onclick="insertOrUpdateCategory()">Save</button>
+                                        <button type="submit" id="category_detail_btn" class="btn btn-warning" onclick="insertOrUpdateCategory()">Save</button>
                                         <button type="button" class="btn" onclick="clearCategoryDetail()">New</button>
                                     </div>
                                     <div>
@@ -213,3 +229,4 @@
         </div>
     </body>
 </html>
+

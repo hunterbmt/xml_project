@@ -10,7 +10,9 @@ import com.vteam.xml_project.hibernate.dao.CardCodeDAO;
 
 import com.vteam.xml_project.hibernate.orm.Users;
 import com.vteam.xml_project.hibernate.dao.UserDAO;
+import com.vteam.xml_project.hibernate.dao.UserPaymentDAO;
 import com.vteam.xml_project.hibernate.orm.CardCode;
+import com.vteam.xml_project.hibernate.orm.UserPayment;
 import com.vteam.xml_project.util.DateUtil;
 import com.vteam.xml_project.util.StringUtil;
 import java.security.NoSuchAlgorithmException;
@@ -28,19 +30,21 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 public class UserService {
-
+    
     private static Logger log = Logger.getLogger(UserService.class.getName());
     @Autowired
     private UserDAO userDAO;
     @Autowired
     private CardCodeDAO cardCodeDAO;
     @Autowired
+    private UserPaymentDAO userPaymentDAO;
+    @Autowired
     private DateUtil util;
-
+    
     @Transactional
     public boolean checkLogin(String email, String password) {
         try {
-
+            
             String storagepass = StringUtil.createPasswordForDB(password);
             Users dbUser = userDAO.findUserByEmailAndPassword(email, storagepass);
             if (dbUser != null) {
@@ -51,7 +55,7 @@ public class UserService {
         }
         return false;
     }
-
+    
     @Transactional
     public boolean upadateUser(String email, String address, String phone, String birthday, String formatDate) {
         try {
@@ -69,7 +73,7 @@ public class UserService {
             log.error(ex);
         } catch (HibernateException ex) {
             log.error(ex);
-
+            
         } catch (ParseException ex) {
             log.error(ex);
         } catch (Exception ex) {
@@ -77,7 +81,7 @@ public class UserService {
         }
         return false;
     }
-
+    
     @Transactional
     public boolean createNewUser(UserDTO newUser) {
         try {
@@ -94,13 +98,13 @@ public class UserService {
         }
         return false;
     }
-
+    
     @Transactional
     public UserDTO getUserById(Integer id) {
         UserDTO returnUser = new UserDTO();
         try {
             Users dbUser = userDAO.findUserByUuid(id);
-
+            
             returnUser.setFullname(dbUser.getFullname());
             returnUser.setStatus("success");
         } catch (HibernateException ex) {
@@ -109,7 +113,7 @@ public class UserService {
         }
         return returnUser;
     }
-
+    
     @Transactional
     public UserDTO getUserByEmail(String email) {
         UserDTO returnUser = new UserDTO();
@@ -126,7 +130,7 @@ public class UserService {
         }
         return returnUser;
     }
-
+    
     @Transactional
     public boolean checkPassword(String email, String currentPass, String newPassword) {
         try {
@@ -143,7 +147,7 @@ public class UserService {
         }
         return false;
     }
-
+    
     @Transactional
     public NinCodeDTO inputPayment(String email, String code) {
         NinCodeDTO ninCode = new NinCodeDTO();
@@ -157,6 +161,12 @@ public class UserService {
                     cardCode.setUsedDay(util.getCurrentDate());
                     cardCode.setUser(currentUser);
                     cardCodeDAO.save(cardCode);
+                    UserPayment userPayment = new UserPayment();
+                    userPayment.setUser(currentUser);
+                    userPayment.setAmount(cardCode.getAmount());
+                    userPayment.setCardCode(cardCode.getCode());
+                    userPayment.setPaymentDay(util.getCurrentDate());
+                    userPaymentDAO.save(userPayment);
                     ninCode.setStatus("success");
                 } else {
                     ninCode.setStatus("error");

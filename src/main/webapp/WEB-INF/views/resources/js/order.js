@@ -34,6 +34,6 @@ function displayOrder(orderList) {
         html += '</td>'
         html += '</tr>'
     }
-    $("#orderResult").html(html);
-    $("#orderResult").show();
+    vteam_http.setHTML("orderResult",html);
+    vteam_http.show("orderResult");
 }

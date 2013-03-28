@@ -58,6 +58,7 @@ function insertOrUpdateProduct() {
     var max_price = $("#product_max_price").val();
     var img = $("#product_img").val();
     if (id) {
+        
         vteam_http.makeHttpRequest("/admin/update_product",
                 {productId: id,
                     productName: product_name,
@@ -221,3 +222,37 @@ function displayCategoryMsg(msg) {
         }, 10000);
     });
 }
+function valid()
+{
+// Validation
+$("#product_detail").validate({
+rules:{
+product_name:"required",
+category_name:"required",
+product_min_price:"required",
+product_max_price:"required",
+product_img:"required"
+},
+
+messages:{
+product_name:"Enter your product name",
+category_name:"Enter your category name",
+product_min_price:"Enter your min price",
+product_max_price:"Enter your max price",
+product_img:"Select image for product"
+},
+
+errorClass: "help-inline",
+errorElement: "span",
+highlight:function(element, errorClass, validClass)
+{
+$(element).parents('.control-group').addClass('error');
+},
+unhighlight: function(element, errorClass, validClass)
+{
+$(element).parents('.control-group').removeClass('error');
+$(element).parents('.control-group').addClass('success');
+}
+});
+}
+
