@@ -120,8 +120,11 @@
                 </div>
             </div>
         </div>
-
-        <div class="container" style="margin-top: 80px">
+        <div id="CategoriesBar" class="-exp navbar-fixed-top">
+            <ul id ="CategoriesBar_ul"class="LiquidContainer HeaderContainer" style="width: 100%">
+            </ul>
+        </div>
+        <div class="container" id="product" style="position: relative">
 
             <div id="wrapper">
                 <div id="columnContainer" class="row-fluid">
