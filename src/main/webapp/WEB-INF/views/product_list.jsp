@@ -129,14 +129,14 @@
             <div id="wrapper">
                 <div id="columnContainer" class="row-fluid">
                  <div class="span10" id="sequence-theme" style="width: 100%;height: auto;overflow: hidden;position: absolute;margin-top: 200px;">
-                    <li class="prev" style>
+                    <li id="back" class="prev" >
                         <i class="e-icon-left-open-big-open-big">
-                            <i class="icon-reply" id="back" onclick="backOnClick()"></i>
+                            <i class="icon-reply" onclick="backOnClick()"></i>
                         </i>
                     </li>
-                    <li class="next" style>
+                    <li id="next" class="next">
                         <i class="e-icon-right-open-big-open-big">  
-                            <i class="icon-white icon-share-alt" id="next" onclick="nextOnClick()"></i>
+                            <i class="icon-white icon-share-alt"  onclick="nextOnClick()"></i>
                             </i>
                     </li>
                 </div>

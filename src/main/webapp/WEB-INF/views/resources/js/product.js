@@ -3,8 +3,8 @@ var product_search_current_keyword;
 var product_search_current_page;
 var product_search_current_search_function;
 var page_size = 9;
-var divArray = ["#product_list", "#search_product_list", "#product_detail"];
-var currentPosition = 0;
+var divArray = [];
+var currentPosition = -1;
 $(window).scroll(function() {
     if ($(window).scrollTop() == $(document).height() - $(window).height()) {
         if (currentPosition == 0) {
@@ -46,7 +46,6 @@ function searchProduct(page) {
 }
 
 function displayProduct(productList) {
-    currentPosition = 0;
     var html = '';
     var ts = 0;
     var bid_type = "";
@@ -59,24 +58,27 @@ function displayProduct(productList) {
             bid_type = "<div class='upComingBidType'></div>";
         }
         html += '<div class= "bid span4" style="height: 400px">'
-        
+
         html += '<div class= "bidHolder">'
-        html +=     bid_type;
-        html +=       '<a style ="margin-left: 14%;"href="javascript:void(0)" class="bidImage imgLink" onclick ="view_product_detail(' + productList[i].id + ')">'
-        html +=          '<img src="' + productList[i].image + '" style="height:286px"/>'        
-        html +=       '</a>'
-        html +=       '<div class= "convo attribution clearfix">'
-        html +=          '<a href="javascript:void(0)" onclick ="view_product_detail(' + productList[i].id + ')">'
-        html +=            '<h5>' + productList[i].name + '</h5>'
-        html +=          '</a>'
-        html +=        '<p>' + productList[i].shortDescription + '<p>'
-        html +=      '</div>'
+        html += bid_type;
+        html += '<a style ="margin-left: 14%;"href="javascript:void(0)" class="bidImage imgLink" onclick ="view_product_detail(' + productList[i].id + ')">'
+        html += '<img src="' + productList[i].image + '" style="height:286px"/>'
+        html += '</a>'
+        html += '<div class= "convo attribution clearfix">'
+        html += '<a href="javascript:void(0)" onclick ="view_product_detail(' + productList[i].id + ')">'
+        html += '<h5>' + productList[i].name + '</h5>'
+        html += '</a>'
+        html += '<p>' + productList[i].shortDescription + '<p>'
         html += '</div>'
-        html +='</div>'
+        html += '</div>'
+        html += '</div>'
     }
     vteam_http.appendTo("product_list", html);
+    currentPosition += 1;
+    divArray[currentPosition] = "product_list";
     hideAllDiv();
     vteam_http.show("product_list");
+    generateBackAndNext()
 }
 
 function numberWithCommas(x) {
@@ -132,7 +134,7 @@ function buyCountDown() {
         vteam_http.setHTML("buyNowLeft", '');
         vteam_http.removeClass("bidButton", "v6Buy");
         vteam_http.addClass("bidButton", "v6BuyNow");
-        vteam_http.setHTML("bidButton",bid_button_content);
+        vteam_http.setHTML("bidButton", bid_button_content);
         return;
     }
     vteam_http.setHTML("buyNowLeft", (bcount / 1000));
@@ -166,7 +168,6 @@ function toHMS(diff) {
 
 var isInBidTime = false;
 function displayProductDetail(product) {
-    currentPosition = 2;
     clearInterval(c);
     var html = '';
     count = product.bidTimeRemain;
@@ -212,6 +213,9 @@ function displayProductDetail(product) {
     vteam_http.setHTML("product_detail", html);
     hideAllDiv();
     vteam_http.show("product_detail");
+    currentPosition += 1;
+    divArray[currentPosition] = "product_detail";
+    generateBackAndNext()
     loadProductTags(product.id);
     getRecentBidder(product.bidId);
 
@@ -258,8 +262,8 @@ function view_product_detail(pid) {
 }
 
 function displaySearchProduct(productList) {
-    if(product_search_current_page == 1){
-        vteam_http.setHTML("search_product_list","");
+    if (product_search_current_page == 1) {
+        vteam_http.setHTML("search_product_list", "");
     }
     currentPosition = 1;
     var html = '';
@@ -283,6 +287,9 @@ function displaySearchProduct(productList) {
     vteam_http.appendTo("search_product_list", html);
     hideAllDiv();
     vteam_http.show("search_product_list");
+    currentPosition += 1;
+    divArray[currentPosition] = "search_product_list";
+    generateBackAndNext()
 }
 
 function searchOnKeyDown(e) {
@@ -351,30 +358,29 @@ function backOnClick() {
     if (currentPosition > 0) {
         currentPosition = currentPosition - 1;
         hideAllDiv();
-        $(divArray[currentPosition]).show();
+        vteam_http.show(divArray[currentPosition]);
         generateBackAndNext()
     }
 }
 function nextOnClick() {
-    if (currentPosition < 2) {
+    if (currentPosition < divArray.length) {
         currentPosition = currentPosition + 1;
         hideAllDiv();
-        $(divArray[currentPosition]).show();
+        vteam_http.show(divArray[currentPosition]);
         generateBackAndNext()
     }
 }
 function generateBackAndNext() {
     if (currentPosition == 0) {
-        // hide back button;
         $("#back").hide();
     }
-
-    if(currentPosition =2){
-        //hide next button
-        $("#next").hide();
-
-    if (currentPosition == 2) {
-
+    else {
+        $("#back").show()
     }
-}
+    if (currentPosition == (divArray.length-1)) {
+        $("#next").hide();
+    }else{
+        $("#next").show();
+    }
+
 }
