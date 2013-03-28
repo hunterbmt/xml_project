@@ -935,7 +935,7 @@ a:hover{
     height: 50% ;
 }
 .onBidType {
-    z-index: 2;
+    z-index: 1;
     top: 0;
     right: 0;
     float:right;
