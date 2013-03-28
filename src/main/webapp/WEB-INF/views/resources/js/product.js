@@ -49,14 +49,24 @@ function searchProduct(page) {
 function displayProduct(productList) {
     currentPosition = 0;
     var html = '';
+    var ts = 0;
+    var bid_type = "";
     for (var i = 0; i < productList.length; i++) {
-
+        ts = productList[i].bidTimeRemain;
+        if (ts <= 0) // in bid 
+        {
+            bid_type = "<div class='onBidType'/>";
+        } else {
+            bid_type = "<div class='upComingBidType'/>";
+        }
         html += '<div class= "bid span4" style="height: 400px">'
-
+        
         html += '<div class= "bidHolder">'
-        html +='<a style ="margin-left: 14%;"href="javascript:void(0)" class="bidImage imgLink" onclick ="view_product_detail(' + productList[i].id + ')">'
-        html += '<img src="' + productList[i].image + '" style="height:286px"/>'
-        html +='</a>'
+        html += bid_type;
+        html += '<a style ="margin-left: 14%;"href="javascript:void(0)" class="bidImage imgLink" onclick ="view_product_detail(' + productList[i].id + ')">'
+        
+        html += '<img src="' + productList[i].image + '" style="height:286px"/>'        
+        html += '</a>'
         html += '<div class= "convo attribution clearfix">'
         html += '<a href="javascript:void(0)" onclick ="view_product_detail(' + productList[i].id + ')">'
         html += '<h5>' + productList[i].name + '</h5>'
@@ -98,13 +108,13 @@ function doBuy(_id) {
     vteam_http.makeHttpRequest("bid/do_buy", {
         bid_id: _id
     },
-    "POST", function(d) {        
-            clearInterval(cc);            
-            $('#buyNowLeft').html('');
-            $('#bidButton').html('<font color="white" size="4.5em"><center>Chúc mừng!<br/><font size="2.5em"><strong>Sản phẩm đã thuộc về bạn</strong></font></center></font>');
-            $('#bidButton').removeClass('v6Buy');
-            $('#bidButton').addClass('v6Bought');
-        });
+    "POST", function(d) {
+        clearInterval(cc);
+        $('#buyNowLeft').html('');
+        $('#bidButton').html('<font color="white" size="4.5em"><center>Chúc mừng!<br/><font size="2.5em"><strong>Sản phẩm đã thuộc về bạn</strong></font></center></font>');
+        $('#bidButton').removeClass('v6Buy');
+        $('#bidButton').addClass('v6Bought');
+    });
 }
 var cc;
 var bcount = 0;
@@ -170,10 +180,10 @@ function displayProductDetail(product) {
     html += '<div class="row-fluid">'
 
     html += '<div class= "p_detail" style="border:none; margin-top:0px">'
-    
-    html +='<div class="product-detail-img">'
+
+    html += '<div class="product-detail-img">'
     html += '<img src="' + product.image + '"/>'
-    html +='</div>'
+    html += '</div>'
     html += '<div id= "right">'
 
     html += '<div class="title">'

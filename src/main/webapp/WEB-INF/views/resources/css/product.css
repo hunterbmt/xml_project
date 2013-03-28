@@ -874,6 +874,8 @@ div.span4{
 }
 .bid .bidHolder{
     position: relative;
+    border: 1px solid rgb(226, 218, 218);
+    border-bottom: none;
 }
 .bid .bidImage {
     background-color: #f2f0f0;
@@ -927,4 +929,27 @@ a:hover{
 .carousel img{
     width: 100%;
     height: 50% ;
+}
+
+.onBidType {
+    z-index: 2;
+    top: 0;
+    right: 0;
+    float:right;
+    position: absolute;
+    width: 145px;
+    height: 103px;
+    background: url(/resources/img/on-bid.png) no-repeat 0 0;
+
+}
+
+.upComingBidType {
+    z-index: 2;
+    top: 0;
+    right: 0;
+    float:right;
+    position: absolute;
+    width: 145px;
+    height: 103px;
+    background: url(/resources/img/upcoming-bid.png) no-repeat 0 0;
 }
