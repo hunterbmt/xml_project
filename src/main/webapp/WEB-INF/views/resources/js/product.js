@@ -366,7 +366,15 @@ function nextOnClick() {
 function generateBackAndNext() {
     if (currentPosition == 0) {
         // hide back button;
+        $("#back").hide();
     }
+
+    if(currentPosition =2){
+        //hide next button
+        $("#next").hide();
+
     if (currentPosition == 2) {
+
     }
+}
 }

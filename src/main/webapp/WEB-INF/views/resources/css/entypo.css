@@ -1,4 +1,7 @@
 
+
+
+
 @charset "UTF-8";
 
 @font-face {
@@ -29,6 +32,29 @@ a [class^="e-icon-"], a [class*=" e-icon-"] {
 	display: inline-block;
 	text-decoration: inherit;
 }
+
+li [class^="e-icon-"], li [class*=" e-icon-"] {
+display: inline-block;
+width: 1.25em;
+text-align: center;
+}
+.e-icon-left-open-big:before {
+content: 'e765';
+}
+[class^="e-icon-"]:before, [class*=" e-icon-"]:before {
+font-family: 'entypo';
+font-style: normal;
+font-weight: normal;
+speak: none;
+display: inline-block;
+text-decoration: inherit;
+width: 1em;
+text-align: center;
+line-height: 1em;
+}
+
+/* makes the font 33% larger relative to the icon container */
+
 
 /* makes the font 33% larger relative to the icon container */
 .e-icon-large:before {
@@ -369,4 +395,5 @@ li[class^="e-icon-"].icon-large:before, li[class*=" e-icon-"].icon-large:before 
 .lt-ie8 .e-icon-large {
 	font-size: 1.3333em;
 }
+
 

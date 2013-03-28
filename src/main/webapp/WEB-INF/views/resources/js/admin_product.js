@@ -57,6 +57,7 @@ function insertOrUpdateProduct() {
     var min_price = $("#product_min_price").val();
     var max_price = $("#product_max_price").val();
     var img = $("#product_img").val();
+    validProduct(product_name,category_id,min_price,max_price,img);
     if (id) {
         
         vteam_http.makeHttpRequest("/admin/update_product",
@@ -192,17 +193,20 @@ function insertOrUpdateCategory() {
     var categoryId = category_current_id;
     var description = $('#category_detail_description').val();
     var name = $('#category_detail_name').val();
+    validCategory(name,description);
     if (categoryId) {
         vteam_http.makeHttpRequest("/admin/update_category",
                 {categoryId: categoryId,
                     description: description},
         'POST', callbackCategoryEdit);
     } else {
+        if(validCategory(name,des)){
         vteam_http.makeHttpRequest("/admin/insert_category",
                 {
                     categoryName: name,
                     description: description},
         'POST', callbackCategoryEdit);
+    }
     }
 }
 function callbackCategoryEdit(result) {
@@ -222,37 +226,84 @@ function displayCategoryMsg(msg) {
         }, 10000);
     });
 }
-function valid()
+function validProduct(name,cate_name,min_price,max_price,image)
 {
-// Validation
-$("#product_detail").validate({
-rules:{
-product_name:"required",
-category_name:"required",
-product_min_price:"required",
-product_max_price:"required",
-product_img:"required"
-},
-
-messages:{
-product_name:"Enter your product name",
-category_name:"Enter your category name",
-product_min_price:"Enter your min price",
-product_max_price:"Enter your max price",
-product_img:"Select image for product"
-},
-
-errorClass: "help-inline",
-errorElement: "span",
-highlight:function(element, errorClass, validClass)
-{
-$(element).parents('.control-group').addClass('error');
-},
-unhighlight: function(element, errorClass, validClass)
-{
-$(element).parents('.control-group').removeClass('error');
-$(element).parents('.control-group').addClass('success');
+  if(name==null|| name==""){
+      var div = $("#product_name").parents("div.control-group");
+      div.removeClass("success");
+      div.addClass("error");
+      $("#result_product").html('Fields must be required').show();
+  }else {
+      var div = $("#product_name").parents("div.control-group");
+      div.removeClass("error");
+      div.addClass("success");
+  }
+  if(cate_name==null|| cate_name==""){
+      var div = $("#category_name").parents("div.control-group");
+      div.removeClass("success");
+      div.addClass("error");
+      $("#result_product").html('Fields must be required').show();
+  }else {
+      var div = $("#category_name").parents("div.control-group");
+      div.removeClass("error");
+      div.addClass("success");
+  }
+  if(min_price==null|| min_price==""){
+      var div = $("#product_min_price").parents("div.control-group");
+      div.removeClass("success");
+      div.addClass("error");
+      $("#result_product").html('Fields must be required').show();
+  }else {
+      var div = $("#product_min_price").parents("div.control-group");
+      div.removeClass("error");
+      div.addClass("success");
+  }
+   if(max_price==null|| max_price==""){
+      var div = $("#product_max_price").parents("div.control-group");
+      div.removeClass("success");
+      div.addClass("error");
+      $("#result_product").html('Fields must be required').show();
+  }else {
+      var div = $("#product_max_price").parents("div.control-group");
+      div.removeClass("error");
+      div.addClass("success");
+  }
+   if(image==null|| image==""){
+      var div = $("#product_img").parents("div.control-group");
+      div.removeClass("success");
+      div.addClass("error");
+      $("#result_product").html('Fields must be required').show();
+  }else {
+      var div = $("#product_img").parents("div.control-group");
+      div.removeClass("error");
+      div.addClass("success");
+  }
+  
 }
-});
-}
+function validCategory(name,des){
+     if(name==null|| name==""){
+      var div = $("#category_detail_name").parents("div.control-group");
+      div.removeClass("success");
+      div.addClass("error");
+      $("#result_category").html('Fields must be required').show();
+      return false;
+  }else {
+      var div = $("#category_detail_name").parents("div.control-group");
+      div.removeClass("error");
+      div.addClass("success");
+      return true;
+  }
+  if(des==null|| des==""){
+      var div = $("#category_detail_description").parents("div.control-group");
+      div.removeClass("success");
+      div.addClass("error");
+      $("#result_category").html('Fields must be required').show();
+      return false;
+  }else {
+      var div = $("#category_detail_description").parents("div.control-group");
+      div.removeClass("error");
+      div.addClass("success");
+      return true;
+  }
+  }
 
