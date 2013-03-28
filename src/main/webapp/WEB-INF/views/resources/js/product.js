@@ -98,19 +98,13 @@ function doBuy(_id) {
     vteam_http.makeHttpRequest("bid/do_buy", {
         bid_id: _id
     },
-    "POST", function(d) {
-        if (d.allowed === 'ok') {
+    "POST", function(d) {        
+            clearInterval(cc);            
             $('#buyNowLeft').html('');
-            $('#bidButton').html(bid_button_content);
+            $('#bidButton').html('<font color="white" size="4.5em"><center>Chúc mừng!<br/><font size="2.5em"><strong>Sản phẩm đã thuộc về bạn</strong></font></center></font>');
             $('#bidButton').removeClass('v6Buy');
-            $('#bidButton').addClass('v6BuyNow');
-            alert(d.message);
-
-        } else {
-            alert(d.message);
-        }
-
-    });
+            $('#bidButton').addClass('v6Bought');
+        });
 }
 var cc;
 var bcount = 0;

@@ -613,6 +613,12 @@ select:active:enabled {background-image: url("data:image/png;base64,iVBORw0KGgoA
     display: block;
 }
 
+v6Bought {
+    display: block;
+    -padding-left: 30px;
+    -padding-top: 20px;
+}
+
 #buyNowLeft {
     font-weight: bold;
     font-size: xx-large;
