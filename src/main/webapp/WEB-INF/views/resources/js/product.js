@@ -61,15 +61,10 @@ function displayProduct(productList) {
         html += '<div class= "bid span4" style="height: 400px">'
         
         html += '<div class= "bidHolder">'
-<<<<<<< HEAD
+
         html += bid_type;
         html += '<a style ="margin-left: 14%;"href="javascript:void(0)" class="bidImage imgLink" onclick ="view_product_detail(' + productList[i].id + ')">'
-        
         html += '<img src="' + productList[i].image + '" style="height:286px"/>'        
-=======
-        html += '<a style ="margin-left: 14%;"href="javascript:void(0)" class="bidImage imgLink" onclick ="view_product_detail(' + productList[i].id + ')">'
-        html += '<img src="' + productList[i].image + '" style="height:286px"/>'
->>>>>>> 7138698d0620722b2394122776e8b3f9c65d0b56
         html += '</a>'
         html += '<div class= "convo attribution clearfix">'
         html += '<a href="javascript:void(0)" onclick ="view_product_detail(' + productList[i].id + ')">'
@@ -179,11 +174,8 @@ function displayProductDetail(product) {
     c = setInterval(displayCounter, 1000);
     html += '<div class="row-fluid">'
 
-<<<<<<< HEAD
     html += '<div class= "p_detail" style="border:none; margin-top:0px">'
-=======
-    html += '<div class= "p_detail" style="border:none;">'
->>>>>>> 7138698d0620722b2394122776e8b3f9c65d0b56
+
 
     html += '<div class="product-detail-img">'
     html += '<img src="' + product.image + '"/>'
