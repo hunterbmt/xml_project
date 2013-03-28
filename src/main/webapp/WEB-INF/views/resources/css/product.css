@@ -934,7 +934,28 @@ a:hover{
     width: 100%;
     height: 50% ;
 }
+.onBidType {
+    z-index: 2;
+    top: 0;
+    right: 0;
+    float:right;
+    position: absolute;
+    width: 145px;
+    height: 103px;
+    background: url(/resources/img/on-bid.png) no-repeat 0 0;
 
+}
+
+.upComingBidType {
+    z-index: 2;
+    top: 0;
+    right: 0;
+    float:right;
+    position: absolute;
+    width: 145px;
+    height: 103px;
+    background: url(/resources/img/upcoming-bid.png) no-repeat 0 0;
+}
 #CategoriesBar {
     /*position: relative;*/
     z-index: 101;
@@ -980,12 +1001,4 @@ a:hover{
 }
 .HeaderContainer li {
     font-size: 13px;
-}
-.container{
-    
-<<<<<<< HEAD
->>>>>>> 7138698d0620722b2394122776e8b3f9c65d0b56
-=======
-
->>>>>>> 4b908b7b413079c9d729dad5d9fefaf18eeb8ffa
 }
