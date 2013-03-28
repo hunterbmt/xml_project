@@ -258,6 +258,9 @@ function view_product_detail(pid) {
 }
 
 function displaySearchProduct(productList) {
+    if(product_search_current_page == 1){
+        vteam_http.setHTML("search_product_list","");
+    }
     currentPosition = 1;
     var html = '';
     for (var i = 0; i < productList.length; i++) {
@@ -277,7 +280,7 @@ function displaySearchProduct(productList) {
         html += '</div>'
         html += '</div>';
     }
-    vteam_http.setHTML("search_product_list", html);
+    vteam_http.appendTo("search_product_list", html);
     hideAllDiv();
     vteam_http.show("search_product_list");
 }
@@ -363,7 +366,15 @@ function nextOnClick() {
 function generateBackAndNext() {
     if (currentPosition == 0) {
         // hide back button;
+        $("#back").hide();
     }
+
+    if(currentPosition =2){
+        //hide next button
+        $("#next").hide();
+
     if (currentPosition == 2) {
+
     }
+}
 }

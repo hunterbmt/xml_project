@@ -38,11 +38,7 @@
             });
 
         </script>
-        <script>
-        $(function () { 
-            $("input,select,textarea").not("[type=button]").jqBootstrapValidation(); } 
-        );
-    </script>
+        
     </head>
     <body>
         <div class="navbar navbar-fixed-top">
@@ -105,14 +101,14 @@
                                         <label class="control-label">Name</label>
                                         <div class="controls">
                                             <input id="product_name" type="text" required>
-                                            <p class="help-block"></p>
+                                            
                                         </div>
                                     </div>
                                     <div class="control-group">
                                         <label class="control-label">Category</label>
                                         <div class="controls">
                                             <input id="category_name" type="text" required>
-                                            <p class="help-block"></p>
+                                           
                                         </div>
                                     </div>
                                     <div class="control-group">
@@ -128,14 +124,14 @@
                                         <label class="control-label">Min price</label>
                                         <div class="controls">
                                             <input type="number" id="product_min_price"required>
-                                            <p class="help-block"></p>
+                                            
                                         </div>
                                     </div>
                                     <div class="control-group">
                                         <label class="control-label">Max price</label>
                                         <div class="controls">
                                             <input type="number" id="product_max_price" required>
-                                            <p class="help-block"></p>
+                                            
                                         </div>
                                     </div>
                                     <div class="control-group">
@@ -145,7 +141,7 @@
                                         </div>
                                     </div>
                                     <div class="controls-button">
-                                        <button type="button" class="btn btn-warning" onclick="insertOrUpdateProduct()">Save</button>
+                                        <button type="button" class="btn btn-warning" onclick="insertOrUpdateProduct()" >Save</button>
                                         <button type="button" class="btn" onclick="clearProductDetail()">New</button>
                                     </div>
                                     <div>
