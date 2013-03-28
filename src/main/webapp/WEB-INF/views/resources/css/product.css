@@ -938,7 +938,6 @@ a:hover{
     z-index: 2;
     top: 0;
     right: 0;
-    float:right;
     position: absolute;
     width: 145px;
     height: 103px;
@@ -950,7 +949,6 @@ a:hover{
     z-index: 2;
     top: 0;
     right: 0;
-    float:right;
     position: absolute;
     width: 145px;
     height: 103px;

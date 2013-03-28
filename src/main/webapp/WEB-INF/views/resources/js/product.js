@@ -54,9 +54,9 @@ function displayProduct(productList) {
         ts = productList[i].bidTimeRemain;
         if (ts <= 0) // in bid 
         {
-            bid_type = "<div class='onBidType'/>";
+            bid_type = "<div class='onBidType'></div>";
         } else {
-            bid_type = "<div class='upComingBidType'/>";
+            bid_type = "<div class='upComingBidType'></div>";
         }
         html += '<div class= "bid span4" style="height: 400px">'
         
