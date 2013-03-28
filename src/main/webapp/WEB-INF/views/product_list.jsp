@@ -12,6 +12,8 @@
         <link href="/resources/css/bootstrap-responsive.css" rel="stylesheet">
         <link href="/resources/css/font-awesome.css" rel="stylesheet">
         <link href="/resources/css/product.css" rel="stylesheet">
+        <link href="/resources/css/animated-slider.css" rel="stylesheet">
+        <link href="/resources/css/entypo.css" rel="stylesheet">
         <link href="/resources/css/jquery-ui-helper.css" rel="stylesheet">
         <script src="/resources/js/lib/jquery.js"></script>
         <script src="/resources/js/lib/jquery.url.js"></script>
@@ -123,15 +125,32 @@
 
             <div id="wrapper">
                 <div id="columnContainer" class="row-fluid">
+                 <div class="span10" id="sequence-theme" style="width: 100%;height: auto;overflow: hidden;position: absolute;margin-top: 200px;">
+                    <li class="prev" style>
+                        <i class="e-icon-left-open-big-open-big">
+                            <i class="icon-reply" id="back" onclick="backOnClick()"></i>
+                        </i>
+                    </li>
+                    <li class="next" style>
+                        <i class="e-icon-right-open-big-open-big">  
+                            <i class="icon-white icon-share-alt" id="next" onclick="nextOnClick()"></i>
+                            </i>
+                    </li>
+                </div>
                     <div  class="span10 offset1" id="product_list">
                     </div>
                     <div class="span10 offset1 hide" id="search_product_list">
                     </div>
 
                     <div class="span10 offset1 hide" id="product_detail">
+                        
                     </div>
+                        
+                   
+
                 </div>
-            </div>
+              
+
         </div>
         <div class="container" id="user_detail" style="position: absolute;width:70%;display: none">
             <div class="alert" id="updateResult1" style="display: none;z-index: 9002">
