@@ -115,3 +115,11 @@ CREATE TABLE `tbl_card_code`(
   PRIMARY KEY (`id`),
   CONSTRAINT `code_user_fkey` FOREIGN KEY (`used_by`) REFERENCES `tbl_users`(`id`) ON DELETE CASCADE ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+CREATE TABLE `tbl_search_cache`(
+   `id` int(10) NOT NULL AUTO_INCREMENT,
+   `query` varchar(255) NOT NULL,
+   `file_name` varchar(255) NOT NULL,
+   `cache_date` DATETIME NOT NULL,
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;

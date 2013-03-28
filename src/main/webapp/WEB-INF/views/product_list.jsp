@@ -3,6 +3,7 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring" %>
+<%@taglib uri="http://java.sun.com/jsp/jstl/xml" prefix="x"%>
 <!DOCTYPE html>
 <html>
     <header>
@@ -63,8 +64,9 @@
                                 </div>           
                             </form>
                             <ul id ="menu"class="nav">
-                                <li class="active"><a href="#" onclick="changeContext()">Home</a></li>
-                                <li><a href="#">Hot Bids</a></li>
+                                <c:import url="/resources/xml/main_page_menu.xml" var="menuXML"/>
+                                <c:import url="/resources/xsl/main_page_menu.xsl" var="menuXSL"/>
+                                <x:transform xml="${menuXML}" xslt="${menuXSL}"/>
                             </ul>
                             <ul class="nav pull-right">
                                 <div id="loginResult" style="display: none;margin-top: 10px">
