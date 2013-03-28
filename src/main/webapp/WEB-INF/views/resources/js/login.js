@@ -35,19 +35,17 @@ function login() {
                     if (result.admin == "admin") {
                         window.location.href = "/admin";
                     } else {
-                        $("#titleLogin").hide();
-                        $('#fat-menu').hide();
-                        $('#quickLogin').hide();
-                        $('#loginResult').html('<a class="btn btn-primary" id="email" style="margin-left:10px;margin-top:2px;" href="#" onclick="showUserInfo()"><i class="icon-user icon-white" ></i>' + result.email + ' </a>'
+                        vteam_http.hide("titleLogin");
+                        vteam_http.hide("fat-menu");
+                        vteam_http.hide("quickLogin");
+                        vteam_http.setHTML("loginResult",'<a class="btn btn-primary" id="email" style="margin-left:10px;margin-top:2px;" href="#" onclick="showUserInfo()"><i class="icon-user icon-white" ></i>' + result.email + ' </a>'
                                 + '<li id="fat-menu1" class="btn btn-primary dropdown" style="width:60px;height:20px;margin-left:10px;" ><i class="icon-money" style="margin-left:-15px;"></i><a href="#" id="drop4" role="button" class="dropdown-toggle" data-toggle="dropdown" style="color:white;">' + result.balance + '</a>' + html + '</li>'
-                                + '<a class="btn btn-primary" id="logout" style="margin-left:10px;margin-top:2px;" href="#" onclick="logout()"><i class="icon-off icon-white" ></i></a>').show();
-
-//                        $("#drop4").html(result.balance);
-//                        $("#balanceResult").show();
+                                + '<a class="btn btn-primary" id="logout" style="margin-left:10px;margin-top:2px;" href="#" onclick="logout()"><i class="icon-off icon-white" ></i></a>');
+                        vteam_http.show("loginResult");
                     }
                 } else {
-                    $("#error").html('Wrong username or password');
-                    $("#error").show('fast');
+                    vteam_http.setHTML("error","Wrong username or password");
+                    vteam_http.show("error");
                 }
             });
 
@@ -61,8 +59,8 @@ function logout() {
                 if (result.status == "success")
                 {
                     displayunLogin()
-                    $("#user_detail").hide();
-                    $("#product").show();
+                    vteam_http.hide("user_detail");
+                    vteam_http.show("product");
                 }
                 else {
                     alert("Error");
@@ -70,23 +68,22 @@ function logout() {
             });
 }
 function changeSigin() {
-    $("#login").hide();
-    $("#sigin").show();
+    vteam_http.hide("login");
+    vteam_http.show("sigin");
 }
 function changeLogin() {
-    $("#login").show();
-    $("#sigin").hide();
+    vteam_http.hide("sigin");
+    vteam_http.show("login");
 }
 function displayunLogin() {
-    $('#loginResult').hide();
-    $('#fat-menu').show();
+    vteam_http.hide("loginResult");
+    vteam_http.show("fat-menu");
 }
 function updateInfo() {
     var address = document.getElementById("user_address").value;
     var phone = document.getElementById("user_phone").value;
     var birthday = document.getElementById("user_birthday").value;
     var format_date = "MM/dd/yyyy";
-    vteam_http.init();
     vteam_http.makeHttpRequest("/user/update",
             {address: address,
                 phone: phone,
@@ -94,16 +91,17 @@ function updateInfo() {
                 formatDate: format_date},
     "POST",
             function(result) {
-                if (result.status == "success")
+                if (result.status === "success")
                 {
-                    $("#updateResult1").html("<font style='color: green;font-size: large;'><strong>Well done! !</strong> You successfully updated.</font>");
-                } else if (result.status == "unlogin") {
-                    $("#updateResult1").html("<font style='color: black;font-size: large;'><strong>Sesstion Times out! !</strong> Please log in again.</font>");
-                } else if (result.status == "error") {
-                    $("#updateResult1").html("<font style='color: red;font-size: large;'><strong>Oh snap!!</strong> Change a few things up and try submitting again.</font>");
+                    vteam_http.setHTML("updateResult1","<font style='color: green;font-size: large;'><strong>Well done! !</strong> You successfully updated.</font>");
+                } else if (result.status === "unlogin") {
+                    vteam_http.setHTML("updateResult1","<font style='color: black;font-size: large;'><strong>Sesstion Times out! !</strong> Please log in again.</font>");
+                } else if (result.status === "error") {
+                    vteam_http.setHTML("updateResult1","<font style='color: red;font-size: large;'><strong>Oh snap!!</strong> Change a few things up and try submitting again.</font>");
                 }
-                $("#updateResult1").show('slow');
+                vteam_http.show("updateResult1");
                 $("#updateResult1").hide(1500);
+                setTimeout(vteam_http.hide("updateResult1"),1500);
             });
 
 }
@@ -123,21 +121,18 @@ function updatePassword() {
             function(result) {
                 if (result.status == "success")
                 {
-                    $("#updateResult1").html("<font style='color: green;font-size: large;'><strong>Well done! !</strong> You successfully updated.</font>");
+                    vteam_http.setHTML("updateResult1","<font style='color: green;font-size: large;'><strong>Well done! !</strong> You successfully updated.</font>");
 
 
                 } else if (result.status == "unlogin") {
-                    $("#updateResult1").html("<font style='color: black;font-size: large;'><strong>Sesstion Times out! !</strong> Please log in again.</font>");
+                    vteam_http.setHTML("updateResult1","<font style='color: black;font-size: large;'><strong>Sesstion Times out! !</strong> Please log in again.</font>");
 
 
                 } else if (result.status == "error") {
-                    $("#updateResult1").html("<font style='color: red;font-size: large;'><strong>Oh snap!!</strong> Change a few things up and try submitting again.</font>");
-
-
+                    vteam_http.setHTML("updateResult1","<font style='color: red;font-size: large;'><strong>Oh snap!!</strong> Change a few things up and try submitting again.</font>");
                 }
-                $("#updateResult1").show('slow');
-                $("#updateResult1").hide(1500);
-                //showNotifications();
+                vteam_http.show("updateResult1");
+                setTimeout(vteam_http.hide("updateResult1"),1500);
             });
 
 }
@@ -145,10 +140,10 @@ function showUserInfo() {
     vteam_http.makeHttpRequest("/user/get_user_by_email", {},
             "POST",
             function(result) {
-                if (result.status == "success")
+                if (result.status === "success")
                 {
-                    $("#product").hide();
-                    $("#user_detail").show();
+                    vteam_http.hide("product");
+                    vteam_http.show("user_detail");
                     document.getElementById('user_email').value = result.email;
                     document.getElementById('user_id').value = result.id;
                     document.getElementById('user_fullname').value = result.fullname;
@@ -179,9 +174,9 @@ function loadUserInfo() {
             function(result) {
                 if (result.status == "success")
                 {
-                    $('#fat-menu').hide();
-                    $('#quickLogin').hide();
-                    $('#loginResult').html('<a class="btn btn-primary" id="email" style="margin-left:10px;margin-top:2px;" href="#" onclick="showUserInfo()"><i class="icon-user icon-white" ></i>' + result.email + ' </a>'
+                    vteam_http.hide("fat-menu");
+                    vteam_http.hide("quickLogin");
+                    vteam_http.setHTML('loginResult','<a class="btn btn-primary" id="email" style="margin-left:10px;margin-top:2px;" href="#" onclick="showUserInfo()"><i class="icon-user icon-white" ></i>' + result.email + ' </a>'
                             + '<li id="fat-menu1" class="btn btn-primary dropdown" style="width:60px;height:20px;margin-left:10px;" ><i class="icon-money" style="margin-left:-15px;"></i><a href="#" id="drop4" role="button" class="dropdown-toggle" data-toggle="dropdown" style="color:white;">' + result.balance + '</a>' + html + '</li>'
                             + '<a class="btn btn-primary" id="logout" style="margin-left:10px;margin-top:2px;" href="#" onclick="logout()"><i class="icon-off icon-white" ></i></a>').show();
                 } else if (result.status == "unlogin") {
@@ -200,15 +195,15 @@ function inputCode() {
             function(result) {
                 if (result.status == "success")
                 {
-                    $("#result").html("Insert succesfully!!");
-                    $("#result").show();
+                    vteam_http.setHTML("result","Insert succesfully!!");
+                    vteam_http.show("result");
                     location.reload();
                 } else if (result.status == "unlogin") {
-                    $("#result").html("You need login again to insert");
-                    $("#result").show();
+                    vteam_http.setHTML("result","You need login again to insert");
+                    vteam_http.show("result");
                 } else {
-                    $("#result").html("Error when insert");
-                    $("#result").show();
+                    vteam_http.setHTML("result","Error when insert");
+                    vteam_http.show("result");
                 }
             });
 }
@@ -225,11 +220,11 @@ function create(){
             function(result) {
                 if (result.status == "success")
                 {
-                    $("#result").html("<h4 style='color:green;'>Insert succesfully!!</h4>");
-                    $("#result").show();
+                    vteam_http.setHTML("result","<h4 style='color:green;'>Insert succesfully!!</h4>");
+                    vteam_http.show("result");
                 } else {
-                    $("#result").html("<h4 style='color:red;'>Error when insert</h4>");
-                    $("#result").show();
+                    vteam_http.setHTML("result","<h4 style='color:red;'>Error when insert</h4>");
+                    vteam_http.show("result");
                 }
             });
 }

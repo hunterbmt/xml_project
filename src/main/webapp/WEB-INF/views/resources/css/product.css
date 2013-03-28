@@ -61,6 +61,7 @@ body {
     background-color: #faf7f7;
     background-image: none;
     border: 1px solid #DDDDDD;
+    width: 100%;
 }
 #header .navbar .nav {
     position: relative;
@@ -536,10 +537,12 @@ select:active:enabled {background-image: url("data:image/png;base64,iVBORw0KGgoA
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
     -moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
     -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+    position: relative;
+    margin-top: 10px;
 }
 
 .p_detail {
-    background: rgb(252, 252, 252); margin-top: 20px;
+    background: rgb(252, 252, 252); 
     border: 1px solid #EEE;
 }
 .p_detail p {font-size: 18 px;line-height: 20px;}
@@ -766,7 +769,7 @@ user agent stylesheetul, menu, dir {
     top: 0px;
     left: 0px;
     position: fixed;
-    display: block;
+    /*display: block;*/
     opacity: 0.7;
     background-color: #fff;
     z-index: 99;
@@ -852,6 +855,7 @@ h1, h2, h3, h4, h5, h6 {
     border: none;
     width: 1170px;
     opacity: 1;
+    margin-top: 65px;
 }
 #columnContainer {
     position: relative;
@@ -930,6 +934,7 @@ a:hover{
     width: 100%;
     height: 50% ;
 }
+<<<<<<< HEAD
 
 .onBidType {
     z-index: 2;
@@ -952,4 +957,54 @@ a:hover{
     width: 145px;
     height: 103px;
     background: url(/resources/img/upcoming-bid.png) no-repeat 0 0;
+=======
+#CategoriesBar {
+    /*position: relative;*/
+    z-index: 101;
+    top: 44px;
+    right: 0;
+    left: 0;
+    text-align: center;
+    font-size: 13px;
+    color: #8c7e7e;
+    background-color: #faf7f7;
+    border-top: 1px solid #cfcaca;
+    box-shadow: inset 0 1px #fff,0 1px 3px rgba(34,25,25,0.4);
+    -moz-box-shadow: inset 0 1px #fff,0 1px 3px rgba(34,25,25,0.4);
+    -webkit-box-shadow: inset 0 1px #fff,0 1px 3px rgba(34,25,25,0.4);
+}
+.LiquidContainer {
+    margin: 0 auto;
+}
+#CategoriesBar {
+    text-align: center;
+    font-size: 13px;
+    color: #8c7e7e;
+}
+.HeaderContainer li {
+    position: relative;
+    display: inline;
+    font-size: 13px;
+    list-style: none;
+}
+#CategoriesBar .submenu .nav {
+    position: relative;
+    padding-right: 11px;
+}
+#CategoriesBar .nav {
+    height: 18px;
+    padding: 9px 0 0;
+    font-weight: normal;
+    position: relative;
+    display: inline-block;
+    color: #524d4d;
+    text-shadow: 0 1px #fff;
+    margin-bottom: 5px;
+}
+.HeaderContainer li {
+    font-size: 13px;
+}
+.container{
+    
+>>>>>>> 7138698d0620722b2394122776e8b3f9c65d0b56
 }
