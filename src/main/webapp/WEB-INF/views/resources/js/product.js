@@ -95,22 +95,22 @@ function doBuy(_id) {
     vteam_http.makeHttpRequest("bid/do_buy", {
         bid_id: _id
     },
-    "POST", function(d) {
-        if (d.allowed === 'ok') {
-            alert(d.message);
-
-        } else {
-            alert(d.message);
-        }
-
-    });
+    "POST", function(d) {        
+            clearInterval(cc);            
+            $('#buyNowLeft').html('');
+            $('#bidButton').html('<font color="white" size="4.5em"><center>Chúc mừng!<br/><font size="2.5em"><strong>Sản phẩm đã thuộc về bạn</strong></font></center></font>');
+            $('#bidButton').removeClass('v6Buy');
+            $('#bidButton').addClass('v6Bought');
+        });
 }
 var cc;
 var bcount = 0;
+var bid_button_content = "";
 function startBuyingNow(bidId) {
     bcount = 24 * 1000;  // x seconds to expire
     vteam_http.removeClass("bidButton", "v6BuyNow");
     vteam_http.addClass("bidButton", "v6Buy");
+    bid_button_content = vteam_http.getHTML("bidButton");
     var buy_link = '<a href="javascript:doBuy(' + bidId + ')"><span id="buyNowLeft"></span></a>';
     vteam_http.setHTML("bidButton", buy_link);
     cc = setInterval(buyCountDown, 1000);
@@ -120,10 +120,10 @@ function buyCountDown() {
     if (bcount <= 0) {
         clearInterval(cc);
         isInBidTime = false;
-        //alert(bcount);
         vteam_http.setHTML("buyNowLeft", '');
         vteam_http.removeClass("bidButton", "v6Buy");
         vteam_http.addClass("bidButton", "v6BuyNow");
+        vteam_http.setHTML("bidButton",bid_button_content);
         return;
     }
     vteam_http.setHTML("buyNowLeft", (bcount / 1000));
@@ -193,7 +193,7 @@ function displayProductDetail(product) {
     html += '</ul></div></div>'
     html += '<div id="product_tags" class="v6BorderBot pTop5" style="border-bottom:none"></div>'
     html += '</div> <div class="c"></div>'
-    html += '<div class="v6BorderBot productDes" style="border-top: 1px solid #e0e0e0">'
+    html += '<div class=" productDes" style="border-top: 1px solid #e0e0e0">'
     html += product.description
     html += '</div>'
     html += '</div>'
@@ -355,6 +355,5 @@ function generateBackAndNext() {
         // hide back button;
     }
     if (currentPosition == 2) {
-        //hide next button
     }
 }

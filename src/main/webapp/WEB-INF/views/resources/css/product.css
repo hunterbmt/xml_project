@@ -616,6 +616,12 @@ select:active:enabled {background-image: url("data:image/png;base64,iVBORw0KGgoA
     display: block;
 }
 
+v6Bought {
+    display: block;
+    -padding-left: 30px;
+    -padding-top: 20px;
+}
+
 #buyNowLeft {
     font-weight: bold;
     font-size: xx-large;
@@ -752,6 +758,9 @@ user agent stylesheetul, menu, dir {
     padding: 10px 10px;
     margin: 20px 20px;
     word-wrap: break-word;
+}
+.productDes img {
+    width: 95%;
 }
 
 #loading {
