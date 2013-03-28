@@ -775,6 +775,9 @@ user agent stylesheetul, menu, dir {
     margin: 20px 20px;
     word-wrap: break-word;
 }
+.productDes img {
+    width: 95%;
+}
 
 #loading {
     width: 100%;

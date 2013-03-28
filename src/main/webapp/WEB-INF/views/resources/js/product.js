@@ -99,6 +99,10 @@ function doBuy(_id) {
     },
     "POST", function(d) {
         if (d.allowed === 'ok') {
+            $('#buyNowLeft').html('');
+            $('#bidButton').html(bid_button_content);
+            $('#bidButton').removeClass('v6Buy');
+            $('#bidButton').addClass('v6BuyNow');
             alert(d.message);
 
         } else {
@@ -109,9 +113,10 @@ function doBuy(_id) {
 }
 var cc;
 var bcount = 0;
+var bid_button_content = "";
 function startBuyingNow(bidId) {
     bcount = 24 * 1000;  // x seconds to expire
-
+    bid_button_content = $('#bidButton').html();
     $('#bidButton').removeClass('v6BuyNow');
     $('#bidButton').addClass('v6Buy');
     var buy_link = '<a href="javascript:doBuy(' + bidId + ')"><span id="buyNowLeft"></span></a>';
@@ -124,8 +129,8 @@ function buyCountDown() {
     if (bcount <= 0) {
         clearInterval(cc);
         isInBidTime = false;
-        //alert(bcount);
         $('#buyNowLeft').html('');
+        $('#bidButton').html(bid_button_content);
         $('#bidButton').removeClass('v6Buy');
         $('#bidButton').addClass('v6BuyNow');
         return;
@@ -197,7 +202,7 @@ function displayProductDetail(product) {
     html += '</ul></div></div>'
     html += '<div id="product_tags" class="v6BorderBot pTop5" style="border-bottom:none">Tags</div>'
     html += '</div> <div class="c"></div>'
-    html += '<div class="v6BorderBot productDes" style="border-top: 1px solid #e0e0e0">'
+    html += '<div class=" productDes" style="border-top: 1px solid #e0e0e0">'
     html += product.description
     html += '</div>'
     html += '</div>'
@@ -205,7 +210,7 @@ function displayProductDetail(product) {
 
     $("#product_detail .p_detail").html(html);
     hideAllDiv();
-    $("#product_detail").show("slide",1000);
+    $("#product_detail").show("slide", 1000);
     loadProductTags(product.id);
     getRecentBidder(product.bidId);
 
@@ -276,7 +281,7 @@ function displaySearchProduct(productList) {
     }
     $("#search_product_list .thumbnails").html(html);
     hideAllDiv();
-    $("#search_product_list").show("slide", { direction: "left" },1000);
+    $("#search_product_list").show("slide", {direction: "left"}, 1000);
 }
 
 function searchOnKeyDown(e) {
@@ -357,11 +362,11 @@ function nextOnClick() {
         generateBackAndNext()
     }
 }
-function generateBackAndNext(){
-    if(currentPosition = 0){
+function generateBackAndNext() {
+    if (currentPosition = 0) {
         // hide back button;
     }
-    if(currentPosition =2){
+    if (currentPosition = 2) {
         //hide next button
     }
 }
