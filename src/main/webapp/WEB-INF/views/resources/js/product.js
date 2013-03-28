@@ -61,19 +61,18 @@ function displayProduct(productList) {
         html += '<div class= "bid span4" style="height: 400px">'
         
         html += '<div class= "bidHolder">'
-
-        html += bid_type;
-        html += '<a style ="margin-left: 14%;"href="javascript:void(0)" class="bidImage imgLink" onclick ="view_product_detail(' + productList[i].id + ')">'
-        html += '<img src="' + productList[i].image + '" style="height:286px"/>'        
-        html += '</a>'
-        html += '<div class= "convo attribution clearfix">'
-        html += '<a href="javascript:void(0)" onclick ="view_product_detail(' + productList[i].id + ')">'
-        html += '<h5>' + productList[i].name + '</h5>'
-        html += '</a>'
-        html += '<p>' + productList[i].shortDescription + '<p>'
+        html +=     bid_type;
+        html +=       '<a style ="margin-left: 14%;"href="javascript:void(0)" class="bidImage imgLink" onclick ="view_product_detail(' + productList[i].id + ')">'
+        html +=          '<img src="' + productList[i].image + '" style="height:286px"/>'        
+        html +=       '</a>'
+        html +=       '<div class= "convo attribution clearfix">'
+        html +=          '<a href="javascript:void(0)" onclick ="view_product_detail(' + productList[i].id + ')">'
+        html +=            '<h5>' + productList[i].name + '</h5>'
+        html +=          '</a>'
+        html +=        '<p>' + productList[i].shortDescription + '<p>'
+        html +=      '</div>'
         html += '</div>'
-        html += '</div>'
-        html += '</div>';
+        html +='</div>'
     }
     vteam_http.appendTo("product_list", html);
     hideAllDiv();

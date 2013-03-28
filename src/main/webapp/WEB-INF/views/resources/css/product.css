@@ -898,7 +898,7 @@ div.span4{
     background-color: #f2f0f0;
 }
 .attribution {
-    margin-top: 10px;
+    margin-top: 7px;
     color: #ad9c9c;
 }
 .convo:after {
@@ -1000,11 +1000,10 @@ a:hover{
 .HeaderContainer li {
     font-size: 13px;
 }
-.container{
-    
-<<<<<<< HEAD
->>>>>>> 7138698d0620722b2394122776e8b3f9c65d0b56
-=======
-
->>>>>>> 4b908b7b413079c9d729dad5d9fefaf18eeb8ffa
+.convo:after {
+    clear: both;
+    display: block;
+    height: 0;
+    content: " ";
+    visibility: hidden;
 }
