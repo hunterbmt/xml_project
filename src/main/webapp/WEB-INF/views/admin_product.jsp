@@ -106,11 +106,11 @@
                                     <div class="control-group">
                                         <label class="control-label">Tags</label>
                                         <div class="controls">
-                                            <div class="select2-container select2-container-multi" id="s2id_autogen2">    
+                                            <div class="select2-container select2-container-multi" id="s2id_autogen2">  
+                                                <input id="tags_id" type="hidden" class="select2-input" tabindex="0" style="width: 200px;">
                                                 <ul class="select2-choices">  
                                                     <li class="select2-search-field">    
-                                                        <input id="tags_name" type="text" autocomplete="off" class="select2-input" tabindex="0" style="width: 200px;">
-                                                        <input id="tags_id" type="hidden" autocomplete="off" class="select2-input" tabindex="0" style="width: 200px;">
+                                                        <input id="tags_name" type="text" class="select2-input" tabindex="0" style="width: 200px;">
                                                     </li>
                                                 </ul>
                                             </div>

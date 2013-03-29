@@ -16,6 +16,7 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public class TagsDAO extends BaseDAO {
+    
     public Tags getTagById (int id) throws HibernateException {
         Query query = this
                 .sessionFactory

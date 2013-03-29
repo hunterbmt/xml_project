@@ -53,16 +53,16 @@ public class AdminAPI {
     @RequestMapping(value = "/insert_product", method = RequestMethod.POST,produces = "application/json")
     public @ResponseBody
     ProductDTO insertProduct(
-            @RequestParam int categoryId, String productName, String description, String img, double minPrice, double maxPrice) {
-        ProductDTO productDTO = adminService.insertProduct(categoryId, productName, description, img, minPrice, maxPrice);
+            @RequestParam int categoryId, String productName, String description, String img, double minPrice, double maxPrice,String tags) {
+        ProductDTO productDTO = adminService.insertProduct(categoryId, productName, description, img, minPrice, maxPrice,tags);
         return productDTO;
     }
 
     @RequestMapping(value = "/update_product", method = RequestMethod.POST,produces = "application/json")
     public @ResponseBody
     ProductDTO updateProduct(
-            @RequestParam int productId, int categoryId, String productName, String description, String img, double minPrice, double maxPrice) {
-        ProductDTO result = adminService.updateProduct(productId, categoryId, productName, description, img, minPrice, maxPrice);
+            @RequestParam int productId, int categoryId, String productName, String description, String img, double minPrice, double maxPrice, String tags) {
+        ProductDTO result = adminService.updateProduct(productId, categoryId, productName, description, img, minPrice, maxPrice,tags);
         return result;
     }
 

@@ -14,10 +14,12 @@ import com.vteam.xml_project.hibernate.dao.BidDAO;
 import com.vteam.xml_project.hibernate.dao.CardCodeDAO;
 import com.vteam.xml_project.hibernate.dao.CategoryDAO;
 import com.vteam.xml_project.hibernate.dao.ProductDAO;
+import com.vteam.xml_project.hibernate.dao.TagsDAO;
 import com.vteam.xml_project.hibernate.orm.Bids;
 import com.vteam.xml_project.hibernate.orm.CardCode;
 import com.vteam.xml_project.hibernate.orm.Category;
 import com.vteam.xml_project.hibernate.orm.Product;
+import com.vteam.xml_project.hibernate.orm.Tags;
 import com.vteam.xml_project.util.DateUtil;
 import com.vteam.xml_project.util.StringUtil;
 import java.text.ParseException;
@@ -46,14 +48,24 @@ public class AdminService {
     @Autowired
     private CardCodeDAO cardCodeDAO;
     @Autowired
+    private TagsDAO tagsDAO;
+    @Autowired
     private DateUtil dateUtil;
 
     @Transactional
-    public ProductDTO insertProduct(int categoryId, String productName, String description, String img, double minPrice, double maxPrice) {
+    public ProductDTO insertProduct(int categoryId, String productName, String description, String img, double minPrice, double maxPrice, String tags) {
         ProductDTO productDTO = new ProductDTO();
         try {
             Category category = categoryDAO.getCategoryById(categoryId);
             Product newProduct = new Product(category, productName, description, img, Product.Status.AVAILABLE, minPrice, maxPrice, true);
+            String[] tagsList = StringUtil.splitString(tags);
+            Tags tag;
+            for (String tagStr : tagsList) {
+                tag = tagsDAO.getTagById(Integer.parseInt(tagStr));
+                if (tag != null) {
+                    newProduct.getTagses().add(tag);
+                }
+            }
             productDAO.save(newProduct);
             productDTO.setName(newProduct.getProductName());
             productDTO.setDescription(newProduct.getDescription());
@@ -69,7 +81,7 @@ public class AdminService {
     }
 
     @Transactional
-    public ProductDTO updateProduct(int productId, int categoryId, String productName, String description, String img, double minPrice, double maxPrice) {
+    public ProductDTO updateProduct(int productId, int categoryId, String productName, String description, String img, double minPrice, double maxPrice, String tags) {
         ProductDTO productDTO = new ProductDTO();
         try {
             Product product = productDAO.getProductById(productId);
@@ -80,6 +92,14 @@ public class AdminService {
             product.setImage(img);
             product.setMinPrice(minPrice);
             product.setMaxPrice(maxPrice);
+            String[] tagsList = StringUtil.splitString(tags);
+            Tags tag;
+            for (String tagStr : tagsList) {
+                tag = tagsDAO.getTagById(Integer.parseInt(tagStr));
+                if (tag != null) {
+                    product.getTagses().add(tag);
+                }
+            }
             productDAO.save(product);
             productDTO.setStatus("success");
         } catch (HibernateException ex) {
@@ -118,7 +138,7 @@ public class AdminService {
         return list;
 
     }
-    
+
     @Transactional
     public BidDTO insertBid(int product_id, String startDateStr, String endDateStr, int cost) {
         BidDTO bidDTO = new BidDTO();
@@ -166,10 +186,10 @@ public class AdminService {
             newBid.setProduct(product);
             newBid.setStartDate(startDate);
             newBid.setEndDate(endDate);
-            
+
             newBid.setStatus(Bids.Status.valueOf(status));
             if (newBid.getStatus().toString().equalsIgnoreCase("completed")) {
-                product.setStatus(Product.Status.AVAILABLE);  
+                product.setStatus(Product.Status.AVAILABLE);
                 product.setBidId(null);
             }
             product.setBidId(newBid.getId());
@@ -185,21 +205,21 @@ public class AdminService {
             log.error(ex.getStackTrace());
             bidDTO.setStatus("error");
             bidDTO.setMsg("Have some errors. Try again");
-        }catch (ParseException ex) {
+        } catch (ParseException ex) {
             log.error(ex.getStackTrace());
             bidDTO.setStatus("error");
             bidDTO.setMsg("Wrong date time format");
         }
         return bidDTO;
     }
-    
+
     @Transactional
     public CategoryDTO insertCategory(String categoryName, String description) {
         CategoryDTO categoryDTO = new CategoryDTO();
         try {
-             Category category = new Category(categoryName, description);
-             categoryDAO.save(category);
-             categoryDTO.setStatus("success");
+            Category category = new Category(categoryName, description);
+            categoryDAO.save(category);
+            categoryDTO.setStatus("success");
         } catch (HibernateException ex) {
             log.error(ex);
             categoryDTO.setStatus("error");
@@ -207,14 +227,15 @@ public class AdminService {
         }
         return categoryDTO;
     }
+
     @Transactional
-    public CategoryDTO updateCategory(int categoryID,String description) {
+    public CategoryDTO updateCategory(int categoryID, String description) {
         CategoryDTO categoryDTO = new CategoryDTO();
         try {
-             Category category = categoryDAO.getCategoryById(categoryID);
-             category.setDescription(description);
-             categoryDAO.save(category);
-             categoryDTO.setStatus("success");
+            Category category = categoryDAO.getCategoryById(categoryID);
+            category.setDescription(description);
+            categoryDAO.save(category);
+            categoryDTO.setStatus("success");
         } catch (HibernateException ex) {
             log.error(ex);
             categoryDTO.setStatus("error");
@@ -222,13 +243,14 @@ public class AdminService {
         }
         return categoryDTO;
     }
+
     @Transactional
-    public NinCodeListDTO generateNin(int amount,int quantity){
+    public NinCodeListDTO generateNin(int amount, int quantity) {
         NinCodeListDTO ninCodeList = new NinCodeListDTO();
-        try{
+        try {
             CardCode cardCode;
             NinCodeDTO ninCodeDTO;
-            for(int i = 0;i<quantity;i++){
+            for (int i = 0; i < quantity; i++) {
                 cardCode = new CardCode(StringUtil.generateNin(), amount);
                 cardCodeDAO.save(cardCode);
                 ninCodeDTO = new NinCodeDTO();
@@ -237,7 +259,7 @@ public class AdminService {
                 ninCodeList.getNinList().add(ninCodeDTO);
             }
             ninCodeList.setStatus("success");
-        }catch(HibernateException ex){
+        } catch (HibernateException ex) {
             log.error(ex.getStackTrace());
             ninCodeList.setStatus("error");
             ninCodeList.setMsg("Have some errors. Try again");

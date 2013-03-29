@@ -50,16 +50,16 @@ function displayProduct(productList) {
     $("#product_list_tbody").html(html);
 }
 function insertOrUpdateProduct() {
-    var id = parseInt($("#product_id").html());
-    var product_name = $("#product_name").val();
+    var id = parseInt(vteam_http.getHTML("product_id"));
+    var product_name = vteam_http.getValue("product_name");
     var category_id = product_current_category_id;
     var description = encodeURI(editor.getValue());
-    var min_price = $("#product_min_price").val();
-    var max_price = $("#product_max_price").val();
-    var img = $("#product_img").val();
+    var min_price = vteam_http.getValue("product_min_price");
+    var max_price = vteam_http.getValue("product_max_price");
+    var img = vteam_http.getValue("product_img");
+    var tags = vteam_http.getValue('tags_id');
     validProduct(product_name,category_id,min_price,max_price,img);
     if (id) {
-        
         vteam_http.makeHttpRequest("/admin/update_product",
                 {productId: id,
                     productName: product_name,
@@ -67,7 +67,8 @@ function insertOrUpdateProduct() {
                     description: description,
                     img: img,
                     minPrice: parseFloat(min_price),
-                    maxPrice: parseFloat(max_price)},
+                    maxPrice: parseFloat(max_price),
+                    tags:tags},
         'POST', callback);
     } else {
         vteam_http.makeHttpRequest("/admin/insert_product",
@@ -77,7 +78,8 @@ function insertOrUpdateProduct() {
                     categoryId: category_id,
                     img: img,
                     minPrice: parseFloat(min_price),
-                    maxPrice: parseFloat(max_price)},
+                    maxPrice: parseFloat(max_price),
+                    tags:tags},
         'POST', callback);
     }
 }

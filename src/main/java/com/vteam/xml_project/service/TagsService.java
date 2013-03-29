@@ -64,15 +64,14 @@ public class TagsService {
         TagsListDTO listTags = new TagsListDTO();
         try {
             List<Tags> dbTags = tagsDAO.getTagsList();
-            TagsDTO td = null;
-            List<TagsDTO> tmpListTags = new ArrayList<TagsDTO>();
+            TagsDTO td;
             for (Tags t : dbTags) {
+                td = new TagsDTO();
                 td.setTagId(t.getId());
                 td.setTagName(t.getName());
                 td.setTagDescription(t.getDescription());
-                tmpListTags.add(td);
+                listTags.getTagsList().add(td);
             }
-            listTags.setTagsList(tmpListTags);
             listTags.setStatus("success");
         } catch (HibernateException ex){
             log.error(ex.getStackTrace());
@@ -81,28 +80,4 @@ public class TagsService {
         }
         return listTags;
     }
-//    @Transactional
-//    public ProductListDTO getProductList(int page, int pageSize) {
-//        try {
-//            List<Product> dbProducts = productDAO.getProductList(page, pageSize);
-//            ProductDTO p;
-//            ProductListDTO list = new ProductListDTO();
-//            List<ProductDTO> tmpList = new ArrayList<ProductDTO>();
-//            for (Product d : dbProducts) {
-//
-//                p = new ProductDTO();
-//                p.setName(d.getProductName());
-//                p.setDescription(d.getDescription());
-//                p.setImage("/resources/img/product/" + d.getImage());
-//                p.setId(d.getId());
-//                tmpList.add(p);
-//            }
-//            list.setProductList(tmpList);
-//            return list;
-//        } catch (HibernateException ex) {
-//            log.error(ex);
-//            return null;
-//        }
-//
-//    }
 }

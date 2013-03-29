@@ -103,18 +103,17 @@ public class StringUtil {
 
     }
 
-    public static String[] splitPhonNumber(String numbers) {
-        String[] listNumber = numbers.split(",");
-        Set<String> phoneNumbers = new HashSet<String>();
-        for (String numb : listNumber) {
-            if (!PhoneNumberUtil.validatePhoneNumber(numb, true)) {
-                return null;
+    public static String[] splitString(String numbers) {
+        String[] list = numbers.split(";");
+        Set<String> stringList = new HashSet<String>();
+        for (String string : list) {
+            if (validString(string)) {
+                stringList.add(string);
             }
-            phoneNumbers.add(numb);
         }
-        String[] returnNumbs = new String[phoneNumbers.size()];
-        phoneNumbers.toArray(returnNumbs);
-        return returnNumbs;
+        String[] returnList = new String[stringList.size()];
+        stringList.toArray(returnList);
+        return returnList;
     }
 
     public static String joinPhoneNumbersToString(String[] phoneNumbers) {
