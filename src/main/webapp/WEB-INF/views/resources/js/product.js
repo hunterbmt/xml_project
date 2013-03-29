@@ -316,6 +316,7 @@ function searchOnKeyDown(e) {
 
 function changeContext() {
     vteam_http.setHTML("product_list", '');
+    vteam_http.hide("user_login");
     loadAndDisplayProduct(1);
 }
 
@@ -386,7 +387,9 @@ function nextOnClick() {
 }
 function generateBackAndNext() {
     if (currentPosition == 0) {
+        // hide back button;
         $("#back").hide();
+        $("#next").hide();
     }
     else {
         $("#back").show()
@@ -395,6 +398,8 @@ function generateBackAndNext() {
         $("#next").hide();
     } else {
         $("#next").show();
+
     }
 
 }
+
