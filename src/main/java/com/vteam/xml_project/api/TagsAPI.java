@@ -34,4 +34,11 @@ public class TagsAPI {
         TagsListDTO resultTags = tagsService.getTagsByProductId(product_id);
         return resultTags;
     }
+    
+    @RequestMapping(value = "/getTagsList")
+    public @ResponseBody
+    TagsListDTO getTagsList() {
+        TagsListDTO resultTags = tagsService.getTagsList();
+        return resultTags;
+    }
 }
