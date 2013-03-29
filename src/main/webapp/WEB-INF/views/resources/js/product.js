@@ -315,6 +315,7 @@ function searchOnKeyDown(e) {
 }
 
 function changeContext() {
+    product_list = [];
     vteam_http.setHTML("product_list", '');
     vteam_http.hide("user_login");
     loadAndDisplayProduct(1);

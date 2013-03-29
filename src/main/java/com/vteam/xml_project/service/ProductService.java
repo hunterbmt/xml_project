@@ -126,11 +126,11 @@ public class ProductService {
                 searchCacheDAO.save(searchCache);
             }
         } catch (HibernateException ex) {
-            log.error(ex.getStackTrace().toString());
+            log.error(ex.getMessage());
             list.setStatus("error");
             list.setMsg("Have some errors. Try again");
         } catch (JAXBException jaxbEx) {
-            log.error(jaxbEx.getStackTrace().toString());
+            log.error(jaxbEx.getMessage());
             list.setStatus("error");
             list.setMsg("Have some errors. Try again");
         }
