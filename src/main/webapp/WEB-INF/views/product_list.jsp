@@ -3,6 +3,7 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring" %>
+<%@taglib uri="http://java.sun.com/jsp/jstl/xml" prefix="x"%>
 <!DOCTYPE html>
 <html>
     <header>
@@ -63,10 +64,16 @@
                                 </div>           
                             </form>
                             <ul id ="menu"class="nav">
+<<<<<<< HEAD
                                 <li class="active"><a href="#" onclick="changeContext()">Home</a></li>
                                 <li><a href="#">Hot Bids</a></li>
                                 <li class="test" id="login_menu"><a href="#" onclick="showLogin()">Log in</a></li>
                                 <li><div class="hide" id="loginResult" style="margin-top: 5px"></div></li>
+=======
+                                <c:import url="/resources/xml/main_page_menu.xml" var="menuXML"/>
+                                <c:import url="/resources/xsl/main_page_menu.xsl" var="menuXSL"/>
+                                <x:transform xml="${menuXML}" xslt="${menuXSL}"/>
+>>>>>>> c043a9f2ef47639f4886af95e6ce8ae57127fc6f
                             </ul>
                         </div>
                     </div><!--/.nav-collapse -->
@@ -135,6 +142,46 @@
                                                     </form>
                                                     <div id="result" style="display: none"></div>
                                                 </div>
+                                            </div>
+
+
+                                        </li>
+
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </div><!--/.nav-collapse -->
+                </div>
+            </div>
+        </div>
+        <div id="CategoriesBar" class="-exp navbar-fixed-top">
+            <ul id ="CategoriesBar_ul"class="LiquidContainer HeaderContainer" style="width: 100%">
+            </ul>
+        </div>
+        <div class="container" id="product" style="position: relative">
+
+            <div id="wrapper">
+                <div id="columnContainer" class="row-fluid">
+                 <div class="span10" id="sequence-theme" style="width: 100%;height: auto;overflow: hidden;position: absolute;margin-top: 200px;">
+                    <li id="back" class="prev" >
+                        <i class="e-icon-left-open-big-open-big">
+                            <i class="icon-reply" onclick="backOnClick()"></i>
+                        </i>
+                    </li>
+                    <li id="next" class="next">
+                        <i class="e-icon-right-open-big-open-big">  
+                            <i class="icon-white icon-share-alt"  onclick="nextOnClick()"></i>
+                            </i>
+                    </li>
+                </div>
+                    <div  class="span10 offset1" id="product_list">
+                    </div>
+                    <div class="span10 offset1 hide" id="search_product_list">
+                    </div>
+
+                    <div class="span10 offset1 hide" id="product_detail">
+                        
                     </div>
 
                 </div>

@@ -4,16 +4,18 @@
  */
 package com.vteam.xml_project.dto;
 
-/**
- *
- * @author phitt60230
- */
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlRootElement(name = "product")
 public class ProductDTO extends BaseDTO {
 
+    private int id;
     private String name;
     private String description;
     private String image;
-    private int id;
     private Integer bidId;
     private int categoryId;
     private String categoryName;
@@ -138,22 +140,20 @@ public class ProductDTO extends BaseDTO {
     }
 
     public String getShortDescription() {
-        if (description == null||description.trim().equals("")){
+        if (description == null || description.trim().equals("")) {
             return null;
         }
         int start = description.indexOf("<p>");
         int end = description.indexOf("</p>");
-        if(start == -1){
-            if(description.length()<25){
+        if (start == -1) {
+            if (description.length() < 25) {
                 return description;
-            }
-            else {
+            } else {
                 return description.substring(0, 25);
             }
+        } else if (end - start > 25) {
+            return description.substring(start + 3, start + 27);
         }
-        else if (end - start > 25) {
-            return description.substring(start+3, start + 27);
-        }
-        return description.substring(start+3, end);
+        return description.substring(start + 3, end);
     }
 }

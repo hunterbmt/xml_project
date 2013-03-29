@@ -8,14 +8,16 @@ import com.vteam.xml_project.dto.ProductDTO;
 import com.vteam.xml_project.dto.ProductListDTO;
 import com.vteam.xml_project.hibernate.dao.BidDAO;
 import com.vteam.xml_project.hibernate.dao.ProductDAO;
-import com.vteam.xml_project.hibernate.dao.TagsDAO;
+import com.vteam.xml_project.hibernate.dao.SearchCacheDAO;
 import com.vteam.xml_project.hibernate.orm.Bids;
 import com.vteam.xml_project.hibernate.orm.Product;
-import com.vteam.xml_project.hibernate.orm.Tags;
+import com.vteam.xml_project.hibernate.orm.SearchCache;
+import com.vteam.xml_project.util.DateUtil;
+import com.vteam.xml_project.util.XMLUtil;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
+import javax.xml.bind.JAXBException;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,13 +31,16 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class ProductService {
 
-    private static Logger log = Logger.getLogger(UserService.class.getName());
+    private static Logger log = Logger.getLogger(ProductService.class.getName());
     @Autowired
     private ProductDAO productDAO;
     @Autowired
     private BidDAO bidDAO;
     @Autowired
-    private TagsDAO tagsDAO;
+    private SearchCacheDAO searchCacheDAO;
+    @Autowired
+    private DateUtil dateUtil;
+    private static final int CACHETIMEOUT = 24;
 
     @Transactional
     public ProductListDTO getProductList(int page, int pageSize) {
@@ -72,29 +77,64 @@ public class ProductService {
 
     }
 
+    private boolean checkForCache(SearchCache searchCache) {
+
+        return (searchCache != null && (searchCache.getCacheDate().getHours() - new Date().getHours()) < CACHETIMEOUT);
+    }
+
+    private ProductListDTO convertCacheToProductListDTO(String filePath) throws JAXBException {
+        return XMLUtil.UnMarshall(ProductListDTO.class, filePath);
+    }
+
+    private void converProductListDTOToCache(ProductListDTO productList, String filePath) throws JAXBException {
+        XMLUtil.Marshall(productList, filePath);
+    }
+
     @Transactional
-    public ProductListDTO searchProduct(String txtSearch, int page, int pageSize) {
+    public ProductListDTO searchProduct(String txtSearch, int page, int pageSize, String appPath) {
+        appPath  = appPath + "/";
+        String fileName = txtSearch.trim()+"_"+page+"_search_product_cache.xml";
         ProductListDTO list = new ProductListDTO();
         try {
-            List<Product> dbProducts = productDAO.searchProduct(txtSearch, page, pageSize);
-            ProductDTO p;
+            SearchCache searchCache = searchCacheDAO.getSearchCacheByQuery(txtSearch+"_"+page);
+            if (checkForCache(searchCache)) {
+                list = convertCacheToProductListDTO(appPath + searchCache.getFileName());
+                list.setStatus("success");
+                return list;
+            } else {
+                List<Product> dbProducts = productDAO.searchProduct(txtSearch, page, pageSize);
+                ProductDTO p;
 
-            List<ProductDTO> tmpList = new ArrayList<ProductDTO>();
-            for (Product d : dbProducts) {
-                p = new ProductDTO();
-                p.setName(d.getProductName());
-                p.setId(d.getId());
-                p.setDescription(d.getDescription());
-                p.setImage("/resources/img/product/" + d.getImage());
-                p.setImageName(d.getImage());
-                p.setCategoryName(d.getCategory().getCategoryName());
-                p.setBidId(d.getBidId());
-                tmpList.add(p);
+                List<ProductDTO> tmpList = new ArrayList<ProductDTO>();
+                for (Product d : dbProducts) {
+                    p = new ProductDTO();
+                    p.setName(d.getProductName());
+                    p.setId(d.getId());
+                    p.setDescription(d.getDescription());
+                    p.setImage("/resources/img/product/" + d.getImage());
+                    p.setImageName(d.getImage());
+                    p.setCategoryName(d.getCategory().getCategoryName());
+                    p.setBidId(d.getBidId());
+                    tmpList.add(p);
+                }
+                list.setProductList(tmpList);
+                converProductListDTOToCache(list, appPath + fileName);
+                list.setStatus("success");
+                
+                if (searchCache == null) {
+                    searchCache = new SearchCache();
+                }
+                searchCache.setCacheDate(new Date());
+                searchCache.setFileName(fileName);
+                searchCache.setQuery(txtSearch+"_"+page);
+                searchCacheDAO.save(searchCache);
             }
-            list.setProductList(tmpList);
-            list.setStatus("success");
         } catch (HibernateException ex) {
             log.error(ex.getStackTrace());
+            list.setStatus("error");
+            list.setMsg("Have some errors. Try again");
+        } catch (JAXBException jaxbEx) {
+            log.error(jaxbEx.getStackTrace().toString());
             list.setStatus("error");
             list.setMsg("Have some errors. Try again");
         }

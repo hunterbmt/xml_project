@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<MenuItems>
+    <Item>
+        <class>active</class>
+        <function>changeContext()</function>
+        <name>Home</name>
+    </Item>
+    <Item>
+        <class></class>
+        <function></function>
+        <name>Hot Bids</name>
+    </Item>
+</MenuItems>

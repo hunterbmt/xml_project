@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<productList>
+    <numberOfProduct>2</numberOfProduct>
+    <product>
+        <id>1</id>
+        <name>bla bla</name>
+        <description>&lt;p&gt;dep trai&lt;/p&gt;</description>
+        <image>aaa/sss.jpg</image>
+        <bidId>1</bidId>
+        <categoryId>1</categoryId>
+        <categoryName>aaaa</categoryName>
+        <minPrice>20.0</minPrice>
+        <maxPrice>10.0</maxPrice>
+        <imageName>ffdfdfd</imageName>
+        <bidCost>2</bidCost>
+        <bidTimeRemain>312</bidTimeRemain>
+    </product>
+    <product>
+        <id>2</id>
+        <name>bla bla</name>
+        <description>&lt;p&gt;dep trai&lt;/p&gt;</description>
+        <image>aaa/sss.jpg</image>
+        <bidId>1</bidId>
+        <categoryId>1</categoryId>
+        <categoryName>aaaa</categoryName>
+        <minPrice>20.0</minPrice>
+        <maxPrice>10.0</maxPrice>
+        <imageName>ffdfdfd</imageName>
+        <bidCost>2</bidCost>
+        <bidTimeRemain>312</bidTimeRemain>
+    </product>
+</productList>

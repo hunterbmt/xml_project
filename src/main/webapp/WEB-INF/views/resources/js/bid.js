@@ -42,12 +42,12 @@ function displayBidDetails(bid) {
     vteam_http.setValue('bid_cost',bid.cost);
 }
 function insertOrUpdateBid() {
-    var id = $("#bid_id").html();
+    var id = vteam_http.getHTML("bid_id");
 
-    var start_date = $("#bid_start_date").val();
-    var end_date = $("#bid_end_date").val();
-    var cost = $("#bid_cost").val();
-    var status = $('#bid_status').val().toUpperCase();
+    var start_date = vteam_http.getValue("bid_start_date");
+    var end_date = vteam_http.getValue("bid_end_date");
+    var cost = vteam_http.getValue("bid_cost");
+    var status = vteam_http.getValue('bid_status').toUpperCase();
     if ((status !== 'UNCOMPLETED') && (status !== 'COMPLETED'))
     {
         status = 'UNCOMPLETED';
@@ -74,26 +74,21 @@ function insertOrUpdateBid() {
     }
 }
 function callback(result) {
-
     if (result.status === 'success') {
-        $('#result_IU_bid').html('Successful !').show();
+        vteam_http.setHTML("result_IU_bid","Successful !");
+        vteam_http.show("result_IU_bid");
         $(function() {
-            setTimeout(function() {
-                $("#result_IU_bid").hide('blind', {}, 400)
-            }, 2000);
+            setTimeout(vteam_http.hide("result_IU_bid"), 2000);
         });
         clearBidDetail();
-        //disableSave();
         update_lists();
         getAllProductNamList();
     } else {
-        $('#result_IU_bid').html(result.msg).show();
+        vteam_http.setHTML("result_IU_bid",result.msg);
+        vteam_http.show("result_IU_bid");
         $(function() {
-            setTimeout(function() {
-                $("#result_IU_bid").hide('blind', {}, 400)
-            }, 2000);
+            setTimeout(vteam_http.hide("result_IU_bid"), 2000);
         });
-        //alert("Insert/Update bid result: " + result.status);
     }
 }
 
@@ -103,18 +98,18 @@ function update_lists() {
     _displayCompletedBids(bid_completed_current_page);
 }
 function clearBidDetail(self) {
-    $('#bid_id').html('');
-    $('#bid_last_userid').html('');
-    $('#bid_product_name').val('');
-    $('#bid_current_price').html('');
-    $('#bid_last_edit').html('');
-    $('#bid_start_date').val('');
-    $('#bid_end_date').val('');
-    $('#bid_status').val('');
-    $('#bid_cost').val('');
+    vteam_http.setHTML("bid_id",'');
+    vteam_http.setHTML("bid_last_userid",'')
+    vteam_http.setValue('bid_product_name','');
+    vteam_http.setHTML('bid_current_price','');
+    vteam_http.setHTML('bid_last_edit','');
+    vteam_http.setValue('bid_start_date','');
+    vteam_http.setValue('bid_end_date','');
+    vteam_http.setValue('bid_status','');
+    vteam_http.setValue('bid_cost','');
     if ($(self).hasClass('newBtn')) {
         enableSave();
-        $('#bid_cost').val(1);
+        vteam_http.setValue('bid_cost',1);
     }
 }
 
@@ -201,13 +196,9 @@ function displayOngoingBid(bidList) {
         cnt += '<td class="td-actions">';
         cnt += '<a href="javascript:bid_details(';
         cnt += bidList[i].id + ');" class="btn btn-warning btn-small"><i class="btn-icon-only icon-edit"></i></a>';
-//        cnt += '<a href="javascript:bid_remove(';
-//        cnt += bidList[i].id + ');" class="btn btn-small"><i class="btn-icon-only icon-remove"></i></a>';
         cnt += "</tr>";
     }
-    $("#onGoingBid").html(
-            cnt
-            );
+   vteam_http.setHTML('onGoingBid',cnt);
 }
 function _displayUpcomingBid(page) {
     bid_upcoming_current_page = page;
@@ -254,7 +245,7 @@ function displayUpcomingBid(bidList) {
         cnt += bidList[i].id + ');" class="btn btn-small"><i class="btn-icon-only icon-remove"></i></a>';
         cnt += "</tr>";
     }
-    $("#upComingBid").html(cnt);
+    vteam_http.setHTML('upComingBid',cnt);
 }
 
 function displayCompletedBids(bidList) {
@@ -269,7 +260,7 @@ function displayCompletedBids(bidList) {
         cnt += "<td>" + toDateAndTime(bidList[i].last_edit) + "</td>";
         cnt += "</tr>";
     }
-    $("#completedBids").html(cnt);
+    vteam_http.setHTML('completedBids',cnt);
 }
 
 function _displayCompletedBids(page) {

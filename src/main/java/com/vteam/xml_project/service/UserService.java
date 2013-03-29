@@ -51,7 +51,7 @@ public class UserService {
                 return true;
             }
         } catch (NoSuchAlgorithmException ex) {
-            log.error(ex);
+            log.error(ex.getStackTrace());
         }
         return false;
     }
@@ -70,14 +70,14 @@ public class UserService {
             userDAO.save(dbUser);
             return true;
         } catch (NullPointerException ex) {
-            log.error(ex);
+            log.error(ex.getStackTrace());
         } catch (HibernateException ex) {
-            log.error(ex);
+            log.error(ex.getStackTrace());
             
         } catch (ParseException ex) {
-            log.error(ex);
+            log.error(ex.getStackTrace());
         } catch (Exception ex) {
-            log.error(ex);
+            log.error(ex.getStackTrace());
         }
         return false;
     }

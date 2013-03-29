@@ -10,6 +10,8 @@ import com.vteam.xml_project.dto.ProductListDTO;
 import com.vteam.xml_project.service.BidHistoryService;
 import com.vteam.xml_project.service.ProductService;
 import java.util.List;
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,7 +34,7 @@ public class ProductAPI {
     @Autowired
     private BidHistoryService bhService;
 
-    @RequestMapping(value = "/getProductList", method = RequestMethod.POST)
+    @RequestMapping(value = "/getProductList", method = RequestMethod.POST,produces = "application/json")
     public @ResponseBody
     ProductListDTO getProductList(
             @RequestParam int page, int pageSize) {
@@ -40,11 +42,12 @@ public class ProductAPI {
         return productResult;
     }
 
-    @RequestMapping(value = "/searchProduct", method = RequestMethod.POST)
+    @RequestMapping(value = "/searchProduct", method = RequestMethod.POST,produces = "application/json")
     public @ResponseBody
-    ProductListDTO getSearchProductList(
+    ProductListDTO getSearchProductList(HttpServletRequest request,
             @RequestParam String txtSearch, int page, int pageSize) {
-        ProductListDTO result = productService.searchProduct(txtSearch, page, pageSize);
+        String serverContextPath = request.getRealPath("WEB-INF/cache/");
+        ProductListDTO result = productService.searchProduct(txtSearch, page, pageSize,serverContextPath);
         return result;
     }
     
@@ -58,7 +61,7 @@ public class ProductAPI {
     
     
 
-    @RequestMapping(value = "/searchProductByTags", method = RequestMethod.POST)
+    @RequestMapping(value = "/searchProductByTags", method = RequestMethod.POST,produces = "application/json")
     public @ResponseBody
     ProductListDTO searchProductByTags(
             @RequestParam int tag_id, int page, int pageSize) {
@@ -66,7 +69,7 @@ public class ProductAPI {
         return result;
     }
 
-    @RequestMapping(value = "/getProductById", method = RequestMethod.POST)
+    @RequestMapping(value = "/getProductById", method = RequestMethod.POST,produces = "application/json")
     public @ResponseBody
     ProductDTO getProductById(
             @RequestParam int product_id) {
