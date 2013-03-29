@@ -5,14 +5,14 @@ var product_search_current_search_function;
 var page_size = 10;
 var divArray = [];
 var currentPosition = -1;
-var product_list =[];
+var product_list = [];
 var product_list_page = 0;
 $(window).scroll(function() {
     if ($(window).scrollTop() == $(document).height() - $(window).height()) {
         if (divArray[currentPosition] == "product_list") {
-            if(product_list_current_page >= product_list_page){
+            if (product_list_current_page >= product_list_page) {
                 loadAndDisplayProduct(product_list_current_page + 1);
-            }else {
+            } else {
                 product_list_current_page = product_list_current_page + 1;
                 displayProduct(product_list);
             }
@@ -41,12 +41,12 @@ function displayProduct(productList) {
     var html = '';
     var ts = 0;
     var bid_type = "";
-    var i = (product_list_current_page-1) * page_size;
-    var pageSize  = i + page_size;
-    if(pageSize > productList.length){
+    var i = (product_list_current_page - 1) * page_size;
+    var pageSize = i + page_size;
+    if (pageSize > productList.length) {
         pageSize = productList.length;
     }
-    
+
     for (; i < pageSize; i++) {
         ts = productList[i].bidTimeRemain;
         if (ts <= 0) // in bid 
@@ -72,11 +72,14 @@ function displayProduct(productList) {
         html += '</div>'
     }
     vteam_http.appendTo("product_list", html);
-    currentPosition += 1;
-    divArray[currentPosition] = "product_list";
+    if (product_list_current_page == 1) {
+        currentPosition += 1;
+        divArray[currentPosition] = "product_list";
+        generateBackAndNext()
+    }
     hideAllDiv();
     vteam_http.show("product_list");
-    generateBackAndNext()
+
 }
 function searchProduct(page) {
     vteam_http.show('loading');
@@ -315,10 +318,9 @@ function searchOnKeyDown(e) {
 }
 
 function changeContext() {
-    product_list = [];
-    vteam_http.setHTML("product_list", '');
+    currentPosition = -1;
     vteam_http.hide("user_login");
-    loadAndDisplayProduct(1);
+    displayProduct(product_list);
 }
 
 function hideAllDiv() {

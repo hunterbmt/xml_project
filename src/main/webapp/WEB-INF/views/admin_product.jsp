@@ -27,7 +27,6 @@
             $(document).ready(function() {
                 populateCategoryNameList()
                 loadProductList(1);
-                valid();
             });
 
         </script>

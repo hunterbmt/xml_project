@@ -32,7 +32,6 @@ function searchProductByCategory(id,page) {
             function(result) {
                 vteam_http.hide("loading");
                 if (result.status == 'success') {
-
                     displaySearchProduct(result.productList);
                 }
             });
