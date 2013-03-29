@@ -24,6 +24,7 @@
         <script src="/resources/js/vteam.js"></script>
         <script src="/resources/js/bid.js"></script>
         <script src="/resources/js/product.js"></script>
+        <script src="/resources/js/search.js"></script>
         <script src="/resources/js/category.js"></script>
         <script src="/resources/js/login.js"></script>   
         <script src="/resources/js/order.js"></script> 
@@ -60,7 +61,7 @@
                             <form class="navbar-form pull-left">
                                 <div class="input-append">
                                     <input class="span3" id="appendedInputButtons" type="text" onkeydown="searchOnKeyDown(event)">
-                                    <button onclick="searchProduct(1)" class="btn btn-success" type="button" ><i class="icon-search" ></i></button>
+                                    <button onclick="searchProductAtLocal()" class="btn btn-success" type="button" ><i class="icon-search" ></i></button>
                                 </div>           
                             </form>
                             <ul id ="menu"class="nav">

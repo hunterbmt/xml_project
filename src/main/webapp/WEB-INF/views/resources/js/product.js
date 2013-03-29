@@ -2,45 +2,37 @@ var product_list_current_page;
 var product_search_current_keyword;
 var product_search_current_page;
 var product_search_current_search_function;
-var page_size = 9;
+var page_size = 10;
 var divArray = [];
 var currentPosition = -1;
+var product_list =[];
+var product_list_page = 0;
 $(window).scroll(function() {
     if ($(window).scrollTop() == $(document).height() - $(window).height()) {
-        if (currentPosition == 0) {
-            loadAndDisplayProduct(product_list_current_page + 1);
-        } else if (currentPosition == 1) {
+        if (divArray[currentPosition] == "product_list") {
+            if(product_list_current_page >= product_list_page){
+                loadAndDisplayProduct(product_list_current_page + 1);
+            }else {
+                product_list_current_page = product_list_current_page + 1;
+                displayProduct(product_list);
+            }
+        } else if (divArray[currentPosition] == "search_product_list") {
             product_search_current_search_function(product_search_current_keyword, product_search_current_page + 1);
         }
     }
 });
 
 function loadAndDisplayProduct(page) {
-    product_list_current_page = page;
     vteam_http.makeHttpRequest("/product/getProductList",
-            {page: page, pageSize: page_size},
+            {page: page},
     'POST',
             function(result) {
                 vteam_http.hide("loading");
                 if (result.status === 'success') {
+                    product_list_page += Math.ceil(result.numberOfRecord / page_size);
+                    product_list = product_list.concat(result.productList);
+                    product_list_current_page = page;
                     displayProduct(result.productList);
-                }
-            });
-}
-
-function searchProduct(page) {
-    vteam_http.show('loading');
-    var input = vteam_http.getValue("appendedInputButtons");
-    product_search_current_keyword = input;
-    product_search_current_page = page;
-    product_search_current_search_function = searchProduct;
-    vteam_http.makeHttpRequest("/product/searchProduct",
-            {txtSearch: input, page: page, pageSize: page_size},
-    'POST',
-            function(result) {
-                vteam_http.hide('loading');
-                if (result.status === 'success') {
-                    displaySearchProduct(result.productList);
                 }
             });
 }
@@ -49,7 +41,13 @@ function displayProduct(productList) {
     var html = '';
     var ts = 0;
     var bid_type = "";
-    for (var i = 0; i < productList.length; i++) {
+    var i = (product_list_current_page-1) * page_size;
+    var pageSize  = i + page_size;
+    if(pageSize > productList.length){
+        pageSize = productList.length;
+    }
+    
+    for (; i < pageSize; i++) {
         ts = productList[i].bidTimeRemain;
         if (ts <= 0) // in bid 
         {
@@ -79,6 +77,22 @@ function displayProduct(productList) {
     hideAllDiv();
     vteam_http.show("product_list");
     generateBackAndNext()
+}
+function searchProduct(page) {
+    vteam_http.show('loading');
+    var input = vteam_http.getValue("appendedInputButtons");
+    product_search_current_keyword = input;
+    product_search_current_page = page;
+    product_search_current_search_function = searchProduct;
+    vteam_http.makeHttpRequest("/product/searchProduct",
+            {txtSearch: input, page: page, pageSize: page_size},
+    'POST',
+            function(result) {
+                vteam_http.hide('loading');
+                if (result.status === 'success') {
+                    displaySearchProduct(result.productList);
+                }
+            });
 }
 
 function numberWithCommas(x) {
@@ -296,7 +310,7 @@ function searchOnKeyDown(e) {
 
     if (e.keyCode === 13) {
         e.preventDefault();
-        searchProduct(1);
+        searchProductAtLocal();
     }
 }
 
@@ -377,9 +391,9 @@ function generateBackAndNext() {
     else {
         $("#back").show()
     }
-    if (currentPosition == (divArray.length-1)) {
+    if (currentPosition == (divArray.length - 1)) {
         $("#next").hide();
-    }else{
+    } else {
         $("#next").show();
     }
 

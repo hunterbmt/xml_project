@@ -10,7 +10,6 @@ import com.vteam.xml_project.dto.ProductListDTO;
 import com.vteam.xml_project.service.BidHistoryService;
 import com.vteam.xml_project.service.ProductService;
 import java.util.List;
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -37,17 +36,17 @@ public class ProductAPI {
     @RequestMapping(value = "/getProductList", method = RequestMethod.POST,produces = "application/json")
     public @ResponseBody
     ProductListDTO getProductList(
-            @RequestParam int page, int pageSize) {
-        ProductListDTO productResult = productService.getProductList(page, pageSize);
+            @RequestParam int page) {
+        ProductListDTO productResult = productService.getProductList(page);
         return productResult;
     }
 
     @RequestMapping(value = "/searchProduct", method = RequestMethod.POST,produces = "application/json")
     public @ResponseBody
     ProductListDTO getSearchProductList(HttpServletRequest request,
-            @RequestParam String txtSearch, int page, int pageSize) {
+            @RequestParam String txtSearch, int page) {
         String serverContextPath = request.getRealPath("WEB-INF/cache/");
-        ProductListDTO result = productService.searchProduct(txtSearch, page, pageSize,serverContextPath);
+        ProductListDTO result = productService.searchProduct(txtSearch, page,serverContextPath);
         return result;
     }
     
@@ -64,8 +63,8 @@ public class ProductAPI {
     @RequestMapping(value = "/searchProductByTags", method = RequestMethod.POST,produces = "application/json")
     public @ResponseBody
     ProductListDTO searchProductByTags(
-            @RequestParam int tag_id, int page, int pageSize) {
-        ProductListDTO result = productService.searchProductByTagsId(tag_id, page, pageSize);
+            @RequestParam int tag_id, int page) {
+        ProductListDTO result = productService.searchProductByTagsId(tag_id, page);
         return result;
     }
 
