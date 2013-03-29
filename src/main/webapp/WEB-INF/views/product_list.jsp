@@ -85,17 +85,9 @@
 
             <div id="wrapper">
                 <div id="columnContainer" class="row-fluid">
-                    <div class="span10" id="sequence-theme" style="width: 90%;height: 55px;position: fixed;margin-top: 160px;z-index: 100;">
-                        <li class="prev" id="back" onclick="backOnClick()">
-                            <i class="e-icon-left-open-big-open-big">
-                                <i class="icon-white icon-reply" ></i>
-                            </i>
-                        </li>
-                        <li class="next" id="next" onclick="nextOnClick()">
-                            <i class="e-icon-right-open-big-open-big">  
-                                <i class="icon-white icon-share-alt" ></i>
-                            </i>
-                        </li>
+                    <div class="span10" id="sequence-theme" style="width: 90%;height: 50%;position: fixed;margin-top: 160px;">
+                        <a class="carousel-control left" id="back" onclick="backOnClick()" href="javascript:void(0)">‹</a>
+                        <a class="carousel-control right" id="next" onclick="nextOnClick()" href="javascript:void(0)">›</a>
                     </div>
                     <div  class="span10 offset1" id="product_list">
                     </div>

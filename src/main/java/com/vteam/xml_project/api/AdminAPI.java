@@ -42,7 +42,7 @@ public class AdminAPI {
     @Autowired
     private CategoryService categoryService;
 
-    @RequestMapping(value = "/getProductList", method = RequestMethod.POST)
+    @RequestMapping(value = "/getProductList", method = RequestMethod.POST,produces = "application/json")
     public @ResponseBody
     ProductListDTO insertProduct(
             @RequestParam int page, int pageSize) {
@@ -50,7 +50,7 @@ public class AdminAPI {
         return productsDTO;
     }
     
-    @RequestMapping(value = "/insert_product", method = RequestMethod.POST)
+    @RequestMapping(value = "/insert_product", method = RequestMethod.POST,produces = "application/json")
     public @ResponseBody
     ProductDTO insertProduct(
             @RequestParam int categoryId, String productName, String description, String img, double minPrice, double maxPrice) {
@@ -58,7 +58,7 @@ public class AdminAPI {
         return productDTO;
     }
 
-    @RequestMapping(value = "/update_product", method = RequestMethod.POST)
+    @RequestMapping(value = "/update_product", method = RequestMethod.POST,produces = "application/json")
     public @ResponseBody
     ProductDTO updateProduct(
             @RequestParam int productId, int categoryId, String productName, String description, String img, double minPrice, double maxPrice) {

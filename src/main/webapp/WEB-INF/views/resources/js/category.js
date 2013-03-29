@@ -13,7 +13,7 @@ function displayCategory(categoryList) {
     //html += '<ul class="nav nav-list>'
     for (var i = 0; i < categoryList.length; i++) {
 
-        html += '   <li class="submenu"> <a class="nav" href="#" onclick="searchProductByCategory('
+        html += '   <li class="submenu"> <a class="nav" href="javascript:void(0)" onclick="searchProductByCategory('
         html += categoryList[i].id +',1'
         html += ')" id= "category_id">' + categoryList[i].name + '</a> </li>'
 
@@ -32,7 +32,6 @@ function searchProductByCategory(id,page) {
             function(result) {
                 vteam_http.hide("loading");
                 if (result.status == 'success') {
-
                     displaySearchProduct(result.productList);
                 }
             });
