@@ -13,6 +13,7 @@
         <link href="/resources/css/jquery-ui-helper.css" rel="stylesheet">
         <link href="/resources/css/simplePagination.css" rel="stylesheet">
         <link href="/resources/css/admin.css" rel="stylesheet">
+        <link href="/resources/css/select2.css" rel="stylesheet">
         <script src="/resources/js/lib/wysihtml5-0.3.0.js"></script>
         <script src="/resources/js/lib/jquery.js"></script>
         <script type="text/javascript" src="/resources/js/lib/jquery.simplePagination.js"></script>
@@ -23,9 +24,11 @@
         <script src="/resources/js/lib/jquery.validate.js"></script>
         <script src="/resources/js/vteam.js"></script>
         <script src="/resources/js/admin_product.js"></script>
+        <script src="/resources/js/admin_tags.js"></script>
         <script>
             $(document).ready(function() {
                 populateCategoryNameList()
+                populateTagsNameList()
                 loadProductList(1);
             });
 
@@ -98,6 +101,22 @@
                                         <label class="control-label">Category</label>
                                         <div class="controls">
                                             <input id="category_name" type="text"/>
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label">Tags</label>
+                                        <div class="controls">
+                                            <div class="select2-container select2-container-multi" id="s2id_autogen2">    
+                                                <ul class="select2-choices">  
+                                                    <li class="select2-search-field">    
+                                                        <input id="tags_name" type="text" autocomplete="off" class="select2-input" tabindex="0" style="width: 200px;">
+                                                        <input id="tags_id" type="hidden" autocomplete="off" class="select2-input" tabindex="0" style="width: 200px;">
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <select multiple="" style="display:none;">
+                                                
+                                            </select>
                                         </div>
                                     </div>
                                     <div class="control-group">
