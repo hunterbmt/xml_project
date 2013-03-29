@@ -326,7 +326,6 @@ function searchOnKeyDown(e) {
 
 function changeContext() {
     currentPosition = -1;
-    vteam_http.hide("user_login");
     displayProduct(product_list);
 }
 
@@ -334,6 +333,8 @@ function hideAllDiv() {
     vteam_http.hide("search_product_list");
     vteam_http.hide("product_detail");
     vteam_http.hide("product_list");
+    vteam_http.hide("user_login");
+    vteam_http.hide("user_detail");
 }
 function loadProductTags(id) {
     vteam_http.makeHttpRequest("/tags/getTagsByProductId",

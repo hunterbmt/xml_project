@@ -42,18 +42,29 @@ public class UserService {
     private DateUtil util;
     
     @Transactional
-    public boolean checkLogin(String email, String password) {
+    public UserDTO checkLogin(String email, String password) {
+        UserDTO userDTO = new UserDTO();
         try {
-            
             String storagepass = StringUtil.createPasswordForDB(password);
             Users dbUser = userDAO.findUserByEmailAndPassword(email, storagepass);
             if (dbUser != null) {
-                return true;
+                userDTO.setId(dbUser.getId());
+                userDTO.setEmail(dbUser.getEmail());
+                userDTO.setFullname(dbUser.getFullname());
+                userDTO.setPhone(dbUser.getPhone());
+                userDTO.setAddress(dbUser.getAddress());
+                userDTO.setBalance(dbUser.getBalance());
+                userDTO.setBirthday(dbUser.getBirthday());
+                userDTO.setStatus("success");
+            }
+            else {
+                userDTO.setStatus("error");
             }
         } catch (NoSuchAlgorithmException ex) {
             log.error(ex.getStackTrace());
+            userDTO.setStatus("error");
         }
-        return false;
+        return userDTO;
     }
     
     @Transactional
@@ -87,6 +98,7 @@ public class UserService {
         try {
             String storePassword = StringUtil.createPasswordForDB(newUser.getPassword());
             Users dbUser = new Users(newUser.getEmail(), storePassword, newUser.getFullname(), null, null, null);
+            dbUser.setBalance(5);
             userDAO.save(dbUser);
             return true;
         } catch (NullPointerException ex) {

@@ -2,35 +2,38 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
+var current_user_info;
 function login() {
     var email = document.getElementById("user_username").value;
     var password = document.getElementById("user_password").value;
-    
+
     vteam_http.makeHttpRequest("/user/login",
             {email: email,
-               password: password},
+                password: password},
     "POST",
             function(result) {
                 if (result.status == "success")
                 {
-                    if (result.admin == "admin") {
+                    if (result.id == 1) {
                         window.location.href = "/admin";
                     } else {
-                        vteam_http.hide("login_menu");
-                        vteam_http.hide("user_login");
-                        vteam_http.setHTML("loginResult",'<a class="btn btn-success" id="email" style="margin-left:10px;margin-top:2px;" href="javascript:void(0)" onclick="showUserInfo()"><i class="icon-user icon-white" ></i>' + result.email + ' </a>'
-                                + '<li id="fat-menu1" class="btn btn-success" style="width:70px;height:20px;margin-left:10px;" ><a href="javascript:void(0)" id="drop4" role="button" class="dropdown-toggle" data-toggle="dropdown" style="color:white;">' + result.balance+'Nil' + '</a></li>'
-                                + '<a class="btn btn-success" id="logout" style="margin-left:10px;margin-top:2px;" href="javascript:void(0)" onclick="logout()"><i class="icon-off icon-white" ></i></a>');
-                        vteam_http.show("loginResult");
-                        vteam_http.show("product_list");
+                        current_user_info = result;
+                        showLogedInMenu();
+                        changeContext();
                     }
                 } else {
-                    vteam_http.setHTML("error","Wrong username or password");
+                    vteam_http.setHTML("error", "Wrong username or password");
                     vteam_http.show("error");
                 }
             });
 
+}
+function showLogedInMenu() {
+    vteam_http.hide("login_menu");
+    vteam_http.setHTML("loginResult", '<a class="btn btn-success" id="email" style="margin-left:10px;margin-top:2px;" href="javascript:void(0)" onclick="displayUserDetail()"><i class="icon-user icon-white" ></i>' + current_user_info.email + ' </a>'
+            + '<li id="fat-menu1" class="btn btn-success" style="width:70px;height:20px;margin-left:10px;" ><a href="javascript:void(0)" id="drop4" role="button" class="dropdown-toggle" data-toggle="dropdown" style="color:white;">' + current_user_info.balance + 'Nil' + '</a></li>'
+            + '<a class="btn btn-success" id="logout" style="margin-left:10px;margin-top:2px;" href="javascript:void(0)" onclick="logout()"><i class="icon-off icon-white" ></i></a>');
+    vteam_http.show("loginResult");
 }
 function logout() {
     var email = document.getElementById("user_username").value;
@@ -40,12 +43,9 @@ function logout() {
             function(result) {
                 if (result.status == "success")
                 {
-                    displayunLogin()
-//                    vteam_http.hide("user_detail");
-//                    vteam_http.show("columnContainer");
+                    displayunLogin();
                     vteam_http.hide("loginResult");
-                    vteam_http.hide("user_detail");
-                    vteam_http.show("product_list");
+                    changeContext();
                 }
                 else {
                     alert("Error");
@@ -54,16 +54,15 @@ function logout() {
 }
 function changeSigin() {
     vteam_http.hide("login");
-    vteam_http.show("sigin");
+    vteam_http.show("signin");
 }
 function changeLogin() {
-    vteam_http.hide("sigin");
+    vteam_http.hide("error");
+    vteam_http.hide("signin");
     vteam_http.show("login");
 }
 function displayunLogin() {
     vteam_http.hide("loginResult");
-    vteam_http.hide("user_detail");
-    //vteam_http.show("login");
     vteam_http.show("login_menu");
 }
 function updateInfo() {
@@ -72,7 +71,7 @@ function updateInfo() {
     var birthday = document.getElementById("user_birthday").value;
     var format_date = "MM/dd/yyyy";
     vteam_http.makeHttpRequest("/user/update",
-               {address: address,
+            {address: address,
                 phone: phone,
                 birthday: birthday,
                 formatDate: format_date},
@@ -80,19 +79,18 @@ function updateInfo() {
             function(result) {
                 if (result.status == "success")
                 {
-                    vteam_http.setHTML("updateResult1","<font style='color: green;font-size: large;'><strong>Well done! !</strong> You successfully updated.</font>");
                     loadUserInfo();
-                    
-                } else if (result.status == "unlogin") {
-                    vteam_http.setHTML("updateResult1","<font style='color: black;font-size: large;'><strong>Sesstion Times out! !</strong> Please log in again.</font>");
-                } else if(result.status == "error") {
-                    vteam_http.setHTML("updateResult1","<font style='color: red;font-size: large;'><strong>Oh snap!!</strong> Change a few things up and try submitting again.</font>");
+
+                } else {
+                    if (result.status == "unlogin") {
+                        vteam_http.setHTML("updateResult1", "<font style='color: black;font-size: large;'><strong>Sesstion Times out! !</strong> Please log in again.</font>");
+                    } else if (result.status == "error") {
+                        vteam_http.setHTML("updateResult1", "<font style='color: red;font-size: large;'><strong>Oh snap!!</strong> Change a few things up and try submitting again.</font>");
+                    }
+                    vteam_http.show("updateResult1");
+                    $("#updateResult1").hide(20000);
                 }
-
-                vteam_http.show("updateResult1");
-                setTimeout(vteam_http.hide("updateResult1"),20000);
             });
-
 }
 function showNotifications() {
     $("#updateResult1:visible").hide('fast', function() {
@@ -110,45 +108,20 @@ function updatePassword() {
             function(result) {
                 if (result.status == "success")
                 {
-                    vteam_http.setHTML("updateResult1","<font style='color: green;font-size: large;'><strong>Well done! !</strong> You successfully updated.</font>");
+                    vteam_http.setHTML("updateResult1", "<font style='color: green;font-size: large;'><strong>Well done! !</strong> You successfully updated.</font>");
 
 
                 } else if (result.status == "unlogin") {
-                    vteam_http.setHTML("updateResult1","<font style='color: black;font-size: large;'><strong>Sesstion Times out! !</strong> Please log in again.</font>");
+                    vteam_http.setHTML("updateResult1", "<font style='color: black;font-size: large;'><strong>Sesstion Times out! !</strong> Please log in again.</font>");
 
 
                 } else if (result.status == "error") {
-                    vteam_http.setHTML("updateResult1","<font style='color: red;font-size: large;'><strong>Oh snap!!</strong> Change a few things up and try submitting again.</font>");
+                    vteam_http.setHTML("updateResult1", "<font style='color: red;font-size: large;'><strong>Oh snap!!</strong> Change a few things up and try submitting again.</font>");
                 }
                 vteam_http.show("updateResult1");
-                $("#updateResult1").hide('fast');
+                $("#updateResult1").hide(20000);
             });
 
-}
-function showUserInfo() {
-    vteam_http.makeHttpRequest("/user/get_user_by_email", {},
-            "POST",
-            function(result) {
-                if (result.status == "success")
-                {
-                    currentPosition += 1;
-                    divArray[currentPosition] = "user_detail"
-                    vteam_http.hide("product_list");
-//                    vteam_http.hide("product_list");
-                    vteam_http.show("user_detail");
-//                    $("#columnContainer").hide();
-//                    $("#user_detail").show();
-                    document.getElementById('user_email').value = result.email;
-                    document.getElementById('user_id').value = result.id;
-                    document.getElementById('user_fullname').value = result.fullname;
-                    document.getElementById('user_phone').value = result.phone;
-                    document.getElementById('user_birthday').value = toDateAndTime2(result.birthday);
-                    document.getElementById('user_address').value = result.address;
-                    document.getElementById('user_balance').value = result.balance;
-                } else {
-                    alert("error");
-                }
-            });
 }
 function loadUserInfo() {
     vteam_http.makeHttpRequest("/user/get_user_by_email", {},
@@ -156,21 +129,41 @@ function loadUserInfo() {
             function(result) {
                 if (result.status == "success")
                 {
-                    //vteam_http.hide("product_list");
-                    vteam_http.hide("login_menu");
-                    //vteam_http.show("user_detail");
-                    
-                    vteam_http.setHTML('loginResult','<a class="btn btn-success" id="email" style="margin-left:10px;margin-top:2px;" href="javascript:void(0)" onclick="showUserInfo()"><i class="icon-user icon-white" ></i>' + result.email + ' </a>'
-                            + '<li id="fat-menu1" class="btn btn-success" style="width:70px;height:20px;margin-left:10px;" ><a href="javascript:void(0)" id="drop4" role="button" class="dropdown-toggle" data-toggle="dropdown" style="color:white;">' + result.balance+'Nil' + '</a></li>'
-                            + '<a class="btn btn-success" id="logout" style="margin-left:10px;margin-top:2px;" href="javascript:void(0)" onclick="logout()"><i class="icon-off icon-white" ></i></a>');
-                    vteam_http.show("loginResult");
-                    document.getElementById('user_email').value = result.email;
-                    document.getElementById('user_id').value = result.id;
-                    document.getElementById('user_fullname').value = result.fullname;
-                    document.getElementById('user_phone').value = result.phone;
-                    document.getElementById('user_address').value = result.address;
-                    document.getElementById('user_balance').value = result.balance;
-                } else if(result.status == "unlogin") {
+                    current_user_info = result;
+                    displayUserDetail();
+                } else {
+                    alert("error");
+                }
+            });
+}
+function displayUserDetail() {
+    currentPosition += 1;
+    divArray[currentPosition] = "user_detail";
+    document.getElementById('user_email').value = current_user_info.email;
+    document.getElementById('user_id').value = current_user_info.id;
+    document.getElementById('user_fullname').value = current_user_info.fullname;
+    document.getElementById('user_phone').value = current_user_info.phone;
+    if (current_user_info.birthday) {
+        document.getElementById('user_birthday').value = toDateAndTime2(current_user_info.birthday);
+    }
+    else {
+        document.getElementById('user_birthday').value = '';
+    }
+    document.getElementById('user_address').value = current_user_info.address;
+    document.getElementById('user_balance').value = current_user_info.balance;
+    hideAllDiv();
+    vteam_http.show("user_detail");
+}
+function initUserInfo() {
+    vteam_http.makeHttpRequest("/user/get_user_by_email", {},
+            "POST",
+            function(result) {
+                if (result.status == "success")
+                {
+                    current_user_info = result;
+                    showLogedInMenu();
+                    //displayUserDetail();
+                } else if (result.status == "unlogin") {
                     displayunLogin()
                 } else {
                     alert("error");
@@ -178,7 +171,7 @@ function loadUserInfo() {
             });
 }
 function inputCode() {
-    var input_code = document.getElementById("user_paymentCode").value;
+    var input_code = document.getElementById("payment_code").value;
     vteam_http.makeHttpRequest("/user/input_payment_code", {
         code: input_code
     },
@@ -186,40 +179,38 @@ function inputCode() {
             function(result) {
                 if (result.status == "success")
                 {
-                    vteam_http.setHTML("result","Insert succesfully!!");
-                    vteam_http.show("result");
-                    location.reload();
+                    initUserInfo();
                 } else if (result.status == "unlogin") {
-                    vteam_http.setHTML("result","You need login again to insert");
+                    vteam_http.setHTML("result", "You need login again to insert");
                     vteam_http.show("result");
                 } else {
-                    vteam_http.setHTML("result","Error when insert");
+                    vteam_http.setHTML("result", "Error when insert");
                     vteam_http.show("result");
                 }
             });
 }
-function create(){
+function create() {
     var email = document.getElementById("new_username").value;
     var password = document.getElementById("new_password").value;
     var fullname = document.getElementById("new_fullname").value;
     vteam_http.makeHttpRequest("/user/create", {
         email: email,
-        password:password,
-        fullname:fullname
+        password: password,
+        fullname: fullname
     },
     "POST",
             function(result) {
                 if (result.status == "success")
                 {
-                    vteam_http.setHTML("result","<h4 style='color:green;'>Insert succesfully!!</h4>");
-                    vteam_http.show("result");
+                    initUserInfo();
+                    changeContext();
                 } else {
-                    vteam_http.setHTML("result","<h4 style='color:red;'>Error when insert</h4>");
+                    vteam_http.setHTML("result", "<h4 style='color:red;'>Error when insert</h4>");
                     vteam_http.show("result");
                 }
             });
 }
-function showLogin(){
- vteam_http.show("user_login");
- vteam_http.hide("product_list");
+function showLogin() {
+    hideAllDiv();
+    vteam_http.show("user_login");
 }

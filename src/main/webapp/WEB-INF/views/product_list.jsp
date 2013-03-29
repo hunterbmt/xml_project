@@ -33,7 +33,7 @@
             $(document).ready(function() {
                 loadAndDisplayProduct(1);
                 loadAndDisplayCategory();
-                loadUserInfo();
+                initUserInfo();
                 $('#user_birthday').datepicker({
                     showMonthAfterYear: false,
                     minDate: '-90Y', maxDate: '-9Y',
@@ -93,9 +93,10 @@
                     <div class="span10 offset1 hide" id="product_detail">
 
                     </div>
-                    <div class="span10 offset1 hide" id="user_login" style="margin-top: 50px;">
+                    <div class="span10 offset1 hide" id="user_login" style="margin-top: 40px;">
 
                         <div class="Login"  id="login">
+                            <div id="error" style="color: red;margin-left: 30%;margin-bottom: 5px" class="hide"></div>
                             <form >
                                 <fieldset style="padding-left: 300px;">
                                     <label class="label-main">Username</label>
@@ -104,23 +105,22 @@
                                     <div class="input-prepend"><span class="add-on" style="height: 30px;"><i class="icon-lock"></i></span></span><input class="input-large" name="miniusername"  id="user_password" type="password" style="height: 30px;"></div>
 
                                     <p/>
-                                    <button name="send" type="button" class="btn btn-success" onclick="login()">Login</button>
-                                    <button name="send" type="button"  class="btn " onclick="changeSigin()">Sig up</button>
+                                    <button name="send" type="button" class="btn btn-success" onclick="login()">Đăng nhập</button>
+                                    <button name="send" type="button"  class="btn " onclick="changeSigin()">Đăng ký</button>
 
                                 </fieldset>
                             </form>
-                            <div id="error" style="color: red;display: none"></div>
                         </div>
-                        <div class="Sigin hide" id="sigin">
+                        <div class="Sigin hide" id="signin">
                             <form  method="post" accept-charset="UTF-8">
                                 <fieldset style="padding-left: 300px;">
-                                    <label > Username:</label>
+                                    <label > Tên đăng nhập:</label>
                                     <input id="new_username"  type="text" name="username" />
-                                    <label > Password:</label>
+                                    <label > Mật khẩu:</label>
                                     <input id="new_password"  type="password" name="password" />
-                                    <label > Re-Password:</label>
+                                    <label > Nhập lại mật khẩu:</label>
                                     <input id="new_repassword"  type="password" name="password" />
-                                    <label > Fullname:</label>
+                                    <label > Tên thật:</label>
                                     <input id="new_fullname"  type="text" name="fullname" /><p/>
                                     <button name="send" type="button"  class="btn btn-success btn-small" onclick="create()">Create User</button>
                                     <button name="send" type="button"  class="btn  btn-small" onclick="changeLogin()">Back</button>
@@ -130,8 +130,8 @@
                         </div>
                     </div>
                     
-                    <div class="span10 offset1 hide" id="user_detail">
-                       <div class="alert hide" id="updateResult1" style="margin-top: 20px"></div>
+                    <div class="span10 offset1 hide" id="user_detail" style="margin-top: 40px;">
+                       <div class="alert hide" id="updateResult1"></div>
                        <div class="tabbable tabs-left">
                        <ul class="nav nav-tabs">
                             <li class="active"><a href="#lA" data-toggle="tab">Profile</a></li>
@@ -143,19 +143,18 @@
 
                            <div class="tab-pane active" id="lA">
                               <form id="tab">
-                                    <label>Email</label>
-                                  <input type="text" id="user_email" class="input-xlarge">
+                                  <label>Email</label>
+                                  <input type="text" id="user_email" class="input-xlarge" readonly="true">
                                   <input type="hidden" id="user_id" class="input-xlarge">
-                                  <label>First Name</label>
+                                  <label>Tên thật</label>
                                   <input type="text" id="user_fullname" class="input-xlarge">
                                    <label>Phone</label>
                                     <input type="text" id="user_phone"  class="input-xlarge">
-
-                                   <label>Address</label>
+                                   <label>Địa chỉ</label>
                                    <input type="text" id="user_address"  class="input-xlarge">
-                                   <label>Birthday</label>
+                                   <label>Ngày sinh</label>
                                   <input type="text" id="user_birthday" class="input-xlarge">
-                                   <label>Balance</label>
+                                   <label>Tài khoản</label>
                                    <input type="text" id="user_balance" class="input-xlarge" readonly="true">
                                    <div class="row" style="display: inline;margin-left: 0px" >
                                        <button type='button' class="btn btn-success" onclick="updateInfo()">Update</button>
@@ -165,13 +164,12 @@
 	                             </div>
                            <div class="tab-pane" id="lB">
                                 <form id="tab2">
-                                    <label>Password</label>
+                                    <label>Mật khẩu mới</label>
                                     <input type="password" id="newpassword" class="input-xlarge">       
-                                    <label>Old Password</label>
+                                    <label>Mật khẩu cũ</label>
                                     <input type="password" id="curr_password" class="input-xlarge">
                                     <div>   
                                         <button type='button' class="btn btn-success" onclick="updatePassword()">Update</button>
-
                                    </div>
 
                                </form>
@@ -195,9 +193,9 @@
                            <div class="tab-pane" id="lD">
                                <form id="tab4">
                                    <label>Enter your code here:</label>
-                                    <input type="password" id="newpassword" class="input-xlarge">       
+                                    <input type="text" id="payment_code" class="input-xlarge">       
                                    <div>   
-	                                        <button type='button' class="btn btn-success" onclick="updatePassword()">Update</button>	 
+                                       <button type='button' class="btn btn-success" onclick="inputCode()">Update</button>	 
 	                        </form>
 	                    </div>
 	                    
