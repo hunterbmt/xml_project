@@ -65,55 +65,8 @@
                             <ul id ="menu"class="nav">
                                 <li class="active"><a href="#" onclick="changeContext()">Home</a></li>
                                 <li><a href="#">Hot Bids</a></li>
-                            </ul>
-                            <ul class="nav pull-right">
-                                <div id="loginResult" style="display: none;margin-top: 10px">
-
-                                </div>
-
-
-                                <li id="fat-menu" class="dropdown" >
-                                    <a href="#" id="drop3" role="button" class="dropdown-toggle" data-toggle="dropdown">Login <b class="caret"></b></a>
-                                    <ul class="dropdown-menu" role="menu" aria-labelledby="drop3" style="width: 300px">
-                                        <li ><div role="menuitem" tabindex="-1" style="padding: 3px 20px;display: block">
-
-                                                <div id="login">
-                                                    <form >
-                                                        <fieldset>
-                                                            <label class="label-main">Username</label>
-                                                            <input name="miniusername"  id="user_username" type="text">
-                                                            <label class="label-main">Password</label>
-                                                            <input name="miniusername"  id="user_password" type="password">
-                                                            <p/>
-                                                            <button name="send" type="button"  class="btn btn-primary btn-small" onclick="login()">Login</button>
-                                                            <button name="send" type="button"  class="btn  btn-small" onclick="changeSigin()">Sig up</button>
-
-                                                        </fieldset>
-                                                    </form>
-                                                    <div id="error" style="color: red;display: none"></div>
-                                                </div>
-                                                <div id="sigin" style="display: none">
-                                                    <form  method="post" accept-charset="UTF-8">
-                                                        <label > Username:</label>
-                                                        <input id="new_username"  type="text" name="username" />
-                                                        <label > Password:</label>
-                                                        <input id="new_password"  type="password" name="password" />
-                                                        <label > Re-Password:</label>
-                                                        <input id="new_repassword"  type="password" name="password" />
-                                                        <label > Fullname:</label>
-                                                        <input id="user_fullname"  type="text" name="fullname" /><p/>
-                                                        <input class="btn btn-primary btn-small"  type="button" value="Sig In" onclick="create()" />
-                                                        <input type="button" class="btn-group btn-small" value="Back" onclick="changeLogin()"/>
-                                                    </form>
-                                                    <div id="result" style="display: none"></div>
-                                                </div>
-                                            </div>
-
-
-                                        </li>
-
-                                    </ul>
-                                </li>
+                                <li class="test" id="login_menu"><a href="#" onclick="showLogin()">Log in</a></li>
+                                <li><div class="hide" id="loginResult" style="margin-top: 5px"></div></li>
                             </ul>
                         </div>
                     </div><!--/.nav-collapse -->
@@ -128,111 +81,150 @@
 
             <div id="wrapper">
                 <div id="columnContainer" class="row-fluid">
-                 <div class="span10" id="sequence-theme" style="width: 100%;height: auto;overflow: hidden;position: absolute;margin-top: 200px;">
-                    <li class="prev" style>
-                        <i class="e-icon-left-open-big-open-big">
-                            <i class="icon-reply" id="back" onclick="backOnClick()"></i>
-                        </i>
-                    </li>
-                    <li class="next" style>
-                        <i class="e-icon-right-open-big-open-big">  
-                            <i class="icon-white icon-share-alt" id="next" onclick="nextOnClick()"></i>
+                    <div class="span10" id="sequence-theme" style="width: 90%;height: auto;position: fixed;margin-top: 100px;z-index: 99999;">
+                        <li class="prev" style>
+                            <i class="e-icon-left-open-big-open-big">
+                                <i class="icon-reply" id="back" onclick="backOnClick()"></i>
                             </i>
-                    </li>
-                </div>
+                        </li>
+                        <li class="next" style>
+                            <i class="e-icon-right-open-big-open-big">  
+                                <i class="icon-white icon-share-alt" id="next" onclick="nextOnClick()"></i>
+                            </i>
+                        </li>
+                    </div>
                     <div  class="span10 offset1" id="product_list">
                     </div>
                     <div class="span10 offset1 hide" id="search_product_list">
                     </div>
-
                     <div class="span10 offset1 hide" id="product_detail">
-                        
+
                     </div>
-                        
-                   
+                    <div class="span10 offset1 hide" id="user_login" style="margin-top: 50px;">
+
+                        <div class="Login"  id="login">
+                                                    <form >
+                                                        <fieldset style="padding-left: 300px;">
+                                                            <label class="label-main">Username</label>
+                                                            <div class="input-prepend large"><span class="add-on" style="height: 30px;"><i class="icon-user"></i></span><input class="input-large" name="miniusername"  id="user_username" type="text" style="height: 30px;"></div>
+                                                            <label class="label-main">Password</label>
+                                                            <div class="input-prepend"><span class="add-on" style="height: 30px;"><i class="icon-lock"></i></span></span><input class="input-large" name="miniusername"  id="user_password" type="password" style="height: 30px;"></div>
+
+                                                            <p/>
+                                                            <button name="send" type="button"  class="btn btn-success btn-small" onclick="login()">Login</button>
+                                                            <button name="send" type="button"  class="btn  btn-small" onclick="changeSigin()">Sig up</button>
+
+                                                        </fieldset>
+                                                    </form>
+                                                    <div id="error" style="color: red;display: none"></div>
+                                                </div>
+                        <div class="Sigin" id="sigin">
+                                                    <form  method="post" accept-charset="UTF-8">
+                                                        <fieldset style="padding-left: 300px;">
+                                                        <label > Username:</label>
+                                                        <input id="new_username"  type="text" name="username" />
+                                                        <label > Password:</label>
+                                                        <input id="new_password"  type="password" name="password" />
+                                                        <label > Re-Password:</label>
+                                                        <input id="new_repassword"  type="password" name="password" />
+                                                        <label > Fullname:</label>
+                                                        <input id="user_fullname"  type="text" name="fullname" /><p/>
+                                                        <button name="send" type="button"  class="btn btn-success btn-small" onclick="create()">Create User</button>
+                                                            <button name="send" type="button"  class="btn  btn-small" onclick="changeLogin()">Back</button>
+                                                        </fieldset>
+                                                    </form>
+                                                    <div id="result" style="display: none"></div>
+                                                </div>
+                    </div>
 
                 </div>
-              
 
-        </div>
-        <div class="container" id="user_detail" style="position: absolute;width:70%;display: none">
-            <div class="alert" id="updateResult1" style="display: none;z-index: 9002">
+                <div class="span10 offset1 hide" id="user_detail" style="margin-top: 50px;">
+                    <div class="alert" id="updateResult1" style="display: none;z-index: 9002">
 
-            </div>
-            <div class="tabbable tabs-left">
-                <ul class="nav nav-tabs">
-                    <li class="active"><a href="#lA" data-toggle="tab">Profile</a></li>
-                    <li class=""><a href="#lB" data-toggle="tab">Change Password</a></li>
-                    <li class=""><a href="#lC" data-toggle="tab" onclick="loadAndDisplayOrder()">Orders History</a></li>
-                    <li class=""><a href="#lD" data-toggle="tab">Payment</a></li>
-                </ul>
-                <div class="tab-content">
-
-                    <div class="tab-pane active" id="lA">
-                        <form id="tab">
-                            <label>Email</label>
-                            <input type="text" id="user_email" class="input-xlarge">
-                            <input type="hidden" id="user_id" class="input-xlarge">
-                            <label>First Name</label>
-                            <input type="text" id="user_fullname" class="input-xlarge">
-                            <label>Phone</label>
-                            <input type="text" id="user_phone"  class="input-xlarge">
-
-                            <label>Address</label>
-                            <input type="text" id="user_address"  class="input-xlarge">
-                            <label>Birthday</label>
-                            <input type="text" id="user_birthday" class="input-xlarge">
-                            <label>Balance</label>
-                            <input type="text" id="user_balance" class="input-xlarge" readonly="true">
-                            <div class="row" style="display: inline;margin-left: 0px" >
-                                <button type='button' class="btn btn-primary" onclick="updateInfo()">Update</button>
-                            </div>
-                            </span>
-                        </form>
                     </div>
-                    <div class="tab-pane" id="lB">
-                        <form id="tab2">
-                            <label>Password</label>
-                            <input type="password" id="newpassword" class="input-xlarge">       
-                            <label>Old Password</label>
-                            <input type="password" id="curr_password" class="input-xlarge">
-                            <div>   
-                                <button type='button' class="btn btn-primary" onclick="updatePassword()">Update</button>
+                    <div class="tabbable tabs-left">
+                        <ul class="nav nav-tabs">
+                            <li class="active"><a href="#lA" data-toggle="tab">Profile</a></li>
+                            <li class=""><a href="#lB" data-toggle="tab">Change Password</a></li>
+                            <li class=""><a href="#lC" data-toggle="tab" onclick="loadAndDisplayOrder()">Orders History</a></li>
+                            <li class=""><a href="#lD" data-toggle="tab">Payment</a></li>
+                        </ul>
+                        <div class="tab-content">
 
+                            <div class="tab-pane active" id="lA">
+                                <form id="tab">
+                                    <label>Email</label>
+                                    <input type="text" id="user_email" class="input-xlarge">
+                                    <input type="hidden" id="user_id" class="input-xlarge">
+                                    <label>First Name</label>
+                                    <input type="text" id="user_fullname" class="input-xlarge">
+                                    <label>Phone</label>
+                                    <input type="text" id="user_phone"  class="input-xlarge">
+
+                                    <label>Address</label>
+                                    <input type="text" id="user_address"  class="input-xlarge">
+                                    <label>Birthday</label>
+                                    <input type="text" id="user_birthday" class="input-xlarge">
+                                    <label>Balance</label>
+                                    <input type="text" id="user_balance" class="input-xlarge" readonly="true">
+                                    <div class="row" style="display: inline;margin-left: 0px" >
+                                        <button type='button' class="btn btn-success" onclick="updateInfo()">Update</button>
+                                    </div>
+                                    </span>
+                                </form>
                             </div>
+                            <div class="tab-pane" id="lB">
+                                <form id="tab2">
+                                    <label>Password</label>
+                                    <input type="password" id="newpassword" class="input-xlarge">       
+                                    <label>Old Password</label>
+                                    <input type="password" id="curr_password" class="input-xlarge">
+                                    <div>   
+                                        <button type='button' class="btn btn-success" onclick="updatePassword()">Update</button>
 
-                        </form>
-                    </div>
-                    <div class="tab-pane" id="lC" style="width: 100%" >
-                        <table class="table table-hover">
-                            <caption><h3>User's Order History</h3> </caption>
-                            <thead>
-                                <tr>
-                                    <td><h4>Product's Name</h4></td>
-                                    <td><h4>Address</h4></td>
-                                    <td><h4>Date</h4></td>
-                                    <td><h4>Amount</h4></td> 
-                                </tr>
-                            </thead>
-                            <tbody id="orderResult">
+                                    </div>
 
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="tab-pane" id="lD">
-                        <form id="tab4">
-                            <label>Enter your code here:</label>
-                            <input type="password" id="newpassword" class="input-xlarge">       
-                            <div>   
-                                <button type='button' class="btn btn-primary" onclick="updatePassword()">Update</button>
-
+                                </form>
                             </div>
+                            <div class="tab-pane" id="lC" style="width: 100%" >
+                                <table class="table table-hover">
+                                    <caption><h3>User's Order History</h3> </caption>
+                                    <thead>
+                                        <tr>
+                                            <td><h4>Product's Name</h4></td>
+                                            <td><h4>Address</h4></td>
+                                            <td><h4>Date</h4></td>
+                                            <td><h4>Amount</h4></td> 
+                                        </tr>
+                                    </thead>
+                                    <tbody id="orderResult">
 
-                        </form>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="tab-pane" id="lD">
+                                <form id="tab4">
+                                    <label>Enter your code here:</label>
+                                    <input type="password" id="newpassword" class="input-xlarge">       
+                                    <div>   
+                                        <button type='button' class="btn btn-success" onclick="updatePassword()">Update</button>
+
+                                    </div>
+
+                                </form>
+                            </div>
+                        </div>
                     </div>
                 </div>
+
+
             </div>
+
+
         </div>
+
+
     </div>
 </body>
 </html>
