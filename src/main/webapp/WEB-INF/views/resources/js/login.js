@@ -43,8 +43,9 @@ function logout() {
                     displayunLogin()
 //                    vteam_http.hide("user_detail");
 //                    vteam_http.show("columnContainer");
-                    $("#columnContainer").show();
-                    $("#user_detail").hide();
+                    vteam_http.hide("loginResult");
+                    vteam_http.hide("user_detail");
+                    vteam_http.show("product_list");
                 }
                 else {
                     alert("Error");
@@ -62,6 +63,7 @@ function changeLogin() {
 function displayunLogin() {
     vteam_http.hide("loginResult");
     vteam_http.show("login");
+    vteam_http.show("login_menu");
 }
 function updateInfo() {
     var address = document.getElementById("user_address").value;
@@ -126,11 +128,11 @@ function showUserInfo() {
             function(result) {
                 if (result.status == "success")
                 {
-//                    vteam_http.hide("columnContainer");
+                    vteam_http.hide("product_list");
 //                    vteam_http.hide("product_list");
-//                    vteam_http.show("user_detail");
-                    $("#columnContainer").hide();
-                    $("#user_detail").show();
+                    vteam_http.show("user_detail");
+//                    $("#columnContainer").hide();
+//                    $("#user_detail").show();
                     document.getElementById('user_email').value = result.email;
                     document.getElementById('user_id').value = result.id;
                     document.getElementById('user_fullname').value = result.fullname;
@@ -145,8 +147,10 @@ function loadUserInfo() {
             function(result) {
                 if (result.status == "success")
                 {
-                    vteam_http.hide("columnContainer");
+                    vteam_http.hide("product_list");
+                    vteam_http.hide("login_menu");
                     vteam_http.show("user_detail");
+                    
                     vteam_http.setHTML('loginResult','<a class="btn btn-success" id="email" style="margin-left:10px;margin-top:2px;" href="javascript:void(0)" onclick="showUserInfo()"><i class="icon-user icon-white" ></i>' + result.email + ' </a>'
                             + '<li id="fat-menu1" class="btn btn-success" style="width:60px;height:20px;margin-left:10px;" ><i class="icon-money" style="margin-left:-15px;"></i><a href="javascript:void(0)" id="drop4" role="button" class="dropdown-toggle" data-toggle="dropdown" style="color:white;">' + result.balance + '</a></li>'
                             + '<a class="btn btn-success" id="logout" style="margin-left:10px;margin-top:2px;" href="javascript:void(0)" onclick="logout()"><i class="icon-off icon-white" ></i></a>');
@@ -185,7 +189,7 @@ function inputCode() {
 function create(){
     var email = document.getElementById("new_username").value;
     var password = document.getElementById("new_password").value;
-    var fullname = document.getElementById("user_fullname").value;
+    var fullname = document.getElementById("new_fullname").value;
     vteam_http.makeHttpRequest("/user/create", {
         email: email,
         password:password,
@@ -204,8 +208,6 @@ function create(){
             });
 }
 function showLogin(){
-    vteam_http.hide("product_list");
-    vteam_http.hide("user_detail");
-    vteam_http.show("user_login");
-    vteam_http.hide("sigin");
+ vteam_http.show("user_login");
+ vteam_http.hide("product_list");
 }
