@@ -1007,3 +1007,25 @@ a:hover{
     content: " ";
     visibility: hidden;
 }
+.carousel-control {
+    background: none;
+    border: 0 none;
+    top: 50%;
+    color: #000;
+    text-align: left;
+    width: 20px;
+}
+.carousel-control.right {
+    left: auto;
+    text-align: right;
+    background: none;
+    border: 0 none;
+    top: 50%;
+    color: #000;
+}
+.carousel-control:hove{
+    color: #41b7d8;
+}
+.carousel-control.left:hover{
+    color: #41b7d8;
+}
