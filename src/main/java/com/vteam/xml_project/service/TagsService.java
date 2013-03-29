@@ -7,6 +7,7 @@ package com.vteam.xml_project.service;
 import com.vteam.xml_project.dto.TagsDTO;
 import com.vteam.xml_project.dto.TagsListDTO;
 import com.vteam.xml_project.hibernate.dao.ProductDAO;
+import com.vteam.xml_project.hibernate.dao.TagsDAO;
 import com.vteam.xml_project.hibernate.orm.Tags;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +28,9 @@ public class TagsService {
     private static Logger log = Logger.getLogger(UserService.class.getName());
     @Autowired
     private ProductDAO productDAO;
+    
+    @Autowired
+    private TagsDAO tagsDAO;
 
     @Transactional
     public TagsListDTO getTagsByProductId(int product_id) {
@@ -48,6 +52,29 @@ public class TagsService {
             listTags.setTagsList(tmpListTags);
             listTags.setStatus("success");
         } catch (HibernateException ex) {
+            log.error(ex.getStackTrace());
+            listTags.setStatus("error");
+            listTags.setMsg("Have some errors. Try again");
+        }
+        return listTags;
+    }
+    
+    @Transactional
+    public TagsListDTO getTagsList() {
+        TagsListDTO listTags = new TagsListDTO();
+        try {
+            List<Tags> dbTags = tagsDAO.getTagsList();
+            TagsDTO td = null;
+            List<TagsDTO> tmpListTags = new ArrayList<TagsDTO>();
+            for (Tags t : dbTags) {
+                td.setTagId(t.getId());
+                td.setTagName(t.getName());
+                td.setTagDescription(t.getDescription());
+                tmpListTags.add(td);
+            }
+            listTags.setTagsList(tmpListTags);
+            listTags.setStatus("success");
+        } catch (HibernateException ex){
             log.error(ex.getStackTrace());
             listTags.setStatus("error");
             listTags.setMsg("Have some errors. Try again");

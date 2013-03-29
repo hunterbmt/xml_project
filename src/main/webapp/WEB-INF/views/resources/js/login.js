@@ -62,7 +62,8 @@ function changeLogin() {
 }
 function displayunLogin() {
     vteam_http.hide("loginResult");
-    vteam_http.show("login");
+    vteam_http.hide("user_detail");
+    //vteam_http.show("login");
     vteam_http.show("login_menu");
 }
 function updateInfo() {
@@ -71,23 +72,25 @@ function updateInfo() {
     var birthday = document.getElementById("user_birthday").value;
     var format_date = "MM/dd/yyyy";
     vteam_http.makeHttpRequest("/user/update",
-            {address: address,
+               {address: address,
                 phone: phone,
                 birthday: birthday,
                 formatDate: format_date},
     "POST",
             function(result) {
-                if (result.status === "success")
+                if (result.status == "success")
                 {
                     vteam_http.setHTML("updateResult1","<font style='color: green;font-size: large;'><strong>Well done! !</strong> You successfully updated.</font>");
-                } else if (result.status === "unlogin") {
+                    loadUserInfo();
+                    
+                } else if (result.status == "unlogin") {
                     vteam_http.setHTML("updateResult1","<font style='color: black;font-size: large;'><strong>Sesstion Times out! !</strong> Please log in again.</font>");
-                } else if (result.status === "error") {
+                } else if(result.status == "error") {
                     vteam_http.setHTML("updateResult1","<font style='color: red;font-size: large;'><strong>Oh snap!!</strong> Change a few things up and try submitting again.</font>");
                 }
+
                 vteam_http.show("updateResult1");
-                $("#updateResult1").hide(1500);
-                setTimeout(vteam_http.hide("updateResult1"),1500);
+                setTimeout(vteam_http.hide("updateResult1"),20000);
             });
 
 }
@@ -118,7 +121,7 @@ function updatePassword() {
                     vteam_http.setHTML("updateResult1","<font style='color: red;font-size: large;'><strong>Oh snap!!</strong> Change a few things up and try submitting again.</font>");
                 }
                 vteam_http.show("updateResult1");
-                setTimeout(vteam_http.hide("updateResult1"),1500);
+                $("#updateResult1").hide('fast');
             });
 
 }
@@ -128,6 +131,8 @@ function showUserInfo() {
             function(result) {
                 if (result.status == "success")
                 {
+                    currentPosition += 1;
+                    divArray[currentPosition] = "user_detail"
                     vteam_http.hide("product_list");
 //                    vteam_http.hide("product_list");
                     vteam_http.show("user_detail");
@@ -136,6 +141,10 @@ function showUserInfo() {
                     document.getElementById('user_email').value = result.email;
                     document.getElementById('user_id').value = result.id;
                     document.getElementById('user_fullname').value = result.fullname;
+                    document.getElementById('user_phone').value = result.phone;
+                    document.getElementById('user_birthday').value = toDateAndTime2(result.birthday);
+                    document.getElementById('user_address').value = result.address;
+                    document.getElementById('user_balance').value = result.balance;
                 } else {
                     alert("error");
                 }
@@ -147,17 +156,20 @@ function loadUserInfo() {
             function(result) {
                 if (result.status == "success")
                 {
-                    vteam_http.hide("product_list");
+                    //vteam_http.hide("product_list");
                     vteam_http.hide("login_menu");
-                    vteam_http.show("user_detail");
+                    //vteam_http.show("user_detail");
                     
                     vteam_http.setHTML('loginResult','<a class="btn btn-success" id="email" style="margin-left:10px;margin-top:2px;" href="javascript:void(0)" onclick="showUserInfo()"><i class="icon-user icon-white" ></i>' + result.email + ' </a>'
-                            + '<li id="fat-menu1" class="btn btn-success" style="width:60px;height:20px;margin-left:10px;" ><i class="icon-money" style="margin-left:-15px;"></i><a href="javascript:void(0)" id="drop4" role="button" class="dropdown-toggle" data-toggle="dropdown" style="color:white;">' + result.balance + '</a></li>'
+                            + '<li id="fat-menu1" class="btn btn-success" style="width:70px;height:20px;margin-left:10px;" ><a href="javascript:void(0)" id="drop4" role="button" class="dropdown-toggle" data-toggle="dropdown" style="color:white;">' + result.balance+'Nil' + '</a></li>'
                             + '<a class="btn btn-success" id="logout" style="margin-left:10px;margin-top:2px;" href="javascript:void(0)" onclick="logout()"><i class="icon-off icon-white" ></i></a>');
                     vteam_http.show("loginResult");
                     document.getElementById('user_email').value = result.email;
                     document.getElementById('user_id').value = result.id;
                     document.getElementById('user_fullname').value = result.fullname;
+                    document.getElementById('user_phone').value = result.phone;
+                    document.getElementById('user_address').value = result.address;
+                    document.getElementById('user_balance').value = result.balance;
                 } else if(result.status == "unlogin") {
                     displayunLogin()
                 } else {

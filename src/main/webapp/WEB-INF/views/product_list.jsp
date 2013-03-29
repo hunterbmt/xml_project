@@ -131,7 +131,7 @@
                     </div>
                     
                     <div class="span10 offset1 hide" id="user_detail">
-                        <div class="alert" id="updateResult1" style="display: none;z-index: 9002"></div> 	-        
+                       <div class="alert hide" id="updateResult1" style="margin-top: 20px"></div>
                        <div class="tabbable tabs-left">
                        <ul class="nav nav-tabs">
                             <li class="active"><a href="#lA" data-toggle="tab">Profile</a></li>
