@@ -84,15 +84,15 @@
 
             <div id="wrapper">
                 <div id="columnContainer" class="row-fluid">
-                    <div class="span10" id="sequence-theme" style="width: 90%;position: fixed;margin-top: 100px;z-index: 100;">
-                        <li class="prev">
+                    <div class="span10" id="sequence-theme" style="width: 90%;height: 55px;position: fixed;margin-top: 160px;z-index: 100;">
+                        <li class="prev" id="back" onclick="backOnClick()">
                             <i class="e-icon-left-open-big-open-big">
-                                <i class="icon-white icon-reply" id="back" onclick="backOnClick()"></i>
+                                <i class="icon-white icon-reply" ></i>
                             </i>
                         </li>
-                        <li class="next">
+                        <li class="next" id="next" onclick="nextOnClick()">
                             <i class="e-icon-right-open-big-open-big">  
-                                <i class="icon-white icon-share-alt" id="next" onclick="nextOnClick()"></i>
+                                <i class="icon-white icon-share-alt" ></i>
                             </i>
                         </li>
                     </div>
