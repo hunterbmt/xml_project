@@ -13,7 +13,6 @@
         <link href="/resources/css/bootstrap-responsive.css" rel="stylesheet">
         <link href="/resources/css/font-awesome.css" rel="stylesheet">
         <link href="/resources/css/product.css" rel="stylesheet">
-        <link href="/resources/css/animated-slider.css" rel="stylesheet">
         <link href="/resources/css/entypo.css" rel="stylesheet">
         <link href="/resources/css/jquery-ui-helper.css" rel="stylesheet">
         <script src="/resources/js/lib/jquery.js"></script>
