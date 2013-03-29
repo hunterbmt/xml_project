@@ -85,10 +85,8 @@
 
             <div id="wrapper">
                 <div id="columnContainer" class="row-fluid">
-                    <div class="span10" id="sequence-theme" style="width: 90%;height: 50%;position: fixed;margin-top: 160px;">
-                        <a class="carousel-control left" id="back" onclick="backOnClick()" href="javascript:void(0)">‹</a>
-                        <a class="carousel-control right" id="next" onclick="nextOnClick()" href="javascript:void(0)">›</a>
-                    </div>
+                    <a class="carousel-control left" id="back" onclick="backOnClick()" href="javascript:void(0)">‹</a>
+                    <a class="carousel-control right" id="next" onclick="nextOnClick()" href="javascript:void(0)">›</a>
                     <div  class="span10 offset1" id="product_list">
                     </div>
                     <div class="span10 offset1 hide" id="search_product_list">
@@ -107,8 +105,8 @@
                                     <div class="input-prepend"><span class="add-on" style="height: 30px;"><i class="icon-lock"></i></span></span><input class="input-large" name="miniusername"  id="user_password" type="password" style="height: 30px;"></div>
 
                                     <p/>
-                                    <button name="send" type="button"  class="btn btn-success btn-small" onclick="login()">Login</button>
-                                    <button name="send" type="button"  class="btn  btn-small" onclick="changeSigin()">Sig up</button>
+                                    <button name="send" type="button" class="btn btn-success" onclick="login()">Login</button>
+                                    <button name="send" type="button"  class="btn " onclick="changeSigin()">Sig up</button>
 
                                 </fieldset>
                             </form>

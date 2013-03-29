@@ -1008,6 +1008,7 @@ a:hover{
     visibility: hidden;
 }
 .carousel-control {
+    position: fixed;
     background: none;
     border: 0 none;
     top: 50%;
