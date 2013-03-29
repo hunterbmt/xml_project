@@ -12,7 +12,6 @@ import com.vteam.xml_project.hibernate.dao.SearchCacheDAO;
 import com.vteam.xml_project.hibernate.orm.Bids;
 import com.vteam.xml_project.hibernate.orm.Product;
 import com.vteam.xml_project.hibernate.orm.SearchCache;
-import com.vteam.xml_project.util.DateUtil;
 import com.vteam.xml_project.util.XMLUtil;
 import java.util.ArrayList;
 import java.util.Date;
@@ -24,10 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-/**
- *
- * @author phitt60230
- */
+
 @Service
 public class ProductService {
 
@@ -38,15 +34,15 @@ public class ProductService {
     private BidDAO bidDAO;
     @Autowired
     private SearchCacheDAO searchCacheDAO;
-    @Autowired
-    private DateUtil dateUtil;
+    
+    private static final int PAGESIZE = 50;
     private static final int CACHETIMEOUT = 24;
 
     @Transactional
-    public ProductListDTO getProductList(int page, int pageSize) {
+    public ProductListDTO getProductList(int page) {
         ProductListDTO list = new ProductListDTO();
         try {
-            List<Product> dbProducts = productDAO.getProductList(page, pageSize);
+            List<Product> dbProducts = productDAO.getProductList(page, PAGESIZE);
             ProductDTO p;
             Bids bid;
             long time = 0;
@@ -91,7 +87,7 @@ public class ProductService {
     }
 
     @Transactional
-    public ProductListDTO searchProduct(String txtSearch, int page, int pageSize, String appPath) {
+    public ProductListDTO searchProduct(String txtSearch, int page, String appPath) {
         appPath  = appPath + "/";
         String fileName = txtSearch.trim()+"_"+page+"_search_product_cache.xml";
         ProductListDTO list = new ProductListDTO();
@@ -102,7 +98,7 @@ public class ProductService {
                 list.setStatus("success");
                 return list;
             } else {
-                List<Product> dbProducts = productDAO.searchProduct(txtSearch, page, pageSize);
+                List<Product> dbProducts = productDAO.searchProduct(txtSearch, page, PAGESIZE);
                 ProductDTO p;
 
                 List<ProductDTO> tmpList = new ArrayList<ProductDTO>();
@@ -130,11 +126,11 @@ public class ProductService {
                 searchCacheDAO.save(searchCache);
             }
         } catch (HibernateException ex) {
-            log.error(ex.getStackTrace());
+            log.error(ex.getMessage());
             list.setStatus("error");
             list.setMsg("Have some errors. Try again");
         } catch (JAXBException jaxbEx) {
-            log.error(jaxbEx.getStackTrace().toString());
+            log.error(jaxbEx.getMessage());
             list.setStatus("error");
             list.setMsg("Have some errors. Try again");
         }
@@ -181,10 +177,10 @@ public class ProductService {
     }
 
     @Transactional
-    public ProductListDTO searchProductByCategoryId(int category_id, int page, int pageSize) {
+    public ProductListDTO searchProductByCategoryId(int category_id, int page) {
         ProductListDTO list = new ProductListDTO();
         try {
-            List<Product> dbProducts = productDAO.searchProductByCategoryId(category_id, page, pageSize);
+            List<Product> dbProducts = productDAO.searchProductByCategoryId(category_id, page, PAGESIZE);
             ProductDTO pd;
 
             List<ProductDTO> tmpList = new ArrayList<ProductDTO>();
@@ -208,10 +204,10 @@ public class ProductService {
     }
 
     @Transactional
-    public ProductListDTO searchProductByTagsId(int tags_id, int page, int pageSize) {
+    public ProductListDTO searchProductByTagsId(int tags_id, int page) {
         ProductListDTO list = new ProductListDTO();
         try {
-            List<Product> dbProducts = productDAO.searchProductByTagID(tags_id, page, pageSize);
+            List<Product> dbProducts = productDAO.searchProductByTagID(tags_id, page, PAGESIZE);
             List<ProductDTO> tmpList = new ArrayList<ProductDTO>();
             ProductDTO pd;
             for (Product d : dbProducts) {

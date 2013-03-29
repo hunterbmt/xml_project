@@ -42,4 +42,7 @@ public class ProductListDTO extends BaseDTO {
     public void setNumberOfProduct(int numberOfProduct) {
         this.numberOfProduct = numberOfProduct;
     }
+    public int getNumberOfRecord(){
+        return this.productList.size();
+    }
 }

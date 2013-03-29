@@ -122,4 +122,4 @@ CREATE TABLE `tbl_search_cache`(
    `file_name` varchar(255) NOT NULL,
    `cache_date` DATETIME NOT NULL,
     PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
