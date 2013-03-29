@@ -64,16 +64,12 @@
                                 </div>           
                             </form>
                             <ul id ="menu"class="nav">
-<<<<<<< HEAD
-                                <li class="active"><a href="#" onclick="changeContext()">Home</a></li>
-                                <li><a href="#">Hot Bids</a></li>
-                                <li class="test" id="login_menu"><a href="#" onclick="showLogin()">Log in</a></li>
-                                <li><div class="hide" id="loginResult" style="margin-top: 5px"></div></li>
-=======
                                 <c:import url="/resources/xml/main_page_menu.xml" var="menuXML"/>
                                 <c:import url="/resources/xsl/main_page_menu.xsl" var="menuXSL"/>
                                 <x:transform xml="${menuXML}" xslt="${menuXSL}"/>
->>>>>>> c043a9f2ef47639f4886af95e6ce8ae57127fc6f
+                                <li class="test" id="login_menu"><a href="#" onclick="showLogin()">Log in</a></li>
+                                <li><div class="hide" id="loginResult" style="margin-top: 5px"></div></li>
+                                
                             </ul>
                         </div>
                     </div><!--/.nav-collapse -->
@@ -88,13 +84,13 @@
 
             <div id="wrapper">
                 <div id="columnContainer" class="row-fluid">
-                    <div class="span10" id="sequence-theme" style="width: 90%;height: auto;position: fixed;margin-top: 100px;z-index: 99999;">
-                        <li class="prev" style>
+                    <div class="span10" id="sequence-theme" style="width: 90%;position: fixed;margin-top: 100px;z-index: 100;">
+                        <li class="prev">
                             <i class="e-icon-left-open-big-open-big">
-                                <i class="icon-reply" id="back" onclick="backOnClick()"></i>
+                                <i class="icon-white icon-reply" id="back" onclick="backOnClick()"></i>
                             </i>
                         </li>
-                        <li class="next" style>
+                        <li class="next">
                             <i class="e-icon-right-open-big-open-big">  
                                 <i class="icon-white icon-share-alt" id="next" onclick="nextOnClick()"></i>
                             </i>
