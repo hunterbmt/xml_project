@@ -122,6 +122,9 @@ public class UserService {
             returnUser.setEmail(dbUser.getEmail());
             returnUser.setFullname(dbUser.getFullname());
             returnUser.setId(dbUser.getId());
+            returnUser.setAddress(dbUser.getAddress());
+            returnUser.setPhone(dbUser.getPhone());
+            returnUser.setBirthday(dbUser.getBirthday());
             returnUser.setBalance(dbUser.getBalance());
             returnUser.setStatus("success");
         } catch (HibernateException ex) {
