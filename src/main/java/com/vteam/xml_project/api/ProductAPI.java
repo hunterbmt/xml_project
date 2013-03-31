@@ -43,10 +43,9 @@ public class ProductAPI {
 
     @RequestMapping(value = "/searchProduct", method = RequestMethod.POST,produces = "application/json")
     public @ResponseBody
-    ProductListDTO getSearchProductList(HttpServletRequest request,
+    ProductListDTO getSearchProductList(
             @RequestParam String txtSearch, int page) {
-        String serverContextPath = request.getRealPath("WEB-INF/cache/");
-        ProductListDTO result = productService.searchProduct(txtSearch, page,serverContextPath);
+        ProductListDTO result = productService.searchProduct(txtSearch, page);
         return result;
     }
     

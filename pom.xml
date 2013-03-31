@@ -48,6 +48,13 @@
     </repositories>
 
     <dependencies>
+        <!--FOP-->
+        <dependency>
+            <groupId>org.apache.xmlgraphics</groupId>
+            <artifactId>fop</artifactId>
+            <version>1.0</version>
+        </dependency>
+
         <!--JAXB -->
         <dependency>
             <groupId>com.sun.xml.bind</groupId>
