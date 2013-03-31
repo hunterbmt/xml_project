@@ -174,7 +174,7 @@
 
                                </form>
                            </div>
-                           <div class="tab-pane" id="lC" style="width: 100%" >
+                            <div class="tab-pane" id="lC" style="width: 100%" onclick="loadAndDisplayOrder()">
                                <table class="table table-hover">
                                    <caption><h3>User's Order History</h3> </caption>
                                    <thead>
@@ -190,13 +190,28 @@
                                     </tbody>
                                 </table>
                             </div>
-                           <div class="tab-pane" id="lD">
+                            <div class="tab-pane" id="lD" >
                                <form id="tab4">
                                    <label>Enter your code here:</label>
                                     <input type="text" id="payment_code" class="input-xlarge">       
                                    <div>   
-                                       <button type='button' class="btn btn-success" onclick="inputCode()">Update</button>	 
+                                       <button type='button' class="btn btn-success" onclick="inputCode()">Update</button>
+                                       <button type='button' class="btn btn-success" onclick="loadAndDisplayPayment()">Show Payment</button>
+                                   </div>
 	                        </form>
+                               <table class="table table-hover" id="tablePayment">
+                                   <caption><h3>User's Payment History</h3> </caption>
+                                   <thead>
+                                       <tr>
+                                           <td><h4>Card Code</h4></td>
+                                           <td><h4>Date</h4></td>
+                                            <td><h4>Amount</h4></td> 
+                                        </tr>
+                                    </thead>
+                                   <tbody  id="paymentResult">
+
+                                    </tbody>
+                                </table>
 	                    </div>
 	                    
 
