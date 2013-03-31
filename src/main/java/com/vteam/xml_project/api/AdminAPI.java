@@ -123,7 +123,7 @@ public class AdminAPI {
     
     
 
-    @RequestMapping(value = "/getCategoryNameList", method = RequestMethod.POST)
+    @RequestMapping(value = "/getCategoryNameList", method = RequestMethod.POST,  produces = "application/json")
     public @ResponseBody
     CategoryListDTO getCategoryNameList() {
 
@@ -131,7 +131,7 @@ public class AdminAPI {
         return categoryListDTO;
     }
 
-    @RequestMapping(value = "/insert_category", method = RequestMethod.POST)
+    @RequestMapping(value = "/insert_category", method = RequestMethod.POST,  produces = "application/json")
     public @ResponseBody
     CategoryDTO insertCategory(
             @RequestParam String categoryName, String description) {
@@ -139,7 +139,7 @@ public class AdminAPI {
         return categoryDTO;
     }
 
-    @RequestMapping(value = "/update_category", method = RequestMethod.POST)
+    @RequestMapping(value = "/update_category", method = RequestMethod.POST,  produces = "application/json")
     public @ResponseBody
     CategoryDTO updateCategory(
             @RequestParam int categoryId, String description) {
@@ -155,7 +155,7 @@ public class AdminAPI {
         return ninCodeListDTO;
     }
     
-    @RequestMapping(value = "/insert_tag", method = RequestMethod.POST)
+    @RequestMapping(value = "/insert_tag", method = RequestMethod.POST,  produces = "application/json")
     public @ResponseBody
     TagsDTO insertTag(
             @RequestParam String tagName, String description) {
