@@ -80,4 +80,21 @@ public class TagsService {
         }
         return listTags;
     }
+    
+    @Transactional
+    public TagsDTO getTagDetail(int tagID) {
+        TagsDTO tagDTO = new TagsDTO();
+        try {
+            Tags dbTag = tagsDAO.getTagById(tagID);
+            tagDTO.setTagId(dbTag.getId());
+            tagDTO.setTagName(dbTag.getName());
+            tagDTO.setTagDescription(dbTag.getDescription());
+            tagDTO.setStatus("success");
+        } catch (HibernateException ex) {
+            log.error(ex);
+            tagDTO.setMsg("Have some errors. Try again");
+            tagDTO.setStatus("error");
+        }
+        return tagDTO;
+    }
 }

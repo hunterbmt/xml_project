@@ -5,6 +5,7 @@
 package com.vteam.xml_project.api;
 
 import com.vteam.xml_project.controller.UserSession;
+import com.vteam.xml_project.dto.TagsDTO;
 import com.vteam.xml_project.dto.TagsListDTO;
 import com.vteam.xml_project.service.TagsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +40,13 @@ public class TagsAPI {
     public @ResponseBody
     TagsListDTO getTagsList() {
         TagsListDTO resultTags = tagsService.getTagsList();
+        return resultTags;
+    }
+    
+    @RequestMapping(value = "/getTagDetail", method = RequestMethod.POST)
+    public @ResponseBody TagsDTO getTagDetail(
+            @RequestParam int tag_id) {
+        TagsDTO resultTags = tagsService.getTagDetail(tag_id);
         return resultTags;
     }
 }

@@ -10,6 +10,7 @@ import com.vteam.xml_project.dto.NinCodeDTO;
 import com.vteam.xml_project.dto.NinCodeListDTO;
 import com.vteam.xml_project.dto.ProductDTO;
 import com.vteam.xml_project.dto.ProductListDTO;
+import com.vteam.xml_project.dto.TagsDTO;
 import com.vteam.xml_project.hibernate.dao.BidDAO;
 import com.vteam.xml_project.hibernate.dao.CardCodeDAO;
 import com.vteam.xml_project.hibernate.dao.CategoryDAO;
@@ -265,5 +266,36 @@ public class AdminService {
             ninCodeList.setMsg("Have some errors. Try again");
         }
         return ninCodeList;
+    }
+    
+    @Transactional
+    public TagsDTO insertTag(String tagName, String description) {
+        TagsDTO tagDTO = new TagsDTO();
+        try {
+            Tags tag = new Tags(tagName, description);
+            tagsDAO.save(tag);
+            tagDTO.setStatus("success");
+        } catch (HibernateException ex) {
+            log.error(ex);
+            tagDTO.setStatus("error");
+            tagDTO.setMsg("Have some errors . Try again");
+        }
+        return tagDTO;
+    }
+
+    @Transactional
+    public TagsDTO updateTag(int tagID, String description) {
+        TagsDTO tagDTO = new TagsDTO();
+        try {
+            Tags tag = tagsDAO.getTagById(tagID);
+            tag.setDescription(description);
+            tagsDAO.save(tag);
+            tagDTO.setStatus("success");
+        } catch (HibernateException ex) {
+            log.error(ex);
+            tagDTO.setStatus("error");
+            tagDTO.setMsg("Have some errors. Try again");
+        }
+        return tagDTO;
     }
 }

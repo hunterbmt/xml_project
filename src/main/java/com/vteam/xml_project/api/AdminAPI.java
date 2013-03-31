@@ -11,6 +11,7 @@ import com.vteam.xml_project.dto.CategoryListDTO;
 import com.vteam.xml_project.dto.NinCodeListDTO;
 import com.vteam.xml_project.dto.ProductDTO;
 import com.vteam.xml_project.dto.ProductListDTO;
+import com.vteam.xml_project.dto.TagsDTO;
 import com.vteam.xml_project.service.AdminService;
 import com.vteam.xml_project.service.CategoryService;
 import com.vteam.xml_project.service.ProductService;
@@ -65,6 +66,7 @@ public class AdminAPI {
         ProductDTO result = adminService.updateProduct(productId, categoryId, productName, description, img, minPrice, maxPrice,tags);
         return result;
     }
+
 
     @RequestMapping(value = "/update_bid", method = RequestMethod.POST)
     public @ResponseBody
@@ -151,5 +153,22 @@ public class AdminAPI {
             @RequestParam int amount, int quantity) {
         NinCodeListDTO ninCodeListDTO = adminService.generateNin(amount, quantity);
         return ninCodeListDTO;
+    }
+    
+    @RequestMapping(value = "/insert_tag", method = RequestMethod.POST)
+    public @ResponseBody
+    TagsDTO insertTag(
+            @RequestParam String tagName, String description) {
+        TagsDTO tagDTO = adminService.insertTag(tagName, description);
+        return tagDTO;
+    }
+    
+        
+    @RequestMapping(value = "/update_tag", method = RequestMethod.POST, produces = "application/json")
+    public @ResponseBody
+    TagsDTO updateTag(
+            @RequestParam int tagId, String description) {
+        TagsDTO tagDTO = adminService.updateTag(tagId, description);
+        return tagDTO;
     }
 }
