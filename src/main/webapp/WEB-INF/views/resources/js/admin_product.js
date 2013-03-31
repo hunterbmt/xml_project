@@ -211,7 +211,7 @@ function insertOrUpdateCategory() {
                         description: description},
             'POST', callbackCategoryEdit);
         }
-        clearValidCateogry();
+        clearValidCategory();
     }
 }
 function callbackCategoryEdit(result) {
@@ -233,7 +233,7 @@ function displayCategoryMsg(msg) {
 }
 function validProduct(name, cate_name, min_price, max_price, image)
 {
-    
+
     if (name == null || name == "") {
         var div = $("#product_name").parents("div.control-group");
         div.removeClass("success");
@@ -339,11 +339,10 @@ function validCategory(name, des) {
     }
     return  true;
 }
-function clearValidCateogry() {
+function clearValidCategory() {
     var div_name = $("#category_detail_name").parents("div.control-group");
     var div_des = $("#category_detail_description").parents("div.control-group");
     div_name.removeClass("success");
     div_des.removeClass("success");
 }
->>> >>> > 264a7328c454fde0237ecd0b19bb536238f4e94f
 
