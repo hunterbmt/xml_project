@@ -13,16 +13,27 @@ import com.vteam.xml_project.hibernate.orm.Bids;
 import com.vteam.xml_project.hibernate.orm.Product;
 import com.vteam.xml_project.hibernate.orm.SearchCache;
 import com.vteam.xml_project.util.XMLUtil;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import javax.servlet.ServletContext;
 import javax.xml.bind.JAXBException;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpressionException;
+import javax.xml.xpath.XPathFactory;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 @Service
 public class ProductService {
@@ -34,7 +45,8 @@ public class ProductService {
     private BidDAO bidDAO;
     @Autowired
     private SearchCacheDAO searchCacheDAO;
-    
+    @Autowired
+    ServletContext servletContext;
     private static final int PAGESIZE = 50;
     private static final int CACHETIMEOUT = 24;
 
@@ -87,12 +99,13 @@ public class ProductService {
     }
 
     @Transactional
-    public ProductListDTO searchProduct(String txtSearch, int page, String appPath) {
-        appPath  = appPath + "/";
-        String fileName = txtSearch.trim()+"_"+page+"_search_product_cache.xml";
+    public ProductListDTO searchProduct(String txtSearch, int page) {
+        String appPath = servletContext.getRealPath("WEB-INF/cache/");
+        appPath = appPath + "/";
+        String fileName = txtSearch.trim() + "_" + page + "_search_product_cache.xml";
         ProductListDTO list = new ProductListDTO();
         try {
-            SearchCache searchCache = searchCacheDAO.getSearchCacheByQuery(txtSearch+"_"+page);
+            SearchCache searchCache = searchCacheDAO.getSearchCacheByQuery(txtSearch + "_" + page);
             if (checkForCache(searchCache)) {
                 list = convertCacheToProductListDTO(appPath + searchCache.getFileName());
                 list.setStatus("success");
@@ -116,13 +129,13 @@ public class ProductService {
                 list.setProductList(tmpList);
                 converProductListDTOToCache(list, appPath + fileName);
                 list.setStatus("success");
-                
+
                 if (searchCache == null) {
                     searchCache = new SearchCache();
                 }
                 searchCache.setCacheDate(new Date());
                 searchCache.setFileName(fileName);
-                searchCache.setQuery(txtSearch+"_"+page);
+                searchCache.setQuery(txtSearch + "_" + page);
                 searchCacheDAO.save(searchCache);
             }
         } catch (HibernateException ex) {
@@ -176,10 +189,23 @@ public class ProductService {
         return productDTO;
     }
 
+    private ProductListDTO convertFromNodeToProductListDTO(Node node) throws JAXBException{
+        ProductListDTO result = XMLUtil.UnMarshall(ProductListDTO.class, node);
+        return result;
+    }
     @Transactional
     public ProductListDTO searchProductByCategoryId(int category_id, int page) {
         ProductListDTO list = new ProductListDTO();
         try {
+            if (page == 1) {
+                String realPath = servletContext.getRealPath("WEB-INF/views/resources/xml/") + "/";
+                Document doc = XMLUtil.parseDOM(realPath + "category.xml");
+                XPathFactory xpf = XPathFactory.newInstance();
+                XPath xpath = xpf.newXPath();
+                String exp ="//category[id= "+category_id+"]/productList";
+                Node productListNode= (Node) xpath.evaluate(exp, doc, XPathConstants.NODE);
+                return convertFromNodeToProductListDTO(productListNode);
+            }
             List<Product> dbProducts = productDAO.searchProductByCategoryId(category_id, page, PAGESIZE);
             ProductDTO pd;
 
@@ -190,12 +216,30 @@ public class ProductService {
                 pd.setId(d.getId());
                 pd.setDescription(d.getDescription());
                 pd.setImage("/resources/img/product/" + d.getImage());
+                pd.setMinPrice(d.getMinPrice());
+                pd.setMaxPrice(d.getMaxPrice());
                 pd.setBidId(d.getBidId());
                 tmpList.add(pd);
             }
             list.setProductList(tmpList);
             list.setStatus("success");
-        } catch (HibernateException ex) {
+        }catch (IOException ex) {
+            log.error(ex);
+            list.setStatus("error");
+            list.setMsg("Have some errors ! Try again");
+        } catch (SAXException ex) {
+            log.error(ex);
+            list.setStatus("error");
+            list.setMsg("Have some errors ! Try again");
+        } catch (XPathExpressionException ex) {
+            log.error(ex);
+            list.setStatus("error");
+            list.setMsg("Have some errors ! Try again");
+        } catch (JAXBException ex) {
+            log.error(ex);
+            list.setStatus("error");
+            list.setMsg("Have some errors ! Try again");
+        } catch (ParserConfigurationException ex) {
             log.error(ex);
             list.setStatus("error");
             list.setMsg("Have some errors ! Try again");

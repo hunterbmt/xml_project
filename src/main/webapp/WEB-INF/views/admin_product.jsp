@@ -225,6 +225,43 @@
                             </div>
 
                         </div>
+                        <div class="widget">
+                            <div class="widget-header">
+                                <i class="icon-tasks"></i>
+                                <h3>Tags detail</h3>
+                            </div>
+
+                            <div class="widget-content">
+                                <form action="#" method="get" class="form-horizontal">
+                                    <div class="control-group">
+                                        <label class="control-label">Id</label>
+                                        <div class="controls">
+                                            <span id="tag_detail_id"class="input-medium uneditable-input"></span>
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label">Name</label>
+                                        <div class="controls">
+                                            <input id="tag_detail_name" type="text"/>
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label">Description</label>
+                                        <div class="row">
+                                            <textarea id="tag_detail_description" style="height: 120px"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="controls-button">
+                                        <button type="button" id="tag_detail_btn" class="btn btn-warning" onclick="insertOrUpdateTag()">Save</button>
+                                        <button type="button" class="btn" onclick="clearTagDetail()">New</button>
+                                    </div>
+                                    <div>
+                                        <span class="alert-info hide" id="result_tag"></span>
+                                    </div>
+                                </form>
+                            </div>
+
+                        </div>
                     </div>
                 </div>    
             </div>

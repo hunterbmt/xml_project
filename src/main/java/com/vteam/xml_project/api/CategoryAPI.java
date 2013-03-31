@@ -32,7 +32,7 @@ public class CategoryAPI {
     @Autowired
     private ProductService productService;
 
-    @RequestMapping(value = "/getCategoryList")
+    @RequestMapping(value = "/getCategoryList",produces = "application/json")
     public @ResponseBody
     CategoryListDTO getCategoryList() {
 
@@ -43,8 +43,8 @@ public class CategoryAPI {
     @RequestMapping(value = "/searchProductByCategoryId", method = RequestMethod.POST,produces = "application/json")
     public @ResponseBody
     ProductListDTO searchProductByCategoryId(
-            @RequestParam int category_id, int page) {
-        ProductListDTO searchCategoryResult = productService.searchProductByCategoryId(category_id,page);
+            @RequestParam int categoryId, int page) {
+        ProductListDTO searchCategoryResult = productService.searchProductByCategoryId(categoryId,page);
         return searchCategoryResult;
     }
     @RequestMapping(value = "/getCategoryDetail", method = RequestMethod.POST)

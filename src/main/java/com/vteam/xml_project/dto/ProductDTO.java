@@ -6,6 +6,7 @@ package com.vteam.xml_project.dto;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -139,6 +140,7 @@ public class ProductDTO extends BaseDTO {
         this.categoryId = categoryId;
     }
 
+    @XmlElement(name ="shortDescription")
     public String getShortDescription() {
         if (description == null || description.trim().equals("")) {
             return null;

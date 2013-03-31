@@ -32,7 +32,6 @@
         <script>
             $(document).ready(function() {
                 loadAndDisplayProduct(1);
-                loadAndDisplayCategory();
                 initUserInfo();
                 $('#user_birthday').datepicker({
                     showMonthAfterYear: false,
@@ -64,7 +63,7 @@
                                 </div>           
                             </form>
                             <ul id ="menu"class="nav">
-                                <c:import url="/resources/xml/main_page_menu.xml" var="menuXML"/>
+                                <c:import url="/resources/xml/main_page_menu.xml" var="menuXML" charEncoding="UTF-8"/>
                                 <c:import url="/resources/xsl/main_page_menu.xsl" var="menuXSL"/>
                                 <x:transform xml="${menuXML}" xslt="${menuXSL}"/>
                                 <li class="test" id="login_menu"><a href="#" onclick="showLogin()">Log in</a></li>
@@ -78,6 +77,9 @@
         </div>
         <div id="CategoriesBar" class="-exp navbar-fixed-top">
             <ul id ="CategoriesBar_ul"class="LiquidContainer HeaderContainer" style="width: 100%">
+                <c:import url="/resources/xml/category.xml" var="categoryXML" charEncoding="UTF-8"/>
+                <c:import url="/resources/xsl/category.xsl" var="categoryXSL"/>
+                <x:transform xml="${categoryXML}" xslt="${categoryXSL}"/>
             </ul>
         </div>
         <div class="container" id="product" style="position: relative">
@@ -129,49 +131,48 @@
                             <div id="result" style="display: none"></div>
                         </div>
                     </div>
-                    
+
                     <div class="span10 offset1 hide" id="user_detail" style="margin-top: 40px;">
-                       <div class="alert hide" id="updateResult1"></div>
-                       <div class="tabbable tabs-left">
-                       <ul class="nav nav-tabs">
-                            <li class="active"><a href="#lA" data-toggle="tab">Profile</a></li>
-                            <li class=""><a href="#lB" data-toggle="tab">Change Password</a></li>
-                           <li class=""><a href="#lC" data-toggle="tab" onclick="loadAndDisplayOrder()">Orders History</a></li>
-                           <li class=""><a href="#lD" data-toggle="tab">Payment</a></li>
-                        </ul>
-                        <div class="tab-content">
+                        <div class="alert hide" id="updateResult1"></div>
+                        <div class="tabbable tabs-left">
+                            <ul class="nav nav-tabs">
+                                <li class="active"><a href="#lA" data-toggle="tab">Profile</a></li>
+                                <li class=""><a href="#lB" data-toggle="tab">Change Password</a></li>
+                                <li class=""><a href="#lC" data-toggle="tab" onclick="loadAndDisplayOrder()">Orders History</a></li>
+                                <li class=""><a href="#lD" data-toggle="tab">Payment</a></li>
+                            </ul>
+                            <div class="tab-content">
 
-                           <div class="tab-pane active" id="lA">
-                              <form id="tab">
-                                  <label>Email</label>
-                                  <input type="text" id="user_email" class="input-xlarge" readonly="true">
-                                  <input type="hidden" id="user_id" class="input-xlarge">
-                                  <label>Tên thật</label>
-                                  <input type="text" id="user_fullname" class="input-xlarge">
-                                   <label>Phone</label>
-                                    <input type="text" id="user_phone"  class="input-xlarge">
-                                   <label>Địa chỉ</label>
-                                   <input type="text" id="user_address"  class="input-xlarge">
-                                   <label>Ngày sinh</label>
-                                  <input type="text" id="user_birthday" class="input-xlarge">
-                                   <label>Tài khoản</label>
-                                   <input type="text" id="user_balance" class="input-xlarge" readonly="true">
-                                   <div class="row" style="display: inline;margin-left: 0px" >
-                                       <button type='button' class="btn btn-success" onclick="updateInfo()">Update</button>
-                                    </div>
-                                    </span>
-                                </form>
-	                             </div>
-                           <div class="tab-pane" id="lB">
-                                <form id="tab2">
-                                    <label>Mật khẩu mới</label>
-                                    <input type="password" id="newpassword" class="input-xlarge">       
-                                    <label>Mật khẩu cũ</label>
-                                    <input type="password" id="curr_password" class="input-xlarge">
-                                    <div>   
-                                        <button type='button' class="btn btn-success" onclick="updatePassword()">Update</button>
-                                   </div>
-
+                                <div class="tab-pane active" id="lA">
+                                    <form id="tab">
+                                        <label>Email</label>
+                                        <input type="text" id="user_email" class="input-xlarge" readonly="true">
+                                        <input type="hidden" id="user_id" class="input-xlarge">
+                                        <label>Tên thật</label>
+                                        <input type="text" id="user_fullname" class="input-xlarge">
+                                        <label>Phone</label>
+                                        <input type="text" id="user_phone"  class="input-xlarge">
+                                        <label>Địa chỉ</label>
+                                        <input type="text" id="user_address"  class="input-xlarge">
+                                        <label>Ngày sinh</label>
+                                        <input type="text" id="user_birthday" class="input-xlarge">
+                                        <label>Tài khoản</label>
+                                        <input type="text" id="user_balance" class="input-xlarge" readonly="true">
+                                        <div class="row" style="display: inline;margin-left: 0px" >
+                                            <button type='button' class="btn btn-success" onclick="updateInfo()">Update</button>
+                                        </div>
+                                        </span>
+                                    </form>
+                                </div>
+                                <div class="tab-pane" id="lB">
+                                    <form id="tab2">
+                                        <label>Mật khẩu mới</label>
+                                        <input type="password" id="newpassword" class="input-xlarge">       
+                                        <label>Mật khẩu cũ</label>
+                                        <input type="password" id="curr_password" class="input-xlarge">
+                                        <div>   
+                                            <button type='button' class="btn btn-success" onclick="updatePassword()">Update</button>
+                                        </div>
                                </form>
                            </div>
                             <div class="tab-pane" id="lC" style="width: 100%" onclick="loadAndDisplayOrder()">
@@ -213,15 +214,14 @@
                                     </tbody>
                                 </table>
 	                    </div>
-	                    
-
-                    </div>
+	                   
+                            </div>
                         </div>
-                  </div>
-                  </div>
-	       
+                    </div>
+                </div>
+
             </div>
-            </div>
-        </div>  
-    </body>
+        </div>
+    </div>  
+</body>
 </html>

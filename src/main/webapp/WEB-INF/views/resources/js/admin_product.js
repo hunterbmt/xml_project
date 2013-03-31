@@ -58,7 +58,6 @@ function insertOrUpdateProduct() {
     var max_price = vteam_http.getValue("product_max_price");
     var img = vteam_http.getValue("product_img");
     var tags = vteam_http.getValue('tags_id');
-    ;
     if (id) {
         vteam_http.makeHttpRequest("/admin/update_product",
                 {productId: id,
@@ -68,20 +67,20 @@ function insertOrUpdateProduct() {
                     img: img,
                     minPrice: parseFloat(min_price),
                     maxPrice: parseFloat(max_price),
-                    tags:tags},
+                    tags: tags},
         'POST', callback);
     } else {
-        if(validProduct(product_name,category_id,min_price,max_price,img)){
-        vteam_http.makeHttpRequest("/admin/insert_product",
-                {
-                    productName: product_name,
-                    description: description,
-                    categoryId: category_id,
-                    img: img,
-                    minPrice: parseFloat(min_price),
-                    maxPrice: parseFloat(max_price),
-                    tags:tags},
-        'POST', callback);
+        if (validProduct(product_name, category_id, min_price, max_price, img)) {
+            vteam_http.makeHttpRequest("/admin/insert_product",
+                    {
+                        productName: product_name,
+                        description: description,
+                        categoryId: category_id,
+                        img: img,
+                        minPrice: parseFloat(min_price),
+                        maxPrice: parseFloat(max_price),
+                        tags: tags},
+            'POST', callback);
         }
         clearValidProduct();
     }
@@ -198,21 +197,21 @@ function insertOrUpdateCategory() {
     var categoryId = category_current_id;
     var description = $('#category_detail_description').val();
     var name = $('#category_detail_name').val();
-    validCategory(name,description);
+    validCategory(name, description);
     if (categoryId) {
         vteam_http.makeHttpRequest("/admin/update_category",
                 {categoryId: categoryId,
                     description: description},
         'POST', callbackCategoryEdit);
     } else {
-        if(validCategory(name,description)){
-        vteam_http.makeHttpRequest("/admin/insert_category",
-                {
-                    categoryName: name,
-                    description: description},
-        'POST', callbackCategoryEdit);
-    }
-    clearValidCateogry();
+        if (validCategory(name, description)) {
+            vteam_http.makeHttpRequest("/admin/insert_category",
+                    {
+                        categoryName: name,
+                        description: description},
+            'POST', callbackCategoryEdit);
+        }
+        clearValidCategory();
     }
 }
 function callbackCategoryEdit(result) {
@@ -232,117 +231,118 @@ function displayCategoryMsg(msg) {
         }, 10000);
     });
 }
-function validProduct(name,cate_name,min_price,max_price,image)
+function validProduct(name, cate_name, min_price, max_price, image)
 {
-  if(name==null|| name==""){
-      var div = $("#product_name").parents("div.control-group");
-      div.removeClass("success");
-      div.addClass("error");
-      $("#result_product").html('Fields must be required').show();
-      return false;
-  }else {
-      var div = $("#product_name").parents("div.control-group");
-      div.removeClass("error");
-      div.addClass("success");
-      
-  }
-  if(cate_name==null|| cate_name==""){
-      var div = $("#category_name").parents("div.control-group");
-      div.removeClass("success");
-      div.addClass("error");
-      $("#result_product").html('Fields must be required').show();
-      return false;
-  }else {
-      var div = $("#category_name").parents("div.control-group");
-      div.removeClass("error");
-      div.addClass("success");
-     
-  }
-  if(min_price==null|| min_price==""){
-      var div = $("#product_min_price").parents("div.control-group");
-      div.removeClass("success");
-      div.addClass("error");
-      $("#result_product").html('Fields must be required').show();
-      return false;
-  }else {
-      var div = $("#product_min_price").parents("div.control-group");
-      div.removeClass("error");
-      div.addClass("success");
-      
-  }
-   if(max_price==null|| max_price==""){
-      var div = $("#product_max_price").parents("div.control-group");
-      div.removeClass("success");
-      div.addClass("error");
-      $("#result_product").html('Fields must be required').show();
-      return false;
-  }else {
-      var div = $("#product_max_price").parents("div.control-group");
-      div.removeClass("error");
-      div.addClass("success");
-      
-  }
-   if(image==null|| image==""){
-      var div = $("#product_img").parents("div.control-group");
-      div.removeClass("success");
-      div.addClass("error");
-      $("#result_product").html('Fields must be required').show();
-      return false;
-  }else {
-      var div = $("#product_img").parents("div.control-group");
-      div.removeClass("error");
-      div.addClass("success");
-      
-  }
-  return true;
+
+    if (name == null || name == "") {
+        var div = $("#product_name").parents("div.control-group");
+        div.removeClass("success");
+        div.addClass("error");
+        $("#result_product").html('Fields must be required').show();
+        return false;
+    } else {
+        var div = $("#product_name").parents("div.control-group");
+        div.removeClass("error");
+        div.addClass("success");
+
+    }
+    if (cate_name == null || cate_name == "") {
+        var div = $("#category_name").parents("div.control-group");
+        div.removeClass("success");
+        div.addClass("error");
+        $("#result_product").html('Fields must be required').show();
+        return false;
+    } else {
+        var div = $("#category_name").parents("div.control-group");
+        div.removeClass("error");
+        div.addClass("success");
+
+    }
+    if (min_price == null || min_price == "") {
+        var div = $("#product_min_price").parents("div.control-group");
+        div.removeClass("success");
+        div.addClass("error");
+        $("#result_product").html('Fields must be required').show();
+        return false;
+    } else {
+        var div = $("#product_min_price").parents("div.control-group");
+        div.removeClass("error");
+        div.addClass("success");
+
+    }
+    if (max_price == null || max_price == "") {
+        var div = $("#product_max_price").parents("div.control-group");
+        div.removeClass("success");
+        div.addClass("error");
+        $("#result_product").html('Fields must be required').show();
+        return false;
+    } else {
+        var div = $("#product_max_price").parents("div.control-group");
+        div.removeClass("error");
+        div.addClass("success");
+
+    }
+    if (image == null || image == "") {
+        var div = $("#product_img").parents("div.control-group");
+        div.removeClass("success");
+        div.addClass("error");
+        $("#result_product").html('Fields must be required').show();
+        return false;
+    } else {
+        var div = $("#product_img").parents("div.control-group");
+        div.removeClass("error");
+        div.addClass("success");
+
+    }
+    return true;
 }
-function clearValidProduct(){
-   var div_pname = $("#product_name").parents("div.control-group");
-   var div_cname = $("#category_name").parents("div.control-group");
-   var div_min = $("#product_min_price").parents("div.control-group");
-   var div_max = $("#product_max_price").parents("div.control-group");
-   var div_img = $("#product_img").parents("div.control-group"); 
-   div_pname.removeClass("success");
-   div_cname.removeClass("success");
-   div_min.removeClass("success");
-   div_max.removeClass("success");
-   div_img.removeClass("success");
+function clearValidProduct() {
+    var div_pname = $("#product_name").parents("div.control-group");
+    var div_cname = $("#category_name").parents("div.control-group");
+    var div_min = $("#product_min_price").parents("div.control-group");
+    var div_max = $("#product_max_price").parents("div.control-group");
+    var div_img = $("#product_img").parents("div.control-group");
+    div_pname.removeClass("success");
+    div_cname.removeClass("success");
+    div_min.removeClass("success");
+    div_max.removeClass("success");
+    div_img.removeClass("success");
 }
-function vaildString(p){
-    if(p==null||p==''){
+function vaildString(p) {
+    if (p == null || p == '') {
         return false;
     }
 }
-function validCategory(name,des){
-     if(name==null|| name==""){
-      var div = $("#category_detail_name").parents("div.control-group");
-      div.removeClass("success");
-      div.addClass("error");
-      $("#result_category").html('Fields must be required').show();
-      return false;
-  }else {
-      var div = $("#category_detail_name").parents("div.control-group");
-      div.removeClass("error");
-      div.addClass("success");
-      
-  }
-  if(des==null|| des==""){
-      var div = $("#category_detail_description").parents("div.control-group");
-      div.removeClass("success");
-      div.addClass("error");
-      $("#result_category").html('Fields must be required').show();
-      return false;
-  }else {
-      var div = $("#category_detail_description").parents("div.control-group");
-      div.removeClass("error");
-      div.addClass("success");
-  }
-        return  true;
-  }
- function clearValidCateogry(){
-     var div_name = $("#category_detail_name").parents("div.control-group");
-     var div_des = $("#category_detail_description").parents("div.control-group");
-     div_name.removeClass("success");
-     div_des.removeClass("success");
- }
+function validCategory(name, des) {
+    if (name == null || name == "") {
+        var div = $("#category_detail_name").parents("div.control-group");
+        div.removeClass("success");
+        div.addClass("error");
+        $("#result_category").html('Fields must be required').show();
+        return false;
+    } else {
+        var div = $("#category_detail_name").parents("div.control-group");
+        div.removeClass("error");
+        div.addClass("success");
+
+    }
+    if (des == null || des == "") {
+        var div = $("#category_detail_description").parents("div.control-group");
+        div.removeClass("success");
+        div.addClass("error");
+        $("#result_category").html('Fields must be required').show();
+        return false;
+    } else {
+        var div = $("#category_detail_description").parents("div.control-group");
+        div.removeClass("error");
+        div.addClass("success");
+    }
+    return  true;
+}
+function clearValidCategory() {
+    var div_name = $("#category_detail_name").parents("div.control-group");
+    var div_des = $("#category_detail_description").parents("div.control-group");
+    div_name.removeClass("success");
+    div_des.removeClass("success");
+}
 
