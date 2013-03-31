@@ -214,3 +214,33 @@ function showLogin() {
     hideAllDiv();
     vteam_http.show("user_login");
 }
+function loadAndDisplayPayment() {
+    var id=document.getElementById("user_id").value;
+    vteam_http.makeHttpRequest("/user/getPaymentList",
+    {id:id},
+    'POST',
+            function(result) {
+                if (result.status == 'success') {
+                    displayOrder(result.paymentList);
+                }
+            });
+}
+
+function displayOrder(paymentList) {
+    var html = '';
+    for (var i = 0; i < paymentList.length; i++) {
+        html += '<tr>'
+        html += '<td>'
+        html += paymentList[i].card_code
+        html += '</td>'
+        html += '<td>'
+        html += toDateAndTime2(paymentList[i].payment_date)
+        html += '</td>'
+        html += '<td>'
+        html += paymentList[i].ammount
+        html += '</td>'
+        html += '</tr>'
+    }
+    vteam_http.setHTML("paymentResult",html);
+    vteam_http.show("paymentResult");
+}

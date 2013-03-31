@@ -5,6 +5,8 @@
 package com.vteam.xml_project.service;
 
 import com.vteam.xml_project.dto.NinCodeDTO;
+import com.vteam.xml_project.dto.UserPaymentDTO;
+import com.vteam.xml_project.dto.UserPaymentListDTO;
 import com.vteam.xml_project.dto.UserDTO;
 import com.vteam.xml_project.hibernate.dao.CardCodeDAO;
 
@@ -12,12 +14,15 @@ import com.vteam.xml_project.hibernate.orm.Users;
 import com.vteam.xml_project.hibernate.dao.UserDAO;
 import com.vteam.xml_project.hibernate.dao.UserPaymentDAO;
 import com.vteam.xml_project.hibernate.orm.CardCode;
+import com.vteam.xml_project.hibernate.orm.OrderHistory;
 import com.vteam.xml_project.hibernate.orm.UserPayment;
 import com.vteam.xml_project.util.DateUtil;
 import com.vteam.xml_project.util.StringUtil;
 import java.security.NoSuchAlgorithmException;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -197,5 +202,35 @@ public class UserService {
             ninCode.setMsg("Có lỗi xẩy ra");
         }
         return ninCode;
+    }
+    @Transactional
+    public UserPaymentListDTO getListByPaymentID(int id){
+        UserPaymentListDTO listOrders=new UserPaymentListDTO();
+        try{
+            Users user = new Users();
+            List<UserPayment> dbPayments = userPaymentDAO.getPaymentHistorysList(id);
+            
+            
+            UserPaymentDTO o;
+
+            List<UserPaymentDTO> tmpList = new ArrayList<UserPaymentDTO>();
+            for (UserPayment d : dbPayments) {
+
+                o = new UserPaymentDTO();
+                o.setCard_code(d.getCardCode());
+                o.setUser_id(d.getUser().getId());
+                o.setAmmount(d.getAmount());
+                o.setPayment_date(d.getPaymentDay());
+
+               tmpList.add(o);
+            }
+            listOrders.setPaymentList(tmpList);
+            listOrders.setStatus("success");
+        }catch (HibernateException ex){
+            log.error(ex.getStackTrace());
+           listOrders.setStatus("error");
+           listOrders.setMsg("Have some errors. Try again");
+        }
+        return  listOrders;
     }
 }

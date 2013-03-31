@@ -7,6 +7,7 @@ package com.vteam.xml_project.api;
 import com.vteam.xml_project.controller.UserSession;
 import com.vteam.xml_project.dto.NinCodeDTO;
 import com.vteam.xml_project.dto.UserDTO;
+import com.vteam.xml_project.dto.UserPaymentListDTO;
 import com.vteam.xml_project.service.UserService;
 import com.vteam.xml_project.util.StringUtil;
 import java.util.HashMap;
@@ -141,5 +142,13 @@ public class UserAPI {
         }
         ninCodeDTO = userService.inputPayment(email, code);
         return ninCodeDTO;
+    }
+    @RequestMapping(value = "/getPaymentList", method = RequestMethod.POST)
+    public @ResponseBody
+    UserPaymentListDTO getPaymentList(
+            @RequestParam int id) {
+        UserPaymentListDTO paymentResult = userService.getListByPaymentID(id);
+        return paymentResult;
+        //return result;
     }
 }
