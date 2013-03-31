@@ -76,6 +76,7 @@
 	</bean>
 
 
+        <bean id="applicationListener" class="com.vteam.xml_project.context.listener.ApplicationListenerBean"></bean>
 	<import resource="classpath:service.xml" />
 	
 </beans>
