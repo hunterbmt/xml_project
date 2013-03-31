@@ -31,7 +31,7 @@ public class UserAPI {
     @Autowired
     private UserService userService;
 
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    @RequestMapping(value = "/login", method = RequestMethod.POST,produces = "application/json")
     public @ResponseBody
     UserDTO login(
             @RequestParam String email, String password) {

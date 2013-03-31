@@ -6,8 +6,11 @@ package com.vteam.xml_project.context.listener;
 
 import com.vteam.xml_project.dto.CategoryDTO;
 import com.vteam.xml_project.dto.CategoryListDTO;
+import com.vteam.xml_project.dto.UserDTO;
+import com.vteam.xml_project.dto.UserListDTO;
 import com.vteam.xml_project.service.CategoryService;
 import com.vteam.xml_project.service.ProductService;
+import com.vteam.xml_project.service.UserService;
 import com.vteam.xml_project.util.XMLUtil;
 import javax.servlet.ServletContext;
 import javax.xml.bind.JAXBException;
@@ -24,14 +27,19 @@ public class ApplicationListenerBean implements ApplicationListener<ContextRefre
     @Autowired
     CategoryService categoryService;
     @Autowired
+    UserService userService;
+    @Autowired
     ServletContext servletContext;
     @Autowired
     ProductService productService;
     private static String CATEGORY_XML_FILE_NAME = "category.xml";
-
+    private static String USER_XML_FILE_NAME = "user.xml";
+    
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
         marshallCategory();
+        marshallUser();
+        
     }
 
     private void marshallCategory() {
@@ -46,4 +54,15 @@ public class ApplicationListenerBean implements ApplicationListener<ContextRefre
             ex.printStackTrace();
         }
     }
+    private void marshallUser(){
+        try {
+            UserListDTO userListDTO=userService.getUserList();
+            String realPath = servletContext.getRealPath("WEB-INF/views/resources/xml/");
+            XMLUtil.Marshall(userListDTO, realPath + "/" + USER_XML_FILE_NAME);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+ 
+    
 }

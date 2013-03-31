@@ -5,11 +5,16 @@
 package com.vteam.xml_project.dto;
 
 import java.util.Date;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
  * @author HunterBMT
  */
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlRootElement(name = "user")
 public class UserDTO extends BaseDTO{
     private String email;
     private String password;

@@ -5,9 +5,11 @@
 package com.vteam.xml_project.hibernate.dao;
 
 
+import com.vteam.xml_project.hibernate.orm.Category;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import com.vteam.xml_project.hibernate.orm.Users;
+import java.util.List;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -41,5 +43,11 @@ public class UserDAO extends BaseDAO{
         query.setString(0, email);
         query.setString(1, password);
         return (Users) query.uniqueResult();
+    }
+  public List<Users> getUserList() throws HibernateException {
+        Query query = this.sessionFactory
+                .getCurrentSession()
+                .createQuery("FROM Users");
+        return query.list();
     }
 }

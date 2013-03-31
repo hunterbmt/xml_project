@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<userList>
+    <status>success</status>
+    <user>
+        <email>tuanna</email>
+        <password>23670cabf30801a3160ef30746eed381ec94c674e9ccbb004916b1465c6ed8df</password>
+        <fullname>tuan</fullname>
+        <birthday>1982-03-17T00:00:00+07:00</birthday>
+        <address>123 quang trung</address>
+        <balance>100004</balance>
+        <id>15</id>
+    </user>
+    <user>
+        <email>tuanna1</email>
+        <password>8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92</password>
+        <fullname>tuan1</fullname>
+        <balance>3</balance>
+        <id>16</id>
+    </user>
+</userList>

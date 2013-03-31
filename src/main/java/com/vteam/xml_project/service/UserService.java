@@ -4,30 +4,47 @@
  */
 package com.vteam.xml_project.service;
 
+import com.vteam.xml_project.dto.CategoryDTO;
+import com.vteam.xml_project.dto.CategoryListDTO;
 import com.vteam.xml_project.dto.NinCodeDTO;
 import com.vteam.xml_project.dto.UserPaymentDTO;
 import com.vteam.xml_project.dto.UserPaymentListDTO;
 import com.vteam.xml_project.dto.UserDTO;
+import com.vteam.xml_project.dto.UserListDTO;
 import com.vteam.xml_project.hibernate.dao.CardCodeDAO;
 
 import com.vteam.xml_project.hibernate.orm.Users;
 import com.vteam.xml_project.hibernate.dao.UserDAO;
 import com.vteam.xml_project.hibernate.dao.UserPaymentDAO;
 import com.vteam.xml_project.hibernate.orm.CardCode;
+import com.vteam.xml_project.hibernate.orm.Category;
 import com.vteam.xml_project.hibernate.orm.OrderHistory;
 import com.vteam.xml_project.hibernate.orm.UserPayment;
 import com.vteam.xml_project.util.DateUtil;
 import com.vteam.xml_project.util.StringUtil;
+import com.vteam.xml_project.util.XMLUtil;
+import java.io.File;
+import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.servlet.ServletContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpressionException;
+import javax.xml.xpath.XPathFactory;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.xml.sax.SAXException;
 
 /**
  *
@@ -45,29 +62,58 @@ public class UserService {
     private UserPaymentDAO userPaymentDAO;
     @Autowired
     private DateUtil util;
+    @Autowired
+    ServletContext servletContext;
     
     @Transactional
     public UserDTO checkLogin(String email, String password) {
         UserDTO userDTO = new UserDTO();
         try {
-            String storagepass = StringUtil.createPasswordForDB(password);
-            Users dbUser = userDAO.findUserByEmailAndPassword(email, storagepass);
-            if (dbUser != null) {
-                userDTO.setId(dbUser.getId());
-                userDTO.setEmail(dbUser.getEmail());
-                userDTO.setFullname(dbUser.getFullname());
-                userDTO.setPhone(dbUser.getPhone());
-                userDTO.setAddress(dbUser.getAddress());
-                userDTO.setBalance(dbUser.getBalance());
-                userDTO.setBirthday(dbUser.getBirthday());
-                userDTO.setStatus("success");
-            }
-            else {
-                userDTO.setStatus("error");
-            }
+                String storagepass = StringUtil.createPasswordForDB(password);
+                String realPath = servletContext.getRealPath("WEB-INF/views/resources/xml") ;
+                Document doc = XMLUtil.parseDOM(realPath + File.separator + "user.xml");
+                XPathFactory xpf = XPathFactory.newInstance();
+                XPath xpath = xpf.newXPath();
+                String exp ="//user[email=\""+email+"\"and password=\""+storagepass+"\"]";
+                Node userNode = (Node) xpath.evaluate(exp, doc, XPathConstants.NODE);
+                userDTO=XMLUtil.UnMarshall(UserDTO.class, userNode);
+//            Users dbUser = userDAO.findUserByEmailAndPassword(email, storagepass);
+//            if (dbUser != null) {
+//                userDTO.setId(dbUser.getId());
+//                userDTO.setEmail(dbUser.getEmail());
+//                userDTO.setFullname(dbUser.getFullname());
+//                userDTO.setPhone(dbUser.getPhone());
+//                userDTO.setAddress(dbUser.getAddress());
+//                userDTO.setBalance(dbUser.getBalance());
+//                userDTO.setBirthday(dbUser.getBirthday());
+//                userDTO.setStatus("success");
+//            }
+//            else {
+//                userDTO.setStatus("error");
+//            }
         } catch (NoSuchAlgorithmException ex) {
             log.error(ex.getStackTrace());
             userDTO.setStatus("error");
+        }catch (IOException ex) {
+            log.error(ex);
+            userDTO.setStatus("error");
+            userDTO.setMsg("Have some errors ! Try again");
+        } catch (SAXException ex) {
+            log.error(ex);
+            userDTO.setStatus("error");
+            userDTO.setMsg("Have some errors ! Try again");
+        } catch (XPathExpressionException ex) {
+            log.error(ex);
+            userDTO.setStatus("error");
+            userDTO.setMsg("Have some errors ! Try again");
+        } catch (JAXBException ex) {
+            log.error(ex);
+            userDTO.setStatus("error");
+            userDTO.setMsg("Have some errors ! Try again");
+        } catch (ParserConfigurationException ex) {
+            log.error(ex);
+            userDTO.setStatus("error");
+            userDTO.setMsg("Have some errors ! Try again");
         }
         return userDTO;
     }
@@ -232,5 +278,33 @@ public class UserService {
            listOrders.setMsg("Have some errors. Try again");
         }
         return  listOrders;
+    }
+      @Transactional
+    public UserListDTO getUserList() {
+        UserListDTO userList = new UserListDTO();
+        try {
+            List<Users> dbCategory = userDAO.getUserList();
+            UserDTO u;
+            List<UserDTO> tmpList = new ArrayList<UserDTO>();
+            for (Users user : dbCategory) {
+                u = new UserDTO();
+                u.setEmail(user.getEmail());
+                u.setPassword(user.getPassword());
+                u.setFullname(user.getFullname());
+                u.setAddress(user.getAddress());
+                u.setBirthday(user.getBirthday());
+                u.setBalance(user.getBalance());
+                u.setId(user.getId());
+                tmpList.add(u);
+            }
+            userList.setUserList(tmpList);
+            userList.setStatus("success");
+
+        } catch (HibernateException ex) {
+            log.error(ex);
+            userList.setMsg("Have some errors. Try again");
+            userList.setStatus("error");
+        }
+        return userList;
     }
 }

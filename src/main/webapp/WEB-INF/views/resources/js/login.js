@@ -221,12 +221,12 @@ function loadAndDisplayPayment() {
     'POST',
             function(result) {
                 if (result.status == 'success') {
-                    displayOrder(result.paymentList);
+                    displayPayment(result.paymentList);
                 }
             });
 }
 
-function displayOrder(paymentList) {
+function displayPayment(paymentList) {
     var html = '';
     for (var i = 0; i < paymentList.length; i++) {
         html += '<tr>'
@@ -242,5 +242,6 @@ function displayOrder(paymentList) {
         html += '</tr>'
     }
     vteam_http.setHTML("paymentResult",html);
+    vteam_http.show("tablePayment");
     vteam_http.show("paymentResult");
 }

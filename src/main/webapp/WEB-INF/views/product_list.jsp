@@ -200,7 +200,7 @@
                                        <button type='button' class="btn btn-success" onclick="loadAndDisplayPayment()">Show Payment</button>
                                    </div>
 	                        </form>
-                               <table class="table table-hover" id="tablePayment">
+                               <table class="table table-hover hide" id="tablePayment">
                                    <caption><h3>User's Payment History</h3> </caption>
                                    <thead>
                                        <tr>
