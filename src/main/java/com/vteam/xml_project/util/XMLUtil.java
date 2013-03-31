@@ -13,6 +13,7 @@ import javax.xml.bind.Unmarshaller;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.stream.XMLStreamReader;
 import javax.xml.transform.Result;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
@@ -51,6 +52,11 @@ public class XMLUtil {
         JAXBContext jc = JAXBContext.newInstance(objectClass);
         Unmarshaller u = jc.createUnmarshaller();
         return objectClass.cast(u.unmarshal(node));
+    }
+    public static <T> T UnMarshall(Class<T> objectClass, XMLStreamReader reader) throws JAXBException {
+        JAXBContext jc = JAXBContext.newInstance(objectClass);
+        Unmarshaller u = jc.createUnmarshaller();
+        return objectClass.cast(u.unmarshal(reader));
     }
 
     public static Document parseDOM(String filePath) throws ParserConfigurationException, IOException, SAXException {
