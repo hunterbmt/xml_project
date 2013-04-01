@@ -185,4 +185,17 @@ public class AdminAPI {
             ex.printStackTrace();
         }
     }
+    
+    @RequestMapping(value = "export_product_list_to_pdf", method = RequestMethod.GET)
+    public void exportProductListToPdf(HttpServletResponse response) {
+        try {
+            ByteArrayOutputStream outStream = adminService.exportProductListToPdf();
+            byte[] pdfBytes = outStream.toByteArray();
+            response.setContentType("application/pdf");
+            response.getOutputStream().write(pdfBytes);
+            response.getOutputStream().flush();
+        } catch (Exception ex){
+            ex.printStackTrace();
+        }
+    }
 }

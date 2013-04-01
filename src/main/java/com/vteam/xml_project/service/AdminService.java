@@ -314,6 +314,37 @@ public class AdminService {
     }
     
     @Transactional
+    public ByteArrayOutputStream exportProductListToPdf() {
+        try {
+            List<Product> product = productDAO.getProductList();
+            ProductListDTO productListDTO =  new ProductListDTO();
+            ProductDTO productDTO;
+            for (Product p : product) {
+                productDTO = new ProductDTO();
+                productDTO.setName(p.getProductName());
+                productDTO.setDescription(p.getDescription());
+                productDTO.setCategoryName(p.getCategory().getCategoryName());
+                productListDTO.getProductList().add(productDTO);
+            }
+            File xmlFile = File.createTempFile(UUID.randomUUID().toString(), "_product.xml");
+            XMLUtil.Marshall(productListDTO, xmlFile.getAbsolutePath());
+            String appPath = servletContext.getRealPath("WEB-INF/views/resources/xsl");
+            return  XMLUtil.printPDF(xmlFile.getAbsolutePath(), appPath+File.separator+"product.xsl");
+        } catch (IOException ex) {
+            log.error(ex);
+        } catch (JAXBException ex) {
+            log.error(ex);
+        } catch (TransformerConfigurationException ex) {
+            log.error(ex);
+        } catch (TransformerException ex) {
+            log.error(ex);
+        } catch (FOPException ex) {
+            java.util.logging.Logger.getLogger(AdminService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+    
+    @Transactional
     public ByteArrayOutputStream exportNinCodeToPdf() {
         try {
             List<CardCode> cardCodeList = cardCodeDAO.getCardCodeToPrint();
