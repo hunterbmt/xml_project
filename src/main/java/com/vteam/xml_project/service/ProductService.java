@@ -21,6 +21,10 @@ import java.util.logging.Level;
 import javax.servlet.ServletContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
+import javax.xml.transform.stream.StreamSource;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
@@ -32,8 +36,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+import org.xml.sax.XMLReader;
 
 @Service
 public class ProductService {
@@ -166,7 +170,7 @@ public class ProductService {
             list.setStatus("error");
             list.setMsg("Have some errors. Try again");
         } catch (JAXBException jaxbEx) {
-            log.error(jaxbEx.getMessage());
+            log.error(jaxbEx);
             list.setStatus("error");
             list.setMsg("Have some errors. Try again");
         }
@@ -212,22 +216,59 @@ public class ProductService {
         return productDTO;
     }
 
-    private ProductListDTO convertFromNodeToProductListDTO(Node node) throws JAXBException{
+    private ProductListDTO convertFromNodeToProductListDTO(Node node) throws JAXBException {
         ProductListDTO result = XMLUtil.UnMarshall(ProductListDTO.class, node);
         return result;
     }
+
+    private ProductListDTO findProductListDTOInCategoryXML(String realPath, int categoryId) throws XMLStreamException, JAXBException {
+        XMLInputFactory xif = XMLInputFactory.newFactory();
+        StreamSource xml = new StreamSource(realPath + "category.xml");
+        XMLStreamReader xsr = xif.createXMLStreamReader(xml);
+        //find tag category
+        xsr.nextTag();
+        boolean found = false;
+        while (xsr.hasNext()) {
+            if (xsr.getEventType() == XMLStreamReader.START_ELEMENT) {
+                if (xsr.getLocalName().equals("category")) {
+                    xsr.nextTag();
+                    if (xsr.getLocalName().equals("id")) {
+                        xsr.next();
+                        int id = Integer.parseInt(xsr.getText());
+                        if (id == categoryId) {
+                            xsr.next();
+                            while(xsr.hasNext()){
+                                if(xsr.getEventType() == XMLStreamReader.START_ELEMENT){
+                                    if(xsr.getLocalName().equals("productList")){
+                                        found = true;
+                                        break;
+                                    }
+                                }
+                                xsr.next();
+                            }
+                        }
+                    }
+                }
+            }
+            if(found){
+                break;
+            }
+            xsr.next();
+        }
+        if (found) {
+            return XMLUtil.UnMarshall(ProductListDTO.class, xsr);
+        }
+        return null;
+    }
+
     @Transactional
-    public ProductListDTO searchProductByCategoryId(int category_id, int page) {
+    public ProductListDTO searchProductByCategoryId(int category_id, int page, boolean isInit) {
         ProductListDTO list = new ProductListDTO();
         try {
-            if (page == 1) {
+            if (page == 1 && !isInit) {
                 String realPath = servletContext.getRealPath("WEB-INF/views/resources/xml/") + "/";
-                Document doc = XMLUtil.parseDOM(realPath + "category.xml");
-                XPathFactory xpf = XPathFactory.newInstance();
-                XPath xpath = xpf.newXPath();
-                String exp ="//category[id= "+category_id+"]/productList";
-                Node productListNode= (Node) xpath.evaluate(exp, doc, XPathConstants.NODE);
-                return convertFromNodeToProductListDTO(productListNode);
+                list = findProductListDTOInCategoryXML(realPath, category_id);
+                return list;
             }
             List<Product> dbProducts = productDAO.searchProductByCategoryId(category_id, page, PAGESIZE);
             ProductDTO pd;
@@ -246,26 +287,12 @@ public class ProductService {
             }
             list.setProductList(tmpList);
             list.setStatus("success");
-        }catch (IOException ex) {
-            log.error(ex);
-            list.setStatus("error");
-            list.setMsg("Have some errors ! Try again");
-        } catch (SAXException ex) {
-            log.error(ex);
-            list.setStatus("error");
-            list.setMsg("Have some errors ! Try again");
-        } catch (XPathExpressionException ex) {
-            log.error(ex);
-            list.setStatus("error");
-            list.setMsg("Have some errors ! Try again");
         } catch (JAXBException ex) {
             log.error(ex);
             list.setStatus("error");
             list.setMsg("Have some errors ! Try again");
-        } catch (ParserConfigurationException ex) {
-            log.error(ex);
-            list.setStatus("error");
-            list.setMsg("Have some errors ! Try again");
+        } catch (XMLStreamException ex) {
+            java.util.logging.Logger.getLogger(ProductService.class.getName()).log(Level.SEVERE, null, ex);
         }
         return list;
     }

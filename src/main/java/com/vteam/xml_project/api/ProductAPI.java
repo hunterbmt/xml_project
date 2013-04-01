@@ -50,7 +50,7 @@ public class ProductAPI {
         return result;
     }
     
-    @RequestMapping(value = "/getRecentBidder", method = RequestMethod.POST)
+    @RequestMapping(value = "/getRecentBidder", method = RequestMethod.POST,produces = "application/json")
     public @ResponseBody
     List<String> getRecentBidder(
             @RequestParam int bid_id) {

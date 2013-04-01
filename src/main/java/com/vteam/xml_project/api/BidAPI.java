@@ -37,7 +37,7 @@ public class BidAPI {
     private UserService userService;
 
     /* ========== place bid ============ */
-    @RequestMapping(value = "/do_bid", method = RequestMethod.POST)
+    @RequestMapping(value = "/do_bid", method = RequestMethod.POST,produces = "application/json")
     public @ResponseBody
     HashMap<String, Object> doBid(
             @RequestParam int bid_id) {
@@ -76,7 +76,7 @@ public class BidAPI {
         return returnMap;
     }
     
-    @RequestMapping(value = "/do_buy", method = RequestMethod.POST)
+    @RequestMapping(value = "/do_buy", method = RequestMethod.POST,produces = "application/json")
     public @ResponseBody
     HashMap<String, Object> doBuy(
             @RequestParam int bid_id) {
@@ -110,7 +110,7 @@ public class BidAPI {
     }
 
     /* =============== bid manipulations ================= */
-    @RequestMapping(value = "/get_bid_by_id", method = RequestMethod.POST)
+    @RequestMapping(value = "/get_bid_by_id", method = RequestMethod.POST,produces = "application/json")
     public @ResponseBody
     BidDTO get_bid_by_id(
             @RequestParam int _id) {
@@ -118,7 +118,7 @@ public class BidAPI {
         return result;
     }
 
-    @RequestMapping(value = "/get_bids_list", method = RequestMethod.POST)
+    @RequestMapping(value = "/get_bids_list", method = RequestMethod.POST,produces = "application/json")
     public @ResponseBody
     BidListDTO get_bids_list(
             @RequestParam int page, int page_size) {
@@ -126,28 +126,28 @@ public class BidAPI {
         return result;
     }
 
-    @RequestMapping(value = "/get_upcoming_bids", method = RequestMethod.POST)
+    @RequestMapping(value = "/get_upcoming_bids", method = RequestMethod.POST,produces = "application/json")
     public @ResponseBody
     BidListDTO get_upcoming_bids(@RequestParam int page,int pageSize) {
         BidListDTO result = bidService.getUpcommingBid(page,pageSize);
         return result;
     }
 
-    @RequestMapping(value = "/get_ongoing_bids", method = RequestMethod.POST)
+    @RequestMapping(value = "/get_ongoing_bids", method = RequestMethod.POST,produces = "application/json")
     public @ResponseBody
     BidListDTO get_ongoing_bids(@RequestParam int page,int pageSize) {
         BidListDTO result = bidService.getOngoingBids(page,pageSize);
         return result;
     }
 
-    @RequestMapping(value = "/get_completed_bids", method = RequestMethod.POST)
+    @RequestMapping(value = "/get_completed_bids", method = RequestMethod.POST,produces = "application/json")
     public @ResponseBody
     BidListDTO get_completed_bids(@RequestParam int page,int pageSize){
         BidListDTO result = bidService.getCompletedBids(page,pageSize);
         return result;
     }
 
-    @RequestMapping(value = "/create", method = RequestMethod.POST)
+    @RequestMapping(value = "/create", method = RequestMethod.POST,produces = "application/json")
     public @ResponseBody
     BidDTO create(
             @RequestParam int product_id, String start_date, String format_date) {

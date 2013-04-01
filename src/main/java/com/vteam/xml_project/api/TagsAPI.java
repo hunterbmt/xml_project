@@ -28,7 +28,7 @@ public class TagsAPI {
     @Autowired
     private TagsService tagsService;
 
-    @RequestMapping(value = "/getTagsByProductId", method = RequestMethod.POST)
+    @RequestMapping(value = "/getTagsByProductId", method = RequestMethod.POST,produces = "application/json")
     public @ResponseBody
     TagsListDTO getTagsByProductId(
             @RequestParam int product_id) {
@@ -36,14 +36,14 @@ public class TagsAPI {
         return resultTags;
     }
     
-    @RequestMapping(value = "/getTagsList")
+    @RequestMapping(value = "/getTagsList",produces = "application/json")
     public @ResponseBody
     TagsListDTO getTagsList() {
         TagsListDTO resultTags = tagsService.getTagsList();
         return resultTags;
     }
     
-    @RequestMapping(value = "/getTagDetail", method = RequestMethod.POST)
+    @RequestMapping(value = "/getTagDetail", method = RequestMethod.POST,produces = "application/json")
     public @ResponseBody TagsDTO getTagDetail(
             @RequestParam int tag_id) {
         TagsDTO resultTags = tagsService.getTagDetail(tag_id);

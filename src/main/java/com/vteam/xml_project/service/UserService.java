@@ -8,26 +8,39 @@ import com.vteam.xml_project.dto.NinCodeDTO;
 import com.vteam.xml_project.dto.UserPaymentDTO;
 import com.vteam.xml_project.dto.UserPaymentListDTO;
 import com.vteam.xml_project.dto.UserDTO;
+import com.vteam.xml_project.dto.UserListDTO;
 import com.vteam.xml_project.hibernate.dao.CardCodeDAO;
 
 import com.vteam.xml_project.hibernate.orm.Users;
 import com.vteam.xml_project.hibernate.dao.UserDAO;
 import com.vteam.xml_project.hibernate.dao.UserPaymentDAO;
 import com.vteam.xml_project.hibernate.orm.CardCode;
-import com.vteam.xml_project.hibernate.orm.OrderHistory;
 import com.vteam.xml_project.hibernate.orm.UserPayment;
 import com.vteam.xml_project.util.DateUtil;
 import com.vteam.xml_project.util.StringUtil;
+import com.vteam.xml_project.util.XMLUtil;
+import java.io.File;
+import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.servlet.ServletContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpressionException;
+import javax.xml.xpath.XPathFactory;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.xml.sax.SAXException;
 
 /**
  *
@@ -35,7 +48,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 public class UserService {
-    
+
     private static Logger log = Logger.getLogger(UserService.class.getName());
     @Autowired
     private UserDAO userDAO;
@@ -45,33 +58,68 @@ public class UserService {
     private UserPaymentDAO userPaymentDAO;
     @Autowired
     private DateUtil util;
-    
+    @Autowired
+    ServletContext servletContext;
+
     @Transactional
     public UserDTO checkLogin(String email, String password) {
         UserDTO userDTO = new UserDTO();
         try {
             String storagepass = StringUtil.createPasswordForDB(password);
-            Users dbUser = userDAO.findUserByEmailAndPassword(email, storagepass);
-            if (dbUser != null) {
-                userDTO.setId(dbUser.getId());
-                userDTO.setEmail(dbUser.getEmail());
-                userDTO.setFullname(dbUser.getFullname());
-                userDTO.setPhone(dbUser.getPhone());
-                userDTO.setAddress(dbUser.getAddress());
-                userDTO.setBalance(dbUser.getBalance());
-                userDTO.setBirthday(dbUser.getBirthday());
+            String realPath = servletContext.getRealPath("WEB-INF/views/resources/xml");
+            Document doc = XMLUtil.parseDOM(realPath + File.separator + "user.xml");
+            XPathFactory xpf = XPathFactory.newInstance();
+            XPath xpath = xpf.newXPath();
+            String exp = "//user[email=\"" + email + "\"and password=\"" + storagepass + "\"]";
+            Node userNode = (Node) xpath.evaluate(exp, doc, XPathConstants.NODE);
+            if (userNode != null) {
+                userDTO = XMLUtil.UnMarshall(UserDTO.class, userNode);
                 userDTO.setStatus("success");
             }
             else {
                 userDTO.setStatus("error");
             }
+//            Users dbUser = userDAO.findUserByEmailAndPassword(email, storagepass);
+//            if (dbUser != null) {
+//                userDTO.setId(dbUser.getId());
+//                userDTO.setEmail(dbUser.getEmail());
+//                userDTO.setFullname(dbUser.getFullname());
+//                userDTO.setPhone(dbUser.getPhone());
+//                userDTO.setAddress(dbUser.getAddress());
+//                userDTO.setBalance(dbUser.getBalance());
+//                userDTO.setBirthday(dbUser.getBirthday());
+//                userDTO.setStatus("success");
+//            }
+//            else {
+//                userDTO.setStatus("error");
+//            }
         } catch (NoSuchAlgorithmException ex) {
             log.error(ex.getStackTrace());
             userDTO.setStatus("error");
+        } catch (IOException ex) {
+            log.error(ex);
+            userDTO.setStatus("error");
+            userDTO.setMsg("Have some errors ! Try again");
+        } catch (SAXException ex) {
+            log.error(ex);
+            userDTO.setStatus("error");
+            userDTO.setMsg("Have some errors ! Try again");
+        } catch (XPathExpressionException ex) {
+            log.error(ex);
+            userDTO.setStatus("error");
+            userDTO.setMsg("Have some errors ! Try again");
+        } catch (JAXBException ex) {
+            log.error(ex);
+            userDTO.setStatus("error");
+            userDTO.setMsg("Have some errors ! Try again");
+        } catch (ParserConfigurationException ex) {
+            log.error(ex);
+            userDTO.setStatus("error");
+            userDTO.setMsg("Have some errors ! Try again");
         }
         return userDTO;
     }
-    
+
     @Transactional
     public boolean upadateUser(String email, String address, String phone, String birthday, String formatDate) {
         try {
@@ -89,7 +137,7 @@ public class UserService {
             log.error(ex.getStackTrace());
         } catch (HibernateException ex) {
             log.error(ex.getStackTrace());
-            
+
         } catch (ParseException ex) {
             log.error(ex.getStackTrace());
         } catch (Exception ex) {
@@ -97,7 +145,7 @@ public class UserService {
         }
         return false;
     }
-    
+
     @Transactional
     public boolean createNewUser(UserDTO newUser) {
         try {
@@ -115,13 +163,13 @@ public class UserService {
         }
         return false;
     }
-    
+
     @Transactional
     public UserDTO getUserById(Integer id) {
         UserDTO returnUser = new UserDTO();
         try {
             Users dbUser = userDAO.findUserByUuid(id);
-            
+
             returnUser.setFullname(dbUser.getFullname());
             returnUser.setStatus("success");
         } catch (HibernateException ex) {
@@ -130,7 +178,7 @@ public class UserService {
         }
         return returnUser;
     }
-    
+
     @Transactional
     public UserDTO getUserByEmail(String email) {
         UserDTO returnUser = new UserDTO();
@@ -150,7 +198,7 @@ public class UserService {
         }
         return returnUser;
     }
-    
+
     @Transactional
     public boolean checkPassword(String email, String currentPass, String newPassword) {
         try {
@@ -167,7 +215,7 @@ public class UserService {
         }
         return false;
     }
-    
+
     @Transactional
     public NinCodeDTO inputPayment(String email, String code) {
         NinCodeDTO ninCode = new NinCodeDTO();
@@ -203,14 +251,15 @@ public class UserService {
         }
         return ninCode;
     }
+
     @Transactional
-    public UserPaymentListDTO getListByPaymentID(int id){
-        UserPaymentListDTO listOrders=new UserPaymentListDTO();
-        try{
+    public UserPaymentListDTO getListByPaymentID(int id) {
+        UserPaymentListDTO listOrders = new UserPaymentListDTO();
+        try {
             Users user = new Users();
             List<UserPayment> dbPayments = userPaymentDAO.getPaymentHistorysList(id);
-            
-            
+
+
             UserPaymentDTO o;
 
             List<UserPaymentDTO> tmpList = new ArrayList<UserPaymentDTO>();
@@ -222,15 +271,44 @@ public class UserService {
                 o.setAmmount(d.getAmount());
                 o.setPayment_date(d.getPaymentDay());
 
-               tmpList.add(o);
+                tmpList.add(o);
             }
             listOrders.setPaymentList(tmpList);
             listOrders.setStatus("success");
-        }catch (HibernateException ex){
+        } catch (HibernateException ex) {
             log.error(ex.getStackTrace());
-           listOrders.setStatus("error");
-           listOrders.setMsg("Have some errors. Try again");
+            listOrders.setStatus("error");
+            listOrders.setMsg("Have some errors. Try again");
         }
-        return  listOrders;
+        return listOrders;
+    }
+
+    @Transactional
+    public UserListDTO getUserList() {
+        UserListDTO userList = new UserListDTO();
+        try {
+            List<Users> dbCategory = userDAO.getUserList();
+            UserDTO u;
+            List<UserDTO> tmpList = new ArrayList<UserDTO>();
+            for (Users user : dbCategory) {
+                u = new UserDTO();
+                u.setEmail(user.getEmail());
+                u.setPassword(user.getPassword());
+                u.setFullname(user.getFullname());
+                u.setAddress(user.getAddress());
+                u.setBirthday(user.getBirthday());
+                u.setBalance(user.getBalance());
+                u.setId(user.getId());
+                tmpList.add(u);
+            }
+            userList.setUserList(tmpList);
+            userList.setStatus("success");
+
+        } catch (HibernateException ex) {
+            log.error(ex);
+            userList.setMsg("Have some errors. Try again");
+            userList.setStatus("error");
+        }
+        return userList;
     }
 }
