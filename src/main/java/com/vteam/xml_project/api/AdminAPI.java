@@ -4,6 +4,7 @@
  */
 package com.vteam.xml_project.api;
 
+import com.vteam.xml_project.context.listener.ApplicationListenerBean;
 import com.vteam.xml_project.controller.UserSession;
 import com.vteam.xml_project.dto.BidDTO;
 import com.vteam.xml_project.dto.CategoryDTO;
@@ -42,6 +43,14 @@ public class AdminAPI {
     private ProductService productService;
     @Autowired
     private CategoryService categoryService;
+    
+    @RequestMapping(value = "/updateXML", method = RequestMethod.POST,produces = "application/json")
+    public @ResponseBody
+    String updateAllXML(
+            ) {
+        adminService.updateAllXML();
+        return "Done";
+    }
 
     @RequestMapping(value = "/getProductList", method = RequestMethod.POST,produces = "application/json")
     public @ResponseBody

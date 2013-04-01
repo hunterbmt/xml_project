@@ -5,12 +5,15 @@
 package com.vteam.xml_project.service;
 
 import com.vteam.xml_project.dto.BidDTO;
+import com.vteam.xml_project.dto.BidListDTO;
 import com.vteam.xml_project.dto.CategoryDTO;
+import com.vteam.xml_project.dto.CategoryListDTO;
 import com.vteam.xml_project.dto.NinCodeDTO;
 import com.vteam.xml_project.dto.NinCodeListDTO;
 import com.vteam.xml_project.dto.ProductDTO;
 import com.vteam.xml_project.dto.ProductListDTO;
 import com.vteam.xml_project.dto.TagsDTO;
+import com.vteam.xml_project.dto.UserListDTO;
 import com.vteam.xml_project.hibernate.dao.BidDAO;
 import com.vteam.xml_project.hibernate.dao.CardCodeDAO;
 import com.vteam.xml_project.hibernate.dao.CategoryDAO;
@@ -23,9 +26,12 @@ import com.vteam.xml_project.hibernate.orm.Product;
 import com.vteam.xml_project.hibernate.orm.Tags;
 import com.vteam.xml_project.util.DateUtil;
 import com.vteam.xml_project.util.StringUtil;
+import com.vteam.xml_project.util.XMLUtil;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
+import javax.servlet.ServletContext;
+import javax.xml.bind.JAXBException;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,6 +58,19 @@ public class AdminService {
     private TagsDAO tagsDAO;
     @Autowired
     private DateUtil dateUtil;
+    @Autowired
+    CategoryService categoryService;
+    @Autowired
+    UserService userService;
+    @Autowired
+    ServletContext servletContext;
+    @Autowired
+    ProductService productService;
+    @Autowired
+    BidService bidService;
+    private static String CATEGORY_XML_FILE_NAME = "category.xml";
+    private static String USER_XML_FILE_NAME = "user.xml";
+    private static String BID_XML_FILE_NAME = "bids.xml";
 
     @Transactional
     public ProductDTO insertProduct(int categoryId, String productName, String description, String img, double minPrice, double maxPrice, String tags) {
@@ -154,7 +173,6 @@ public class AdminService {
             bidDTO.setEnd_date(endDate);
             bidDTO.setProduct_id(product_id);
             bidDTO.setProduct_name(product.getProductName());
-            bidDTO.setStatus(newBid.getStatus().name());
             bidDTO.setCost(cost);
 
             // update bid_id of that product
@@ -162,6 +180,8 @@ public class AdminService {
             product.setStatus(Product.Status.ONBID);
             productDAO.save(product);
             bidDTO.setStatus("success");
+            updateAllXML();
+            
             return bidDTO;
         } catch (HibernateException ex) {
             log.error(ex.getStackTrace());
@@ -187,7 +207,6 @@ public class AdminService {
             newBid.setProduct(product);
             newBid.setStartDate(startDate);
             newBid.setEndDate(endDate);
-
             newBid.setStatus(Bids.Status.valueOf(status));
             if (newBid.getStatus().toString().equalsIgnoreCase("completed")) {
                 product.setStatus(Product.Status.AVAILABLE);
@@ -199,9 +218,9 @@ public class AdminService {
             bidDTO.setEnd_date(endDate);
             bidDTO.setProduct_id(product_id);
             bidDTO.setProduct_name(product.getProductName());
-            bidDTO.setStatus(newBid.getStatus().name());
             bidDTO.setCost(cost);
             bidDTO.setStatus("success");
+            updateAllXML();
         } catch (HibernateException ex) {
             log.error(ex.getStackTrace());
             bidDTO.setStatus("error");
@@ -297,5 +316,43 @@ public class AdminService {
             tagDTO.setMsg("Have some errors. Try again");
         }
         return tagDTO;
+    }
+
+    @Transactional
+    public void updateAllXML() {
+        marshallCategory();
+        marshallUser();
+        marshallBids();
+    }
+    
+    private void marshallCategory() {
+        try {
+            CategoryListDTO categoryListDTO = categoryService.getCategoryList();
+            for (CategoryDTO categoryDTO : categoryListDTO.getCategoryList()) {
+                categoryDTO.setProductListDTO(productService.searchProductByCategoryId(categoryDTO.getId(), 1,true));
+            }
+            String realPath = servletContext.getRealPath("WEB-INF/views/resources/xml/");
+            XMLUtil.Marshall(categoryListDTO, realPath + "/" + CATEGORY_XML_FILE_NAME);
+        } catch (JAXBException ex) {
+            ex.printStackTrace();
+        }
+    }
+    private void marshallUser(){
+        try {
+            UserListDTO userListDTO=userService.getUserList();
+            String realPath = servletContext.getRealPath("WEB-INF/views/resources/xml/");
+            XMLUtil.Marshall(userListDTO, realPath + "/" + USER_XML_FILE_NAME);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    private void marshallBids(){
+        try {
+            BidListDTO bidListDTO = bidService.getBidsList(1, 999);
+            String realPath = servletContext.getRealPath("WEB-INF/views/resources/xml/");
+            XMLUtil.Marshall(bidListDTO, realPath + "/" + BID_XML_FILE_NAME);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
