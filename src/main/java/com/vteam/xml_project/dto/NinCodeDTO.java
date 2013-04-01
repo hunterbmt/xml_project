@@ -4,8 +4,6 @@
  */
 package com.vteam.xml_project.dto;
 
-import java.util.Date;
-
 /**
  *
  * @author Crick
