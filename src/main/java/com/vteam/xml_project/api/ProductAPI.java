@@ -34,7 +34,7 @@ public class ProductAPI {
     @Autowired
     private BidHistoryService bhService;
 
-    @RequestMapping(value = "/getProductList", method = RequestMethod.POST,produces = "application/json")
+    @RequestMapping(value = "/getProductList", method = RequestMethod.POST, produces = "application/json")
     public @ResponseBody
     ProductListDTO getProductList(
             @RequestParam int page) {
@@ -42,25 +42,23 @@ public class ProductAPI {
         return productResult;
     }
 
-    @RequestMapping(value = "/searchProduct", method = RequestMethod.POST,produces = "application/json")
+    @RequestMapping(value = "/searchProduct", method = RequestMethod.POST, produces = "application/json")
     public @ResponseBody
     ProductListDTO getSearchProductList(
             @RequestParam String txtSearch, int page) {
         ProductListDTO result = productService.searchProduct(txtSearch, page);
         return result;
     }
-    
-    @RequestMapping(value = "/getRecentBidder", method = RequestMethod.POST,produces = "application/json")
+
+    @RequestMapping(value = "/getRecentBidder", method = RequestMethod.POST, produces = "application/json")
     public @ResponseBody
     List<String> getRecentBidder(
             @RequestParam int bid_id) {
         List<String> result = bhService.getRecentBidderList(bid_id);
         return result;
     }
-    
-    
 
-    @RequestMapping(value = "/searchProductByTags", method = RequestMethod.POST,produces = "application/json")
+    @RequestMapping(value = "/searchProductByTags", method = RequestMethod.POST, produces = "application/json")
     public @ResponseBody
     ProductListDTO searchProductByTags(
             @RequestParam int tag_id, int page) {
@@ -68,19 +66,17 @@ public class ProductAPI {
         return result;
     }
 
-    @RequestMapping(value = "/getProductById", method = RequestMethod.POST,produces = "application/json")
+    @RequestMapping(value = "/getProductById", method = RequestMethod.POST, produces = "application/json")
     public @ResponseBody
     ProductDTO getProductById(
             @RequestParam int product_id) {
-
         ProductDTO result = productService.getProductById(product_id);
-
         return result;
     }
-    
+
     @RequestMapping(value = "/printProductList")
-    public void printProductList (HttpServletResponse response, HttpServletRequest request){
+    public void printProductList(HttpServletResponse response, HttpServletRequest request) {
         productService.getProductList();
-        return; 
-    }            
+        return;
+    }
 }
