@@ -5,7 +5,6 @@
 package com.vteam.xml_project.hibernate.dao;
 
 
-import com.vteam.xml_project.hibernate.orm.Category;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import com.vteam.xml_project.hibernate.orm.Users;

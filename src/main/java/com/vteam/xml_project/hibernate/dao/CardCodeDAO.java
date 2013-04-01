@@ -5,7 +5,10 @@
 package com.vteam.xml_project.hibernate.dao;
 
 import com.vteam.xml_project.hibernate.orm.CardCode;
+import java.util.List;
+import org.hibernate.Criteria;
 import org.hibernate.Query;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -24,4 +27,9 @@ public class CardCodeDAO extends BaseDAO{
         }
         return null;
      }
+    public List<CardCode> getCardCodeToPrint(){
+        Criteria cr = this.sessionFactory.getCurrentSession().createCriteria(CardCode.class);
+        cr.add(Restrictions.isNull("user"));
+        return cr.list();
+    }
 }

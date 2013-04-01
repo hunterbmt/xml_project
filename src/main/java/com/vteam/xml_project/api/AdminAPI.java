@@ -16,10 +16,15 @@ import com.vteam.xml_project.dto.TagsDTO;
 import com.vteam.xml_project.service.AdminService;
 import com.vteam.xml_project.service.CategoryService;
 import com.vteam.xml_project.service.ProductService;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.sql.Driver;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -52,32 +57,31 @@ public class AdminAPI {
         return "Done";
     }
 
-    @RequestMapping(value = "/getProductList", method = RequestMethod.POST,produces = "application/json")
+    @RequestMapping(value = "/getProductList", method = RequestMethod.POST, produces = "application/json")
     public @ResponseBody
     ProductListDTO insertProduct(
             @RequestParam int page, int pageSize) {
         ProductListDTO productsDTO = adminService.getProductList(page, pageSize);
         return productsDTO;
     }
-    
-    @RequestMapping(value = "/insert_product", method = RequestMethod.POST,produces = "application/json")
+
+    @RequestMapping(value = "/insert_product", method = RequestMethod.POST, produces = "application/json")
     public @ResponseBody
     ProductDTO insertProduct(
-            @RequestParam int categoryId, String productName, String description, String img, double minPrice, double maxPrice,String tags) {
-        ProductDTO productDTO = adminService.insertProduct(categoryId, productName, description, img, minPrice, maxPrice,tags);
+            @RequestParam int categoryId, String productName, String description, String img, double minPrice, double maxPrice, String tags) {
+        ProductDTO productDTO = adminService.insertProduct(categoryId, productName, description, img, minPrice, maxPrice, tags);
         return productDTO;
     }
 
-    @RequestMapping(value = "/update_product", method = RequestMethod.POST,produces = "application/json")
+    @RequestMapping(value = "/update_product", method = RequestMethod.POST, produces = "application/json")
     public @ResponseBody
     ProductDTO updateProduct(
             @RequestParam int productId, int categoryId, String productName, String description, String img, double minPrice, double maxPrice, String tags) {
-        ProductDTO result = adminService.updateProduct(productId, categoryId, productName, description, img, minPrice, maxPrice,tags);
+        ProductDTO result = adminService.updateProduct(productId, categoryId, productName, description, img, minPrice, maxPrice, tags);
         return result;
     }
 
-
-    @RequestMapping(value = "/update_bid", method = RequestMethod.POST,produces = "application/json")
+    @RequestMapping(value = "/update_bid", method = RequestMethod.POST, produces = "application/json")
     public @ResponseBody
     BidDTO updateBid(
             @RequestParam int bid_id, int product_id,
@@ -89,7 +93,7 @@ public class AdminAPI {
         return bDTO;
     }
 
-    @RequestMapping(value = "/insert_bid", method = RequestMethod.POST,produces = "application/json")
+    @RequestMapping(value = "/insert_bid", method = RequestMethod.POST, produces = "application/json")
     public @ResponseBody
     BidDTO insertBid(
             @RequestParam int product_id, String start_date,
@@ -104,7 +108,7 @@ public class AdminAPI {
         return bDTO;
     }
 
-    @RequestMapping(value = "/getProductNameList",produces = "application/json")
+    @RequestMapping(value = "/getProductNameList", produces = "application/json")
     public @ResponseBody
     HashMap<Integer, String> admin_bid_getPList(HttpServletRequest request) {
 
@@ -112,12 +116,12 @@ public class AdminAPI {
         List<ProductDTO> list = productList.getProductList();
         HashMap<Integer, String> ProductNameList = new HashMap<Integer, String>();
         for (int i = 0; i < list.size(); i++) {
-                ProductNameList.put(list.get(i).getId(), list.get(i).getName());           
+            ProductNameList.put(list.get(i).getId(), list.get(i).getName());
         }
         return ProductNameList;
     }
-    
-    @RequestMapping(value = "/getAllProductNameList",produces = "application/json")
+
+    @RequestMapping(value = "/getAllProductNameList", produces = "application/json")
     public @ResponseBody
     HashMap<Integer, String> admin_bid_getAllProductNameList(HttpServletRequest request) {
 
@@ -125,14 +129,12 @@ public class AdminAPI {
         List<ProductDTO> list = productList.getProductList();
         HashMap<Integer, String> ProductNameList = new HashMap<Integer, String>();
         for (int i = 0; i < list.size(); i++) {
-                ProductNameList.put(list.get(i).getId(), list.get(i).getName());           
+            ProductNameList.put(list.get(i).getId(), list.get(i).getName());
         }
         return ProductNameList;
     }
-    
-    
 
-    @RequestMapping(value = "/getCategoryNameList", method = RequestMethod.POST,  produces = "application/json")
+    @RequestMapping(value = "/getCategoryNameList", method = RequestMethod.POST, produces = "application/json")
     public @ResponseBody
     CategoryListDTO getCategoryNameList() {
 
@@ -140,7 +142,7 @@ public class AdminAPI {
         return categoryListDTO;
     }
 
-    @RequestMapping(value = "/insert_category", method = RequestMethod.POST,  produces = "application/json")
+    @RequestMapping(value = "/insert_category", method = RequestMethod.POST, produces = "application/json")
     public @ResponseBody
     CategoryDTO insertCategory(
             @RequestParam String categoryName, String description) {
@@ -148,36 +150,61 @@ public class AdminAPI {
         return categoryDTO;
     }
 
-    @RequestMapping(value = "/update_category", method = RequestMethod.POST,  produces = "application/json")
+    @RequestMapping(value = "/update_category", method = RequestMethod.POST, produces = "application/json")
     public @ResponseBody
     CategoryDTO updateCategory(
             @RequestParam int categoryId, String description) {
         CategoryDTO categoryDTO = adminService.updateCategory(categoryId, description);
         return categoryDTO;
     }
-    
-    @RequestMapping(value = "/generate_nin", method = RequestMethod.POST,produces = "application/json")
+
+    @RequestMapping(value = "/generate_nin", method = RequestMethod.POST, produces = "application/json")
     public @ResponseBody
     NinCodeListDTO generateNin(
             @RequestParam int amount, int quantity) {
         NinCodeListDTO ninCodeListDTO = adminService.generateNin(amount, quantity);
         return ninCodeListDTO;
     }
-    
-    @RequestMapping(value = "/insert_tag", method = RequestMethod.POST,  produces = "application/json")
+
+    @RequestMapping(value = "/insert_tag", method = RequestMethod.POST, produces = "application/json")
     public @ResponseBody
     TagsDTO insertTag(
             @RequestParam String tagName, String description) {
         TagsDTO tagDTO = adminService.insertTag(tagName, description);
         return tagDTO;
     }
-    
-        
+
     @RequestMapping(value = "/update_tag", method = RequestMethod.POST, produces = "application/json")
     public @ResponseBody
     TagsDTO updateTag(
             @RequestParam int tagId, String description) {
         TagsDTO tagDTO = adminService.updateTag(tagId, description);
         return tagDTO;
+    }
+
+    @RequestMapping(value = "/export_nin_code_to_pdf", method = RequestMethod.GET)
+    public void exportNinCodeToPdf(HttpServletResponse response) {
+        try{
+        ByteArrayOutputStream outStream = adminService.exportNinCodeToPdf();
+        byte[] pdfBytes = outStream.toByteArray();
+        response.setContentType("application/pdf");
+        response.getOutputStream().write(pdfBytes);
+        response.getOutputStream().flush();
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
+    }
+    
+    @RequestMapping(value = "export_product_list_to_pdf", method = RequestMethod.GET)
+    public void exportProductListToPdf(HttpServletResponse response) {
+        try {
+            ByteArrayOutputStream outStream = adminService.exportProductListToPdf();
+            byte[] pdfBytes = outStream.toByteArray();
+            response.setContentType("application/pdf");
+            response.getOutputStream().write(pdfBytes);
+            response.getOutputStream().flush();
+        } catch (Exception ex){
+            ex.printStackTrace();
+        }
     }
 }

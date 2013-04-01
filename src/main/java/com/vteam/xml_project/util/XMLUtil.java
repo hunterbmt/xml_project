@@ -4,7 +4,9 @@
  */
 package com.vteam.xml_project.util;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -21,7 +23,15 @@ import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.sax.SAXResult;
 import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
+import org.apache.fop.apps.FOPException;
+import org.apache.fop.apps.FOUserAgent;
+import org.apache.fop.apps.Fop;
+import org.apache.fop.apps.FopFactory;
+import org.apache.fop.apps.MimeConstants;
+import org.apache.xalan.processor.TransformerFactoryImpl;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
@@ -48,11 +58,13 @@ public class XMLUtil {
         File f = new File(filePath);
         return objectClass.cast(u.unmarshal(f));
     }
+
     public static <T> T UnMarshall(Class<T> objectClass, Node node) throws JAXBException {
         JAXBContext jc = JAXBContext.newInstance(objectClass);
         Unmarshaller u = jc.createUnmarshaller();
         return objectClass.cast(u.unmarshal(node));
     }
+
     public static <T> T UnMarshall(Class<T> objectClass, XMLStreamReader reader) throws JAXBException {
         JAXBContext jc = JAXBContext.newInstance(objectClass);
         Unmarshaller u = jc.createUnmarshaller();
@@ -73,5 +85,26 @@ public class XMLUtil {
         File file = new File(filePath);
         Result result = new StreamResult(file);
         trans.transform(src, result);
+    }
+
+    public static ByteArrayOutputStream printPDF(String xmlPath, String xslPath)
+            throws TransformerConfigurationException, FileNotFoundException, TransformerException, FOPException {
+        StreamSource xmlFile = new StreamSource(xmlPath);
+        StreamSource xstlFile = new StreamSource(xslPath);
+        FopFactory fopFactory = FopFactory.newInstance();
+        FOUserAgent foUserAgent = fopFactory.newFOUserAgent();
+        ByteArrayOutputStream outStream = new ByteArrayOutputStream();
+        Fop fop = fopFactory.newFop(MimeConstants.MIME_PDF, foUserAgent, outStream);
+        Result res = new SAXResult(fop.getDefaultHandler());
+        Transformer xslfoTransformer = getTransformer(xstlFile);
+        xslfoTransformer.transform(xmlFile, res);
+        return outStream;
+    }
+
+    private static Transformer getTransformer(StreamSource streamSource) throws TransformerConfigurationException {
+        // setup the xslt transformer
+        TransformerFactoryImpl impl =
+                new TransformerFactoryImpl();
+        return impl.newTransformer(streamSource);
     }
 }

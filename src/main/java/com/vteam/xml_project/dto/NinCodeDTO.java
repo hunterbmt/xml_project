@@ -4,12 +4,16 @@
  */
 package com.vteam.xml_project.dto;
 
-import java.util.Date;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
  * @author Crick
  */
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlRootElement(name = "ninCode")
 public class NinCodeDTO extends BaseDTO {
 
     private int id;

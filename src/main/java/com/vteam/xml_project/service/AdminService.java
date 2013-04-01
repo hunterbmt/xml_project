@@ -27,11 +27,28 @@ import com.vteam.xml_project.hibernate.orm.Tags;
 import com.vteam.xml_project.util.DateUtil;
 import com.vteam.xml_project.util.StringUtil;
 import com.vteam.xml_project.util.XMLUtil;
+<<<<<<< HEAD
 import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 import javax.servlet.ServletContext;
 import javax.xml.bind.JAXBException;
+=======
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.text.ParseException;
+import java.util.Date;
+import java.util.List;
+import java.util.UUID;
+import java.util.logging.Level;
+import javax.servlet.ServletContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import org.apache.fop.apps.FOPException;
+>>>>>>> 34c99f6494c962f0e565578e24d19029832c6825
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,6 +73,8 @@ public class AdminService {
     private CardCodeDAO cardCodeDAO;
     @Autowired
     private TagsDAO tagsDAO;
+    @Autowired
+    private ServletContext servletContext;
     @Autowired
     private DateUtil dateUtil;
     @Autowired
@@ -286,7 +305,7 @@ public class AdminService {
         }
         return ninCodeList;
     }
-    
+
     @Transactional
     public TagsDTO insertTag(String tagName, String description) {
         TagsDTO tagDTO = new TagsDTO();
@@ -317,6 +336,7 @@ public class AdminService {
         }
         return tagDTO;
     }
+<<<<<<< HEAD
 
     @Transactional
     public void updateAllXML() {
@@ -354,5 +374,68 @@ public class AdminService {
         } catch (Exception e) {
             e.printStackTrace();
         }
+=======
+    
+    @Transactional
+    public ByteArrayOutputStream exportProductListToPdf() {
+        try {
+            List<Product> product = productDAO.getProductList();
+            ProductListDTO productListDTO =  new ProductListDTO();
+            ProductDTO productDTO;
+            for (Product p : product) {
+                productDTO = new ProductDTO();
+                productDTO.setName(p.getProductName());
+                productDTO.setDescription(p.getDescription());
+                productDTO.setCategoryName(p.getCategory().getCategoryName());
+                productListDTO.getProductList().add(productDTO);
+            }
+            File xmlFile = File.createTempFile(UUID.randomUUID().toString(), "_product.xml");
+            XMLUtil.Marshall(productListDTO, xmlFile.getAbsolutePath());
+            String appPath = servletContext.getRealPath("WEB-INF/views/resources/xsl");
+            return  XMLUtil.printPDF(xmlFile.getAbsolutePath(), appPath+File.separator+"product.xsl");
+        } catch (IOException ex) {
+            log.error(ex);
+        } catch (JAXBException ex) {
+            log.error(ex);
+        } catch (TransformerConfigurationException ex) {
+            log.error(ex);
+        } catch (TransformerException ex) {
+            log.error(ex);
+        } catch (FOPException ex) {
+            java.util.logging.Logger.getLogger(AdminService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+    
+    @Transactional
+    public ByteArrayOutputStream exportNinCodeToPdf() {
+        try {
+            List<CardCode> cardCodeList = cardCodeDAO.getCardCodeToPrint();
+            NinCodeListDTO ninCodeListDTO = new NinCodeListDTO();
+            NinCodeDTO ninCodeDTO;
+            for (CardCode cardCode : cardCodeList) {
+                ninCodeDTO = new NinCodeDTO();
+                ninCodeDTO.setCode(cardCode.getCode());
+                ninCodeDTO.setAmount(cardCode.getAmount());
+                ninCodeListDTO.getNinList().add(ninCodeDTO);
+            }
+            File xmlFile = File.createTempFile(UUID.randomUUID().toString(), "_nin.xml");
+            XMLUtil.Marshall(ninCodeListDTO, xmlFile.getAbsolutePath());
+            String appPath = servletContext.getRealPath("WEB-INF/views/resources/xsl");
+            
+            return XMLUtil.printPDF(xmlFile.getAbsolutePath(),appPath+File.separator+"nin_code_pdf.xsl");
+        } catch (IOException ex) {
+            log.error(ex);
+        } catch (JAXBException ex) {
+            log.error(ex);
+        } catch (TransformerConfigurationException ex) {
+            log.error(ex);
+        } catch (TransformerException ex) {
+            log.error(ex);
+        } catch (FOPException ex) {
+            java.util.logging.Logger.getLogger(AdminService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+>>>>>>> 34c99f6494c962f0e565578e24d19029832c6825
     }
 }

@@ -7,6 +7,7 @@ package com.vteam.xml_project.context.listener;
 import com.vteam.xml_project.dto.BidListDTO;
 import com.vteam.xml_project.dto.CategoryDTO;
 import com.vteam.xml_project.dto.CategoryListDTO;
+import com.vteam.xml_project.dto.ProductListDTO;
 import com.vteam.xml_project.dto.UserListDTO;
 import com.vteam.xml_project.service.BidService;
 import com.vteam.xml_project.service.CategoryService;
@@ -36,22 +37,31 @@ public class ApplicationListenerBean implements ApplicationListener<ContextRefre
     @Autowired
     BidService bidService;
     private static String CATEGORY_XML_FILE_NAME = "category.xml";
+    private static String PRODUCT_XML_FILE_NAME = "product.xml";
     private static String USER_XML_FILE_NAME = "user.xml";
+<<<<<<< HEAD
     private static String BID_XML_FILE_NAME = "bids.xml";
     
+=======
+
+>>>>>>> 34c99f6494c962f0e565578e24d19029832c6825
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
         marshallCategory();
+        marshallProduct();
         marshallUser();
+<<<<<<< HEAD
         marshallBids();
         
+=======
+>>>>>>> 34c99f6494c962f0e565578e24d19029832c6825
     }
 
     private void marshallCategory() {
         try {
             CategoryListDTO categoryListDTO = categoryService.getCategoryList();
             for (CategoryDTO categoryDTO : categoryListDTO.getCategoryList()) {
-                categoryDTO.setProductListDTO(productService.searchProductByCategoryId(categoryDTO.getId(), 1,true));
+                categoryDTO.setProductListDTO(productService.searchProductByCategoryId(categoryDTO.getId(), 1, true));
             }
             String realPath = servletContext.getRealPath("WEB-INF/views/resources/xml/");
             XMLUtil.Marshall(categoryListDTO, realPath + "/" + CATEGORY_XML_FILE_NAME);
@@ -59,15 +69,28 @@ public class ApplicationListenerBean implements ApplicationListener<ContextRefre
             ex.printStackTrace();
         }
     }
-    private void marshallUser(){
+
+    private void marshallProduct() {
         try {
-            UserListDTO userListDTO=userService.getUserList();
+            ProductListDTO productListDTO = productService.getProductList();
+            String realPath = servletContext.getRealPath("WEB-INF/views/resources/xml/");
+            XMLUtil.Marshall(productListDTO, realPath + "/" + PRODUCT_XML_FILE_NAME);
+        } catch (JAXBException ex) {
+            ex.printStackTrace();
+        }
+        return;
+    }
+
+    private void marshallUser() {
+        try {
+            UserListDTO userListDTO = userService.getUserList();
             String realPath = servletContext.getRealPath("WEB-INF/views/resources/xml/");
             XMLUtil.Marshall(userListDTO, realPath + "/" + USER_XML_FILE_NAME);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+<<<<<<< HEAD
     private void marshallBids(){
         try {
             BidListDTO bidListDTO = bidService.getBidsList(1, 999);
@@ -79,4 +102,6 @@ public class ApplicationListenerBean implements ApplicationListener<ContextRefre
     }
  
     
+=======
+>>>>>>> 34c99f6494c962f0e565578e24d19029832c6825
 }
