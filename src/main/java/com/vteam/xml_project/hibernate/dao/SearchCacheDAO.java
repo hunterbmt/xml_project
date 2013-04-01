@@ -4,7 +4,6 @@
  */
 package com.vteam.xml_project.hibernate.dao;
 
-import com.vteam.xml_project.hibernate.orm.CardCode;
 import com.vteam.xml_project.hibernate.orm.SearchCache;
 import org.hibernate.Query;
 import org.springframework.stereotype.Repository;

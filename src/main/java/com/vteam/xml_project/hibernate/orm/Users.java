@@ -1,7 +1,6 @@
     package com.vteam.xml_project.hibernate.orm;
 // Generated Mar 11, 2013 2:33:25 PM by Hibernate Tools 3.2.1.GA
 
-import com.vteam.xml_project.util.StringUtil;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -13,7 +12,6 @@ import javax.persistence.GeneratedValue;
 import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
