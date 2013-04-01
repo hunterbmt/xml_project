@@ -39,22 +39,15 @@ public class ApplicationListenerBean implements ApplicationListener<ContextRefre
     private static String CATEGORY_XML_FILE_NAME = "category.xml";
     private static String PRODUCT_XML_FILE_NAME = "product.xml";
     private static String USER_XML_FILE_NAME = "user.xml";
-<<<<<<< HEAD
     private static String BID_XML_FILE_NAME = "bids.xml";
     
-=======
 
->>>>>>> 34c99f6494c962f0e565578e24d19029832c6825
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
         marshallCategory();
         marshallProduct();
         marshallUser();
-<<<<<<< HEAD
         marshallBids();
-        
-=======
->>>>>>> 34c99f6494c962f0e565578e24d19029832c6825
     }
 
     private void marshallCategory() {
@@ -90,7 +83,7 @@ public class ApplicationListenerBean implements ApplicationListener<ContextRefre
             e.printStackTrace();
         }
     }
-<<<<<<< HEAD
+
     private void marshallBids(){
         try {
             BidListDTO bidListDTO = bidService.getBidsList(1, 999);
@@ -100,8 +93,4 @@ public class ApplicationListenerBean implements ApplicationListener<ContextRefre
             e.printStackTrace();
         }
     }
- 
-    
-=======
->>>>>>> 34c99f6494c962f0e565578e24d19029832c6825
 }

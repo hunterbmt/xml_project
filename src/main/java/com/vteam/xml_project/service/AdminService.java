@@ -27,16 +27,9 @@ import com.vteam.xml_project.hibernate.orm.Tags;
 import com.vteam.xml_project.util.DateUtil;
 import com.vteam.xml_project.util.StringUtil;
 import com.vteam.xml_project.util.XMLUtil;
-<<<<<<< HEAD
-import java.text.ParseException;
-import java.util.Date;
-import java.util.List;
-import javax.servlet.ServletContext;
-import javax.xml.bind.JAXBException;
-=======
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.Date;
@@ -48,7 +41,7 @@ import javax.xml.bind.JAXBException;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import org.apache.fop.apps.FOPException;
->>>>>>> 34c99f6494c962f0e565578e24d19029832c6825
+
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -81,8 +74,6 @@ public class AdminService {
     CategoryService categoryService;
     @Autowired
     UserService userService;
-    @Autowired
-    ServletContext servletContext;
     @Autowired
     ProductService productService;
     @Autowired
@@ -200,7 +191,7 @@ public class AdminService {
             productDAO.save(product);
             bidDTO.setStatus("success");
             updateAllXML();
-            
+
             return bidDTO;
         } catch (HibernateException ex) {
             log.error(ex.getStackTrace());
@@ -336,7 +327,6 @@ public class AdminService {
         }
         return tagDTO;
     }
-<<<<<<< HEAD
 
     @Transactional
     public void updateAllXML() {
@@ -344,12 +334,12 @@ public class AdminService {
         marshallUser();
         marshallBids();
     }
-    
+
     private void marshallCategory() {
         try {
             CategoryListDTO categoryListDTO = categoryService.getCategoryList();
             for (CategoryDTO categoryDTO : categoryListDTO.getCategoryList()) {
-                categoryDTO.setProductListDTO(productService.searchProductByCategoryId(categoryDTO.getId(), 1,true));
+                categoryDTO.setProductListDTO(productService.searchProductByCategoryId(categoryDTO.getId(), 1, true));
             }
             String realPath = servletContext.getRealPath("WEB-INF/views/resources/xml/");
             XMLUtil.Marshall(categoryListDTO, realPath + "/" + CATEGORY_XML_FILE_NAME);
@@ -357,16 +347,18 @@ public class AdminService {
             ex.printStackTrace();
         }
     }
-    private void marshallUser(){
+
+    private void marshallUser() {
         try {
-            UserListDTO userListDTO=userService.getUserList();
+            UserListDTO userListDTO = userService.getUserList();
             String realPath = servletContext.getRealPath("WEB-INF/views/resources/xml/");
             XMLUtil.Marshall(userListDTO, realPath + "/" + USER_XML_FILE_NAME);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    private void marshallBids(){
+
+    private void marshallBids() {
         try {
             BidListDTO bidListDTO = bidService.getBidsList(1, 999);
             String realPath = servletContext.getRealPath("WEB-INF/views/resources/xml/");
@@ -374,13 +366,13 @@ public class AdminService {
         } catch (Exception e) {
             e.printStackTrace();
         }
-=======
-    
+    }
+
     @Transactional
     public ByteArrayOutputStream exportProductListToPdf() {
         try {
             List<Product> product = productDAO.getProductList();
-            ProductListDTO productListDTO =  new ProductListDTO();
+            ProductListDTO productListDTO = new ProductListDTO();
             ProductDTO productDTO;
             for (Product p : product) {
                 productDTO = new ProductDTO();
@@ -392,7 +384,7 @@ public class AdminService {
             File xmlFile = File.createTempFile(UUID.randomUUID().toString(), "_product.xml");
             XMLUtil.Marshall(productListDTO, xmlFile.getAbsolutePath());
             String appPath = servletContext.getRealPath("WEB-INF/views/resources/xsl");
-            return  XMLUtil.printPDF(xmlFile.getAbsolutePath(), appPath+File.separator+"product.xsl");
+            return XMLUtil.printPDF(xmlFile.getAbsolutePath(), appPath + File.separator + "product.xsl");
         } catch (IOException ex) {
             log.error(ex);
         } catch (JAXBException ex) {
@@ -406,7 +398,7 @@ public class AdminService {
         }
         return null;
     }
-    
+
     @Transactional
     public ByteArrayOutputStream exportNinCodeToPdf() {
         try {
@@ -422,8 +414,8 @@ public class AdminService {
             File xmlFile = File.createTempFile(UUID.randomUUID().toString(), "_nin.xml");
             XMLUtil.Marshall(ninCodeListDTO, xmlFile.getAbsolutePath());
             String appPath = servletContext.getRealPath("WEB-INF/views/resources/xsl");
-            
-            return XMLUtil.printPDF(xmlFile.getAbsolutePath(),appPath+File.separator+"nin_code_pdf.xsl");
+
+            return XMLUtil.printPDF(xmlFile.getAbsolutePath(), appPath + File.separator + "nin_code_pdf.xsl");
         } catch (IOException ex) {
             log.error(ex);
         } catch (JAXBException ex) {
@@ -436,6 +428,6 @@ public class AdminService {
             java.util.logging.Logger.getLogger(AdminService.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
->>>>>>> 34c99f6494c962f0e565578e24d19029832c6825
+
     }
 }
