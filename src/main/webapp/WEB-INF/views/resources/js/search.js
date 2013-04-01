@@ -6,7 +6,7 @@ function searchProductAtLocal(){
             result.push(product_list[i]);
         }
     }
-    if (result.length >= 9){
+    if (result.length >= page_size){
         displaySearchProduct(result);
     }
     else{

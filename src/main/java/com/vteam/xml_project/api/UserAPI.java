@@ -43,7 +43,7 @@ public class UserAPI {
 
     }
 
-    @RequestMapping(value = "/logout", method = RequestMethod.POST)
+    @RequestMapping(value = "/logout", method = RequestMethod.POST,produces = "application/json")
     public @ResponseBody
     HashMap<String, Object> logout() {
         HashMap<String, Object> returnMap = new HashMap<String, Object>();
@@ -52,7 +52,7 @@ public class UserAPI {
         return returnMap;
     }
 
-    @RequestMapping(value = "/create", method = RequestMethod.POST)
+    @RequestMapping(value = "/create", method = RequestMethod.POST,produces = "application/json")
     public @ResponseBody
     HashMap<String, Object> create(
             @RequestParam String email, String password, String fullname) {
@@ -71,7 +71,7 @@ public class UserAPI {
         return returnMap;
     }
 
-    @RequestMapping(value = "/update", method = RequestMethod.POST)
+    @RequestMapping(value = "/update", method = RequestMethod.POST,produces = "application/json")
     public @ResponseBody
     HashMap<String, Object> update(
             @RequestParam String address, String birthday, String phone, String formatDate) {
@@ -90,7 +90,7 @@ public class UserAPI {
         return returnMap;
     }
 
-    @RequestMapping(value = "/get_user_by_id", method = RequestMethod.POST)
+    @RequestMapping(value = "/get_user_by_id", method = RequestMethod.POST,produces = "application/json")
     public @ResponseBody
     UserDTO get_user_by_id(
             @RequestParam String id) {
@@ -99,7 +99,7 @@ public class UserAPI {
         return rs;
     }
 
-    @RequestMapping(value = "/get_user_by_email", method = RequestMethod.POST)
+    @RequestMapping(value = "/get_user_by_email", method = RequestMethod.POST,produces = "application/json")
     public @ResponseBody
     UserDTO get_user_by_email() {
         String email = (String) session.get("email");
@@ -113,7 +113,7 @@ public class UserAPI {
         return result;
     }
 
-    @RequestMapping(value = "/changePassword", method = RequestMethod.POST)
+    @RequestMapping(value = "/changePassword", method = RequestMethod.POST,produces = "application/json")
     public @ResponseBody
     HashMap<String, Object> changePassword(
             @RequestParam String currentPass, String newPass){
@@ -131,7 +131,7 @@ public class UserAPI {
         }
         return returnMap;
     }
-    @RequestMapping(value="/input_payment_code",method = RequestMethod.POST)
+    @RequestMapping(value="/input_payment_code",method = RequestMethod.POST,produces = "application/json")
     public @ResponseBody NinCodeDTO inputPaymentCode(@RequestParam String code){
         NinCodeDTO ninCodeDTO;
         String email = (String) session.get("email");
@@ -143,7 +143,7 @@ public class UserAPI {
         ninCodeDTO = userService.inputPayment(email, code);
         return ninCodeDTO;
     }
-    @RequestMapping(value = "/getPaymentList", method = RequestMethod.POST)
+    @RequestMapping(value = "/getPaymentList", method = RequestMethod.POST,produces = "application/json")
     public @ResponseBody
     UserPaymentListDTO getPaymentList(
             @RequestParam int id) {

@@ -68,7 +68,7 @@ public class AdminAPI {
     }
 
 
-    @RequestMapping(value = "/update_bid", method = RequestMethod.POST)
+    @RequestMapping(value = "/update_bid", method = RequestMethod.POST,produces = "application/json")
     public @ResponseBody
     BidDTO updateBid(
             @RequestParam int bid_id, int product_id,
@@ -80,7 +80,7 @@ public class AdminAPI {
         return bDTO;
     }
 
-    @RequestMapping(value = "/insert_bid", method = RequestMethod.POST)
+    @RequestMapping(value = "/insert_bid", method = RequestMethod.POST,produces = "application/json")
     public @ResponseBody
     BidDTO insertBid(
             @RequestParam int product_id, String start_date,
@@ -95,7 +95,7 @@ public class AdminAPI {
         return bDTO;
     }
 
-    @RequestMapping(value = "/getProductNameList")
+    @RequestMapping(value = "/getProductNameList",produces = "application/json")
     public @ResponseBody
     HashMap<Integer, String> admin_bid_getPList(HttpServletRequest request) {
 
@@ -108,7 +108,7 @@ public class AdminAPI {
         return ProductNameList;
     }
     
-    @RequestMapping(value = "/getAllProductNameList")
+    @RequestMapping(value = "/getAllProductNameList",produces = "application/json")
     public @ResponseBody
     HashMap<Integer, String> admin_bid_getAllProductNameList(HttpServletRequest request) {
 
@@ -147,7 +147,7 @@ public class AdminAPI {
         return categoryDTO;
     }
     
-    @RequestMapping(value = "/generate_nin", method = RequestMethod.POST)
+    @RequestMapping(value = "/generate_nin", method = RequestMethod.POST,produces = "application/json")
     public @ResponseBody
     NinCodeListDTO generateNin(
             @RequestParam int amount, int quantity) {

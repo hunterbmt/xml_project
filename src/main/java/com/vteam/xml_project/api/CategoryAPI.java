@@ -47,7 +47,7 @@ public class CategoryAPI {
         ProductListDTO searchCategoryResult = productService.searchProductByCategoryId(categoryId,page,false);
         return searchCategoryResult;
     }
-    @RequestMapping(value = "/getCategoryDetail", method = RequestMethod.POST)
+    @RequestMapping(value = "/getCategoryDetail", method = RequestMethod.POST,produces = "application/json")
     public @ResponseBody CategoryDTO getCategoryDetail(
             @RequestParam int category_id) {
         CategoryDTO result = categoryService.getCategoryDetail(category_id);

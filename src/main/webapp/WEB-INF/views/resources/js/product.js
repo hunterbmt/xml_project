@@ -89,7 +89,7 @@ function searchProduct(page) {
     product_search_current_page = page;
     product_search_current_search_function = searchProduct;
     vteam_http.makeHttpRequest("/product/searchProduct",
-            {txtSearch: input, page: page, pageSize: page_size},
+            {txtSearch: input, page: page},
     'POST',
             function(result) {
                 vteam_http.hide('loading');

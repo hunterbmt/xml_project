@@ -147,7 +147,7 @@ public class ProductService {
             list.setStatus("error");
             list.setMsg("Have some errors. Try again");
         } catch (JAXBException jaxbEx) {
-            log.error(jaxbEx.getMessage());
+            log.error(jaxbEx);
             list.setStatus("error");
             list.setMsg("Have some errors. Try again");
         }
