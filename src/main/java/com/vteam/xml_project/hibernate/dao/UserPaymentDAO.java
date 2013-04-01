@@ -4,7 +4,6 @@
  */
 package com.vteam.xml_project.hibernate.dao;
 
-import com.vteam.xml_project.dto.UserPaymentDTO;
 import com.vteam.xml_project.hibernate.orm.UserPayment;
 import java.util.List;
 import org.hibernate.HibernateException;

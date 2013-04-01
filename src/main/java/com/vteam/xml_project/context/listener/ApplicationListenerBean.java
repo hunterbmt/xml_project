@@ -6,7 +6,6 @@ package com.vteam.xml_project.context.listener;
 
 import com.vteam.xml_project.dto.CategoryDTO;
 import com.vteam.xml_project.dto.CategoryListDTO;
-import com.vteam.xml_project.dto.ProductDTO;
 import com.vteam.xml_project.dto.ProductListDTO;
 import com.vteam.xml_project.dto.UserListDTO;
 import com.vteam.xml_project.service.CategoryService;
