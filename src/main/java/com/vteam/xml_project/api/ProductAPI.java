@@ -11,6 +11,7 @@ import com.vteam.xml_project.service.BidHistoryService;
 import com.vteam.xml_project.service.ProductService;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -76,4 +77,10 @@ public class ProductAPI {
 
         return result;
     }
+    
+    @RequestMapping(value = "/printProductList")
+    public void printProductList (HttpServletResponse response, HttpServletRequest request){
+        productService.getProductList();
+        return; 
+    }            
 }

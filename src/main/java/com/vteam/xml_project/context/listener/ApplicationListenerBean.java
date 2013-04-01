@@ -6,6 +6,8 @@ package com.vteam.xml_project.context.listener;
 
 import com.vteam.xml_project.dto.CategoryDTO;
 import com.vteam.xml_project.dto.CategoryListDTO;
+import com.vteam.xml_project.dto.ProductDTO;
+import com.vteam.xml_project.dto.ProductListDTO;
 import com.vteam.xml_project.service.CategoryService;
 import com.vteam.xml_project.service.ProductService;
 import com.vteam.xml_project.util.XMLUtil;
@@ -28,10 +30,12 @@ public class ApplicationListenerBean implements ApplicationListener<ContextRefre
     @Autowired
     ProductService productService;
     private static String CATEGORY_XML_FILE_NAME = "category.xml";
+    private static String PRODUCT_XML_FILE_NAME = "product.xml";
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
         marshallCategory();
+        marshallProduct();
     }
 
     private void marshallCategory() {
@@ -45,5 +49,15 @@ public class ApplicationListenerBean implements ApplicationListener<ContextRefre
         } catch (JAXBException ex) {
             ex.printStackTrace();
         }
+    }
+    
+    private void  marshallProduct() {
+        try {
+            ProductListDTO productListDTO = productService.getProductList();
+            String realPath = servletContext.getRealPath("WEB-INF/views/resources/xml/");
+            XMLUtil.Marshall(productListDTO, realPath + "/" + PRODUCT_XML_FILE_NAME);
+        } catch (JAXBException ex) {
+            ex.printStackTrace();
+        } return;
     }
 }

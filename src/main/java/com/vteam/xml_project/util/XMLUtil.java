@@ -4,7 +4,10 @@
  */
 package com.vteam.xml_project.util;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -19,8 +22,10 @@ import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.TransformerFactoryConfigurationError;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
@@ -47,6 +52,7 @@ public class XMLUtil {
         File f = new File(filePath);
         return objectClass.cast(u.unmarshal(f));
     }
+
     public static <T> T UnMarshall(Class<T> objectClass, Node node) throws JAXBException {
         JAXBContext jc = JAXBContext.newInstance(objectClass);
         Unmarshaller u = jc.createUnmarshaller();
@@ -67,5 +73,18 @@ public class XMLUtil {
         File file = new File(filePath);
         Result result = new StreamResult(file);
         trans.transform(src, result);
+    }
+
+    public static ByteArrayOutputStream printPDF(String xmlPath, String foPath, String xslPath) 
+            throws TransformerConfigurationException, FileNotFoundException, TransformerException {
+        TransformerFactory tf = TransformerFactory.newInstance();
+        StreamSource xstlFile = new StreamSource(xslPath);
+        Transformer trans = tf.newTransformer(xstlFile);
+        StreamSource xmlFile = new StreamSource(xmlPath);
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        StreamResult htmlFile = new StreamResult(out);
+        trans.transform(xmlFile, htmlFile);
+        return (ByteArrayOutputStream) htmlFile.getOutputStream();
+        
     }
 }
