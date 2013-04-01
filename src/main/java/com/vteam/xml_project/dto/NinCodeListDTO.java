@@ -6,14 +6,21 @@ package com.vteam.xml_project.dto;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
  * @author Crick
  */
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlRootElement(name = "ninCodeList")
 public class NinCodeListDTO extends BaseDTO {
 
     private int numberOfNin;
+    @XmlElement(name = "ninCode", type = NinCodeDTO.class)
     private List<NinCodeDTO> ninList;
 
     public NinCodeListDTO() {
