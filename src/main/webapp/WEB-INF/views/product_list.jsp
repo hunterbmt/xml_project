@@ -136,10 +136,10 @@
                         <div class="alert hide" id="updateResult1"></div>
                         <div class="tabbable tabs-left">
                             <ul class="nav nav-tabs">
-                                <li class="active"><a href="#lA" data-toggle="tab">Profile</a></li>
-                                <li class=""><a href="#lB" data-toggle="tab">Change Password</a></li>
-                                <li class=""><a href="#lC" data-toggle="tab" onclick="loadAndDisplayOrder()">Orders History</a></li>
-                                <li class=""><a href="#lD" data-toggle="tab">Payment</a></li>
+                               <li class="active"><a href="#lA" data-toggle="tab">Thông tin chi tiết</a></li>
+                                <li class=""><a href="#lB" data-toggle="tab">Thay đổi mật khẩu</a></li>
+                                <li class=""><a href="#lC" data-toggle="tab" onclick="loadAndDisplayOrder()">Lịch sử mua hàng</a></li>
+                                <li class=""><a href="#lD" data-toggle="tab">Nạp thẻ</a></li>
                             </ul>
                             <div class="tab-content">
 
@@ -193,11 +193,11 @@
                             </div>
                             <div class="tab-pane" id="lD" >
                                <form id="tab4">
-                                   <label>Enter your code here:</label>
+                                   <label>Nhập mã thẻ:</label>
                                     <input type="text" id="payment_code" class="input-xlarge">       
                                    <div>   
-                                       <button type='button' class="btn btn-success" onclick="inputCode()">Update</button>
-                                       <button type='button' class="btn btn-success" onclick="loadAndDisplayPayment()">Show Payment</button>
+                                       <button type='button' class="btn btn-success" onclick="inputCode()">Cập Nhật</button>
+                                       <button type='button' class="btn btn-success" onclick="loadAndDisplayPayment()">Lịch sử thanh toán</button>
                                    </div>
 	                        </form>
                                <table class="table table-hover hide" id="tablePayment">
@@ -209,6 +209,9 @@
                                             <td><h4>Amount</h4></td> 
                                         </tr>
                                     </thead>
+                                    <div>   
+                                       <button type='button' class="btn btn-success" onclick="inputCode()">Xuất PDF</button>
+                                   </div>
                                    <tbody  id="paymentResult">
 
                                     </tbody>

@@ -11,6 +11,7 @@ import com.vteam.xml_project.dto.UserPaymentDTO;
 import com.vteam.xml_project.dto.UserPaymentListDTO;
 import com.vteam.xml_project.dto.UserDTO;
 import com.vteam.xml_project.dto.UserListDTO;
+import com.vteam.xml_project.handler.LoginSaxHandler;
 import com.vteam.xml_project.hibernate.dao.CardCodeDAO;
 
 import com.vteam.xml_project.hibernate.orm.Users;
@@ -26,13 +27,17 @@ import com.vteam.xml_project.util.XMLUtil;
 import java.io.File;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
+import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.servlet.ServletContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
@@ -71,12 +76,26 @@ public class UserService {
         try {
                 String storagepass = StringUtil.createPasswordForDB(password);
                 String realPath = servletContext.getRealPath("WEB-INF/views/resources/xml") ;
-                Document doc = XMLUtil.parseDOM(realPath + File.separator + "user.xml");
-                XPathFactory xpf = XPathFactory.newInstance();
-                XPath xpath = xpf.newXPath();
-                String exp ="//user[email=\""+email+"\"and password=\""+storagepass+"\"]";
-                Node userNode = (Node) xpath.evaluate(exp, doc, XPathConstants.NODE);
-                userDTO=XMLUtil.UnMarshall(UserDTO.class, userNode);
+                String filePath = realPath + File.separator + "user.xml";
+//                Document doc = XMLUtil.parseDOM(realPath + File.separator + "user.xml");
+//                XPathFactory xpf = XPathFactory.newInstance();
+//                XPath xpath = xpf.newXPath();
+//                String exp ="//user[email=\""+email+"\"and password=\""+storagepass+"\"]";
+//                Node userNode = (Node) xpath.evaluate(exp, doc, XPathConstants.NODE);
+//                userDTO=XMLUtil.UnMarshall(UserDTO.class, userNode);
+                SAXParserFactory spf= SAXParserFactory.newInstance();
+                SAXParser sax= spf.newSAXParser();
+                LoginSaxHandler lgs= new LoginSaxHandler(email, storagepass);
+                File file= new File(filePath);
+                sax.parse(file, lgs);
+                if(lgs.isFound()){
+                    userDTO.setStatus(lgs.getStatus());
+                    userDTO.setEmail(email);
+                    userDTO.setFullname(lgs.getFullname());
+                userDTO.setPhone(lgs.getPhone());
+                userDTO.setAddress(lgs.getAddress());
+                userDTO.setBalance(Integer.parseInt(lgs.getBalance()));
+                }
 //            Users dbUser = userDAO.findUserByEmailAndPassword(email, storagepass);
 //            if (dbUser != null) {
 //                userDTO.setId(dbUser.getId());
@@ -102,15 +121,7 @@ public class UserService {
             log.error(ex);
             userDTO.setStatus("error");
             userDTO.setMsg("Have some errors ! Try again");
-        } catch (XPathExpressionException ex) {
-            log.error(ex);
-            userDTO.setStatus("error");
-            userDTO.setMsg("Have some errors ! Try again");
-        } catch (JAXBException ex) {
-            log.error(ex);
-            userDTO.setStatus("error");
-            userDTO.setMsg("Have some errors ! Try again");
-        } catch (ParserConfigurationException ex) {
+        }catch (ParserConfigurationException ex) {
             log.error(ex);
             userDTO.setStatus("error");
             userDTO.setMsg("Have some errors ! Try again");
@@ -292,6 +303,7 @@ public class UserService {
                 u.setPassword(user.getPassword());
                 u.setFullname(user.getFullname());
                 u.setAddress(user.getAddress());
+                u.setPhone(user.getPhone());
                 u.setBirthday(user.getBirthday());
                 u.setBalance(user.getBalance());
                 u.setId(user.getId());

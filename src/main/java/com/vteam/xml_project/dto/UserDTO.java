@@ -18,7 +18,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class UserDTO extends BaseDTO{
     private String email;
     private String password;
-   private String fullname;
+    private String fullname;
     private Date birthday;
     private String address;
     private String phone;

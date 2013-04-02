@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TabItems>
+    <Item>
+        <class>active</class>
+        <function></function>
+        <name>Profile</name>
+        <href>#1A</href>
+    </Item>
+    <Item>
+        <class></class>
+        <function></function>
+        <name>Change Password</name>
+        <href>#1B</href>
+    </Item>
+    <Item>
+        <class></class>
+        <function>onclick="loadAndDisplayOrder()"</function>
+        <name>Order Histories</name>
+        <href>#1C</href>
+    </Item>
+    <Item>
+        <class></class>
+        <function></function>
+        <name>Payment</name>
+        <href>#1D</href>
+    </Item>
+    
+</TabItems>
