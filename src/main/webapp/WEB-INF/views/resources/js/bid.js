@@ -8,12 +8,20 @@ var bid_ongoing_current_page = 1;
 var bid_ongoing_page_size = 5;
 var bid_upcoming_current_page = 1;
 var bid_upcoming_page_size = 5;
+
+function bid_product_name_onchange() {
+    document.getElementById('bid_product_name').onchange = function() {
+        enableSave();
+        clearBidDetail(this);
+        vteam_http.setValue('bid_cost', 1);
+    };
+}
 function enableSave() {
-    vteam_http.removeClass("btnSave",'disabled');
+    vteam_http.removeClass("btnSave", 'disabled');
 }
 
 function disableSave() {
-    vteam_http.addClass("btnSave",'disabled')
+    vteam_http.addClass("btnSave", 'disabled')
 }
 function bid_details(bid_id) {
     enableSave();
@@ -31,15 +39,16 @@ function bid_details(bid_id) {
     );
 }
 function displayBidDetails(bid) {
-    vteam_http.setHTML("bid_id",bid.id);
-    vteam_http.setHTML("bid_last_userid",bid.last_username);
-    vteam_http.setValue("bid_product_name",bid.product_name);
-    vteam_http.setHTML("bid_current_price",bid.current_price);
-    vteam_http.setHTML('bid_last_edit',toDateAndTime2(bid.last_edit));
-    vteam_http.setValue('bid_start_date',toDateAndTime2(bid.start_date));
-    vteam_http.setValue('bid_end_date',toDateAndTime2(bid.end_date));
-    vteam_http.setValue('bid_status',bid.status);
-    vteam_http.setValue('bid_cost',bid.cost);
+    vteam_http.setHTML("bid_id", bid.id);
+    vteam_http.setHTML("bid_last_userid", bid.last_username);
+    vteam_http.setValue("bid_product_name", bid.product_name);
+    vteam_http.setHTML("bid_current_price", bid.current_price);
+    vteam_http.setHTML('bid_last_edit', toDateAndTime2(bid.last_edit));
+    vteam_http.setValue('bid_start_date', toDateAndTime2(bid.start_date));
+    vteam_http.setValue('bid_end_date', toDateAndTime2(bid.end_date));
+//    vteam_http.setValue('bid_status',bid.status);
+    $('#bid_status').val(bid.status);
+    vteam_http.setValue('bid_cost', bid.cost);
 }
 function insertOrUpdateBid() {
     var id = vteam_http.getHTML("bid_id");
@@ -47,11 +56,8 @@ function insertOrUpdateBid() {
     var start_date = vteam_http.getValue("bid_start_date");
     var end_date = vteam_http.getValue("bid_end_date");
     var cost = vteam_http.getValue("bid_cost");
-    var status = vteam_http.getValue('bid_status').toUpperCase();
-    if ((status !== 'UNCOMPLETED') && (status !== 'COMPLETED'))
-    {
-        status = 'UNCOMPLETED';
-    }
+//    var status = vteam_http.getValue('bid_status').toUpperCase();
+    var status = $('#bid_status').val();
     if (id) { // update
         var p_id = all_keys[all_values.indexOf($("#bid_product_name").val())];
         vteam_http.makeHttpRequest("/admin/update_bid",
@@ -75,7 +81,7 @@ function insertOrUpdateBid() {
 }
 function callback(result) {
     if (result.status === 'success') {
-        vteam_http.setHTML("result_IU_bid","Successful !");
+        vteam_http.setHTML("result_IU_bid", "Successful !");
         vteam_http.show("result_IU_bid");
         $(function() {
             setTimeout(vteam_http.hide("result_IU_bid"), 2000);
@@ -84,7 +90,7 @@ function callback(result) {
         update_lists();
         getAllProductNamList();
     } else {
-        vteam_http.setHTML("result_IU_bid",result.msg);
+        vteam_http.setHTML("result_IU_bid", result.msg);
         vteam_http.show("result_IU_bid");
         $(function() {
             setTimeout(vteam_http.hide("result_IU_bid"), 2000);
@@ -98,18 +104,18 @@ function update_lists() {
     _displayCompletedBids(bid_completed_current_page);
 }
 function clearBidDetail(self) {
-    vteam_http.setHTML("bid_id",'');
-    vteam_http.setHTML("bid_last_userid",'')
-    vteam_http.setValue('bid_product_name','');
-    vteam_http.setHTML('bid_current_price','');
-    vteam_http.setHTML('bid_last_edit','');
-    vteam_http.setValue('bid_start_date','');
-    vteam_http.setValue('bid_end_date','');
-    vteam_http.setValue('bid_status','');
-    vteam_http.setValue('bid_cost','');
+    vteam_http.setHTML("bid_id", '');
+    vteam_http.setHTML("bid_last_userid", '')
+    vteam_http.setValue('bid_product_name', '');
+    vteam_http.setHTML('bid_current_price', '');
+    vteam_http.setHTML('bid_last_edit', '');
+    vteam_http.setValue('bid_start_date', '');
+    vteam_http.setValue('bid_end_date', '');
+    vteam_http.setValue('bid_status', '');
+    vteam_http.setValue('bid_cost', '');
     if ($(self).hasClass('newBtn')) {
         enableSave();
-        vteam_http.setValue('bid_cost',1);
+        vteam_http.setValue('bid_cost', 1);
     }
 }
 
@@ -198,7 +204,7 @@ function displayOngoingBid(bidList) {
         cnt += bidList[i].id + ');" class="btn btn-warning btn-small"><i class="btn-icon-only icon-edit"></i></a>';
         cnt += "</tr>";
     }
-   vteam_http.setHTML('onGoingBid',cnt);
+    vteam_http.setHTML('onGoingBid', cnt);
 }
 function _displayUpcomingBid(page) {
     bid_upcoming_current_page = page;
@@ -245,7 +251,7 @@ function displayUpcomingBid(bidList) {
         cnt += bidList[i].id + ');" class="btn btn-small"><i class="btn-icon-only icon-remove"></i></a>';
         cnt += "</tr>";
     }
-    vteam_http.setHTML('upComingBid',cnt);
+    vteam_http.setHTML('upComingBid', cnt);
 }
 
 function displayCompletedBids(bidList) {
@@ -260,7 +266,7 @@ function displayCompletedBids(bidList) {
         cnt += "<td>" + toDateAndTime(bidList[i].last_edit) + "</td>";
         cnt += "</tr>";
     }
-    vteam_http.setHTML('completedBids',cnt);
+    vteam_http.setHTML('completedBids', cnt);
 }
 
 function _displayCompletedBids(page) {

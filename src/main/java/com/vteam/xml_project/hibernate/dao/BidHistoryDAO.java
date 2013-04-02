@@ -3,7 +3,6 @@ package com.vteam.xml_project.hibernate.dao;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import com.vteam.xml_project.hibernate.orm.BidHistory;
-import java.util.Date;
 import java.util.List;
 import org.springframework.stereotype.Repository;
 

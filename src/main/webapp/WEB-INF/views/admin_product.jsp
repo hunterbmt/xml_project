@@ -260,6 +260,10 @@
                                     </div>
                                 </form>
                             </div>
+                            
+                            <div class="control-group">
+                                <button type="submit" onclick="" class="btn btn-warning">Print Product List</button>
+                            </div>
 
                         </div>
                     </div>

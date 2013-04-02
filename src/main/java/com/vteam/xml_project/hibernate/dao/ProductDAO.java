@@ -5,7 +5,6 @@
 package com.vteam.xml_project.hibernate.dao;
 
 import com.vteam.xml_project.hibernate.orm.Product;
-import com.vteam.xml_project.hibernate.orm.Tags;
 import java.util.List;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -29,6 +28,13 @@ public class ProductDAO extends BaseDAO {
         return query.list();
     }
 
+    public List<Product> getProductList() throws HibernateException {
+        Query query = this.sessionFactory
+                .getCurrentSession()
+                .createQuery("FROM Product");
+        return query.list();
+    }
+
     public List<Product> getProductListInorgeStatus(int page, int pageSize) throws HibernateException {
         Query query = this.sessionFactory
                 .getCurrentSession()
@@ -49,7 +55,7 @@ public class ProductDAO extends BaseDAO {
     public List<Product> searchProduct(String txtSearch, int page, int pageSize) throws HibernateException {
         Query query = this.sessionFactory
                 .getCurrentSession()
-                .createQuery("FROM Product where productName LIKE :q AND status = :s");
+                .createQuery("FROM Product where productName LIKE :q or description LIKE :q AND status = :s");
         query.setParameter("q", "%" + txtSearch + "%");
         query.setParameter("s", Product.Status.ONBID);
         query = query.setFirstResult(pageSize * (page - 1));
@@ -67,7 +73,8 @@ public class ProductDAO extends BaseDAO {
         query.setMaxResults(pageSize);
         return query.list();
     }
-    public List<Product> searchProductByTagID(int tagId, int page,int pageSize) throws HibernateException{
+
+    public List<Product> searchProductByTagID(int tagId, int page, int pageSize) throws HibernateException {
         Query query = this.sessionFactory
                 .getCurrentSession()
                 .createQuery("FROM Product product where :tag in elements(product.tagses) AND product.status = :s");

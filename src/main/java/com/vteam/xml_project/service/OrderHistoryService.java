@@ -6,12 +6,9 @@ package com.vteam.xml_project.service;
 
 import com.vteam.xml_project.dto.OrderHistoryDTO;
 import com.vteam.xml_project.dto.OrderHistoryListDTO;
-import com.vteam.xml_project.dto.ProductDTO;
 import com.vteam.xml_project.hibernate.dao.OrderHistoryDAO;
 import com.vteam.xml_project.hibernate.orm.OrderHistory;
-import com.vteam.xml_project.hibernate.orm.Product;
 import com.vteam.xml_project.hibernate.orm.Users;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import org.apache.log4j.Logger;

@@ -5,7 +5,6 @@
 package com.vteam.xml_project.hibernate.dao;
 
 import com.vteam.xml_project.hibernate.orm.OrderHistory;
-import com.vteam.xml_project.hibernate.orm.Product;
 import java.util.List;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;

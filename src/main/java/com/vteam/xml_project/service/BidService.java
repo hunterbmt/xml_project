@@ -6,6 +6,7 @@ package com.vteam.xml_project.service;
 
 import com.vteam.xml_project.dto.BidDTO;
 import com.vteam.xml_project.dto.BidListDTO;
+import com.vteam.xml_project.dto.ProductListDTO;
 import com.vteam.xml_project.dto.UserDTO;
 import com.vteam.xml_project.hibernate.dao.BidDAO;
 import com.vteam.xml_project.hibernate.dao.BidHistoryDAO;
@@ -16,17 +17,26 @@ import com.vteam.xml_project.hibernate.orm.Bids;
 import com.vteam.xml_project.hibernate.orm.Product;
 import com.vteam.xml_project.hibernate.orm.Users;
 import com.vteam.xml_project.util.DateUtil;
+import com.vteam.xml_project.util.XMLUtil;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
+import java.util.logging.Level;
+import javax.servlet.ServletContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
+import javax.xml.transform.stream.StreamSource;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.w3c.dom.Node;
 
 /**
  *
@@ -40,13 +50,14 @@ public class BidService {
     private BidDAO bidDAO;
     @Autowired
     private BidHistoryDAO bhDAO;
-    
     @Autowired
     private ProductDAO productDAO;
     @Autowired
     private UserDAO userDAO;
     @Autowired
     private DateUtil dateUtil;
+    @Autowired
+    ServletContext servletContext;
     private static long BID_DURATION = (long) 25.00;
 
     private List<BidDTO> getTmpList(List<Bids> bidList) {
@@ -77,59 +88,79 @@ public class BidService {
 
     }
 
+//    private BidListDTO convertCacheToBidListDTO(String filePath) throws JAXBException {
+//        return XMLUtil.UnMarshall(BidListDTO.class, filePath);
+//    }
+//
+//    private void converBidListDTOToCache(BidListDTO bidList, String filePath) throws JAXBException {
+//        XMLUtil.Marshall(bidList, filePath);
+//    }
+
+    private BidListDTO convertFromNodeToBidListDTO(Node node) throws JAXBException {
+        BidListDTO result = XMLUtil.UnMarshall(BidListDTO.class, node);
+        return result;
+    }
+
+    private BidDTO findBidDTOInBidsXML(String realPath, int bidId) throws XMLStreamException, JAXBException {
+        XMLInputFactory xif = XMLInputFactory.newFactory();
+        StreamSource xml = new StreamSource(realPath + "bids.xml");
+        XMLStreamReader xsr = xif.createXMLStreamReader(xml);
+        XMLStreamReader xsr1 = xif.createXMLStreamReader(xml);
+        xsr.nextTag();
+        xsr1.nextTag();
+        boolean found = false;
+        while (xsr.hasNext()) {
+            xsr.next();
+            xsr1.next();
+            if (xsr.getEventType() == XMLStreamReader.START_ELEMENT) {
+                if (xsr.getLocalName().equals("bid")) {
+                    xsr.nextTag();
+                    if (xsr.getLocalName().equals("id")) {
+                        xsr.next();
+                        int id = Integer.parseInt(xsr.getText());
+                        if (id == bidId) {
+                            found = true;
+                            break;
+                        } else {
+                            xsr1.next();
+                            xsr1.nextTag();
+                            xsr1.next();
+                        }
+                    }
+                }
+            }
+            if (found) {
+                break;
+            }
+
+        }
+        if (found) {
+            return XMLUtil.UnMarshall(BidDTO.class, xsr1);
+        }
+        return null;
+    }
+
     @Transactional
     public BidDTO getBidByID(Integer _id) {
         BidDTO bid = new BidDTO();
         try {
-            Bids dbBid = bidDAO.getBidById(_id);
-
-
-            Integer uuid = dbBid.getLastUserid();
-            bid.setId(dbBid.getId());
-            bid.setProduct_name(dbBid.getProduct().getProductName());
-            bid.setProduct_id(dbBid.getProduct().getId());
-            bid.setCurrent_price(dbBid.getCurrentPrice());
-            bid.setStart_date(dbBid.getStartDate());
-            bid.setLast_userid(dbBid.getLastUserid());
-            bid.setEnd_date(dbBid.getEndDate());
-            bid.setStatus(dbBid.getStatus().toString());
-            bid.setLast_edit(dbBid.getLastEdit());
-            bid.setCost(dbBid.getCost());
-            if (uuid != null) {
-                Users u = userDAO.findUserByUuid(uuid);
-                bid.setLast_username(u.getFullname());
-            } else {
-                bid.setLast_username("None");
-            }
-            bid.setStatus("success");
+            String realPath = servletContext.getRealPath("WEB-INF/views/resources/xml/") + "/";
+            BidDTO returnBidDTO = findBidDTOInBidsXML(realPath, _id);
+            returnBidDTO.setStatus("success");
+            return returnBidDTO;
 
         } catch (HibernateException ex) {
             log.error(ex);
             bid.setStatus("success");
             bid.setMsg("Have some errors. Try again");
+        } catch (XMLStreamException ex) {
+            java.util.logging.Logger.getLogger(BidService.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (JAXBException ex) {
+            java.util.logging.Logger.getLogger(BidService.class.getName()).log(Level.SEVERE, null, ex);
         }
         return bid;
     }
 
-//    @Transactional
-//    public BidListDTO getBidsByStartDate(int page,int pageSize,String dateString, String formatStr) {
-//        BidListDTO list = new BidListDTO();
-//        try {
-//            Date startDate = dateUtil.parseFromString(dateString, formatStr);
-//            List<Bids> bidList = bidDAO.getBidsByStartDate(page,pageSize,startDate);
-//            list.setBidList(getTmpList(bidList));
-//            list.setStatus("success");
-//        } catch (HibernateException he) {
-//            log.error(he);
-//            list.setStatus("error");
-//            list.setMsg("Have some errors. Try again");
-//        } catch(ParseException ex){
-//            log.error(ex);
-//            list.setStatus("error");
-//            list.setMsg("Wrong date time format");
-//        }
-//        return list;
-//    }
     @Transactional
     public BidListDTO getBidsList(int page, int page_size) {
         BidListDTO list = new BidListDTO();
@@ -187,7 +218,7 @@ public class BidService {
         dbBid.setLastUserid(uuid);
         dbBid.setCurrentPrice(_price);
         dbBid.setStatus(Bids.Status.COMPLETED);
-        
+
         Product product = productDAO.getProductById(dbBid.getProduct().getId());
         product.setBidId(dbBid.getId());
         product.setStatus(Product.Status.SOLD);
@@ -195,7 +226,7 @@ public class BidService {
     }
 
     private void updateBidsHistory(Users user, Bids dbBid) {
-        BidHistory bh= new BidHistory(user, dbBid, dbBid.getCurrentPrice(), dbBid.getLastEdit());
+        BidHistory bh = new BidHistory(user, dbBid, dbBid.getCurrentPrice(), dbBid.getLastEdit());
         bhDAO.save(bh);
     }
 
@@ -265,14 +296,16 @@ public class BidService {
 
     @Transactional
     public BidListDTO getUpcommingBid(int page, int pageSize) {
-        Date currentDate = dateUtil.getCurrentDate();
+        Date currentDate = new Date();
         BidListDTO list = new BidListDTO();
         try {
             List<Bids> bidList = bidDAO.getBidsList(page, pageSize);
             List<Bids> filteredList = new ArrayList<Bids>();
             for (Bids b : bidList) {
                 if (b.getStatus() != Bids.Status.COMPLETED) {
+                    
                     if (b.getStartDate().getTime() - currentDate.getTime() > 0) {
+                       // if (b.getStartDate().getHours() > currentDate.getHours())
                         filteredList.add(b);
                     }
                 }
@@ -290,7 +323,7 @@ public class BidService {
 
     @Transactional
     public BidListDTO getOngoingBids(int page, int pageSize) {
-        Date currentDate = dateUtil.getCurrentDate();
+        Date currentDate = new Date();
         BidListDTO list = new BidListDTO();
         try {
             List<Bids> bidList = bidDAO.getBidsList(page, pageSize);
@@ -299,6 +332,8 @@ public class BidService {
                 if (b.getStatus() != Bids.Status.COMPLETED) {
                     if ((b.getStartDate().getTime() - currentDate.getTime() <= 0)
                             && (b.getEndDate().getTime() - currentDate.getTime() > 0)) {
+//                        if ((b.getStartDate().getHours() < currentDate.getHours()) && 
+//                                (b.getEndDate().getHours() > currentDate.getHours()))
                         filteredList.add(b);
                     }
                 }

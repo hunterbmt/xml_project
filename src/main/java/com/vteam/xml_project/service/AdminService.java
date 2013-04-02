@@ -5,12 +5,15 @@
 package com.vteam.xml_project.service;
 
 import com.vteam.xml_project.dto.BidDTO;
+import com.vteam.xml_project.dto.BidListDTO;
 import com.vteam.xml_project.dto.CategoryDTO;
+import com.vteam.xml_project.dto.CategoryListDTO;
 import com.vteam.xml_project.dto.NinCodeDTO;
 import com.vteam.xml_project.dto.NinCodeListDTO;
 import com.vteam.xml_project.dto.ProductDTO;
 import com.vteam.xml_project.dto.ProductListDTO;
 import com.vteam.xml_project.dto.TagsDTO;
+import com.vteam.xml_project.dto.UserListDTO;
 import com.vteam.xml_project.hibernate.dao.BidDAO;
 import com.vteam.xml_project.hibernate.dao.CardCodeDAO;
 import com.vteam.xml_project.hibernate.dao.CategoryDAO;
@@ -23,9 +26,22 @@ import com.vteam.xml_project.hibernate.orm.Product;
 import com.vteam.xml_project.hibernate.orm.Tags;
 import com.vteam.xml_project.util.DateUtil;
 import com.vteam.xml_project.util.StringUtil;
+import com.vteam.xml_project.util.XMLUtil;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
+import java.util.logging.Level;
+import javax.servlet.ServletContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import org.apache.fop.apps.FOPException;
+
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,7 +67,20 @@ public class AdminService {
     @Autowired
     private TagsDAO tagsDAO;
     @Autowired
+    private ServletContext servletContext;
+    @Autowired
     private DateUtil dateUtil;
+    @Autowired
+    CategoryService categoryService;
+    @Autowired
+    UserService userService;
+    @Autowired
+    ProductService productService;
+    @Autowired
+    BidService bidService;
+    private static String CATEGORY_XML_FILE_NAME = "category.xml";
+    private static String USER_XML_FILE_NAME = "user.xml";
+    private static String BID_XML_FILE_NAME = "bids.xml";
 
     @Transactional
     public ProductDTO insertProduct(int categoryId, String productName, String description, String img, double minPrice, double maxPrice, String tags) {
@@ -154,7 +183,6 @@ public class AdminService {
             bidDTO.setEnd_date(endDate);
             bidDTO.setProduct_id(product_id);
             bidDTO.setProduct_name(product.getProductName());
-            bidDTO.setStatus(newBid.getStatus().name());
             bidDTO.setCost(cost);
 
             // update bid_id of that product
@@ -162,6 +190,8 @@ public class AdminService {
             product.setStatus(Product.Status.ONBID);
             productDAO.save(product);
             bidDTO.setStatus("success");
+            updateAllXML();
+
             return bidDTO;
         } catch (HibernateException ex) {
             log.error(ex.getStackTrace());
@@ -187,7 +217,6 @@ public class AdminService {
             newBid.setProduct(product);
             newBid.setStartDate(startDate);
             newBid.setEndDate(endDate);
-
             newBid.setStatus(Bids.Status.valueOf(status));
             if (newBid.getStatus().toString().equalsIgnoreCase("completed")) {
                 product.setStatus(Product.Status.AVAILABLE);
@@ -199,9 +228,9 @@ public class AdminService {
             bidDTO.setEnd_date(endDate);
             bidDTO.setProduct_id(product_id);
             bidDTO.setProduct_name(product.getProductName());
-            bidDTO.setStatus(newBid.getStatus().name());
             bidDTO.setCost(cost);
             bidDTO.setStatus("success");
+            updateAllXML();
         } catch (HibernateException ex) {
             log.error(ex.getStackTrace());
             bidDTO.setStatus("error");
@@ -267,7 +296,7 @@ public class AdminService {
         }
         return ninCodeList;
     }
-    
+
     @Transactional
     public TagsDTO insertTag(String tagName, String description) {
         TagsDTO tagDTO = new TagsDTO();
@@ -297,5 +326,108 @@ public class AdminService {
             tagDTO.setMsg("Have some errors. Try again");
         }
         return tagDTO;
+    }
+
+    @Transactional
+    public void updateAllXML() {
+        marshallCategory();
+        marshallUser();
+        marshallBids();
+    }
+
+    private void marshallCategory() {
+        try {
+            CategoryListDTO categoryListDTO = categoryService.getCategoryList();
+            for (CategoryDTO categoryDTO : categoryListDTO.getCategoryList()) {
+                categoryDTO.setProductListDTO(productService.searchProductByCategoryId(categoryDTO.getId(), 1, true));
+            }
+            String realPath = servletContext.getRealPath("WEB-INF/views/resources/xml/");
+            XMLUtil.Marshall(categoryListDTO, realPath + "/" + CATEGORY_XML_FILE_NAME);
+        } catch (JAXBException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    private void marshallUser() {
+        try {
+            UserListDTO userListDTO = userService.getUserList();
+            String realPath = servletContext.getRealPath("WEB-INF/views/resources/xml/");
+            XMLUtil.Marshall(userListDTO, realPath + "/" + USER_XML_FILE_NAME);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void marshallBids() {
+        try {
+            BidListDTO bidListDTO = bidService.getBidsList(1, 999);
+            String realPath = servletContext.getRealPath("WEB-INF/views/resources/xml/");
+            XMLUtil.Marshall(bidListDTO, realPath + "/" + BID_XML_FILE_NAME);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Transactional
+    public ByteArrayOutputStream exportProductListToPdf() {
+        try {
+            List<Product> product = productDAO.getProductList();
+            ProductListDTO productListDTO = new ProductListDTO();
+            ProductDTO productDTO;
+            for (Product p : product) {
+                productDTO = new ProductDTO();
+                productDTO.setName(p.getProductName());
+                productDTO.setDescription(p.getDescription());
+                productDTO.setCategoryName(p.getCategory().getCategoryName());
+                productListDTO.getProductList().add(productDTO);
+            }
+            File xmlFile = File.createTempFile(UUID.randomUUID().toString(), "_product.xml");
+            XMLUtil.Marshall(productListDTO, xmlFile.getAbsolutePath());
+            String appPath = servletContext.getRealPath("WEB-INF/views/resources/xsl");
+            return XMLUtil.printPDF(xmlFile.getAbsolutePath(), appPath + File.separator + "product.xsl");
+        } catch (IOException ex) {
+            log.error(ex);
+        } catch (JAXBException ex) {
+            log.error(ex);
+        } catch (TransformerConfigurationException ex) {
+            log.error(ex);
+        } catch (TransformerException ex) {
+            log.error(ex);
+        } catch (FOPException ex) {
+            java.util.logging.Logger.getLogger(AdminService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+
+    @Transactional
+    public ByteArrayOutputStream exportNinCodeToPdf() {
+        try {
+            List<CardCode> cardCodeList = cardCodeDAO.getCardCodeToPrint();
+            NinCodeListDTO ninCodeListDTO = new NinCodeListDTO();
+            NinCodeDTO ninCodeDTO;
+            for (CardCode cardCode : cardCodeList) {
+                ninCodeDTO = new NinCodeDTO();
+                ninCodeDTO.setCode(cardCode.getCode());
+                ninCodeDTO.setAmount(cardCode.getAmount());
+                ninCodeListDTO.getNinList().add(ninCodeDTO);
+            }
+            File xmlFile = File.createTempFile(UUID.randomUUID().toString(), "_nin.xml");
+            XMLUtil.Marshall(ninCodeListDTO, xmlFile.getAbsolutePath());
+            String appPath = servletContext.getRealPath("WEB-INF/views/resources/xsl");
+
+            return XMLUtil.printPDF(xmlFile.getAbsolutePath(), appPath + File.separator + "nin_code_pdf.xsl");
+        } catch (IOException ex) {
+            log.error(ex);
+        } catch (JAXBException ex) {
+            log.error(ex);
+        } catch (TransformerConfigurationException ex) {
+            log.error(ex);
+        } catch (TransformerException ex) {
+            log.error(ex);
+        } catch (FOPException ex) {
+            java.util.logging.Logger.getLogger(AdminService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+
     }
 }

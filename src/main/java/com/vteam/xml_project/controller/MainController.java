@@ -4,7 +4,6 @@
  */
 package com.vteam.xml_project.controller;
 
-import com.vteam.xml_project.dto.UserDTO;
 import com.vteam.xml_project.hibernate.dao.UserDAO;
 import com.vteam.xml_project.hibernate.orm.Users;
 import com.vteam.xml_project.service.UserService;
@@ -87,6 +86,7 @@ public class MainController {
         model.put("user_fullname", user.getFullname());
         return viewName;
     }
+
     @RequestMapping(value = "/test")
     @Transactional
     public ModelAndView testPage(HttpServletRequest request) {

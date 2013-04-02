@@ -13,31 +13,22 @@ import com.vteam.xml_project.hibernate.orm.Bids;
 import com.vteam.xml_project.hibernate.orm.Product;
 import com.vteam.xml_project.hibernate.orm.SearchCache;
 import com.vteam.xml_project.util.XMLUtil;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import javax.servlet.ServletContext;
 import javax.xml.bind.JAXBException;
-import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.transform.stream.StreamSource;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathExpressionException;
-import javax.xml.xpath.XPathFactory;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.w3c.dom.Document;
 import org.w3c.dom.Node;
-import org.xml.sax.SAXException;
-import org.xml.sax.XMLReader;
 
 @Service
 public class ProductService {
@@ -54,6 +45,30 @@ public class ProductService {
     private static final int PAGESIZE = 50;
     private static final int CACHETIMEOUT = 24;
 
+    @Transactional
+    public ProductListDTO getProductList() {
+        ProductListDTO list = new ProductListDTO();
+        try {
+            List<Product> dbProduct = productDAO.getProductList();
+            ProductDTO p ;
+            for (Product d : dbProduct) {
+                p = new ProductDTO();
+                p.setName(d.getProductName());
+                p.setDescription(d.getDescription());
+                p.setCategoryName(d.getCategory().getCategoryName());
+                list.getProductList().add(p);
+            }
+            list.setNumberOfProduct(productDAO.getNumberOfProduct());
+            list.setStatus("success");
+        }catch (HibernateException ex) {
+            log.error(ex.getStackTrace());
+            list.setStatus("error");
+            list.setMsg("Have some errors. Try again");
+        }
+        System.out.println(list);
+        return list;
+    }
+    
     @Transactional
     public ProductListDTO getProductList(int page) {
         ProductListDTO list = new ProductListDTO();
@@ -86,7 +101,6 @@ public class ProductService {
             list.setMsg("Have some errors. Try again");
         }
         return list;
-
     }
 
     private boolean checkForCache(SearchCache searchCache) {
@@ -147,7 +161,7 @@ public class ProductService {
             list.setStatus("error");
             list.setMsg("Have some errors. Try again");
         } catch (JAXBException jaxbEx) {
-            log.error(jaxbEx.getMessage());
+            log.error(jaxbEx);
             list.setStatus("error");
             list.setMsg("Have some errors. Try again");
         }
