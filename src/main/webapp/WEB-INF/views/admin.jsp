@@ -36,21 +36,9 @@
                             </a>	    				
                         </li>
                         <li>
-                            <a href="/users">
-                                <i class="icon-group"></i>
-                                <span>Users</span>
-                            </a>	    				
-                        </li>
-                        <li>
                             <a href="/admin/bid">
                                 <i class="icon-legal"></i>
                                 <span>Bid</span>
-                            </a>	    				
-                        </li>
-                        <li>
-                            <a href="./payment">
-                                <i class="icon-money"></i>
-                                <span>Payment</span>
                             </a>	    				
                         </li>
                     </ul>

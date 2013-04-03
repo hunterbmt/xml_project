@@ -47,7 +47,7 @@ function displayProduct(productList) {
         html += '</td>'
         html += '</tr>'
     }
-    $("#product_list_tbody").html(html);
+    vteam_http.setHTML("product_list_tbody",html);  
 }
 function insertOrUpdateProduct() {
     var id = parseInt(vteam_http.getHTML("product_id"));
@@ -87,31 +87,36 @@ function insertOrUpdateProduct() {
 }
 function callback(result) {
     if (result.status === 'success') {
-        $('#result_product').html('Successful !').show();
+        vteam_http.setHTML("result_product","Successful !");
+        vteam_http.show("result_product");
         $(function() {
             setTimeout(function() {
-                $("#result_product").hide('blind', {}, 400)
-            }, 2000);
+                vteam_http.hide("result_product");
+            }, 20000);
         });
         loadProductList(current_page);
     } else {
-        $('#result_product').html(result.msg).show();
+        vteam_http.setHTML("result_product",result.msg);
+        vteam_http.show("result_product");
         $(function() {
             setTimeout(function() {
-                $("#result_product").hide('blind', {}, 400)
-            }, 2000);
+                vteam_http.hide("result_product");
+            }, 20000);
         });
     }
     clearProductDetail();
 }
 function clearProductDetail() {
-    $("#product_id").html('');
-    $("#product_name").val('');
-    $('#category_name').val('');
+    vteam_http.setHTML("product_id",'');
+    vteam_http.setValue("product_name",'');
+    vteam_http.setValue('category_name',"");
     editor.setValue('');
-    $("#product_min_price").val('');
-    $("#product_max_price").val('');
-    $("#product_img").val('');
+    vteam_http.setValue("product_min_price",'');
+    vteam_http.setValue("product_max_price",'');
+    vteam_http.setValue("product_img",'');
+    $('.select2-search-choice').remove();
+    vteam_http.setValue('tags_id','');
+    vteam_http.setValue('tags_name','');
 }
 function getProductDetail(id) {
     vteam_http.makeHttpRequest('/product/getProductById', {product_id: id}, 'POST',
@@ -125,14 +130,14 @@ function getProductDetail(id) {
             })
 }
 function displayProductDetail(detail) {
-    $("#product_id").html(detail.id);
-    $("#product_name").val(detail.name);
-    $("#category_name").val(detail.categoryName);
+    vteam_http.setHTML("product_id",detail.id);
+    vteam_http.setValue("product_name",detail.name);
+    vteam_http.setValue("category_name",detail.categoryName);
     product_current_category_id = detail.categoryId;
     editor.setValue(detail.description);
-    $("#product_min_price").val(detail.minPrice);
-    $("#product_max_price").val(detail.maxPrice);
-    $("#product_img").val(detail.imageName);
+    vteam_http.setValue("product_min_price",detail.minPrice);
+    vteam_http.setValue("product_max_price",detail.maxPrice);
+    vteam_http.setValue("product_img",detail.imageName);
 }
 function populateCategoryNameList() {
     vteam_http.makeHttpRequest("/admin/getCategoryNameList",
@@ -181,22 +186,22 @@ function loadAndDisplatCategoryDetail(id) {
     });
 }
 function displayCategoryDetail(category) {
-    $('#category_detail_id').html(category.id);
-    $('#category_detail_description').val(category.description);
-    $('#category_detail_btn').html('Update');
+    vteam_http.setHTML('category_detail_id',category.id);
+    vteam_http.setValue('category_detail_description',category.description);
+    vteam_http.setHTML('category_detail_btn','Update');
 
 }
 function clearCategoryDetail() {
-    $('#category_detail_id').html('');
-    $('#category_detail_name').val('');
-    $('#category_detail_description').val('');
-    $('#category_detail_btn').html('Save');
+    vteam_http.setHTML('category_detail_id','');
+    vteam_http.setValue('category_detail_name','');
+    vteam_http.setValue('category_detail_description','');
+    vteam_http.setHTML('category_detail_btn','Save');
     category_current_id = null;
 }
 function insertOrUpdateCategory() {
     var categoryId = category_current_id;
-    var description = $('#category_detail_description').val();
-    var name = $('#category_detail_name').val();
+    var description = vteam_http.getValue('category_detail_description');
+    var name = vteam_http.getValue('category_detail_name');
     validCategory(name, description);
     if (categoryId) {
         vteam_http.makeHttpRequest("/admin/update_category",
@@ -224,17 +229,18 @@ function callbackCategoryEdit(result) {
     clearCategoryDetail();
 }
 function displayCategoryMsg(msg) {
-    $('#result_category').html(msg).show();
+    vteam_http.setHTML("result_category",msg);
+    vteam_http.show("result_category");
     $(function() {
         setTimeout(function() {
-            $("#result_category").hide('blind', {}, 400)
-        }, 10000);
+            vteam_http.hide("result_category");
+        }, 20000);
     });
 }
 function validProduct(name, cate_name, min_price, max_price, image)
 {
 
-    if (name == null || name == "") {
+    if (!name) {
         var div = $("#product_name").parents("div.control-group");
         div.removeClass("success");
         div.addClass("error");
@@ -246,7 +252,7 @@ function validProduct(name, cate_name, min_price, max_price, image)
         div.addClass("success");
 
     }
-    if (cate_name == null || cate_name == "") {
+    if (!cate_name) {
         var div = $("#category_name").parents("div.control-group");
         div.removeClass("success");
         div.addClass("error");
@@ -258,7 +264,7 @@ function validProduct(name, cate_name, min_price, max_price, image)
         div.addClass("success");
 
     }
-    if (min_price == null || min_price == "") {
+    if (!min_price) {
         var div = $("#product_min_price").parents("div.control-group");
         div.removeClass("success");
         div.addClass("error");
@@ -270,7 +276,7 @@ function validProduct(name, cate_name, min_price, max_price, image)
         div.addClass("success");
 
     }
-    if (max_price == null || max_price == "") {
+    if (!max_price) {
         var div = $("#product_max_price").parents("div.control-group");
         div.removeClass("success");
         div.addClass("error");
@@ -282,7 +288,7 @@ function validProduct(name, cate_name, min_price, max_price, image)
         div.addClass("success");
 
     }
-    if (image == null || image == "") {
+    if (!image) {
         var div = $("#product_img").parents("div.control-group");
         div.removeClass("success");
         div.addClass("error");
@@ -308,13 +314,8 @@ function clearValidProduct() {
     div_max.removeClass("success");
     div_img.removeClass("success");
 }
-function vaildString(p) {
-    if (p == null || p == '') {
-        return false;
-    }
-}
 function validCategory(name, des) {
-    if (name == null || name == "") {
+    if (!name) {
         var div = $("#category_detail_name").parents("div.control-group");
         div.removeClass("success");
         div.addClass("error");
@@ -326,7 +327,7 @@ function validCategory(name, des) {
         div.addClass("success");
 
     }
-    if (des == null || des == "") {
+    if (!des) {
         var div = $("#category_detail_description").parents("div.control-group");
         div.removeClass("success");
         div.addClass("error");

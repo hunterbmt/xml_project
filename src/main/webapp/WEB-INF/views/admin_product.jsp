@@ -40,33 +40,21 @@
                 <div class="container">
                     <ul>
                         <li>
-                            <a href="./">
+                            <a href="/admin">
                                 <i class="icon-dashboard"></i>
                                 <span>Dash Board</span>
                             </a>	    				
                         </li>
-                        <li  class="active">
+                        <li class="active">
                             <a href="/admin/product">
                                 <i class="icon-book"></i>
                                 <span>Product</span>
                             </a>	    				
                         </li>
                         <li>
-                            <a href="/admin/users">
-                                <i class="icon-group"></i>
-                                <span>Users</span>
-                            </a>	    				
-                        </li>
-                        <li>
                             <a href="/admin/bid">
                                 <i class="icon-legal"></i>
                                 <span>Bid</span>
-                            </a>	    				
-                        </li>
-                        <li>
-                            <a href="/admin/payment">
-                                <i class="icon-money"></i>
-                                <span>Payment</span>
                             </a>	    				
                         </li>
                     </ul>
@@ -77,7 +65,7 @@
             <div class="container">
                 <div class="row">
                     <div class="span5">
-                        <div class="widget">
+                        <div class="widgetresult_product">
                             <div class="widget-header">
                                 <i class="icon-tasks"></i>
                                 <h3>Product detail</h3>
@@ -115,7 +103,7 @@
                                                 </ul>
                                             </div>
                                             <select multiple="" style="display:none;">
-                                                
+
                                             </select>
                                         </div>
                                     </div>
@@ -260,11 +248,6 @@
                                     </div>
                                 </form>
                             </div>
-                            
-                            <div class="control-group">
-                                <button type="submit" onclick="" class="btn btn-warning">Print Product List</button>
-                            </div>
-
                         </div>
                     </div>
                 </div>    

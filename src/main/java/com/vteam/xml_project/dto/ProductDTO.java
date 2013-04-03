@@ -156,6 +156,6 @@ public class ProductDTO extends BaseDTO {
         } else if (end - start > 25) {
             return description.substring(start + 3, start + 27);
         }
-        return description.substring(start + 3, end);
+        return description.substring(start, end);
     }
 }
