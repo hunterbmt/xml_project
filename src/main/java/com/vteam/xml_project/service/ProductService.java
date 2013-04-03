@@ -14,6 +14,7 @@ import com.vteam.xml_project.hibernate.orm.Product;
 import com.vteam.xml_project.hibernate.orm.SearchCache;
 import com.vteam.xml_project.util.XMLUtil;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -50,7 +51,7 @@ public class ProductService {
         ProductListDTO list = new ProductListDTO();
         try {
             List<Product> dbProduct = productDAO.getProductList();
-            ProductDTO p ;
+            ProductDTO p;
             for (Product d : dbProduct) {
                 p = new ProductDTO();
                 p.setName(d.getProductName());
@@ -60,7 +61,7 @@ public class ProductService {
             }
             list.setNumberOfProduct(productDAO.getNumberOfProduct());
             list.setStatus("success");
-        }catch (HibernateException ex) {
+        } catch (HibernateException ex) {
             log.error(ex.getStackTrace());
             list.setStatus("error");
             list.setMsg("Have some errors. Try again");
@@ -68,7 +69,7 @@ public class ProductService {
         System.out.println(list);
         return list;
     }
-    
+
     @Transactional
     public ProductListDTO getProductList(int page) {
         ProductListDTO list = new ProductListDTO();
@@ -96,7 +97,7 @@ public class ProductService {
             list.setNumberOfProduct(productDAO.getNumberOfProduct());
             list.setStatus("success");
         } catch (HibernateException ex) {
-            log.error(ex.getStackTrace());
+            log.error(ex);
             list.setStatus("error");
             list.setMsg("Have some errors. Try again");
         }
@@ -105,7 +106,7 @@ public class ProductService {
 
     private boolean checkForCache(SearchCache searchCache) {
 
-        return (searchCache != null && (searchCache.getCacheDate().getHours() - new Date().getHours()) < CACHETIMEOUT);
+        return (searchCache != null && (searchCache.getCacheDate().after(new Date())));
     }
 
     private ProductListDTO convertCacheToProductListDTO(String filePath) throws JAXBException {
@@ -151,7 +152,11 @@ public class ProductService {
                 if (searchCache == null) {
                     searchCache = new SearchCache();
                 }
-                searchCache.setCacheDate(new Date());
+                Calendar c = Calendar.getInstance();
+                c.setTime(new Date());
+                c.add(Calendar.DATE, 1);
+                Date cacheDate = c.getTime();
+                searchCache.setCacheDate(cacheDate);
                 searchCache.setFileName(fileName);
                 searchCache.setQuery(txtSearch + "_" + page);
                 searchCacheDAO.save(searchCache);
@@ -228,9 +233,9 @@ public class ProductService {
                         int id = Integer.parseInt(xsr.getText());
                         if (id == categoryId) {
                             xsr.next();
-                            while(xsr.hasNext()){
-                                if(xsr.getEventType() == XMLStreamReader.START_ELEMENT){
-                                    if(xsr.getLocalName().equals("productList")){
+                            while (xsr.hasNext()) {
+                                if (xsr.getEventType() == XMLStreamReader.START_ELEMENT) {
+                                    if (xsr.getLocalName().equals("productList")) {
                                         found = true;
                                         break;
                                     }
@@ -241,7 +246,7 @@ public class ProductService {
                     }
                 }
             }
-            if(found){
+            if (found) {
                 break;
             }
             xsr.next();

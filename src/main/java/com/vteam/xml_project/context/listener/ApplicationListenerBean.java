@@ -50,7 +50,7 @@ public class ApplicationListenerBean implements ApplicationListener<ContextRefre
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
         marshallCategory();
-        marshallProduct();
+            marshallProduct();
         marshallUser();
         marshallBids();
     }

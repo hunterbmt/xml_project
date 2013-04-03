@@ -28,8 +28,8 @@ function populateTagList(list) {
             html+=    '<a href="#" onclick="return false;" class="select2-search-choice-close" tabindex="-1"></a>'
             html+='</li>'
             $(".select2-search-field").before(html);
-            $("#tags_id").val($("#tags_id").val()+";"+ui.item.id);
-            $("#tags_name").val('');
+            vteam_http.setValue('tags_id',vteam_http.getValue("tags_id")+";"+ui.item.id);
+            vteam_http.setValue("tags_name",'');
         }
     });
     $("#tag_detail_name").autocomplete({
@@ -42,17 +42,17 @@ function populateTagList(list) {
 }
 
 function clearTagDetail() {
-    $('#tag_detail_id').html('');
-    $('#tag_detail_name').val('');
-    $('#tag_detail_description').val('');
-    $('#tag_detail_btn').html('Save');
+    vteam_http.setHTML("tag_detail_id",'');
+    vteam_http.setValue("tag_detail_name",'');
+    vteam_http.setValue('tag_detail_description','');
+    vteam_http.setHTML('tag_detail_btn','Save');
     tags_current_id = null;
 }
 function insertOrUpdateTag() {
     var tagId = tags_current_id;
-    var description = $('#tag_detail_description').val();
-    var name = $('#tag_detail_name').val();
-    validTag(name, description)
+    var description = vteam_http.getValue('tag_detail_description');
+    var name = vteam_http.getValue('tag_detail_name');
+    validTag(name, description);
     if (tagId) {
         vteam_http.makeHttpRequest("/admin/update_tag",
                 {tagId: tagId,
@@ -79,16 +79,17 @@ function callbackTagEdit(result) {
     clearTagDetail();
 }
 function displayTagMsg(msg) {
-    $('#result_tag').html(msg).show();
+    vteam_http.setHTML("result_tag",msg);
+    vteam_http.show("result_tag");
     $(function() {
         setTimeout(function() {
-            $("#result_tag").hide('blind', {}, 400)
-        }, 10000);
+            vteam_http.hide("result_tag");
+        }, 20000);
     });
 }
 
 function validTag(name, des) {
-    if (name == null || name == "") {
+    if (!name) {
         var div = $("#tag_detail_name").parents("div.control-group");
         div.removeClass("success");
         div.addClass("error");
@@ -100,7 +101,7 @@ function validTag(name, des) {
         div.addClass("success");
         return true;
     }
-    if (des == null || des == "") {
+    if (!des) {
         var div = $("#tag_detail_description").parents("div.control-group");
         div.removeClass("success");
         div.addClass("error");
@@ -126,8 +127,8 @@ function loadAndDisplayTagDetail(id) {
     });
 }
 function displayTagDetail(tag) {
-    $('#tag_detail_id').html(tag.tagId);
-    $('#tag_detail_description').val(tag.tagDescription);
-    $('#tag_detail_btn').html('Update');
+    vteam_http.setHTML("tag_detail_id",tag.tagId);
+    vteam_http.setValue("tag_detail_description",tag.tagDescription);
+    vteam_http.setHTML('tag_detail_btn','Update');
 
 }

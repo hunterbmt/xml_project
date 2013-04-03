@@ -39,7 +39,7 @@
                 <div class="container">
                     <ul>
                         <li>
-                            <a href="/admin/">
+                            <a href="/admin">
                                 <i class="icon-dashboard"></i>
                                 <span>Dash Board</span>
                             </a>	    				
@@ -50,22 +50,10 @@
                                 <span>Product</span>
                             </a>	    				
                         </li>
-                        <li>
-                            <a href="./users">
-                                <i class="icon-group"></i>
-                                <span>Users</span>
-                            </a>	    				
-                        </li>
                         <li class="active">
                             <a href="/admin/bid">
                                 <i class="icon-legal"></i>
                                 <span>Bid</span>
-                            </a>	    				
-                        </li>
-                        <li>
-                            <a href="./payment">
-                                <i class="icon-money"></i>
-                                <span>Payment</span>
                             </a>	    				
                         </li>
                     </ul>
@@ -153,11 +141,11 @@
                                         <span class="alert-info" id="result_IU_bid">VTeam - XML_Project</span>
                                     </div>
                                     <script>
-                                                $(function() {
-                                                    setTimeout(function() {
-                                                        $("#result_IU_bid").hide('blind', {}, 500)
-                                                    }, 2000);
-                                                });
+            $(function() {
+                setTimeout(function() {
+                    $("#result_IU_bid").hide('blind', {}, 500)
+                }, 2000);
+            });
                                     </script>
                                 </form>
                             </div>
@@ -193,7 +181,7 @@
                                 </table>
                                 <div class="pagination-bar">
                                     <div id="ongoing_pagination_bar" style="float: right">
-                                        
+
                                     </div>
                                 </div>
                             </div>
@@ -222,7 +210,7 @@
                                 </table>
                                 <div class="pagination-bar">
                                     <div id="upcoming_pagination_bar" style="float: right">
-                                        
+
                                     </div>
                                 </div>
                             </div>
@@ -254,7 +242,7 @@
                                 </table>
                                 <div class="pagination-bar">
                                     <div id="completed_pagination_bar" style="float: right">
-                                        
+
                                     </div>
                                 </div>
                             </div>
