@@ -6,14 +6,21 @@ package com.vteam.xml_project.dto;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
  * @author Crick
  */
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlRootElement(name = "bidList")
 public class BidListDTO extends BaseDTO {
 
     private int numberOfBid;
+    @XmlElement(name = "bid", type = BidDTO.class)
     private List<BidDTO> bidList;
 
     public BidListDTO() {
@@ -29,7 +36,7 @@ public class BidListDTO extends BaseDTO {
     }
 
     public int getNumberOfBid() {
-        return numberOfBid;
+        return bidList.size();
     }
 
     public void setNumberOfBid(int numberOfBid) {

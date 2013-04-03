@@ -29,6 +29,7 @@
                 update_lists();
                 $('#bid_start_date').datetimepicker();
                 $('#bid_end_date').datetimepicker();
+                bid_product_name_onchange();
             });
         </script>
     </head>

@@ -66,7 +66,7 @@
                                 <c:import url="/resources/xml/main_page_menu.xml" var="menuXML" charEncoding="UTF-8"/>
                                 <c:import url="/resources/xsl/main_page_menu.xsl" var="menuXSL"/>
                                 <x:transform xml="${menuXML}" xslt="${menuXSL}"/>
-                                <li class="test" id="login_menu"><a href="#" onclick="showLogin()">Log in</a></li>
+                                <li class="test" id="login_menu"><a href="#" onclick="showLogin()">Đăng Nhập</a></li>
                                 <li><div class="test hide" id="loginResult" style="margin-top: 5px"></div></li>
 
                             </ul>
@@ -101,9 +101,9 @@
                             <div id="error" style="color: red;margin-left: 30%;margin-bottom: 5px" class="hide"></div>
                             <form >
                                 <fieldset style="padding-left: 300px;">
-                                    <label class="label-main">Username</label>
+                                    <label class="label-main">Tên đăng nhập</label>
                                     <div class="input-prepend large"><span class="add-on" style="height: 30px;"><i class="icon-user"></i></span><input class="input-large" name="miniusername"  id="user_username" type="text" style="height: 30px;"></div>
-                                    <label class="label-main">Password</label>
+                                    <label class="label-main">Mật khẩu</label>
                                     <div class="input-prepend"><span class="add-on" style="height: 30px;"><i class="icon-lock"></i></span></span><input class="input-large" name="miniusername"  id="user_password" type="password" style="height: 30px;"></div>
 
                                     <p/>
@@ -136,10 +136,10 @@
                         <div class="alert hide" id="updateResult1"></div>
                         <div class="tabbable tabs-left">
                             <ul class="nav nav-tabs">
-                                <li class="active"><a href="#lA" data-toggle="tab">Profile</a></li>
-                                <li class=""><a href="#lB" data-toggle="tab">Change Password</a></li>
-                                <li class=""><a href="#lC" data-toggle="tab" onclick="loadAndDisplayOrder()">Orders History</a></li>
-                                <li class=""><a href="#lD" data-toggle="tab">Payment</a></li>
+                               <li class="active"><a href="#lA" data-toggle="tab">Thông tin chi tiết</a></li>
+                                <li class=""><a href="#lB" data-toggle="tab">Thay đổi mật khẩu</a></li>
+                                <li class=""><a href="#lC" data-toggle="tab" onclick="loadAndDisplayOrder()">Lịch sử mua hàng</a></li>
+                                <li class=""><a href="#lD" data-toggle="tab">Nạp thẻ</a></li>
                             </ul>
                             <div class="tab-content">
 
@@ -150,7 +150,7 @@
                                         <input type="hidden" id="user_id" class="input-xlarge">
                                         <label>Tên thật</label>
                                         <input type="text" id="user_fullname" class="input-xlarge">
-                                        <label>Phone</label>
+                                        <label>Số điện thoại</label>
                                         <input type="text" id="user_phone"  class="input-xlarge">
                                         <label>Địa chỉ</label>
                                         <input type="text" id="user_address"  class="input-xlarge">
@@ -177,38 +177,42 @@
                            </div>
                             <div class="tab-pane" id="lC" style="width: 100%" onclick="loadAndDisplayOrder()">
                                <table class="table table-hover">
-                                   <caption><h3>User's Order History</h3> </caption>
+                                   <caption><h3>Lịch sử mua hàng</h3> </caption>
                                    <thead>
                                        <tr>
-                                           <td><h4>Product's Name</h4></td>
-                                           <td><h4>Address</h4></td>
-                                           <td><h4>Date</h4></td>
-                                            <td><h4>Amount</h4></td> 
+                                           <td><h4>Tên sản phẩm</h4></td>
+                                           <td><h4>Địa chỉ</h4></td>
+                                           <td><h4>Ngày mua hàng</h4></td>
+                                            <td><h4>Giá tiền</h4></td> 
                                         </tr>
                                     </thead>
                                    <tbody id="orderResult">
 
                                     </tbody>
                                 </table>
+                                <div>   
+                                       <button type='button' class="btn btn-success" onclick="inputCode()">Xuất PDF</button>
+                                   </div>
                             </div>
                             <div class="tab-pane" id="lD" >
                                <form id="tab4">
-                                   <label>Enter your code here:</label>
+                                   <label>Nhập mã thẻ:</label>
                                     <input type="text" id="payment_code" class="input-xlarge">       
                                    <div>   
-                                       <button type='button' class="btn btn-success" onclick="inputCode()">Update</button>
-                                       <button type='button' class="btn btn-success" onclick="loadAndDisplayPayment()">Show Payment</button>
+                                       <button type='button' class="btn btn-success" onclick="inputCode()">Cập Nhật</button>
+                                       <button type='button' class="btn btn-success" onclick="loadAndDisplayPayment()">Lịch sử thanh toán</button>
                                    </div>
 	                        </form>
                                <table class="table table-hover hide" id="tablePayment">
-                                   <caption><h3>User's Payment History</h3> </caption>
+                                   <caption><h3>Lịch sử thanh toán</h3> </caption>
                                    <thead>
                                        <tr>
-                                           <td><h4>Card Code</h4></td>
-                                           <td><h4>Date</h4></td>
-                                            <td><h4>Amount</h4></td> 
+                                           <td><h4>Mã thẻ</h4></td>
+                                           <td><h4>Ngày nạp</h4></td>
+                                            <td><h4>Số tiền</h4></td> 
                                         </tr>
                                     </thead>
+                                    
                                    <tbody  id="paymentResult">
 
                                     </tbody>
