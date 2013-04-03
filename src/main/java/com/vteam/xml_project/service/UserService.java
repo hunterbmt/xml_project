@@ -65,6 +65,7 @@ public class UserService {
     private DateUtil util;
     @Autowired
     ServletContext servletContext;
+    private static String USER_XML_FILE_NAME = "user.xml";
 
     @Transactional
     public UserDTO checkLogin(String email, String password) {
@@ -100,7 +101,7 @@ public class UserService {
             log.error(ex);
             userDTO.setStatus("error");
             userDTO.setMsg("Have some errors ! Try again");
-        }catch (ParserConfigurationException ex) {
+        } catch (ParserConfigurationException ex) {
             log.error(ex);
             userDTO.setStatus("error");
             userDTO.setMsg("Have some errors ! Try again");
@@ -299,5 +300,19 @@ public class UserService {
             userList.setStatus("error");
         }
         return userList;
+    }
+    @Transactional
+    public void updateAllXML() {
+        marshallUser();
+
+    }
+    private void marshallUser() {
+        try {
+            UserListDTO userListDTO = this.getUserList();
+            String realPath = servletContext.getRealPath("WEB-INF/views/resources/xml/");
+            XMLUtil.Marshall(userListDTO, realPath + "/" + USER_XML_FILE_NAME);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

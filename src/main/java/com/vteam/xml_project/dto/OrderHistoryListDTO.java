@@ -6,15 +6,23 @@ package com.vteam.xml_project.dto;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
  * @author TH11032013
  */
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlRootElement(name = "orderHistoryList")
 public class OrderHistoryListDTO extends BaseDTO{
+    @XmlElement(name = "orderHistory", type = OrderHistoryDTO.class)
     private List<OrderHistoryDTO> orderList;
     
     public OrderHistoryListDTO(){
+        
         orderList=new ArrayList<OrderHistoryDTO>();
     }
 

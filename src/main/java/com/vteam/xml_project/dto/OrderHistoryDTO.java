@@ -5,11 +5,16 @@
 package com.vteam.xml_project.dto;
 
 import java.util.Date;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
  * @author TH11032013
  */
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlRootElement(name = "orderHistory")
 public class OrderHistoryDTO extends BaseDTO{
     private int id;
     private Integer user_id;
