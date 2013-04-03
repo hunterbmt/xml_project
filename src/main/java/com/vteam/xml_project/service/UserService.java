@@ -65,33 +65,35 @@ public class UserService {
     private DateUtil util;
     @Autowired
     ServletContext servletContext;
+    private static String USER_XML_FILE_NAME = "user.xml";
 
     @Transactional
     public UserDTO checkLogin(String email, String password) {
         UserDTO userDTO = new UserDTO();
         try {
-                String storagepass = StringUtil.createPasswordForDB(password);
-                String realPath = servletContext.getRealPath("WEB-INF/views/resources/xml") ;
-                String filePath = realPath + File.separator + "user.xml";
+            String storagepass = StringUtil.createPasswordForDB(password);
+            String realPath = servletContext.getRealPath("WEB-INF/views/resources/xml");
+            String filePath = realPath + File.separator + "user.xml";
 //                Document doc = XMLUtil.parseDOM(realPath + File.separator + "user.xml");
 //                XPathFactory xpf = XPathFactory.newInstance();
 //                XPath xpath = xpf.newXPath();
 //                String exp ="//user[email=\""+email+"\"and password=\""+storagepass+"\"]";
 //                Node userNode = (Node) xpath.evaluate(exp, doc, XPathConstants.NODE);
 //                userDTO=XMLUtil.UnMarshall(UserDTO.class, userNode);
-                SAXParserFactory spf= SAXParserFactory.newInstance();
-                SAXParser sax= spf.newSAXParser();
-                LoginSaxHandler lgs= new LoginSaxHandler(email, storagepass);
-                File file= new File(filePath);
-                sax.parse(file, lgs);
-                if(lgs.isFound()){
-                    userDTO.setStatus(lgs.getStatus());
-                    userDTO.setEmail(email);
-                    userDTO.setFullname(lgs.getFullname());
+            SAXParserFactory spf = SAXParserFactory.newInstance();
+            SAXParser sax = spf.newSAXParser();
+            LoginSaxHandler lgs = new LoginSaxHandler(email, storagepass);
+            File file = new File(filePath);
+            sax.parse(file, lgs);
+            if (lgs.isFound()) {
+                userDTO.setStatus(lgs.getStatus());
+                userDTO.setEmail(email);
+                userDTO.setFullname(lgs.getFullname());
+                userDTO.setId(Integer.parseInt(lgs.getId()));
                 userDTO.setPhone(lgs.getPhone());
                 userDTO.setAddress(lgs.getAddress());
                 userDTO.setBalance(Integer.parseInt(lgs.getBalance()));
-                }
+            }
 //            Users dbUser = userDAO.findUserByEmailAndPassword(email, storagepass);
 //            if (dbUser != null) {
 //                userDTO.setId(dbUser.getId());
@@ -117,7 +119,7 @@ public class UserService {
             log.error(ex);
             userDTO.setStatus("error");
             userDTO.setMsg("Have some errors ! Try again");
-        }catch (ParserConfigurationException ex) {
+        } catch (ParserConfigurationException ex) {
             log.error(ex);
             userDTO.setStatus("error");
             userDTO.setMsg("Have some errors ! Try again");
@@ -316,5 +318,19 @@ public class UserService {
             userList.setStatus("error");
         }
         return userList;
+    }
+    @Transactional
+    public void updateAllXML() {
+        marshallUser();
+
+    }
+    private void marshallUser() {
+        try {
+            UserListDTO userListDTO = this.getUserList();
+            String realPath = servletContext.getRealPath("WEB-INF/views/resources/xml/");
+            XMLUtil.Marshall(userListDTO, realPath + "/" + USER_XML_FILE_NAME);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

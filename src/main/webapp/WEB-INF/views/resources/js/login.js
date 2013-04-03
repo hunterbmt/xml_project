@@ -245,3 +245,6 @@ function displayPayment(paymentList) {
     vteam_http.show("tablePayment");
     vteam_http.show("paymentResult");
 }
+function exportPDF(){
+    window.location.href="/order/export_product_list_to_pdf";
+}

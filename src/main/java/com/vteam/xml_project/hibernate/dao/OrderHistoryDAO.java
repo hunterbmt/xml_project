@@ -30,5 +30,11 @@ public class OrderHistoryDAO extends BaseDAO{
         query.setParameter("uid", id);
         return query.list();
     }
+    public List<OrderHistory> getOrderHistorysList() throws HibernateException {
+        Query query = this.sessionFactory
+                .getCurrentSession()
+                .createQuery("FROM OrderHistory");
+        return query.list();
+    }
    
 }

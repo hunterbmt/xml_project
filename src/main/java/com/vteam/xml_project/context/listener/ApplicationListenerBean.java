@@ -7,10 +7,12 @@ package com.vteam.xml_project.context.listener;
 import com.vteam.xml_project.dto.BidListDTO;
 import com.vteam.xml_project.dto.CategoryDTO;
 import com.vteam.xml_project.dto.CategoryListDTO;
+import com.vteam.xml_project.dto.OrderHistoryListDTO;
 import com.vteam.xml_project.dto.ProductListDTO;
 import com.vteam.xml_project.dto.UserListDTO;
 import com.vteam.xml_project.service.BidService;
 import com.vteam.xml_project.service.CategoryService;
+import com.vteam.xml_project.service.OrderHistoryService;
 import com.vteam.xml_project.service.ProductService;
 import com.vteam.xml_project.service.UserService;
 import com.vteam.xml_project.util.XMLUtil;
@@ -36,11 +38,14 @@ public class ApplicationListenerBean implements ApplicationListener<ContextRefre
     ProductService productService;
     @Autowired
     BidService bidService;
+    @Autowired
+    OrderHistoryService orderService;
+    
     private static String CATEGORY_XML_FILE_NAME = "category.xml";
     private static String PRODUCT_XML_FILE_NAME = "product.xml";
     private static String USER_XML_FILE_NAME = "user.xml";
     private static String BID_XML_FILE_NAME = "bids.xml";
-    
+    private static String ORDER_XML_FILE_NAME = "order.xml";
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
@@ -93,4 +98,5 @@ public class ApplicationListenerBean implements ApplicationListener<ContextRefre
             e.printStackTrace();
         }
     }
+
 }

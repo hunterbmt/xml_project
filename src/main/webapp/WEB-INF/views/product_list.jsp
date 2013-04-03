@@ -191,7 +191,7 @@
                                     </tbody>
                                 </table>
                                 <div>   
-                                       <button type='button' class="btn btn-success" onclick="inputCode()">Xuất PDF</button>
+                                       <button type='button' class="btn btn-success" onclick="exportPDF()">Xuất PDF</button>
                                    </div>
                             </div>
                             <div class="tab-pane" id="lD" >

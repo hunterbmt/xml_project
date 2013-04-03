@@ -6,7 +6,13 @@ package com.vteam.xml_project.api;
 
 import com.vteam.xml_project.controller.UserSession;
 import com.vteam.xml_project.dto.OrderHistoryListDTO;
+import com.vteam.xml_project.dto.UserDTO;
+import com.vteam.xml_project.hibernate.dao.UserDAO;
+import com.vteam.xml_project.hibernate.orm.Users;
 import com.vteam.xml_project.service.OrderHistoryService;
+import com.vteam.xml_project.service.UserService;
+import java.io.ByteArrayOutputStream;
+import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,6 +32,8 @@ public class OrderHistoryAPI {
     private UserSession session;
     @Autowired
     private OrderHistoryService orderService;
+    @Autowired
+    private UserService usersevie;
 
     @RequestMapping(value = "/getOrderList", method = RequestMethod.POST, produces = "application/json")
     public @ResponseBody
@@ -34,5 +42,19 @@ public class OrderHistoryAPI {
         OrderHistoryListDTO orderResult = orderService.getListByOrderID(id);
         return orderResult;
         //return result;
+    }
+      @RequestMapping(value = "/export_product_list_to_pdf", method = RequestMethod.GET)
+    public void exportProductListToPdf(HttpServletResponse response) {
+        try {
+            String email=(String) session.get("email");
+            UserDTO user=usersevie.getUserByEmail(email);
+            ByteArrayOutputStream outStream = orderService.exportOrderHistoryToPdf(Integer.valueOf(user.getId()));
+            byte[] pdfBytes = outStream.toByteArray();
+            response.setContentType("application/pdf");
+            response.getOutputStream().write(pdfBytes);
+            response.getOutputStream().flush();
+        } catch (Exception ex){
+            ex.printStackTrace();
+        }
     }
 }
