@@ -22,7 +22,7 @@ function login() {
                         changeContext();
                     }
                 } else {
-                    vteam_http.setHTML("error", "Wrong username or password");
+                    vteam_http.setHTML("error", "Sai tên đăng nhập hoặc mật khẩu");
                     vteam_http.show("error");
                 }
             });
@@ -53,10 +53,12 @@ function logout() {
             });
 }
 function changeSigin() {
+    currentPosition = -1;
     vteam_http.hide("login");
     vteam_http.show("signin");
 }
 function changeLogin() {
+    currentPosition = -1;
     vteam_http.hide("error");
     vteam_http.hide("signin");
     vteam_http.show("login");
@@ -211,7 +213,9 @@ function create() {
             });
 }
 function showLogin() {
+    currentPosition = -1;
     hideAllDiv();
+    changeLogin();
     vteam_http.show("user_login");
 }
 function loadAndDisplayPayment() {

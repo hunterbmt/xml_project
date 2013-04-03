@@ -3,7 +3,7 @@
     <Item>
         <class>active</class>
         <function>changeContext()</function>
-        <name>Home</name>
+        <name>Trang Chủ</name>
     </Item>
     <Item>
         <class></class>

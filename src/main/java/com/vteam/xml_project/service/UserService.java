@@ -73,12 +73,6 @@ public class UserService {
                 String storagepass = StringUtil.createPasswordForDB(password);
                 String realPath = servletContext.getRealPath("WEB-INF/views/resources/xml") ;
                 String filePath = realPath + File.separator + "user.xml";
-//                Document doc = XMLUtil.parseDOM(realPath + File.separator + "user.xml");
-//                XPathFactory xpf = XPathFactory.newInstance();
-//                XPath xpath = xpf.newXPath();
-//                String exp ="//user[email=\""+email+"\"and password=\""+storagepass+"\"]";
-//                Node userNode = (Node) xpath.evaluate(exp, doc, XPathConstants.NODE);
-//                userDTO=XMLUtil.UnMarshall(UserDTO.class, userNode);
                 SAXParserFactory spf= SAXParserFactory.newInstance();
                 SAXParser sax= spf.newSAXParser();
                 LoginSaxHandler lgs= new LoginSaxHandler(email, storagepass);
@@ -92,20 +86,9 @@ public class UserService {
                 userDTO.setAddress(lgs.getAddress());
                 userDTO.setBalance(Integer.parseInt(lgs.getBalance()));
                 }
-//            Users dbUser = userDAO.findUserByEmailAndPassword(email, storagepass);
-//            if (dbUser != null) {
-//                userDTO.setId(dbUser.getId());
-//                userDTO.setEmail(dbUser.getEmail());
-//                userDTO.setFullname(dbUser.getFullname());
-//                userDTO.setPhone(dbUser.getPhone());
-//                userDTO.setAddress(dbUser.getAddress());
-//                userDTO.setBalance(dbUser.getBalance());
-//                userDTO.setBirthday(dbUser.getBirthday());
-//                userDTO.setStatus("success");
-//            }
-//            else {
-//                userDTO.setStatus("error");
-//            }
+                else {
+                    userDTO.setStatus("error");
+                }
         } catch (NoSuchAlgorithmException ex) {
             log.error(ex.getStackTrace());
             userDTO.setStatus("error");

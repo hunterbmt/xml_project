@@ -7,7 +7,6 @@ package com.vteam.xml_project.context.listener;
 import com.vteam.xml_project.dto.BidListDTO;
 import com.vteam.xml_project.dto.CategoryDTO;
 import com.vteam.xml_project.dto.CategoryListDTO;
-import com.vteam.xml_project.dto.ProductListDTO;
 import com.vteam.xml_project.dto.UserListDTO;
 import com.vteam.xml_project.service.BidService;
 import com.vteam.xml_project.service.CategoryService;
@@ -19,6 +18,7 @@ import javax.xml.bind.JAXBException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.scheduling.annotation.Scheduled;
 
 /**
  *
@@ -45,11 +45,11 @@ public class ApplicationListenerBean implements ApplicationListener<ContextRefre
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
         marshallCategory();
-            marshallProduct();
         marshallUser();
         marshallBids();
     }
-
+    //@Scheduled(fixedRate=6000)
+    @Scheduled(cron = "* * 1 * * ?")
     private void marshallCategory() {
         try {
             CategoryListDTO categoryListDTO = categoryService.getCategoryList();
@@ -61,17 +61,6 @@ public class ApplicationListenerBean implements ApplicationListener<ContextRefre
         } catch (JAXBException ex) {
             ex.printStackTrace();
         }
-    }
-
-    private void marshallProduct() {
-        try {
-            ProductListDTO productListDTO = productService.getProductList();
-            String realPath = servletContext.getRealPath("WEB-INF/views/resources/xml/");
-            XMLUtil.Marshall(productListDTO, realPath + "/" + PRODUCT_XML_FILE_NAME);
-        } catch (JAXBException ex) {
-            ex.printStackTrace();
-        }
-        return;
     }
 
     private void marshallUser() {

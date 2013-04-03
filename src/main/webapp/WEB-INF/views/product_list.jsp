@@ -12,9 +12,8 @@
         <link href="/resources/css/bootstrap-combined.no-icons.min.css" rel="stylesheet">
         <link href="/resources/css/bootstrap-responsive.css" rel="stylesheet">
         <link href="/resources/css/font-awesome.css" rel="stylesheet">
-        <link href="/resources/css/product.css" rel="stylesheet">
-        <link href="/resources/css/entypo.css" rel="stylesheet">
         <link href="/resources/css/jquery-ui-helper.css" rel="stylesheet">
+        <link href="/resources/css/product.css" rel="stylesheet">
         <script src="/resources/js/lib/jquery.js"></script>
         <script src="/resources/js/lib/jquery.url.js"></script>
         <script src="/resources/js/lib/jquery-ui.js"></script>
@@ -99,16 +98,16 @@
 
                         <div class="Login"  id="login">
                             <div id="error" style="color: red;margin-left: 30%;margin-bottom: 5px" class="hide"></div>
-                            <form >
+                            <form class="login-form">
                                 <fieldset style="padding-left: 300px;">
                                     <label class="label-main">Tên đăng nhập</label>
-                                    <div class="input-prepend large"><span class="add-on" style="height: 30px;"><i class="icon-user"></i></span><input class="input-large" name="miniusername"  id="user_username" type="text" style="height: 30px;"></div>
+                                    <input class="input-large" name="miniusername"  id="user_username" type="text">
                                     <label class="label-main">Mật khẩu</label>
-                                    <div class="input-prepend"><span class="add-on" style="height: 30px;"><i class="icon-lock"></i></span></span><input class="input-large" name="miniusername"  id="user_password" type="password" style="height: 30px;"></div>
+                                    <input class="input-large" name="miniusername"  id="user_password" type="password">
 
                                     <p/>
                                     <button name="send" type="button" class="btn btn-success" onclick="login()">Đăng nhập</button>
-                                    <button name="send" type="button"  class="btn " onclick="changeSigin()">Đăng ký</button>
+                                    <button name="send" type="button"  class="btn " onclick="changeSigin()" style="margin-left: 12%">Đăng ký</button>
 
                                 </fieldset>
                             </form>
@@ -124,8 +123,8 @@
                                     <input id="new_repassword"  type="password" name="password" />
                                     <label > Tên thật:</label>
                                     <input id="new_fullname"  type="text" name="fullname" /><p/>
-                                    <button name="send" type="button"  class="btn btn-success btn-small" onclick="create()">Create User</button>
-                                    <button name="send" type="button"  class="btn  btn-small" onclick="changeLogin()">Back</button>
+                                    <button name="send" type="button"  class="btn btn-success" onclick="create()">Đăng ký</button>
+                                    <button name="send" type="button"  class="btn" onclick="changeLogin()"style="margin-left: 16%">Hủy bỏ</button>
                                 </fieldset>
                             </form>
                             <div id="result" style="display: none"></div>
@@ -146,18 +145,18 @@
                                 <div class="tab-pane active" id="lA">
                                     <form id="tab">
                                         <label>Email</label>
-                                        <input type="text" id="user_email" class="input-xlarge" readonly="true">
-                                        <input type="hidden" id="user_id" class="input-xlarge">
+                                        <input type="text" id="user_email" readonly="true">
+                                        <input type="hidden" id="user_id" >
                                         <label>Tên thật</label>
-                                        <input type="text" id="user_fullname" class="input-xlarge">
+                                        <input type="text" id="user_fullname">
                                         <label>Số điện thoại</label>
-                                        <input type="text" id="user_phone"  class="input-xlarge">
+                                        <input type="text" id="user_phone">
                                         <label>Địa chỉ</label>
-                                        <input type="text" id="user_address"  class="input-xlarge">
+                                        <input type="text" id="user_address">
                                         <label>Ngày sinh</label>
-                                        <input type="text" id="user_birthday" class="input-xlarge">
+                                        <input type="text" id="user_birthday">
                                         <label>Tài khoản</label>
-                                        <input type="text" id="user_balance" class="input-xlarge" readonly="true">
+                                        <input type="text" id="user_balance" readonly="true">
                                         <div class="row" style="display: inline;margin-left: 0px" >
                                             <button type='button' class="btn btn-success" onclick="updateInfo()">Update</button>
                                         </div>
@@ -167,9 +166,9 @@
                                 <div class="tab-pane" id="lB">
                                     <form id="tab2">
                                         <label>Mật khẩu mới</label>
-                                        <input type="password" id="newpassword" class="input-xlarge">       
+                                        <input type="password" id="newpassword" >       
                                         <label>Mật khẩu cũ</label>
-                                        <input type="password" id="curr_password" class="input-xlarge">
+                                        <input type="password" id="curr_password">
                                         <div>   
                                             <button type='button' class="btn btn-success" onclick="updatePassword()">Update</button>
                                         </div>
@@ -197,7 +196,7 @@
                             <div class="tab-pane" id="lD" >
                                <form id="tab4">
                                    <label>Nhập mã thẻ:</label>
-                                    <input type="text" id="payment_code" class="input-xlarge">       
+                                    <input type="text" id="payment_code">       
                                    <div>   
                                        <button type='button' class="btn btn-success" onclick="inputCode()">Cập Nhật</button>
                                        <button type='button' class="btn btn-success" onclick="loadAndDisplayPayment()">Lịch sử thanh toán</button>

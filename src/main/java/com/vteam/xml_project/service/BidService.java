@@ -6,14 +6,15 @@ package com.vteam.xml_project.service;
 
 import com.vteam.xml_project.dto.BidDTO;
 import com.vteam.xml_project.dto.BidListDTO;
-import com.vteam.xml_project.dto.ProductListDTO;
 import com.vteam.xml_project.dto.UserDTO;
 import com.vteam.xml_project.hibernate.dao.BidDAO;
 import com.vteam.xml_project.hibernate.dao.BidHistoryDAO;
+import com.vteam.xml_project.hibernate.dao.OrderHistoryDAO;
 import com.vteam.xml_project.hibernate.dao.ProductDAO;
 import com.vteam.xml_project.hibernate.dao.UserDAO;
 import com.vteam.xml_project.hibernate.orm.BidHistory;
 import com.vteam.xml_project.hibernate.orm.Bids;
+import com.vteam.xml_project.hibernate.orm.OrderHistory;
 import com.vteam.xml_project.hibernate.orm.Product;
 import com.vteam.xml_project.hibernate.orm.Users;
 import com.vteam.xml_project.util.DateUtil;
@@ -54,6 +55,8 @@ public class BidService {
     private ProductDAO productDAO;
     @Autowired
     private UserDAO userDAO;
+    @Autowired
+    private OrderHistoryDAO orderHistoryDAO;
     @Autowired
     private DateUtil dateUtil;
     @Autowired
@@ -218,7 +221,6 @@ public class BidService {
         dbBid.setLastUserid(uuid);
         dbBid.setCurrentPrice(_price);
         dbBid.setStatus(Bids.Status.COMPLETED);
-
         Product product = productDAO.getProductById(dbBid.getProduct().getId());
         product.setBidId(dbBid.getId());
         product.setStatus(Product.Status.SOLD);
@@ -290,8 +292,13 @@ public class BidService {
         } else { // not null
             update_bought_bid(dbBid, current_date, user.getId(), dbBid.getCurrentPrice());
             updateBidsHistory(user, dbBid);
+            createOrderHistory(user,dbBid.getProduct(),dbBid.getCurrentPrice());
         }
         return true;
+    }
+    private void createOrderHistory(Users user, Product product,double amount){
+        OrderHistory orderHistory = new OrderHistory(user, product, dateUtil.getCurrentDate(), user.getAddress(), (int) amount);
+        orderHistoryDAO.save(orderHistory);
     }
 
     @Transactional

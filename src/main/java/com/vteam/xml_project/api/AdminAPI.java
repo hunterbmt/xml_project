@@ -4,7 +4,6 @@
  */
 package com.vteam.xml_project.api;
 
-import com.vteam.xml_project.context.listener.ApplicationListenerBean;
 import com.vteam.xml_project.controller.UserSession;
 import com.vteam.xml_project.dto.BidDTO;
 import com.vteam.xml_project.dto.CategoryDTO;
@@ -17,12 +16,9 @@ import com.vteam.xml_project.service.AdminService;
 import com.vteam.xml_project.service.CategoryService;
 import com.vteam.xml_project.service.ProductService;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.sql.Driver;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
