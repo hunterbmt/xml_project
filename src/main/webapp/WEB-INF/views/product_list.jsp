@@ -101,11 +101,18 @@
                             <div id="error" style="color: red;margin-left: 30%;margin-bottom: 5px" class="hide"></div>
                             <form >
                                 <fieldset style="padding-left: 300px;">
-                                    <label class="label-main">Tên đăng nhập</label>
-                                    <div class="input-prepend large"><span class="add-on" style="height: 30px;"><i class="icon-user"></i></span><input class="input-large" name="miniusername"  id="user_username" type="text" style="height: 30px;"></div>
-                                    <label class="label-main">Mật khẩu</label>
-                                    <div class="input-prepend"><span class="add-on" style="height: 30px;"><i class="icon-lock"></i></span></span><input class="input-large" name="miniusername"  id="user_password" type="password" style="height: 30px;"></div>
-
+                                    <div class="control-group">
+                                        <label class="control-label">Tên đăng nhập</label>
+                                        <div class="controls">
+                                            <div class="input-prepend large"><span class="add-on" style="height: 30px;"><i class="icon-user"></i></span><input class="input-large" name="miniusername"  id="user_username" type="text" style="height: 30px;" onblur="validLogIn()"></div>
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                       <label class="label-main">Mật khẩu</label>
+                                        <div class="controls">
+                                            <div class="input-prepend"><span class="add-on" style="height: 30px;"><i class="icon-lock"></i></span></span><input class="input-large" name="miniusername"  id="user_password" type="password" style="height: 30px;" onblur="validPassword()"></div>
+                                        </div>
+                                    </div>
                                     <p/>
                                     <button name="send" type="button" class="btn btn-success" onclick="login()">Đăng nhập</button>
                                     <button name="send" type="button"  class="btn " onclick="changeSigin()">Đăng ký</button>

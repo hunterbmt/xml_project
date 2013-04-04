@@ -248,3 +248,32 @@ function displayPayment(paymentList) {
 function exportPDF(){
     window.location.href="/order/export_product_list_to_pdf";
 }
+function validLogIn(){
+    var email = document.getElementById("user_username").value;
+    
+    if (!email) {
+        var div = $("#user_username").parents("div.control-group");
+        div.removeClass("success");
+        div.addClass("error");
+        return false;
+    } else {
+        var div = $("#user_username").parents("div.control-group");
+        div.removeClass("error");
+        //div.addClass("success");
+
+    }
+}
+function validPassword(){
+    var password = document.getElementById("user_password").value;
+    if (!password) {
+        var div = $("#user_password").parents("div.control-group");
+        div.removeClass("success");
+        div.addClass("error");
+        return false;
+    } else {
+        var div = $("#user_password").parents("div.control-group");
+        div.removeClass("error");
+        //div.addClass("success");
+
+    }
+}
