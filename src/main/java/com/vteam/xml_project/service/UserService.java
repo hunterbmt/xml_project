@@ -71,43 +71,25 @@ public class UserService {
     public UserDTO checkLogin(String email, String password) {
         UserDTO userDTO = new UserDTO();
         try {
-            String storagepass = StringUtil.createPasswordForDB(password);
-            String realPath = servletContext.getRealPath("WEB-INF/views/resources/xml");
-            String filePath = realPath + File.separator + "user.xml";
-//                Document doc = XMLUtil.parseDOM(realPath + File.separator + "user.xml");
-//                XPathFactory xpf = XPathFactory.newInstance();
-//                XPath xpath = xpf.newXPath();
-//                String exp ="//user[email=\""+email+"\"and password=\""+storagepass+"\"]";
-//                Node userNode = (Node) xpath.evaluate(exp, doc, XPathConstants.NODE);
-//                userDTO=XMLUtil.UnMarshall(UserDTO.class, userNode);
-            SAXParserFactory spf = SAXParserFactory.newInstance();
-            SAXParser sax = spf.newSAXParser();
-            LoginSaxHandler lgs = new LoginSaxHandler(email, storagepass);
-            File file = new File(filePath);
-            sax.parse(file, lgs);
-            if (lgs.isFound()) {
-                userDTO.setStatus(lgs.getStatus());
-                userDTO.setEmail(email);
-                userDTO.setFullname(lgs.getFullname());
-                userDTO.setId(Integer.parseInt(lgs.getId()));
+                String storagepass = StringUtil.createPasswordForDB(password);
+                String realPath = servletContext.getRealPath("WEB-INF/views/resources/xml") ;
+                String filePath = realPath + File.separator + "user.xml";
+                SAXParserFactory spf= SAXParserFactory.newInstance();
+                SAXParser sax= spf.newSAXParser();
+                LoginSaxHandler lgs= new LoginSaxHandler(email, storagepass);
+                File file= new File(filePath);
+                sax.parse(file, lgs);
+                if(lgs.isFound()){
+                    userDTO.setStatus(lgs.getStatus());
+                    userDTO.setEmail(email);
+                    userDTO.setFullname(lgs.getFullname());
                 userDTO.setPhone(lgs.getPhone());
                 userDTO.setAddress(lgs.getAddress());
                 userDTO.setBalance(Integer.parseInt(lgs.getBalance()));
-            }
-//            Users dbUser = userDAO.findUserByEmailAndPassword(email, storagepass);
-//            if (dbUser != null) {
-//                userDTO.setId(dbUser.getId());
-//                userDTO.setEmail(dbUser.getEmail());
-//                userDTO.setFullname(dbUser.getFullname());
-//                userDTO.setPhone(dbUser.getPhone());
-//                userDTO.setAddress(dbUser.getAddress());
-//                userDTO.setBalance(dbUser.getBalance());
-//                userDTO.setBirthday(dbUser.getBirthday());
-//                userDTO.setStatus("success");
-//            }
-//            else {
-//                userDTO.setStatus("error");
-//            }
+                }
+                else {
+                    userDTO.setStatus("error");
+                }
         } catch (NoSuchAlgorithmException ex) {
             log.error(ex.getStackTrace());
             userDTO.setStatus("error");

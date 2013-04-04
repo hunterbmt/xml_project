@@ -44,31 +44,6 @@ public class ProductService {
     @Autowired
     ServletContext servletContext;
     private static final int PAGESIZE = 50;
-    private static final int CACHETIMEOUT = 24;
-
-    @Transactional
-    public ProductListDTO getProductList() {
-        ProductListDTO list = new ProductListDTO();
-        try {
-            List<Product> dbProduct = productDAO.getProductList();
-            ProductDTO p;
-            for (Product d : dbProduct) {
-                p = new ProductDTO();
-                p.setName(d.getProductName());
-                p.setDescription(d.getDescription());
-                p.setCategoryName(d.getCategory().getCategoryName());
-                list.getProductList().add(p);
-            }
-            list.setNumberOfProduct(productDAO.getNumberOfProduct());
-            list.setStatus("success");
-        } catch (HibernateException ex) {
-            log.error(ex.getStackTrace());
-            list.setStatus("error");
-            list.setMsg("Have some errors. Try again");
-        }
-        System.out.println(list);
-        return list;
-    }
 
     @Transactional
     public ProductListDTO getProductList(int page) {
@@ -90,6 +65,7 @@ public class ProductService {
                 p.setDescription(d.getDescription());
                 p.setImage("/resources/img/product/" + d.getImage());
                 p.setImageName(d.getImage());
+                p.setCategoryId(d.getCategory().getId());
                 p.setId(d.getId());
                 p.setBidId(d.getBidId());
                 list.getProductList().add(p);
@@ -141,7 +117,6 @@ public class ProductService {
                     p.setDescription(d.getDescription());
                     p.setImage("/resources/img/product/" + d.getImage());
                     p.setImageName(d.getImage());
-                    p.setCategoryName(d.getCategory().getCategoryName());
                     p.setBidId(d.getBidId());
                     tmpList.add(p);
                 }

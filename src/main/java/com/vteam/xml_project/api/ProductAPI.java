@@ -74,9 +74,4 @@ public class ProductAPI {
         return result;
     }
 
-    @RequestMapping(value = "/printProductList")
-    public void printProductList(HttpServletResponse response, HttpServletRequest request) {
-        productService.getProductList();
-        return;
-    }
 }

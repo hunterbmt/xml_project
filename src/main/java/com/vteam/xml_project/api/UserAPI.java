@@ -35,12 +35,20 @@ public class UserAPI {
     public @ResponseBody
     UserDTO login(
             @RequestParam String email, String password) {
-        UserDTO result = userService.checkLogin(email, password);
-        if (result.getStatus().equals("success")) {
-            session.put("email", result.getEmail());
-        }
-        return result;
+        if (StringUtil.validString(email) && StringUtil.validString(password)) {
+            UserDTO result = userService.checkLogin(email, password);
+            if (result.getStatus().equals("success")) {
+                session.put("email", result.getEmail());
+            }
 
+            return result;
+        }
+        else{
+            UserDTO result = new UserDTO();
+            result.setStatus("error");
+            result.setMsg("Have some error");
+            return result;
+        }
     }
 
     @RequestMapping(value = "/logout", method = RequestMethod.POST, produces = "application/json")
