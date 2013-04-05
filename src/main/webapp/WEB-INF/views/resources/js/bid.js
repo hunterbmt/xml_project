@@ -73,7 +73,6 @@ function insertOrUpdateBid() {
             'POST', callback);
         }
         clearValidBid();
-        refresh(1000);
     } else { // insert
         if (validBid(product_name, start_date, end_date, cost)) {
             var p_id = array_keys[array_values.indexOf($("#bid_product_name").val())];
@@ -85,8 +84,9 @@ function insertOrUpdateBid() {
             'POST', callback);
         }
         clearValidBid();
-        refresh(1000);
+        
     }
+    
 }
 
 function refresh(timeout) {
@@ -112,6 +112,7 @@ function callback(result) {
             setTimeout(vteam_http.hide("result_IU_bid"), 2000);
         });
     }
+    refresh(1000);
 }
 
 function update_lists() {

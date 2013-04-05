@@ -1,4 +1,6 @@
 
+<%@page import="java.util.Date"%>
+<%@page import="java.text.SimpleDateFormat"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
@@ -175,7 +177,13 @@
                         
                         <!-- Upcoming bids -->                        
                         <c:import url="/resources/xsl/upcomingBid_list.xsl" var="upBidXSL"/>
-                        <x:transform xml="${bidsXML}" xslt="${upBidXSL}"/>
+                        <%
+                            SimpleDateFormat formatter=new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+                            Date ts = new Date();
+                            %>
+                        <x:transform xml="${bidsXML}" xslt="${upBidXSL}">
+                            <x:param name="cDate" value="<%=formatter.format(ts)%>"/>
+                        </x:transform>
                         
 
                         <!-- completed bids -->

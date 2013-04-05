@@ -10,15 +10,12 @@
 
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0"> 
     <xsl:output method="html"/>  
-    
-    <xsl:template match="/">
-        <xsl:apply-templates>
-            <xsl:with-param name="cDate" select="'04/05/2013 13:18:00'"/>            
-        </xsl:apply-templates>
+    <xsl:param name="cDate" />
+    <xsl:template match="/">        
+        <xsl:apply-templates/>                              
     </xsl:template>
     
-    <xsl:template match="bidList">  
-        <xsl:param name="cDate" select="'04/06/1989 10:00:00'"/>   
+    <xsl:template match="bidList">     
         <xsl:variable name="datetime-punctuation" select="'/: '" />
         <xsl:variable name="stripped-current-datetime"
                       select="number(translate($cDate, $datetime-punctuation, ''))" />   

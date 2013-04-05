@@ -44,9 +44,9 @@ function transformToOngoingSourceXML(cDate)
 
 function displayOngoingPaginationResult(page, pageSize)
 {
-    if (!page) { page = 0 }
-    if (!pageSize) { pageSize = 2 }
-    xml = transformToOngoingSourceXML(new Date());
+    if (!page) { page = 0; }
+    if (!pageSize) { pageSize = 3; }
+    xml = transformToOngoingSourceXML(toDateAndTime2(new Date()));
     xsl = loadXMLDoc("../resources/xsl/OnGoingBidPaging.xsl");
 
     // code for IE
