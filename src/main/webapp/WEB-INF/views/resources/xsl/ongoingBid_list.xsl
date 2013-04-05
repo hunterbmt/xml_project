@@ -9,7 +9,7 @@
 -->
 
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0"> 
-    <xsl:output method="html"/>  
+    <xsl:output method="xml" omit-xml-declaration="yes" version="1.0" encoding="UTF-8" indent="yes"/>
     
     <xsl:template match="/">
         <xsl:apply-templates>
@@ -21,68 +21,29 @@
         <xsl:param name="cDate" select="'04/06/1989 10:00:00'"/>   
         <xsl:variable name="datetime-punctuation" select="'/: '" />
         <xsl:variable name="stripped-current-datetime"
-                          select="number(translate($cDate, $datetime-punctuation, ''))" />   
-        <div class="widget widget-table action-table">
-            <div class="widget-header">
-                <i class="icon-list-alt"></i>
-                <h3>Ongoing Bids</h3>
-            </div>
-            <div class="widget-content">
-                <table class="table table-striped table-bordered">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Product</th>
-                            <th>Start date</th>
-                            <th>Current user</th>
-                            <th>Current price</th>
-                            <th>Last bid</th>
-                            <th class="td-actions" style="width: 8%"></th>
-                        </tr>
-                    </thead>
-                    <tbody id="onGoingBid">
-                        <xsl:for-each 
-                            select="//bid[number(translate(start_date, $datetime-punctuation, '')) 
+                      select="number(translate($cDate, $datetime-punctuation, ''))" />   
+        <bidList>            
+            <xsl:for-each 
+                select="//bid[number(translate(start_date, $datetime-punctuation, '')) 
                             &lt; $stripped-current-datetime 
                             and 
                             number(translate(end_date, $datetime-punctuation, ''))
                             > $stripped-current-datetime
                             ]"
-                        >
-                            <tr>
-                                <td>
-                                    <xsl:value-of select="id"/>
-                                </td>
-                                <td>
-                                    <xsl:value-of select="product_name"/>
-                                </td>
-                                <td>
-                                    <xsl:value-of select="start_date"/>
-                                </td>
-                                <td>
-                                    <xsl:value-of select="last_username"/>
-                                </td>
-                                <td>
-                                    <xsl:value-of select="current_price"/>
-                                </td>
-                                <td>
-                                    <xsl:value-of select="last_edit"/>
-                                </td>
-                                <td class="td-actions">
-                                    <a href="javascript:void(0)" 
-                                       onclick="bid_details({id})" class="btn btn-warning btn-small">
-                                        <i class="btn-icon-only icon-edit"></i>
-                                    </a>
-                                </td>
-                            </tr>
-                        </xsl:for-each>  
-                    </tbody>
-                </table>
-                <div class="pagination-bar">
-                    <div id="ongoing_pagination_bar" style="float: right">
-                    </div>
-                </div>
-            </div>
-        </div>           
+            ><bid>
+                    <id><xsl:value-of select="id"/></id>
+                    <last_userid><xsl:value-of select="last_userid"/></last_userid>
+                    <last_username><xsl:value-of select="last_username"/></last_username>
+                    <cost><xsl:value-of select="cost"/></cost>
+                    <product_id><xsl:value-of select="product_id"/></product_id>
+                    <product_name><xsl:value-of select="product_name"/></product_name>
+                    <current_price><xsl:value-of select="current_price"/></current_price>
+                    <start_date><xsl:value-of select="start_date"/></start_date>
+                    <end_date><xsl:value-of select="end_date"/></end_date>
+                    <last_edit><xsl:value-of select="last_edit"/></last_edit>
+                </bid>
+            </xsl:for-each>  
+        </bidList>
+                         
     </xsl:template>
 </xsl:stylesheet>

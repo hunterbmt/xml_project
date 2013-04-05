@@ -25,6 +25,7 @@
         <script src="/resources/js/bid.js"></script>
         <script src="/resources/js/jquery-ui-timepicker-addon.js"></script>
         <script type="text/javascript" src="/resources/js/lib/jquery.simplePagination.js"></script>
+        <script src="/resources/js/xml_transform_helper.js"></script>
 
         <script>
             $(document).ready(function() {
@@ -163,13 +164,14 @@
 
                     </div>
                     <div class="span8">
-                        
+                        <div id="test11"></div>
                         <c:import url="/resources/xml/bids.xml" var="bidsXML" charEncoding="UTF-8"/>
                         
                         <!-- Ongoing bids -->
-                        
-                        <c:import url="/resources/xsl/ongoingBid_list.xsl" var="onBidXSL"/>
-                        <x:transform xml="${bidsXML}" xslt="${onBidXSL}"/>
+                        <script>                           
+                                params = extractparams(window.location.search);
+                                displayOngoingPaginationResult(params['page'],params['pageSize']);                           
+                        </script>
                         
                         <!-- Upcoming bids -->                        
                         <c:import url="/resources/xsl/upcomingBid_list.xsl" var="upBidXSL"/>
@@ -196,9 +198,7 @@
                                             <th>Complete on</th>
                                         </tr>
                                     </thead>
-                                    <tbody id="completedBids">                                 
-
-                                    </tbody>
+                                    <tbody id="completedBids"></tbody>
                                 </table>
                                 <div class="pagination-bar">
                                     <div id="completed_pagination_bar" style="float: right">
