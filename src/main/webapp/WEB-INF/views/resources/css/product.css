@@ -1075,3 +1075,7 @@ form > input {
     height: 30px !important;
     width: 260px;
 }
+
+.p_detail {
+    margin-top: 40px;
+}

@@ -8,9 +8,9 @@
 
 /* css for timepicker */
 .ui-datepicker {
-	
-        line-height: 8px;
-	
+
+    line-height: 8px;
+
 }
 .ui-timepicker-div .ui-widget-header { margin-bottom: 8px; }
 .ui-timepicker-div dl { text-align: left; }
@@ -25,3 +25,9 @@
 
 
 
+.admin_bid_new_product {
+    position: relative;
+    float:right;
+    top: -26px;
+    right: 20px;
+}

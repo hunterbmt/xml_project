@@ -306,18 +306,21 @@ public class BidService {
         Date currentDate = new Date();
         BidListDTO list = new BidListDTO();
         try {
-            List<Bids> bidList = bidDAO.getBidsList(page, pageSize);
+            List<Bids> bidList = bidDAO.getBidsList(1, 9999);
             List<Bids> filteredList = new ArrayList<Bids>();
+            
             for (Bids b : bidList) {
-                if (b.getStatus() != Bids.Status.COMPLETED) {
-                    
-                    if (b.getStartDate().getTime() - currentDate.getTime() > 0) {
-                       // if (b.getStartDate().getHours() > currentDate.getHours())
+                if (b.getStatus() != Bids.Status.COMPLETED) {                    
+                    if (b.getStartDate().getTime() - currentDate.getTime() > 0) {                       
                         filteredList.add(b);
                     }
                 }
             }
-            list.setBidList(getTmpList(filteredList));
+            int fromIndex = pageSize * (page - 1);
+            fromIndex = (fromIndex > filteredList.size() -1 )? 0: fromIndex;
+            int toIndex = fromIndex + pageSize;
+            toIndex = (toIndex > filteredList.size()-1)? filteredList.size() : toIndex;
+            list.setBidList(getTmpList(filteredList.subList(fromIndex, toIndex)));
             list.setNumberOfBid(filteredList.size());
             list.setStatus("success");
         } catch (HibernateException he) {
@@ -333,19 +336,21 @@ public class BidService {
         Date currentDate = new Date();
         BidListDTO list = new BidListDTO();
         try {
-            List<Bids> bidList = bidDAO.getBidsList(page, pageSize);
+            List<Bids> bidList = bidDAO.getBidsList(1, 9999);
             List<Bids> filteredList = new ArrayList<Bids>();
             for (Bids b : bidList) {
                 if (b.getStatus() != Bids.Status.COMPLETED) {
                     if ((b.getStartDate().getTime() - currentDate.getTime() <= 0)
                             && (b.getEndDate().getTime() - currentDate.getTime() > 0)) {
-//                        if ((b.getStartDate().getHours() < currentDate.getHours()) && 
-//                                (b.getEndDate().getHours() > currentDate.getHours()))
                         filteredList.add(b);
                     }
                 }
             }
-            list.setBidList(getTmpList(filteredList));
+            int fromIndex = pageSize * (page - 1);
+            fromIndex = (fromIndex > filteredList.size() -1 )? 0: fromIndex;
+            int toIndex = fromIndex + pageSize;
+            toIndex = (toIndex > filteredList.size()-1)? filteredList.size() : toIndex;
+            list.setBidList(getTmpList(filteredList.subList(fromIndex, toIndex)));
             list.setNumberOfBid(filteredList.size());
             list.setStatus("success");
         } catch (HibernateException he) {
@@ -361,14 +366,18 @@ public class BidService {
         BidListDTO list = new BidListDTO();
         try {
 
-            List<Bids> bidList = bidDAO.getBidsList(page, pageSize);
+            List<Bids> bidList = bidDAO.getBidsList(1, 9999);
             List<Bids> filteredList = new ArrayList<Bids>();
             for (Bids b : bidList) {
                 if (b.getStatus() == Bids.Status.COMPLETED) {
                     filteredList.add(b);
                 }
             }
-            list.setBidList(getTmpList(filteredList));
+            int fromIndex = pageSize * (page - 1);
+            fromIndex = (fromIndex > filteredList.size() -1 )? 0: fromIndex;
+            int toIndex = fromIndex + pageSize - 1;
+            toIndex = (toIndex > filteredList.size()-1)? filteredList.size() : toIndex;
+            list.setBidList(getTmpList(filteredList.subList(fromIndex, toIndex)));
             list.setNumberOfBid(filteredList.size());
             list.setStatus("success");
         } catch (HibernateException he) {

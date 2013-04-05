@@ -192,7 +192,7 @@ function displayProductDetail(product) {
     c = setInterval(displayCounter, 1000);
     html += '<div class="row-fluid">'
 
-    html += '<div class= "p_detail" style="border:none; margin-top:0px">'
+    html += '<div class= "p_detail" style="border:none;">'
 
 
     html += '<div class="product-detail-img">'
