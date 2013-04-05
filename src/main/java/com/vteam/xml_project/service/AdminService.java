@@ -173,8 +173,8 @@ public class AdminService {
     public BidDTO insertBid(int product_id, String startDateStr, String endDateStr, int cost) {
         BidDTO bidDTO = new BidDTO();
         try {
-            Date startDate = dateUtil.parseFromString(startDateStr, "MM/dd/yyyy HH:mm");
-            Date endDate = dateUtil.parseFromString(endDateStr, "MM/dd/yyyy HH:mm");
+            Date startDate = dateUtil.parseFromString(startDateStr, "yyyy/MM/dd HH:mm");
+            Date endDate = dateUtil.parseFromString(endDateStr, "yyyy/MM/dd HH:mm");
             Product product = productDAO.getProductById(product_id);
             Bids newBid = new Bids(product, startDate, endDate, Bids.Status.UNCOMPLETED, cost);
             bidDAO.save(newBid);
@@ -209,8 +209,8 @@ public class AdminService {
     public BidDTO updateBid(int bid_id, int product_id, String startDateStr, String endDateStr, String status, int cost) {
         BidDTO bidDTO = new BidDTO();
         try {
-            Date startDate = dateUtil.parseFromString(startDateStr, "MM/dd/yyyy HH:mm");
-            Date endDate = dateUtil.parseFromString(endDateStr, "MM/dd/yyyy HH:mm");
+            Date startDate = dateUtil.parseFromString(startDateStr, "yyyy/MM/dd HH:mm");
+            Date endDate = dateUtil.parseFromString(endDateStr, "yyyy/MM/dd HH:mm");
             Product product = productDAO.getProductById(product_id);
             Bids newBid = bidDAO.getBidById(bid_id);
             newBid.setCost(cost);

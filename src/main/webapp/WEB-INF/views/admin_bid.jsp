@@ -180,7 +180,7 @@
                         <%
                             SimpleDateFormat formatter=new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
                             Date ts = new Date();
-                            %>
+                        %>
                         <x:transform xml="${bidsXML}" xslt="${upBidXSL}">
                             <x:param name="cDate" value="<%=formatter.format(ts)%>"/>
                         </x:transform>
