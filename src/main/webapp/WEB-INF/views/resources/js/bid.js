@@ -116,8 +116,8 @@ function callback(result) {
 }
 
 function update_lists() {
-    //_displayOngoingBid(bid_ongoing_current_page);
-    //_displayUpcomingBid(bid_upcoming_current_page);
+    _displayOngoingBid(bid_ongoing_current_page);
+    _displayUpcomingBid(bid_upcoming_current_page);
     _displayCompletedBids(bid_completed_current_page);
 }
 function clearBidDetail(self) {

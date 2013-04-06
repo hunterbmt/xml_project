@@ -13,4 +13,8 @@
 	<context:component-scan base-package="com.vteam.xml_project" />
         
         <bean id="dateUtil" class="com.vteam.xml_project.util.DateUtil" />
+        <bean id="voiceService" class="com.hoiio.sdk.services.VoiceService">
+	    <constructor-arg value="${app.id}"/>
+            <constructor-arg value="${app.accessToken}"/>
+	</bean>
 </beans>

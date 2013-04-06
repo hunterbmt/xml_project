@@ -173,19 +173,18 @@ public class AdminService {
     public BidDTO insertBid(int product_id, String startDateStr, String endDateStr, int cost) {
         BidDTO bidDTO = new BidDTO();
         try {
-            Date startDate = dateUtil.parseFromString(startDateStr, "yyyy/MM/dd HH:mm");
-            Date endDate = dateUtil.parseFromString(endDateStr, "yyyy/MM/dd HH:mm");
+            Date startDate = dateUtil.parseFromString(startDateStr, "MM/dd/yyyy HH:mm");
+            Date endDate = dateUtil.parseFromString(endDateStr, "MM/dd/yyyy HH:mm");
             Product product = productDAO.getProductById(product_id);
             Bids newBid = new Bids(product, startDate, endDate, Bids.Status.UNCOMPLETED, cost);
+            newBid.setLastEdit(new Date());
             bidDAO.save(newBid);
 
             bidDTO.setId(newBid.getId());
-            bidDTO.setEnd_date(endDate);
+            bidDTO.setLast_edit(newBid.getLastEdit());
             bidDTO.setProduct_id(product_id);
             bidDTO.setProduct_name(product.getProductName());
             bidDTO.setCost(cost);
-
-            // update bid_id of that product
             product.setBidId(newBid.getId());
             product.setStatus(Product.Status.ONBID);
             productDAO.save(product);
@@ -209,23 +208,29 @@ public class AdminService {
     public BidDTO updateBid(int bid_id, int product_id, String startDateStr, String endDateStr, String status, int cost) {
         BidDTO bidDTO = new BidDTO();
         try {
-            Date startDate = dateUtil.parseFromString(startDateStr, "yyyy/MM/dd HH:mm");
-            Date endDate = dateUtil.parseFromString(endDateStr, "yyyy/MM/dd HH:mm");
+            Date startDate = dateUtil.parseFromString(startDateStr, "MM/dd/yyyy HH:mm");
+            Date endDate = dateUtil.parseFromString(endDateStr, "MM/dd/yyyy HH:mm");
             Product product = productDAO.getProductById(product_id);
-            Bids newBid = bidDAO.getBidById(bid_id);
-            newBid.setCost(cost);
-            newBid.setProduct(product);
-            newBid.setStartDate(startDate);
-            newBid.setEndDate(endDate);
-            newBid.setStatus(Bids.Status.valueOf(status));
-            if (newBid.getStatus().toString().equalsIgnoreCase("completed")) {
+            Bids currentBid = bidDAO.getBidById(bid_id);
+            Product currentProduct = currentBid.getProduct();
+            currentProduct.setBidId(null);
+            currentProduct.setStatus(Product.Status.AVAILABLE);
+            productDAO.save(currentProduct);
+            currentBid.setCost(cost);
+            currentBid.setProduct(product);
+            currentBid.setStartDate(startDate);
+            currentBid.setEndDate(endDate);
+            currentBid.setLastEdit(new Date());
+            currentBid.setStatus(Bids.Status.valueOf(status));
+            if (currentBid.getStatus().toString().equalsIgnoreCase("completed")) {
                 product.setStatus(Product.Status.AVAILABLE);
                 product.setBidId(null);
             }
-            product.setBidId(newBid.getId());
+            product.setBidId(currentBid.getId());
+            product.setStatus(Product.Status.ONBID);
             productDAO.save(product);
-            bidDAO.save(newBid);
-            bidDTO.setEnd_date(endDate);
+            bidDAO.save(currentBid);
+            bidDTO.setLast_edit(currentBid.getLastEdit());
             bidDTO.setProduct_id(product_id);
             bidDTO.setProduct_name(product.getProductName());
             bidDTO.setCost(cost);

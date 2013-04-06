@@ -109,7 +109,6 @@ function doBid(_id) {
     },
     "POST", function(d) {
         if (d.allowed === 'ok') {
-            alert(d.message);
             vteam_http.setHTML("current_price", numberWithCommas(d.price) + " VND");
             isInBidTime = true;
             startBuyingNow(d.bidId);

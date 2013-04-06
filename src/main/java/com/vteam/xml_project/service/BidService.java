@@ -4,6 +4,7 @@
  */
 package com.vteam.xml_project.service;
 
+import com.hoiio.sdk.exception.HoiioException;
 import com.vteam.xml_project.dto.BidDTO;
 import com.vteam.xml_project.dto.BidListDTO;
 import com.vteam.xml_project.dto.UserDTO;
@@ -37,7 +38,8 @@ import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.w3c.dom.Node;
+import com.hoiio.sdk.services.VoiceService;
+import com.vteam.xml_project.util.PhoneNumberUtil;
 
 /**
  *
@@ -61,6 +63,8 @@ public class BidService {
     private DateUtil dateUtil;
     @Autowired
     ServletContext servletContext;
+    @Autowired
+    VoiceService voiceService;
     private static long BID_DURATION = (long) 25.00;
 
     private List<BidDTO> getTmpList(List<Bids> bidList) {
@@ -89,19 +93,6 @@ public class BidService {
         }
         return tmpList;
 
-    }
-
-//    private BidListDTO convertCacheToBidListDTO(String filePath) throws JAXBException {
-//        return XMLUtil.UnMarshall(BidListDTO.class, filePath);
-//    }
-//
-//    private void converBidListDTOToCache(BidListDTO bidList, String filePath) throws JAXBException {
-//        XMLUtil.Marshall(bidList, filePath);
-//    }
-
-    private BidListDTO convertFromNodeToBidListDTO(Node node) throws JAXBException {
-        BidListDTO result = XMLUtil.UnMarshall(BidListDTO.class, node);
-        return result;
     }
 
     private BidDTO findBidDTOInBidsXML(String realPath, int bidId) throws XMLStreamException, JAXBException {
@@ -289,14 +280,23 @@ public class BidService {
 
         if (last_edit == null) {
             return false;
-        } else { // not null
-            update_bought_bid(dbBid, current_date, user.getId(), dbBid.getCurrentPrice());
-            updateBidsHistory(user, dbBid);
-            createOrderHistory(user,dbBid.getProduct(),dbBid.getCurrentPrice());
+        } else {
+            if (PhoneNumberUtil.validatePhoneNumber(user.getPhone(), true)) {
+                try {
+                    voiceService.makeCall("+84914042412", user.getPhone(), null, null, null);
+                    update_bought_bid(dbBid, current_date, user.getId(), dbBid.getCurrentPrice());
+                    updateBidsHistory(user, dbBid);
+                    createOrderHistory(user, dbBid.getProduct(), dbBid.getCurrentPrice());
+                } catch (HoiioException ex) {
+                    java.util.logging.Logger.getLogger(BidService.class.getName()).log(Level.SEVERE, null, ex);
+                    return false;
+                }
+            }
         }
         return true;
     }
-    private void createOrderHistory(Users user, Product product,double amount){
+
+    private void createOrderHistory(Users user, Product product, double amount) {
         OrderHistory orderHistory = new OrderHistory(user, product, dateUtil.getCurrentDate(), user.getAddress(), (int) amount);
         orderHistoryDAO.save(orderHistory);
     }
@@ -308,18 +308,18 @@ public class BidService {
         try {
             List<Bids> bidList = bidDAO.getBidsList(1, 9999);
             List<Bids> filteredList = new ArrayList<Bids>();
-            
+
             for (Bids b : bidList) {
-                if (b.getStatus() != Bids.Status.COMPLETED) {                    
-                    if (b.getStartDate().getTime() - currentDate.getTime() > 0) {                       
+                if (b.getStatus() != Bids.Status.COMPLETED) {
+                    if (b.getStartDate().getTime() - currentDate.getTime() > 0) {
                         filteredList.add(b);
                     }
                 }
             }
             int fromIndex = pageSize * (page - 1);
-            fromIndex = (fromIndex > filteredList.size() -1 )? 0: fromIndex;
+            fromIndex = (fromIndex > filteredList.size() - 1) ? 0 : fromIndex;
             int toIndex = fromIndex + pageSize;
-            toIndex = (toIndex > filteredList.size()-1)? filteredList.size() : toIndex;
+            toIndex = (toIndex > filteredList.size() - 1) ? filteredList.size() : toIndex;
             list.setBidList(getTmpList(filteredList.subList(fromIndex, toIndex)));
             list.setNumberOfBid(filteredList.size());
             list.setStatus("success");
@@ -347,9 +347,9 @@ public class BidService {
                 }
             }
             int fromIndex = pageSize * (page - 1);
-            fromIndex = (fromIndex > filteredList.size() -1 )? 0: fromIndex;
+            fromIndex = (fromIndex > filteredList.size() - 1) ? 0 : fromIndex;
             int toIndex = fromIndex + pageSize;
-            toIndex = (toIndex > filteredList.size()-1)? filteredList.size() : toIndex;
+            toIndex = (toIndex > filteredList.size() - 1) ? filteredList.size() : toIndex;
             list.setBidList(getTmpList(filteredList.subList(fromIndex, toIndex)));
             list.setNumberOfBid(filteredList.size());
             list.setStatus("success");
@@ -374,9 +374,9 @@ public class BidService {
                 }
             }
             int fromIndex = pageSize * (page - 1);
-            fromIndex = (fromIndex > filteredList.size() -1 )? 0: fromIndex;
+            fromIndex = (fromIndex > filteredList.size() - 1) ? 0 : fromIndex;
             int toIndex = fromIndex + pageSize - 1;
-            toIndex = (toIndex > filteredList.size()-1)? filteredList.size() : toIndex;
+            toIndex = (toIndex > filteredList.size() - 1) ? filteredList.size() : toIndex;
             list.setBidList(getTmpList(filteredList.subList(fromIndex, toIndex)));
             list.setNumberOfBid(filteredList.size());
             list.setStatus("success");
