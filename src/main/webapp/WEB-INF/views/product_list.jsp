@@ -29,7 +29,7 @@
         <script src="/resources/js/jquery-ui-timepicker-addon.js"></script>
         <script src="/resources/js/dateUtils.js"></script>
         <script>
-            $(document).ready(function() {
+            window.onload = function() {
                 loadAndDisplayProduct(1);
                 initUserInfo();
                 DrawCaptcha();
@@ -38,8 +38,24 @@
                     minDate: '-90Y', maxDate: '-9Y',
                     yearRange: '1930:2000',
                     showOn: 'focus', changeYear: true});
-            });
-        </script>
+//                $('#appendedInputButtons').typeahead({
+//                    source: function(query,process) {
+//                        if (query === '') {
+//                            return false;
+//                        }
+//                        else {
+//                            return vteam_http.makeHttpRequest('/search/searchTypeAHeader', {query: query}, 'POST',
+//                                    function(data) {
+//                                        if (data.status === 'success') {
+//                                            return process(data.keywordList);
+//                                        }
+//                                    })
+//                        }
+//                    },
+//                    items: 5,
+//                    minLength: 3
+//                });
+            }</script>
     </header>
     <body>
         <div id="loading">
@@ -58,8 +74,8 @@
                         <div class="nav-collapse collapse">
                             <form class="navbar-form pull-left">
                                 <div class="input-append">
-                                    <input class="span3" id="appendedInputButtons" type="text" onkeydown="searchOnKeyDown(event)">
-                                    <button onclick="searchProductAtLocal()" class="btn btn-success" type="button" ><i class="icon-search" ></i></button>
+                                    <input class="span3" id="appendedInputButtons" autocomplete="off" type="text" onkeydown="searchOnKeyDown(event)">
+                                    <button onclick="searchProductAtLocal('',1)" class="btn btn-success" type="button" ><i class="icon-search" ></i></button>
                                 </div>           
                             </form>
                             <ul id ="menu"class="nav">

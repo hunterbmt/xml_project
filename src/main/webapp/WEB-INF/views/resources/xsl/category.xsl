@@ -20,7 +20,7 @@
     <xsl:template match="categoryList">
         <xsl:for-each select="category">
             <li class="submenu"> 
-                <a class="nav" href="javascript:void(0)" onclick="searchByCategoryAtLocal({id})" id= "category_id">
+                <a class="nav" href="javascript:void(0)" onclick="searchByCategoryAtLocal({id},1)" id= "category_id">
                     <xsl:value-of select="name"/>
                 </a> 
             </li>

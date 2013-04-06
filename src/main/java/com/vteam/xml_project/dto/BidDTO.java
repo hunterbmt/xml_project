@@ -4,12 +4,13 @@
  */
 package com.vteam.xml_project.dto;
 
+import com.vteam.xml_project.util.DateAdapter;
 import java.util.Date;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 /**
  *
@@ -50,8 +51,14 @@ public class BidDTO extends BaseDTO {
     private Integer product_id;
     private String product_name;
     private Double current_price;
+    @XmlElement(name = "start_date", required = true)
+    @XmlJavaTypeAdapter(DateAdapter.class)
     private Date start_date;
+    @XmlElement(name = "end_date", required = true)
+    @XmlJavaTypeAdapter(DateAdapter.class)
     private Date end_date;
+    @XmlElement(name = "last_edit", required = true)
+    @XmlJavaTypeAdapter(DateAdapter.class)
     private Date last_edit;
 
     public BidDTO() {

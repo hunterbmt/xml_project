@@ -36,7 +36,7 @@ public class BidListDTO extends BaseDTO {
     }
 
     public int getNumberOfBid() {
-        return bidList.size();
+        return numberOfBid;
     }
 
     public void setNumberOfBid(int numberOfBid) {
