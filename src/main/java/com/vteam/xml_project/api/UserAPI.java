@@ -121,6 +121,15 @@ public class UserAPI {
         result = userService.getUserByEmail(email);
         return result;
     }
+    @RequestMapping(value = "/check_email", method = RequestMethod.POST, produces = "application/json")
+    public @ResponseBody
+    boolean check_email(@RequestParam String email) {
+        //String email = (String) session.get("email");
+       if(userService.checkEmail(email)){
+           return true;
+       }
+       return false;
+    }
 
     @RequestMapping(value = "/changePassword", method = RequestMethod.POST, produces = "application/json")
     public @ResponseBody

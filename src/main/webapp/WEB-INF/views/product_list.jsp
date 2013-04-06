@@ -32,6 +32,7 @@
             window.onload = function() {
                 loadAndDisplayProduct(1);
                 initUserInfo();
+                DrawCaptcha();
                 $('#user_birthday').datepicker({
                     showMonthAfterYear: false,
                     minDate: '-90Y', maxDate: '-9Y',
@@ -119,7 +120,7 @@
                                     <div class="control-group">
                                         <label class="control-label">Tên đăng nhập</label>
                                         <div class="controls">
-                                            <div class="input-prepend large"><span class="add-on" style="height: 30px;"><i class="icon-user"></i></span><input class="input-large" name="miniusername"  id="user_username" type="text" style="height: 30px;" onblur="validLogIn()"></div>
+                                            <div class="input-prepend large"><span class="add-on" style="height: 30px;"><i class="icon-user"></i></span><input class="input-large" name="miniusername"  id="user_username" type="text" style="height: 30px;" onblur="validUsername()"></div>
                                         </div>
                                     </div>
                                     <div class="control-group">
@@ -138,14 +139,37 @@
                         <div class="Sigin hide" id="signin">
                             <form  method="post" accept-charset="UTF-8">
                                 <fieldset style="padding-left: 300px;">
-                                    <label > Tên đăng nhập:</label>
-                                    <input id="new_username"  type="text" name="username" />
-                                    <label > Mật khẩu:</label>
-                                    <input id="new_password"  type="password" name="password" />
-                                    <label > Nhập lại mật khẩu:</label>
-                                    <input id="new_repassword"  type="password" name="password" />
-                                    <label > Tên thật:</label>
-                                    <input id="new_fullname"  type="text" name="fullname" /><p/>
+                                    <div class="control-group">
+                                        <label > Tên đăng nhập:</label>
+                                        <input id="new_username" name="email" type="text" name="username" onblur="valid_register_Username()"/>
+                                        <div class="hide" id="email_validation"></div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label > Mật khẩu:</label>
+                                        <input id="new_password"  type="password" name="password" onblur="valid_register_Password()" />
+                                    </div>
+                                    <div class="control-group">
+                                        <label > Nhập lại mật khẩu:</label>
+                                        <input id="new_repassword"  type="password" name="password" onblur="valid_register_rePassword()" />
+                                        <div class="hide" id="pass_validation">Hãy nhập đúng mật khẩu đăng kí</div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label > Tên thật:</label>
+                                        <input id="new_fullname"  type="text" name="fullname" onblur="valid_register_Fullname()" /><p/>
+                                    </div>
+                                    <div class="hide" id="fullname_validation">Hãy nhập tên đầy đủ</div>
+                                    <div>
+                                        <input type="text" id="txtCaptcha" 
+                                               style="background-color: #FFA0A0; text-align:center; border:none;
+                                               font-weight:bold; font-family:Modern" />
+                                        <i style="margin-left: 5px;" class="icon-refresh" id="btnrefresh"onclick="DrawCaptcha();"></i>
+                                         
+                                    </div>
+                                    <div class="control-group">
+                                        <label > Nhập mã xác nhận tại đây:</label>
+                                        <input type="text" id="txtInput"/> 
+                                    </div>
+                                    <div class="hide" id="capcha_validation">Hãy nhập đúng mã xác nhận</div>
                                     <button name="send" type="button"  class="btn btn-success" onclick="create()">Đăng ký</button>
                                     <button name="send" type="button"  class="btn" onclick="changeLogin()"style="margin-left: 16%">Hủy bỏ</button>
                                 </fieldset>
