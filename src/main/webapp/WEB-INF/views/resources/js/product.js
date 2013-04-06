@@ -287,7 +287,12 @@ function displaySearchProduct(productList) {
         generateBackAndNext()
     }
     var html = '';
-    for (var i = 0; i < productList.length; i++) {
+    var i = (product_list_current_page - 1) * page_size;
+    var pageSize = i + page_size;
+    if (pageSize > productList.length) {
+        pageSize = productList.length;
+    }
+    for (; i < pageSize; i++) {
         ts = productList[i].bidTimeRemain;
         if (ts <= 0) // in bid 
         {
@@ -320,7 +325,7 @@ function searchOnKeyDown(e) {
 
     if (e.keyCode === 13) {
         e.preventDefault();
-        searchProductAtLocal();
+        searchProductAtLocal('',1);
     }
 }
 

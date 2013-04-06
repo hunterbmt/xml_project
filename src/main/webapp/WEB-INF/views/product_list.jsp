@@ -29,7 +29,7 @@
         <script src="/resources/js/jquery-ui-timepicker-addon.js"></script>
         <script src="/resources/js/dateUtils.js"></script>
         <script>
-            $(document).ready(function() {
+            window.onload = function() {
                 loadAndDisplayProduct(1);
                 initUserInfo();
                 $('#user_birthday').datepicker({
@@ -37,8 +37,24 @@
                     minDate: '-90Y', maxDate: '-9Y',
                     yearRange: '1930:2000',
                     showOn: 'focus', changeYear: true});
-            });
-        </script>
+//                $('#appendedInputButtons').typeahead({
+//                    source: function(query,process) {
+//                        if (query === '') {
+//                            return false;
+//                        }
+//                        else {
+//                            return vteam_http.makeHttpRequest('/search/searchTypeAHeader', {query: query}, 'POST',
+//                                    function(data) {
+//                                        if (data.status === 'success') {
+//                                            return process(data.keywordList);
+//                                        }
+//                                    })
+//                        }
+//                    },
+//                    items: 5,
+//                    minLength: 3
+//                });
+            }</script>
     </header>
     <body>
         <div id="loading">
@@ -57,8 +73,8 @@
                         <div class="nav-collapse collapse">
                             <form class="navbar-form pull-left">
                                 <div class="input-append">
-                                    <input class="span3" id="appendedInputButtons" type="text" onkeydown="searchOnKeyDown(event)">
-                                    <button onclick="searchProductAtLocal()" class="btn btn-success" type="button" ><i class="icon-search" ></i></button>
+                                    <input class="span3" id="appendedInputButtons" autocomplete="off" type="text" onkeydown="searchOnKeyDown(event)">
+                                    <button onclick="searchProductAtLocal('',1)" class="btn btn-success" type="button" ><i class="icon-search" ></i></button>
                                 </div>           
                             </form>
                             <ul id ="menu"class="nav">
@@ -107,7 +123,7 @@
                                         </div>
                                     </div>
                                     <div class="control-group">
-                                       <label class="label-main">Mật khẩu</label>
+                                        <label class="label-main">Mật khẩu</label>
                                         <div class="controls">
                                             <div class="input-prepend"><span class="add-on" style="height: 30px;"><i class="icon-lock"></i></span></span><input class="input-large" name="miniusername"  id="user_password" type="password" style="height: 30px;" onblur="validPassword()"></div>
                                         </div>
@@ -142,7 +158,7 @@
                         <div class="alert hide" id="updateResult1"></div>
                         <div class="tabbable tabs-left">
                             <ul class="nav nav-tabs">
-                               <li class="active"><a href="#lA" data-toggle="tab">Thông tin chi tiết</a></li>
+                                <li class="active"><a href="#lA" data-toggle="tab">Thông tin chi tiết</a></li>
                                 <li class=""><a href="#lB" data-toggle="tab">Thay đổi mật khẩu</a></li>
                                 <li class=""><a href="#lC" data-toggle="tab" onclick="loadAndDisplayOrder()">Lịch sử mua hàng</a></li>
                                 <li class=""><a href="#lD" data-toggle="tab">Nạp thẻ</a></li>
@@ -179,52 +195,52 @@
                                         <div>   
                                             <button type='button' class="btn btn-success" onclick="updatePassword()">Update</button>
                                         </div>
-                               </form>
-                           </div>
-                            <div class="tab-pane" id="lC" style="width: 100%" onclick="loadAndDisplayOrder()">
-                               <table class="table table-hover">
-                                   <caption><h3>Lịch sử mua hàng</h3> </caption>
-                                   <thead>
-                                       <tr>
-                                           <td><h4>Tên sản phẩm</h4></td>
-                                           <td><h4>Địa chỉ</h4></td>
-                                           <td><h4>Ngày mua hàng</h4></td>
-                                            <td><h4>Giá tiền</h4></td> 
-                                        </tr>
-                                    </thead>
-                                   <tbody id="orderResult">
+                                    </form>
+                                </div>
+                                <div class="tab-pane" id="lC" style="width: 100%" onclick="loadAndDisplayOrder()">
+                                    <table class="table table-hover">
+                                        <caption><h3>Lịch sử mua hàng</h3> </caption>
+                                        <thead>
+                                            <tr>
+                                                <td><h4>Tên sản phẩm</h4></td>
+                                                <td><h4>Địa chỉ</h4></td>
+                                                <td><h4>Ngày mua hàng</h4></td>
+                                                <td><h4>Giá tiền</h4></td> 
+                                            </tr>
+                                        </thead>
+                                        <tbody id="orderResult">
 
-                                    </tbody>
-                                </table>
-                                <div>   
-                                       <button type='button' class="btn btn-success" onclick="exportPDF()">Xuất PDF</button>
-                                   </div>
-                            </div>
-                            <div class="tab-pane" id="lD" >
-                               <form id="tab4">
-                                   <label>Nhập mã thẻ:</label>
-                                    <input type="text" id="payment_code">       
-                                   <div>   
-                                       <button type='button' class="btn btn-success" onclick="inputCode()">Cập Nhật</button>
-                                       <button type='button' class="btn btn-success" onclick="loadAndDisplayPayment()">Lịch sử thanh toán</button>
-                                   </div>
-	                        </form>
-                               <table class="table table-hover hide" id="tablePayment">
-                                   <caption><h3>Lịch sử thanh toán</h3> </caption>
-                                   <thead>
-                                       <tr>
-                                           <td><h4>Mã thẻ</h4></td>
-                                           <td><h4>Ngày nạp</h4></td>
-                                            <td><h4>Số tiền</h4></td> 
-                                        </tr>
-                                    </thead>
-                                    
-                                   <tbody  id="paymentResult">
+                                        </tbody>
+                                    </table>
+                                    <div>   
+                                        <button type='button' class="btn btn-success" onclick="exportPDF()">Xuất PDF</button>
+                                    </div>
+                                </div>
+                                <div class="tab-pane" id="lD" >
+                                    <form id="tab4">
+                                        <label>Nhập mã thẻ:</label>
+                                        <input type="text" id="payment_code">       
+                                        <div>   
+                                            <button type='button' class="btn btn-success" onclick="inputCode()">Cập Nhật</button>
+                                            <button type='button' class="btn btn-success" onclick="loadAndDisplayPayment()">Lịch sử thanh toán</button>
+                                        </div>
+                                    </form>
+                                    <table class="table table-hover hide" id="tablePayment">
+                                        <caption><h3>Lịch sử thanh toán</h3> </caption>
+                                        <thead>
+                                            <tr>
+                                                <td><h4>Mã thẻ</h4></td>
+                                                <td><h4>Ngày nạp</h4></td>
+                                                <td><h4>Số tiền</h4></td> 
+                                            </tr>
+                                        </thead>
 
-                                    </tbody>
-                                </table>
-	                    </div>
-	                   
+                                        <tbody  id="paymentResult">
+
+                                        </tbody>
+                                    </table>
+                                </div>
+
                             </div>
                         </div>
                     </div>

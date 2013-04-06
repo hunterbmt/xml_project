@@ -88,7 +88,7 @@
                                     <div class="control-group">
                                         <label class="control-label">Category</label>
                                         <div class="controls">
-                                            <input id="category_name" type="text"/>
+                                            <input autocomplete="off" id="category_name" type="text"/>
                                         </div>
                                     </div>
                                     <div class="control-group">
@@ -98,7 +98,7 @@
                                                 <input id="tags_id" type="hidden" class="select2-input" tabindex="0" style="width: 200px;">
                                                 <ul class="select2-choices">  
                                                     <li class="select2-search-field">    
-                                                        <input id="tags_name" type="text" class="select2-input" tabindex="0" style="width: 200px;">
+                                                        <input id="tags_name" autocomplete="off" type="text" class="select2-input" tabindex="0" style="width: 200px;">
                                                     </li>
                                                 </ul>
                                             </div>

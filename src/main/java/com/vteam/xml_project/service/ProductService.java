@@ -6,6 +6,7 @@ package com.vteam.xml_project.service;
 
 import com.vteam.xml_project.dto.ProductDTO;
 import com.vteam.xml_project.dto.ProductListDTO;
+import com.vteam.xml_project.dto.SearchKeywordListDTO;
 import com.vteam.xml_project.hibernate.dao.BidDAO;
 import com.vteam.xml_project.hibernate.dao.ProductDAO;
 import com.vteam.xml_project.hibernate.dao.SearchCacheDAO;
@@ -29,7 +30,6 @@ import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.w3c.dom.Node;
 
 @Service
 public class ProductService {
@@ -74,6 +74,7 @@ public class ProductService {
             list.setStatus("success");
         } catch (HibernateException ex) {
             log.error(ex);
+            ex.printStackTrace();
             list.setStatus("error");
             list.setMsg("Have some errors. Try again");
         }
@@ -185,11 +186,6 @@ public class ProductService {
             productDTO.setMsg("Have some errors. Try again");
         }
         return productDTO;
-    }
-
-    private ProductListDTO convertFromNodeToProductListDTO(Node node) throws JAXBException {
-        ProductListDTO result = XMLUtil.UnMarshall(ProductListDTO.class, node);
-        return result;
     }
 
     private ProductListDTO findProductListDTOInCategoryXML(String realPath, int categoryId) throws XMLStreamException, JAXBException {
@@ -346,5 +342,16 @@ public class ProductService {
             list.setMsg("Have some errors. Try again");
         }
         return list;
+    }
+    @Transactional
+    public SearchKeywordListDTO searchSearchCacheKeyWord(String query){
+        List<SearchCache> dbSearchCache = searchCacheDAO.searchSearchCacheByKeyword(query);
+        SearchKeywordListDTO searchKeywordListDTO = new SearchKeywordListDTO();
+        for(SearchCache searchCache:dbSearchCache){
+            String keyword = searchCache.getQuery().split("_")[0];
+            searchKeywordListDTO.getKeywordList().add(keyword);
+        }
+        searchKeywordListDTO.setStatus("success");
+        return searchKeywordListDTO;
     }
 }

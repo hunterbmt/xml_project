@@ -91,7 +91,7 @@
                                     <div class="control-group">
                                         <label class="control-label">Product Name</label>
                                         <div id="product_name_container" class="controls">
-                                            <input id="bid_product_name" type="text">
+                                            <input id="bid_product_name" autocomplete="off" type="text">
                                         </div>
                                     </div>
                                     <div class="control-group">
