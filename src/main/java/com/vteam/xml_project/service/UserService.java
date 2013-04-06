@@ -187,6 +187,20 @@ public class UserService {
         }
         return returnUser;
     }
+     @Transactional
+    public boolean checkEmail(String email) {
+        //UserDTO returnUser = new UserDTO();
+        try {
+            Users dbUser = userDAO.findUserByEmail(email);
+            if(dbUser!=null){
+                return false;
+            }
+        } catch (HibernateException ex) {
+            log.error(ex.getStackTrace());
+            //returnUser.setStatus("error");
+        }
+        return true;
+    }
 
     @Transactional
     public boolean checkPassword(String email, String currentPass, String newPassword) {

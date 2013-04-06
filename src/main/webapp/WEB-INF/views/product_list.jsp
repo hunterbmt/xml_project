@@ -32,6 +32,7 @@
             $(document).ready(function() {
                 loadAndDisplayProduct(1);
                 initUserInfo();
+                DrawCaptcha();
                 $('#user_birthday').datepicker({
                     showMonthAfterYear: false,
                     minDate: '-90Y', maxDate: '-9Y',
@@ -103,11 +104,11 @@
                                     <div class="control-group">
                                         <label class="control-label">Tên đăng nhập</label>
                                         <div class="controls">
-                                            <div class="input-prepend large"><span class="add-on" style="height: 30px;"><i class="icon-user"></i></span><input class="input-large" name="miniusername"  id="user_username" type="text" style="height: 30px;" onblur="validLogIn()"></div>
+                                            <div class="input-prepend large"><span class="add-on" style="height: 30px;"><i class="icon-user"></i></span><input class="input-large" name="miniusername"  id="user_username" type="text" style="height: 30px;" onblur="validUsername()"></div>
                                         </div>
                                     </div>
                                     <div class="control-group">
-                                       <label class="label-main">Mật khẩu</label>
+                                        <label class="label-main">Mật khẩu</label>
                                         <div class="controls">
                                             <div class="input-prepend"><span class="add-on" style="height: 30px;"><i class="icon-lock"></i></span></span><input class="input-large" name="miniusername"  id="user_password" type="password" style="height: 30px;" onblur="validPassword()"></div>
                                         </div>
@@ -122,14 +123,37 @@
                         <div class="Sigin hide" id="signin">
                             <form  method="post" accept-charset="UTF-8">
                                 <fieldset style="padding-left: 300px;">
-                                    <label > Tên đăng nhập:</label>
-                                    <input id="new_username"  type="text" name="username" />
-                                    <label > Mật khẩu:</label>
-                                    <input id="new_password"  type="password" name="password" />
-                                    <label > Nhập lại mật khẩu:</label>
-                                    <input id="new_repassword"  type="password" name="password" />
-                                    <label > Tên thật:</label>
-                                    <input id="new_fullname"  type="text" name="fullname" /><p/>
+                                    <div class="control-group">
+                                        <label > Tên đăng nhập:</label>
+                                        <input id="new_username" name="email" type="text" name="username" onblur="valid_register_Username()"/>
+                                        <div class="hide" id="email_validation"></div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label > Mật khẩu:</label>
+                                        <input id="new_password"  type="password" name="password" onblur="valid_register_Password()" />
+                                    </div>
+                                    <div class="control-group">
+                                        <label > Nhập lại mật khẩu:</label>
+                                        <input id="new_repassword"  type="password" name="password" onblur="valid_register_rePassword()" />
+                                        <div class="hide" id="pass_validation">Hãy nhập đúng mật khẩu đăng kí</div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label > Tên thật:</label>
+                                        <input id="new_fullname"  type="text" name="fullname" onblur="valid_register_Fullname()" /><p/>
+                                    </div>
+                                    <div class="hide" id="fullname_validation">Hãy nhập tên đầy đủ</div>
+                                    <div>
+                                        <input type="text" id="txtCaptcha" 
+                                               style="background-color: #FFA0A0; text-align:center; border:none;
+                                               font-weight:bold; font-family:Modern" />
+                                        <i style="margin-left: 5px;" class="icon-refresh" id="btnrefresh"onclick="DrawCaptcha();"></i>
+                                         
+                                    </div>
+                                    <div class="control-group">
+                                        <label > Nhập mã xác nhận tại đây:</label>
+                                        <input type="text" id="txtInput"/> 
+                                    </div>
+                                    <div class="hide" id="capcha_validation">Hãy nhập đúng mã xác nhận</div>
                                     <button name="send" type="button"  class="btn btn-success" onclick="create()">Đăng ký</button>
                                     <button name="send" type="button"  class="btn" onclick="changeLogin()"style="margin-left: 16%">Hủy bỏ</button>
                                 </fieldset>
@@ -142,7 +166,7 @@
                         <div class="alert hide" id="updateResult1"></div>
                         <div class="tabbable tabs-left">
                             <ul class="nav nav-tabs">
-                               <li class="active"><a href="#lA" data-toggle="tab">Thông tin chi tiết</a></li>
+                                <li class="active"><a href="#lA" data-toggle="tab">Thông tin chi tiết</a></li>
                                 <li class=""><a href="#lB" data-toggle="tab">Thay đổi mật khẩu</a></li>
                                 <li class=""><a href="#lC" data-toggle="tab" onclick="loadAndDisplayOrder()">Lịch sử mua hàng</a></li>
                                 <li class=""><a href="#lD" data-toggle="tab">Nạp thẻ</a></li>
@@ -179,52 +203,52 @@
                                         <div>   
                                             <button type='button' class="btn btn-success" onclick="updatePassword()">Update</button>
                                         </div>
-                               </form>
-                           </div>
-                            <div class="tab-pane" id="lC" style="width: 100%" onclick="loadAndDisplayOrder()">
-                               <table class="table table-hover">
-                                   <caption><h3>Lịch sử mua hàng</h3> </caption>
-                                   <thead>
-                                       <tr>
-                                           <td><h4>Tên sản phẩm</h4></td>
-                                           <td><h4>Địa chỉ</h4></td>
-                                           <td><h4>Ngày mua hàng</h4></td>
-                                            <td><h4>Giá tiền</h4></td> 
-                                        </tr>
-                                    </thead>
-                                   <tbody id="orderResult">
+                                    </form>
+                                </div>
+                                <div class="tab-pane" id="lC" style="width: 100%" onclick="loadAndDisplayOrder()">
+                                    <table class="table table-hover">
+                                        <caption><h3>Lịch sử mua hàng</h3> </caption>
+                                        <thead>
+                                            <tr>
+                                                <td><h4>Tên sản phẩm</h4></td>
+                                                <td><h4>Địa chỉ</h4></td>
+                                                <td><h4>Ngày mua hàng</h4></td>
+                                                <td><h4>Giá tiền</h4></td> 
+                                            </tr>
+                                        </thead>
+                                        <tbody id="orderResult">
 
-                                    </tbody>
-                                </table>
-                                <div>   
-                                       <button type='button' class="btn btn-success" onclick="exportPDF()">Xuất PDF</button>
-                                   </div>
-                            </div>
-                            <div class="tab-pane" id="lD" >
-                               <form id="tab4">
-                                   <label>Nhập mã thẻ:</label>
-                                    <input type="text" id="payment_code">       
-                                   <div>   
-                                       <button type='button' class="btn btn-success" onclick="inputCode()">Cập Nhật</button>
-                                       <button type='button' class="btn btn-success" onclick="loadAndDisplayPayment()">Lịch sử thanh toán</button>
-                                   </div>
-	                        </form>
-                               <table class="table table-hover hide" id="tablePayment">
-                                   <caption><h3>Lịch sử thanh toán</h3> </caption>
-                                   <thead>
-                                       <tr>
-                                           <td><h4>Mã thẻ</h4></td>
-                                           <td><h4>Ngày nạp</h4></td>
-                                            <td><h4>Số tiền</h4></td> 
-                                        </tr>
-                                    </thead>
-                                    
-                                   <tbody  id="paymentResult">
+                                        </tbody>
+                                    </table>
+                                    <div>   
+                                        <button type='button' class="btn btn-success" onclick="exportPDF()">Xuất PDF</button>
+                                    </div>
+                                </div>
+                                <div class="tab-pane" id="lD" >
+                                    <form id="tab4">
+                                        <label>Nhập mã thẻ:</label>
+                                        <input type="text" id="payment_code">       
+                                        <div>   
+                                            <button type='button' class="btn btn-success" onclick="inputCode()">Cập Nhật</button>
+                                            <button type='button' class="btn btn-success" onclick="loadAndDisplayPayment()">Lịch sử thanh toán</button>
+                                        </div>
+                                    </form>
+                                    <table class="table table-hover hide" id="tablePayment">
+                                        <caption><h3>Lịch sử thanh toán</h3> </caption>
+                                        <thead>
+                                            <tr>
+                                                <td><h4>Mã thẻ</h4></td>
+                                                <td><h4>Ngày nạp</h4></td>
+                                                <td><h4>Số tiền</h4></td> 
+                                            </tr>
+                                        </thead>
 
-                                    </tbody>
-                                </table>
-	                    </div>
-	                   
+                                        <tbody  id="paymentResult">
+
+                                        </tbody>
+                                    </table>
+                                </div>
+
                             </div>
                         </div>
                     </div>

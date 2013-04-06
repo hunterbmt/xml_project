@@ -6,31 +6,32 @@ var current_user_info;
 function login() {
     var email = document.getElementById("user_username").value;
     var password = document.getElementById("user_password").value;
-
-    vteam_http.makeHttpRequest("/user/login",
-            {email: email,
-                password: password},
-    "POST",
-            function(result) {
-                if (result.status == "success")
-                {
-                    if (result.id == 1) {
-                        window.location.href = "/admin";
+    if (valid_Login(email, password)) {
+        vteam_http.makeHttpRequest("/user/login",
+                {email: email,
+                    password: password},
+        "POST",
+                function(result) {
+                    if (result.status == "success")
+                    {
+                        if (result.id == 1) {
+                            window.location.href = "/admin";
+                        } else {
+                            current_user_info = result;
+                            showLogedInMenu();
+                            changeContext();
+                        }
                     } else {
-                        current_user_info = result;
-                        showLogedInMenu();
-                        changeContext();
+                        vteam_http.setHTML("error", "Sai tên đăng nhập hoặc mật khẩu");
+                        vteam_http.show("error");
                     }
-                } else {
-                    vteam_http.setHTML("error", "Sai tên đăng nhập hoặc mật khẩu");
-                    vteam_http.show("error");
-                }
-            });
+                });
+    }
 
 }
 function showLogedInMenu() {
     vteam_http.hide("login_menu");
-    vteam_http.setHTML("loginResult", '<a class="btn btn-success" id="email" style="margin-left:10px;margin-top:2px;" href="javascript:void(0)" onclick="displayUserDetail()"><i class="icon-user icon-white" ></i>' + current_user_info.email + ' </a>'
+    vteam_http.setHTML("loginResult", '<a class="btn btn-success" id="email" style="margin-left:10px;margin-top:2px;" href="javascript:void(0)" onclick="displayUserDetail()"><i class="icon-user icon-white" ></i>' + current_user_info.fullname + ' </a>'
             + '<li id="fat-menu1" class="btn btn-success" style="width:70px;height:20px;margin-left:10px;" ><a href="javascript:void(0)" id="drop4" role="button" class="dropdown-toggle" data-toggle="dropdown" style="color:white;">' + current_user_info.balance + 'Nil' + '</a></li>'
             + '<a class="btn btn-success" id="logout" style="margin-left:10px;margin-top:2px;" href="javascript:void(0)" onclick="logout()"><i class="icon-off icon-white" ></i></a>');
     vteam_http.show("loginResult");
@@ -53,11 +54,13 @@ function logout() {
             });
 }
 function changeSigin() {
+    clearText();
     currentPosition = -1;
     vteam_http.hide("login");
     vteam_http.show("signin");
 }
 function changeLogin() {
+    clearText();
     currentPosition = -1;
     vteam_http.hide("error");
     vteam_http.hide("signin");
@@ -194,23 +197,26 @@ function inputCode() {
 function create() {
     var email = document.getElementById("new_username").value;
     var password = document.getElementById("new_password").value;
+    var repassword = document.getElementById("new_repassword").value;
     var fullname = document.getElementById("new_fullname").value;
-    vteam_http.makeHttpRequest("/user/create", {
-        email: email,
-        password: password,
-        fullname: fullname
-    },
-    "POST",
-            function(result) {
-                if (result.status == "success")
-                {
-                    initUserInfo();
-                    changeContext();
-                } else {
-                    vteam_http.setHTML("result", "<h4 style='color:red;'>Error when insert</h4>");
-                    vteam_http.show("result");
-                }
-            });
+    if (valid_register(email, password, repassword, fullname)) {
+        vteam_http.makeHttpRequest("/user/create", {
+            email: email,
+            password: password,
+            fullname: fullname
+        },
+        "POST",
+                function(result) {
+                    if (result.status == "success")
+                    {
+                        initUserInfo();
+                        changeContext();
+                    } else {
+                        vteam_http.setHTML("result", "<h4 style='color:red;'>Error when insert</h4>");
+                        vteam_http.show("result");
+                    }
+                });
+    }
 }
 function showLogin() {
     currentPosition = -1;
@@ -219,9 +225,9 @@ function showLogin() {
     vteam_http.show("user_login");
 }
 function loadAndDisplayPayment() {
-    var id=document.getElementById("user_id").value;
+    var id = document.getElementById("user_id").value;
     vteam_http.makeHttpRequest("/user/getPaymentList",
-    {id:id},
+            {id: id},
     'POST',
             function(result) {
                 if (result.status == 'success') {
@@ -245,16 +251,16 @@ function displayPayment(paymentList) {
         html += '</td>'
         html += '</tr>'
     }
-    vteam_http.setHTML("paymentResult",html);
+    vteam_http.setHTML("paymentResult", html);
     vteam_http.show("tablePayment");
     vteam_http.show("paymentResult");
 }
-function exportPDF(){
-    window.location.href="/order/export_product_list_to_pdf";
+function exportPDF() {
+    window.location.href = "/order/export_product_list_to_pdf";
 }
-function validLogIn(){
+function validUsername() {
     var email = document.getElementById("user_username").value;
-    
+
     if (!email) {
         var div = $("#user_username").parents("div.control-group");
         div.removeClass("success");
@@ -265,9 +271,10 @@ function validLogIn(){
         div.removeClass("error");
         //div.addClass("success");
 
+
     }
 }
-function validPassword(){
+function validPassword() {
     var password = document.getElementById("user_password").value;
     if (!password) {
         var div = $("#user_password").parents("div.control-group");
@@ -279,5 +286,161 @@ function validPassword(){
         div.removeClass("error");
         //div.addClass("success");
 
+    }
+}
+function valid_Login(email, password) {
+    if (email == "" && password == "") {
+        vteam_http.setHTML("error", "Chưa điền tên đăng nhập và mật khẩu.");
+        vteam_http.show("error");
+        return false;
+    }
+    if (email == "") {
+        vteam_http.setHTML("error", "Chưa điền tên đăng nhập.");
+        vteam_http.show("error");
+        return false;
+    }
+    if (password == "") {
+        vteam_http.setHTML("error", "Chưa điền mật khẩu.");
+        vteam_http.show("error");
+        return false;
+    }
+    return true;
+}
+function valid_register_Username() {
+    var username = document.getElementById("new_username").value;
+    if (!username) {
+        var div = $("#new_username").parents("div.control-group");
+        div.removeClass("success");
+        div.addClass("error");
+        return false;
+    } else {
+        var div = $("#new_username").parents("div.control-group");
+        div.removeClass("error");
+        vteam_http.makeHttpRequest("/user/check_email", {email: username},
+        "POST",
+                function(result) {
+                    if (result == false)
+                    {
+
+                        var html = "Địa chỉ email của bạn đã tồn tại.";
+                        vteam_http.setHTML("email_validation", html);
+                        vteam_http.show("email_validation");
+                        document.getElementById("new_username").focus();
+                        return false;
+                    } else if (result == true) {
+                        vteam_http.hide("email_validation");
+                        return true;
+                    }
+                });
+        //div.addClass("success");
+
+    }
+}
+function valid_register_Password() {
+    var password = document.getElementById("new_password").value;
+    if (!password) {
+        var div = $("#new_password").parents("div.control-group");
+        div.removeClass("success");
+        div.addClass("error");
+        return false;
+    } else {
+        var div = $("#new_password").parents("div.control-group");
+        div.removeClass("error");
+        //div.addClass("success");
+        return true;
+    }
+}
+function valid_register_rePassword() {
+    var repassword = document.getElementById("new_repassword").value;
+    if (!repassword) {
+        var div = $("#new_repassword").parents("div.control-group");
+        div.removeClass("success");
+        div.addClass("error");
+        return false;
+    } else {
+        var div = $("#new_repassword").parents("div.control-group");
+        div.removeClass("error");
+        //div.addClass("success");
+        return true;
+    }
+}
+function valid_register_Fullname() {
+    var fullname = document.getElementById("new_fullname").value;
+    if (!fullname) {
+        var div = $("#new_fullname").parents("div.control-group");
+        div.removeClass("success");
+        div.addClass("error");
+        return false;
+    } else {
+        var div = $("#new_fullname").parents("div.control-group");
+        div.removeClass("error");
+        //div.addClass("success");
+        return true;
+    }
+}
+function valid_register(email, pass, re_pass, fullname) {
+    var filter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+    if (!filter.test(email)) {
+        var html = 'Địa chỉ email của bạn theo dạng aa@aa.aaa';
+        vteam_http.setHTML("email_validation", html);
+        vteam_http.show("email_validation");
+        return false;
+    } else {
+        vteam_http.hide("email_validation");
+    }
+    if (pass != re_pass) {
+        vteam_http.show("pass_validation");
+        return false;
+    } else {
+        vteam_http.hide("pass_validation")
+    }
+    if (fullname == "" || fullname == null) {
+        vteam_http.show("fullname_validation");
+        return false;
+    } else {
+        vteam_http.hide("fullname_validation")
+    }
+    if (!ValidCaptcha()) {
+        vteam_http.show("capcha_validation");
+        return false;
+    } else {
+        vteam_http.hide("capcha_validation")
+    }
+    return true;
+}
+function DrawCaptcha()
+{
+    var a = Math.ceil(Math.random() * 10) + '';
+    var b = Math.ceil(Math.random() * 10) + '';
+    var c = Math.ceil(Math.random() * 10) + '';
+    var d = Math.ceil(Math.random() * 10) + '';
+    var e = Math.ceil(Math.random() * 10) + '';
+    var f = Math.ceil(Math.random() * 10) + '';
+    var g = Math.ceil(Math.random() * 10) + '';
+    var code = a + ' ' + b + ' ' + ' ' + c + ' ' + d + ' ' + e + ' ' + f + ' ' + g;
+    document.getElementById("txtCaptcha").value = code
+}
+function ValidCaptcha() {
+    var str1 = removeSpaces(document.getElementById('txtCaptcha').value);
+    var str2 = removeSpaces(document.getElementById('txtInput').value);
+    if (str1 == str2)
+        return true;
+    return false;
+
+}
+
+// Remove the spaces from the entered and generated code
+function removeSpaces(string)
+{
+    return string.split(' ').join('');
+}
+function clearText(){
+     var elements = document.getElementsByTagName("input");
+    for (var ii = 0; ii < elements.length; ii++) {
+        if (elements[ii].type == "text") {
+            elements[ii].value = "";
+        }else if(elements[ii].type == "password"){
+            elements[ii].value = "";
+        }
     }
 }
