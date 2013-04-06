@@ -1,6 +1,11 @@
 
+<%@page import="java.util.Date"%>
+<%@page import="java.text.SimpleDateFormat"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
+<%@taglib uri="http://www.springframework.org/tags" prefix="spring" %>
+<%@taglib uri="http://java.sun.com/jsp/jstl/xml" prefix="x"%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -22,6 +27,7 @@
         <script src="/resources/js/bid.js"></script>
         <script src="/resources/js/jquery-ui-timepicker-addon.js"></script>
         <script type="text/javascript" src="/resources/js/lib/jquery.simplePagination.js"></script>
+        <script src="/resources/js/xml_transform_helper.js"></script>
 
         <script>
             $(document).ready(function() {
@@ -78,7 +84,7 @@
                                     <div class="control-group">
                                         <label class="control-label">ID</label>
                                         <div class="controls">
-                                            <span id="bid_id" class="input-small uneditable-input">                                             
+                                            <span id="bid_id" class="input-small uneditable-input" style="width: 40px;">                                             
                                             </span>
                                         </div>
                                     </div>
@@ -89,7 +95,7 @@
                                         </div>
                                     </div>
                                     <div class="control-group">
-                                        <label class="control-label">Product Name</label>
+                                        <label class="control-label">Product Name *</label>
                                         <div id="product_name_container" class="controls">
                                             <input id="bid_product_name" autocomplete="off" type="text">
                                         </div>
@@ -107,19 +113,19 @@
                                         </div>
                                     </div>
                                     <div class="control-group">
-                                        <label class="control-label">Start date</label>
+                                        <label class="control-label">Start date *</label>
                                         <div class="controls">
                                             <input id="bid_start_date" type="text">
                                         </div>
                                     </div>
                                     <div class="control-group">
-                                        <label class="control-label">End date</label>
+                                        <label class="control-label">End date *</label>
                                         <div class="controls">
                                             <input id="bid_end_date" type="text">
                                         </div>
                                     </div>
                                     <div class="control-group">
-                                        <label class="control-label">Cost</label>
+                                        <label class="control-label">Cost *</label>
                                         <div class="controls">
                                             <input id="bid_cost" type="number" class="input-small">
                                         </div>
@@ -133,6 +139,12 @@
                                             </select>
                                         </div>
                                     </div>
+                                    <div class="control-group">
+                                        <label class="control-label"></label>
+                                        <div class="controls">                                            
+                                            <span class="" style="color:#0033ff; font-size: smaller">Note: All * marked fields are required</span>
+                                        </div>
+                                    </div>
                                     <div class="controls-button">
                                         <button type="button" id="btnSave" class="btn btn-warning disabled" onclick="insertOrUpdateBid()">Save</button>
                                         <button type="button" class="btn newBtn" onclick="clearBidDetail(this)">New</button>
@@ -143,7 +155,7 @@
                                     <script>
             $(function() {
                 setTimeout(function() {
-                    $("#result_IU_bid").hide('blind', {}, 500)
+                    $("#result_IU_bid").hide('blind', {}, 500);
                 }, 2000);
             });
                                     </script>
@@ -154,67 +166,25 @@
 
                     </div>
                     <div class="span8">
-
+                        <div id="test11"></div>
+                        <c:import url="/resources/xml/bids.xml" var="bidsXML" charEncoding="UTF-8"/>
+                        
                         <!-- Ongoing bids -->
-                        <div class="widget widget-table action-table">
-
-                            <div class="widget-header">
-                                <i class="icon-list-alt"></i>
-                                <h3>Ongoing Bids</h3>
-                            </div>
-
-                            <div class="widget-content">
-                                <table class="table table-striped table-bordered">
-                                    <thead>
-                                        <tr>
-                                            <th>ID</th>
-                                            <th>Product</th>
-                                            <th>Start date</th>
-                                            <th>Current user</th>
-                                            <th>Current price</th>
-                                            <th>Last bid</th>
-                                            <th class="td-actions"></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="onGoingBid">
-                                    </tbody>
-                                </table>
-                                <div class="pagination-bar">
-                                    <div id="ongoing_pagination_bar" style="float: right">
-
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Upcoming bids -->
-                        <div class="widget widget-table action-table">
-
-                            <div class="widget-header">
-                                <i class="icon-list-alt"></i>
-                                <h3>Upcoming Bids</h3>
-                            </div>
-
-                            <div class="widget-content">
-                                <table class="table table-striped table-bordered">
-                                    <thead>
-                                        <tr>
-                                            <th>ID</th>
-                                            <th>Product</th>
-                                            <th>Start date</th>
-
-                                            <th class="td-actions"></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="upComingBid">
-                                    </tbody>
-                                </table>
-                                <div class="pagination-bar">
-                                    <div id="upcoming_pagination_bar" style="float: right">
-
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <script>                           
+                                params = extractparams(window.location.search);
+                                displayOngoingPaginationResult(params['page'],params['pageSize']);                           
+                        </script>
+                        
+                        <!-- Upcoming bids -->                        
+                        <c:import url="/resources/xsl/upcomingBid_list.xsl" var="upBidXSL"/>
+                        <%
+                            SimpleDateFormat formatter=new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+                            Date ts = new Date();
+                        %>
+                        <x:transform xml="${bidsXML}" xslt="${upBidXSL}">
+                            <x:param name="cDate" value="<%=formatter.format(ts)%>"/>
+                        </x:transform>
+                        
 
                         <!-- completed bids -->
                         <div class="widget widget-table action-table">
@@ -236,9 +206,7 @@
                                             <th>Complete on</th>
                                         </tr>
                                     </thead>
-                                    <tbody id="completedBids">                                 
-
-                                    </tbody>
+                                    <tbody id="completedBids"></tbody>
                                 </table>
                                 <div class="pagination-bar">
                                     <div id="completed_pagination_bar" style="float: right">

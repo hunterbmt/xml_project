@@ -863,6 +863,7 @@ h1, h2, h3, h4, h5, h6 {
     margin: 10px auto 0;
 }
 .bid{
+    overflow: hidden;
     padding: 15px 15px 0;
     font-size: 11px;
     background-color: #fff;
@@ -1074,4 +1075,8 @@ form > input {
     -webkit-box-shadow: inset 0 0 2px rgba(255,255,255,0.75);
     height: 30px !important;
     width: 260px;
+}
+
+.p_detail {
+    margin-top: 40px;
 }

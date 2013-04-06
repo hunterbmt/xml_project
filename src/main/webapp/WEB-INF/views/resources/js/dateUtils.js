@@ -29,9 +29,13 @@ function formatDate(pubDate) {
 
 function formatDate1(ts) {
     var pubDate = new Date(ts);
-    var formattedDate =
-            (pubDate.getMonth() + 1) + '/' + (pubDate.getDate()) + '/'
-            + pubDate.getFullYear() + ' ' + getTime(ts);
+    var month = (pubDate.getMonth() + 1);
+    month = (month < 10)? "0" + month: month;
+    var day = pubDate.getDate();
+    day = (day < 10)? "0" + day: day;
+    var formattedDate = pubDate.getFullYear() + '/' + month
+             + '/' + day + ' '
+            + getTime(ts);
     return formattedDate;
 }
 

@@ -50,13 +50,7 @@ public class BidDAO extends BaseDAO{
 		query.setMaxResults(pageSize);
         return query.list();
     }
-    public int getNumberOfUpcomingBid(Date currentdate){
-        String sql = "Select count(bids) From Bids bids where bids.startDate > :c and bids.status =:status";
-        Query query = this.sessionFactory.getCurrentSession().createQuery(sql);
-        query.setParameter("c", currentdate);
-        query.setParameter("status", Bids.Status.UNCOMPLETED);
-        return ((Long)query.uniqueResult()).intValue();
-    }
+    
 
     public Bids getBidByProductId(int p_id) {
         Bids returnObj ;
