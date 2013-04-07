@@ -56,7 +56,7 @@ function insertOrUpdateProduct() {
     var description = encodeURI(editor.getValue());
     var min_price = vteam_http.getValue("product_min_price");
     var max_price = vteam_http.getValue("product_max_price");
-    var img = vteam_http.getValue("product_img");
+    var img = vteam_http.getValue("product_img_name");
     var tags = vteam_http.getValue('tags_id');
     if (id) {
         vteam_http.makeHttpRequest("/admin/update_product",
@@ -113,13 +113,14 @@ function clearProductDetail() {
     editor.setValue('');
     vteam_http.setValue("product_min_price",'');
     vteam_http.setValue("product_max_price",'');
-    vteam_http.setValue("product_img",'');
+    document.getElementById("product_img").setAttribute("src",'');
+    vteam_http.setValue("product_img_name",'');
     $('.select2-search-choice').remove();
     vteam_http.setValue('tags_id','');
     vteam_http.setValue('tags_name','');
 }
 function getProductDetail(id) {
-    vteam_http.makeHttpRequest('/product/getProductById', {product_id: id}, 'POST',
+    vteam_http.makeHttpRequest('/admin/getProductDetail', {id: id},'GET',
             function(result) {
                 if (result.status == "success") {
                     displayProductDetail(result);
@@ -137,7 +138,8 @@ function displayProductDetail(detail) {
     editor.setValue(detail.description);
     vteam_http.setValue("product_min_price",detail.minPrice);
     vteam_http.setValue("product_max_price",detail.maxPrice);
-    vteam_http.setValue("product_img",detail.imageName);
+    document.getElementById("product_img").setAttribute("src",detail.image);
+    vteam_http.setValue("product_img_name",detail.imageName);
 }
 function populateCategoryNameList() {
     vteam_http.makeHttpRequest("/admin/getCategoryNameList",

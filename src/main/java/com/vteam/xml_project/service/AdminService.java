@@ -13,6 +13,7 @@ import com.vteam.xml_project.dto.NinCodeListDTO;
 import com.vteam.xml_project.dto.ProductDTO;
 import com.vteam.xml_project.dto.ProductListDTO;
 import com.vteam.xml_project.dto.TagsDTO;
+import com.vteam.xml_project.dto.UploadResultDTO;
 import com.vteam.xml_project.dto.UserListDTO;
 import com.vteam.xml_project.hibernate.dao.BidDAO;
 import com.vteam.xml_project.hibernate.dao.CardCodeDAO;
@@ -40,11 +41,14 @@ import javax.servlet.ServletContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.FileUploadException;
 import org.apache.fop.apps.FOPException;
 
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -55,6 +59,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class AdminService {
 
+    private static final long MAX_UPLOAD_BYTES = 5242880;
+    private static final String SERVERIMGPATH = "/resources/img/product/";
     private static Logger log = Logger.getLogger(UserService.class.getName());
     @Autowired
     private ProductDAO productDAO;
@@ -166,7 +172,27 @@ public class AdminService {
             list.setMsg("Have some errors. Try again");
         }
         return list;
+    }
 
+    @Transactional
+    public ProductDTO getProductDetail(int id) {
+        Product dbProduct = productDAO.getProductById(id);
+        ProductDTO result = new ProductDTO();
+        if (dbProduct != null) {
+            result.setId(dbProduct.getId());
+            result.setName(dbProduct.getProductName());
+            result.setCategoryId(dbProduct.getCategory().getId());
+            result.setCategoryName(dbProduct.getCategory().getCategoryName());
+            result.setDescription(dbProduct.getDescription());
+            result.setMaxPrice(dbProduct.getMaxPrice());
+            result.setMinPrice(dbProduct.getMinPrice());
+            result.setImageName(dbProduct.getImage());
+            result.setImage(SERVERIMGPATH+dbProduct.getImage());
+            result.setStatus("success");
+        } else {
+            result.setStatus("error");
+        }
+        return result;
     }
 
     @Transactional
@@ -417,6 +443,7 @@ public class AdminService {
                 ninCodeListDTO.getNinList().add(ninCodeDTO);
             }
             File xmlFile = File.createTempFile(UUID.randomUUID().toString(), "_nin.xml");
+            xmlFile.deleteOnExit();
             XMLUtil.Marshall(ninCodeListDTO, xmlFile.getAbsolutePath());
             String appPath = servletContext.getRealPath("WEB-INF/views/resources/xsl");
 
@@ -434,5 +461,55 @@ public class AdminService {
         }
         return null;
 
+    }
+
+    @Transactional
+    public ProductDTO deleteProduct(int productId) {
+        ProductDTO productDTO = new ProductDTO();
+        try {
+            Product dbProduct = productDAO.getProductById(productId);
+            dbProduct.setStatus(Product.Status.DELETED);
+            productDAO.save(dbProduct);
+            productDTO.setStatus("success");
+        } catch (HibernateException ex) {
+            ex.printStackTrace();
+            productDTO.setStatus("error");
+        }
+        return productDTO;
+    }
+
+    public UploadResultDTO uploadToServer(FileItem uploadedFileItem) {
+        UploadResultDTO result = new UploadResultDTO();
+        try {
+            if (uploadedFileItem == null
+                    || uploadedFileItem.getName().length() == 0) {
+                result.setStatus("error");
+                result.setMsg("File empty");
+
+            } else if (uploadedFileItem.getSize() > MAX_UPLOAD_BYTES) {
+                result.setStatus("error");
+                result.setMsg("File size is more than 5MB");
+            } else if (!uploadedFileItem.getContentType().equals(MediaType.IMAGE_JPEG_VALUE) && !uploadedFileItem.getContentType().equals(MediaType.IMAGE_PNG_VALUE)) {
+                result.setStatus("error");
+                result.setMsg("File is not image file (Only support JPEG and PNG)");
+            } else {
+                    String filePath = servletContext.getRealPath("WEB-INF/views/resources/img/product/") + File.separator+uploadedFileItem.getName();
+                    File file = new File(filePath);
+                    //file.createNewFile();
+                    uploadedFileItem.write(file);
+                    result.setImgPath(SERVERIMGPATH+uploadedFileItem.getName());
+                    result.setImgName(uploadedFileItem.getName());
+                    result.setStatus("success");
+            }
+        } catch (FileUploadException e) {
+            result.setStatus("error");
+            result.setMsg("Have some error. Try again");
+            e.printStackTrace();
+        } catch (Exception e) {
+            result.setStatus("error");
+            result.setMsg("Have some error. Try again");
+            e.printStackTrace();
+        }
+        return result;
     }
 }

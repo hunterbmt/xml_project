@@ -148,13 +148,13 @@ public class ProductDTO extends BaseDTO {
         int start = description.indexOf("<p>");
         int end = description.indexOf("</p>");
         if (start == -1||end ==-1) {
-            if (description.length() < 25) {
+            if (description.length() < 50) {
                 return description;
             } else {
-                return description.substring(0, 25);
+                return description.substring(0, 50);
             }
-        } else if (end - start > 25) {
-            return description.substring(start + 3, start + 27);
+        } else if (end - start > 50) {
+            return description.substring(start + 3, start + 53);
         }
         return description.substring(start, end);
     }

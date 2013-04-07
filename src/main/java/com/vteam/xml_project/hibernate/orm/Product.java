@@ -31,7 +31,7 @@ import javax.persistence.TemporalType;
 public class Product implements java.io.Serializable {
 
     public enum Status {
-        AVAILABLE, SOLD, ONBID;
+        AVAILABLE, SOLD, ONBID,DELETED;
     }
     private Integer id;
     private Integer bidId;

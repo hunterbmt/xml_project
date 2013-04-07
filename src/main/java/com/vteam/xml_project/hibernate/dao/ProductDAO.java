@@ -38,7 +38,8 @@ public class ProductDAO extends BaseDAO {
     public List<Product> getProductListInorgeStatus(int page, int pageSize) throws HibernateException {
         Query query = this.sessionFactory
                 .getCurrentSession()
-                .createQuery("FROM Product");
+                .createQuery("FROM Product where status != :status");
+        query.setParameter("status", Product.Status.DELETED);
         query = query.setFirstResult(pageSize * (page - 1));
         query.setMaxResults(pageSize);
         return query.list();

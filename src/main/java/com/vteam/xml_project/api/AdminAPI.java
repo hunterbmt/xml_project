@@ -12,15 +12,24 @@ import com.vteam.xml_project.dto.NinCodeListDTO;
 import com.vteam.xml_project.dto.ProductDTO;
 import com.vteam.xml_project.dto.ProductListDTO;
 import com.vteam.xml_project.dto.TagsDTO;
+import com.vteam.xml_project.dto.UploadResultDTO;
 import com.vteam.xml_project.service.AdminService;
 import com.vteam.xml_project.service.CategoryService;
 import com.vteam.xml_project.service.ProductService;
+import com.vteam.xml_project.util.StringUtil;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.FileItemFactory;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -44,11 +53,10 @@ public class AdminAPI {
     private ProductService productService;
     @Autowired
     private CategoryService categoryService;
-    
-    @RequestMapping(value = "/updateXML", method = RequestMethod.POST,produces = "application/json")
+
+    @RequestMapping(value = "/updateXML", method = RequestMethod.POST, produces = "application/json")
     public @ResponseBody
-    String updateAllXML(
-            ) {
+    String updateAllXML() {
         adminService.updateAllXML();
         return "Done";
     }
@@ -59,6 +67,14 @@ public class AdminAPI {
             @RequestParam int page, int pageSize) {
         ProductListDTO productsDTO = adminService.getProductList(page, pageSize);
         return productsDTO;
+    }
+
+    @RequestMapping(value = "/getProductDetail", method = RequestMethod.GET, produces = "application/json")
+    public @ResponseBody
+    ProductDTO getProduct(
+            @RequestParam int id) {
+        ProductDTO result = adminService.getProductDetail(id);
+        return result;
     }
 
     @RequestMapping(value = "/insert_product", method = RequestMethod.POST, produces = "application/json")
@@ -74,6 +90,13 @@ public class AdminAPI {
     ProductDTO updateProduct(
             @RequestParam int productId, int categoryId, String productName, String description, String img, double minPrice, double maxPrice, String tags) {
         ProductDTO result = adminService.updateProduct(productId, categoryId, productName, description, img, minPrice, maxPrice, tags);
+        return result;
+    }
+
+    @RequestMapping(value = "/delete_product", method = RequestMethod.POST)
+    public @ResponseBody
+    ProductDTO deleteProduct(@RequestParam int productId) {
+        ProductDTO result = adminService.deleteProduct(productId);
         return result;
     }
 
@@ -180,17 +203,17 @@ public class AdminAPI {
 
     @RequestMapping(value = "/export_nin_code_to_pdf", method = RequestMethod.GET)
     public void exportNinCodeToPdf(HttpServletResponse response) {
-        try{
-        ByteArrayOutputStream outStream = adminService.exportNinCodeToPdf();
-        byte[] pdfBytes = outStream.toByteArray();
-        response.setContentType("application/pdf");
-        response.getOutputStream().write(pdfBytes);
-        response.getOutputStream().flush();
-        }catch(Exception ex){
+        try {
+            ByteArrayOutputStream outStream = adminService.exportNinCodeToPdf();
+            byte[] pdfBytes = outStream.toByteArray();
+            response.setContentType("application/pdf");
+            response.getOutputStream().write(pdfBytes);
+            response.getOutputStream().flush();
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
-    
+
     @RequestMapping(value = "export_product_list_to_pdf", method = RequestMethod.GET)
     public void exportProductListToPdf(HttpServletResponse response) {
         try {
@@ -199,8 +222,30 @@ public class AdminAPI {
             response.setContentType("application/pdf");
             response.getOutputStream().write(pdfBytes);
             response.getOutputStream().flush();
-        } catch (Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
+    }
+
+    @RequestMapping(value = "/upload_product_img", method = RequestMethod.POST)
+    void upload(HttpServletRequest request, HttpServletResponse response) {
+        FileItemFactory factory = new DiskFileItemFactory();
+        ServletFileUpload upload = new ServletFileUpload(factory);
+        response.setContentType("text/plain");
+        PrintWriter writer = null;
+        UploadResultDTO result;
+        try {
+            writer = response.getWriter();
+            List<FileItem> items = upload.parseRequest(request);
+            FileItem uploadedFileItem = items.get(0);
+            result = adminService.uploadToServer(uploadedFileItem);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            result = new UploadResultDTO();
+            result.setStatus("error");
+            result.setMsg("Have some error. Try again");
+        }
+        writer.write(StringUtil.objectToJSON(result));
+        writer.close();
     }
 }

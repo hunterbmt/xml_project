@@ -11,26 +11,56 @@
         <link href="/resources/css/bootstrap-responsive.css" rel="stylesheet">
         <link href="/resources/css/font-awesome.css" rel="stylesheet">
         <link href="/resources/css/jquery-ui-helper.css" rel="stylesheet">
+        <link href="/resources/css/jquery.fileupload-ui.css" rel="stylesheet">
         <link href="/resources/css/simplePagination.css" rel="stylesheet">
         <link href="/resources/css/admin.css" rel="stylesheet">
         <link href="/resources/css/select2.css" rel="stylesheet">
-        <script src="/resources/js/lib/wysihtml5-0.3.0.js"></script>
+
+
         <script src="/resources/js/lib/jquery.js"></script>
+        <script src="/resources/js/lib/wysihtml5-0.3.0.js"></script>
         <script type="text/javascript" src="/resources/js/lib/jquery.simplePagination.js"></script>
         <script src="/resources/js/lib/jquery.url.js"></script>
         <script src="/resources/js/lib/jquery-ui.js"></script>
         <script src="/resources/js/lib/bootstrap.min.js"></script>
         <script src="/resources/js/lib/bootstrap-wysihtml5.js"></script>
+        <script src ="/resources/js/lib/jquery.ui.widget.js"></script>
+        <script src ="/resources/js/lib/jquery.iframe-transport.js"></script>
+        <script src ="/resources/js/lib/jquery.fileupload.js"></script>
         <script src="/resources/js/lib/jquery.validate.js"></script>
         <script src="/resources/js/vteam.js"></script>
         <script src="/resources/js/admin_product.js"></script>
         <script src="/resources/js/admin_tags.js"></script>
+        <script src="/resources/js/upload.js"></script>
         <script>
-            $(document).ready(function() {
+            window.onload = function() {
                 populateCategoryNameList()
                 populateTagsNameList()
                 loadProductList(1);
-            });
+                $('#product_img_file').fileupload({
+                    dataType: 'text',
+                    url: "/admin/upload_product_img",
+                    paramName: 'uploadedFileItem',
+                    sequentialUploads: true,
+                    add: function(e, data) {
+                        disableFileUpload();
+                        beforeSend(data);
+                    },
+                    progressall: function(e, data) {
+                        var progress = parseInt(data.loaded / data.total * 100, 10);
+                        showProgress(progress);
+                        disableFileUpload();
+                    },
+                    done: function(e, data) {
+                        uploadComplete(jQuery.parseJSON(data.result));
+                        enableFileUpload();
+                    },
+                    fail: function(e, data) {
+                        uploadFail();
+                        enableFileUpload();
+                    }
+                });
+            };
 
         </script>
     </head>
@@ -72,7 +102,7 @@
                             </div>
 
                             <div class="widget-content">
-                                <form action="/product/update" method="POST" class="form-horizontal" id="product_detail">
+                                <div class ="form-horizontal" id="product_detail">
                                     <div class="control-group">
                                         <label class="control-label">Id</label>
                                         <div class="controls">
@@ -102,9 +132,7 @@
                                                     </li>
                                                 </ul>
                                             </div>
-                                            <select multiple="" style="display:none;">
 
-                                            </select>
                                         </div>
                                     </div>
                                     <div class="control-group">
@@ -130,8 +158,19 @@
                                     </div>
                                     <div class="control-group">
                                         <label class="control-label">Image</label>
+                                        <div>
+                                            <image style="max-height: 300px" id="product_img"/>
+                                            <input type="hidden" id="product_img_name"/>
+                                        </div>
                                         <div class="controls">
-                                            <input type="text" id="product_img">
+                                            <div class="uploader" id="uniform-undefined">
+                                                <input type="file" size="19" style="opacity: 0;" id="product_img_file" accept="image/*">
+                                                <span class="filename">No file selected</span>
+                                                <span class="action">Choose File</span>
+                                            </div>
+                                            <div id ="progress_div"class="progress hide">
+                                                <div class="bar"></div>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="controls-button">
@@ -141,7 +180,7 @@
                                     <div>
                                         <span class="alert-info hide" id="result_product"></span>
                                     </div>
-                                </form>
+                                </div>
                             </div>
 
                         </div>
