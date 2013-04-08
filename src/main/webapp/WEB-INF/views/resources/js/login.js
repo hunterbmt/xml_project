@@ -388,11 +388,20 @@ function valid_register(email, pass, re_pass, fullname) {
     } else {
         vteam_http.hide("email_validation");
     }
-    if (pass != re_pass) {
+    if(pass=="" && re_pass==""){
+       var html = 'Vui lòng điền mật khẩu';
+        vteam_http.setHTML("pass_validation", html);
+        vteam_http.show("pass_validation");
+        return false;
+    }else{
+       if (pass != re_pass) {
+        var html = 'Hãy nhập đúng mật khẩu đăng kí';
+        vteam_http.setHTML("pass_validation", html);
         vteam_http.show("pass_validation");
         return false;
     } else {
         vteam_http.hide("pass_validation")
+    } 
     }
     if (fullname == "" || fullname == null) {
         vteam_http.show("fullname_validation");
@@ -406,6 +415,7 @@ function valid_register(email, pass, re_pass, fullname) {
     } else {
         vteam_http.hide("capcha_validation")
     }
+    
     return true;
 }
 function DrawCaptcha()
@@ -418,7 +428,7 @@ function DrawCaptcha()
     var f = Math.ceil(Math.random() * 10) + '';
     var g = Math.ceil(Math.random() * 10) + '';
     var code = a + ' ' + b + ' ' + ' ' + c + ' ' + d + ' ' + e + ' ' + f + ' ' + g;
-    document.getElementById("txtCaptcha").value = code
+    document.getElementById('txtCaptcha').value = code;
 }
 function ValidCaptcha() {
     var str1 = removeSpaces(document.getElementById('txtCaptcha').value);
