@@ -62,6 +62,12 @@
                                 <span>Bid</span>
                             </a>	    				
                         </li>
+                        <li>
+                            <a href="/admin/order">
+                                <i class="icon-money"></i>
+                                <span>Order</span>
+                            </a>	    				
+                        </li>
                     </ul>
                 </div>
             </div>

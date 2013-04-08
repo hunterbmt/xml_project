@@ -23,7 +23,7 @@
             <div class="navbar-inner">
                 <div class="container">
                     <ul>
-                        <li class="active">
+                        <li>
                             <a href="/admin">
                                 <i class="icon-dashboard"></i>
                                 <span>Dash Board</span>
@@ -41,7 +41,7 @@
                                 <span>Bid</span>
                             </a>	    				
                         </li>
-                        <li>
+                        <li class="active">
                             <a href="/admin/order">
                                 <i class="icon-money"></i>
                                 <span>Order</span>

@@ -55,6 +55,7 @@ function logout() {
 }
 function changeSigin() {
     clearText();
+    DrawCaptcha();
     currentPosition = -1;
     vteam_http.hide("login");
     vteam_http.show("signin");

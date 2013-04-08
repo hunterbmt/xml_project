@@ -61,7 +61,6 @@
                     }
                 });
             };
-
         </script>
     </head>
     <body>
@@ -85,6 +84,12 @@
                             <a href="/admin/bid">
                                 <i class="icon-legal"></i>
                                 <span>Bid</span>
+                            </a>	    				
+                        </li>
+                        <li>
+                            <a href="/admin/order">
+                                <i class="icon-money"></i>
+                                <span>Order</span>
                             </a>	    				
                         </li>
                     </ul>
@@ -288,6 +293,9 @@
                                 </form>
                             </div>
                         </div>
+                    </div>
+                    <div id="delete_product_confirm" title="Delete the product ?">
+                        <p><i class="icon-warning-sign"></i> <span id="delete_product_confirm_msg"></span></p>
                     </div>
                 </div>    
             </div>

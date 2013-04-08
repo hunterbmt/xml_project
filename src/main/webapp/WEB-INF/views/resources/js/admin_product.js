@@ -41,13 +41,13 @@ function displayProduct(productList) {
         html += '<a href="javascript:;" class="btn btn-small btn-warning" onclick="getProductDetail(' + productList[i].id + ')" >'
         html += '<i class="btn-icon-only icon-edit"></i>'
         html += '</a>'
-        html += '<a href="javascript:;" class="btn btn-small" onclick="deleteProduct(' + productList[i].id + '">';
+        html += '<a href="javascript:;" class="btn btn-small" onclick="deleteProductOnClick(' + productList[i].id + ',\''+productList[i].name+'\')">';
         html += '<i class="btn-icon-only icon-remove"></i>'
         html += '</a>'
         html += '</td>'
         html += '</tr>'
     }
-    vteam_http.setHTML("product_list_tbody",html);  
+    vteam_http.setHTML("product_list_tbody", html);
 }
 function insertOrUpdateProduct() {
     var id = parseInt(vteam_http.getHTML("product_id"));
@@ -87,7 +87,7 @@ function insertOrUpdateProduct() {
 }
 function callback(result) {
     if (result.status === 'success') {
-        vteam_http.setHTML("result_product","Successful !");
+        vteam_http.setHTML("result_product", "Successful !");
         vteam_http.show("result_product");
         $(function() {
             setTimeout(function() {
@@ -96,7 +96,7 @@ function callback(result) {
         });
         loadProductList(current_page);
     } else {
-        vteam_http.setHTML("result_product",result.msg);
+        vteam_http.setHTML("result_product", result.msg);
         vteam_http.show("result_product");
         $(function() {
             setTimeout(function() {
@@ -107,20 +107,20 @@ function callback(result) {
     clearProductDetail();
 }
 function clearProductDetail() {
-    vteam_http.setHTML("product_id",'');
-    vteam_http.setValue("product_name",'');
-    vteam_http.setValue('category_name',"");
+    vteam_http.setHTML("product_id", '');
+    vteam_http.setValue("product_name", '');
+    vteam_http.setValue('category_name', "");
     editor.setValue('');
-    vteam_http.setValue("product_min_price",'');
-    vteam_http.setValue("product_max_price",'');
-    document.getElementById("product_img").setAttribute("src",'');
-    vteam_http.setValue("product_img_name",'');
+    vteam_http.setValue("product_min_price", '');
+    vteam_http.setValue("product_max_price", '');
+    document.getElementById("product_img").setAttribute("src", '');
+    vteam_http.setValue("product_img_name", '');
     $('.select2-search-choice').remove();
-    vteam_http.setValue('tags_id','');
-    vteam_http.setValue('tags_name','');
+    vteam_http.setValue('tags_id', '');
+    vteam_http.setValue('tags_name', '');
 }
 function getProductDetail(id) {
-    vteam_http.makeHttpRequest('/admin/getProductDetail', {id: id},'GET',
+    vteam_http.makeHttpRequest('/admin/getProductDetail', {id: id}, 'GET',
             function(result) {
                 if (result.status == "success") {
                     displayProductDetail(result);
@@ -131,15 +131,15 @@ function getProductDetail(id) {
             })
 }
 function displayProductDetail(detail) {
-    vteam_http.setHTML("product_id",detail.id);
-    vteam_http.setValue("product_name",detail.name);
-    vteam_http.setValue("category_name",detail.categoryName);
+    vteam_http.setHTML("product_id", detail.id);
+    vteam_http.setValue("product_name", detail.name);
+    vteam_http.setValue("category_name", detail.categoryName);
     product_current_category_id = detail.categoryId;
     editor.setValue(detail.description);
-    vteam_http.setValue("product_min_price",detail.minPrice);
-    vteam_http.setValue("product_max_price",detail.maxPrice);
-    document.getElementById("product_img").setAttribute("src",detail.image);
-    vteam_http.setValue("product_img_name",detail.imageName);
+    vteam_http.setValue("product_min_price", detail.minPrice);
+    vteam_http.setValue("product_max_price", detail.maxPrice);
+    document.getElementById("product_img").setAttribute("src", detail.image);
+    vteam_http.setValue("product_img_name", detail.imageName);
 }
 function populateCategoryNameList() {
     vteam_http.makeHttpRequest("/admin/getCategoryNameList",
@@ -188,16 +188,16 @@ function loadAndDisplatCategoryDetail(id) {
     });
 }
 function displayCategoryDetail(category) {
-    vteam_http.setHTML('category_detail_id',category.id);
-    vteam_http.setValue('category_detail_description',category.description);
-    vteam_http.setHTML('category_detail_btn','Update');
+    vteam_http.setHTML('category_detail_id', category.id);
+    vteam_http.setValue('category_detail_description', category.description);
+    vteam_http.setHTML('category_detail_btn', 'Update');
 
 }
 function clearCategoryDetail() {
-    vteam_http.setHTML('category_detail_id','');
-    vteam_http.setValue('category_detail_name','');
-    vteam_http.setValue('category_detail_description','');
-    vteam_http.setHTML('category_detail_btn','Save');
+    vteam_http.setHTML('category_detail_id', '');
+    vteam_http.setValue('category_detail_name', '');
+    vteam_http.setValue('category_detail_description', '');
+    vteam_http.setHTML('category_detail_btn', 'Save');
     category_current_id = null;
 }
 function insertOrUpdateCategory() {
@@ -231,7 +231,7 @@ function callbackCategoryEdit(result) {
     clearCategoryDetail();
 }
 function displayCategoryMsg(msg) {
-    vteam_http.setHTML("result_category",msg);
+    vteam_http.setHTML("result_category", msg);
     vteam_http.show("result_category");
     $(function() {
         setTimeout(function() {
@@ -349,3 +349,29 @@ function clearValidCategory() {
     div_des.removeClass("success");
 }
 
+function deleteProductOnClick(id,name) {
+    vteam_http.setHTML("delete_product_confirm_msg","Do you wanna delete "+name+" ?")
+    $("#delete_product_confirm").dialog({
+        resizable: false,
+        height: 140,
+        modal: true,
+        buttons: {
+            "Delete": function() {
+                deleteProduct(id);
+                $(this).dialog("close");
+            },
+            Cancel: function() {
+                $(this).dialog("close");
+            }
+        }
+    });
+}
+function deleteProduct(id){
+    vteam_http.makeHttpRequest("/admin/delete_product",{productId:id},'POST',function(result){
+        if(result.status =="success"){
+            loadProductList(current_page)
+        }else{
+            alert(result.msg);
+        }
+    })
+}

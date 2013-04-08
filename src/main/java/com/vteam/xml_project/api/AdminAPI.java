@@ -93,7 +93,7 @@ public class AdminAPI {
         return result;
     }
 
-    @RequestMapping(value = "/delete_product", method = RequestMethod.POST)
+    @RequestMapping(value = "/delete_product", method = RequestMethod.POST,produces = "application/json")
     public @ResponseBody
     ProductDTO deleteProduct(@RequestParam int productId) {
         ProductDTO result = adminService.deleteProduct(productId);

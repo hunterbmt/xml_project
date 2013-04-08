@@ -32,7 +32,6 @@
             window.onload = function() {
                 loadAndDisplayProduct(1);
                 initUserInfo();
-                DrawCaptcha();
                 $('#user_birthday').datepicker({
                     showMonthAfterYear: false,
                     minDate: '-90Y', maxDate: '-9Y',
