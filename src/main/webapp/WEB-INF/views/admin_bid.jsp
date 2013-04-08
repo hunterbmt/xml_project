@@ -33,8 +33,24 @@
             $(document).ready(function() {
                 populateProductNameList();
                 update_lists();
-                $('#bid_start_date').datetimepicker();
-                $('#bid_end_date').datetimepicker();
+                $('#bid_start_date').datetimepicker(
+                        {
+                            changeMonth: true,
+                            changeYear: true,
+                            timeFormat: 'HH:mm',
+                            showSecond: false,
+                            dateFormat: 'yy/mm/dd'
+                        }
+                );
+                $('#bid_end_date').datetimepicker(
+                        {
+                            changeMonth: true,
+                            changeYear: true,
+                            timeFormat: 'HH:mm',
+                            showSecond: false,
+                            dateFormat: 'yy/mm/dd'
+                        }
+                );
                 bid_product_name_onchange();
             });
         </script>
@@ -168,13 +184,13 @@
                     <div class="span8">
                         <div id="test11"></div>
                         <c:import url="/resources/xml/bids.xml" var="bidsXML" charEncoding="UTF-8"/>
-                        
+
                         <!-- Ongoing bids -->
-                        <script>                           
-                                params = extractparams(window.location.search);
-                                displayOngoingPaginationResult(params['page'],params['pageSize']);                           
+                        <script>
+                            params = extractparams(window.location.search);
+                            displayOngoingPaginationResult(params['page'], params['pageSize']);
                         </script>
-                        
+
                         <!-- Upcoming bids -->                        
                         <c:import url="/resources/xsl/upcomingBid_list.xsl" var="upBidXSL"/>
                         <%
@@ -184,7 +200,7 @@
                         <x:transform xml="${bidsXML}" xslt="${upBidXSL}">
                             <x:param name="cDate" value="<%=formatter.format(ts)%>"/>
                         </x:transform>
-                        
+
 
                         <!-- completed bids -->
                         <div class="widget widget-table action-table">

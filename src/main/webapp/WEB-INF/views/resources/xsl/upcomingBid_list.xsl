@@ -37,10 +37,12 @@
                         </thead>
                         <tbody id="upComingBid">
                             <xsl:for-each 
-                                select="//bid[number(translate(start_date, $datetime-punctuation, ''))                             
-                            > $stripped-current-datetime
+                                select="//bid[
+                                    isCompleted != 1 and 
+                                    number(translate(start_date, $datetime-punctuation, ''))                             
+                                    &gt; $stripped-current-datetime                            
                             ]"
-                            >
+                            ><xsl:sort select="start_date"/>
                                 <tr>
                                     <td>                                        
                                         <xsl:value-of select="id"/>

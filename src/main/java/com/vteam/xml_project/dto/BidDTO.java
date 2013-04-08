@@ -60,6 +60,15 @@ public class BidDTO extends BaseDTO {
     @XmlElement(name = "last_edit", required = true)
     @XmlJavaTypeAdapter(DateAdapter.class)
     private Date last_edit;
+    private int isCompleted;
+
+    public int getIsCompleted() {
+        return isCompleted;
+    }
+
+    public void setIsCompleted(int isCompleted) {
+        this.isCompleted = isCompleted;
+    }
 
     public BidDTO() {
     }
