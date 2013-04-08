@@ -38,11 +38,16 @@ function bid_details(bid_id) {
             }
     );
 }
+
+function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
 function displayBidDetails(bid) {
     vteam_http.setHTML("bid_id", bid.id);
     vteam_http.setHTML("bid_last_userid", bid.last_username);
     vteam_http.setValue("bid_product_name", bid.product_name);
-    vteam_http.setHTML("bid_current_price", bid.current_price);
+    vteam_http.setHTML("bid_current_price", numberWithCommas(bid.current_price) + " VND");
     vteam_http.setHTML('bid_last_edit', toDateAndTime2(bid.last_edit));
     vteam_http.setValue('bid_start_date', toDateAndTime2(bid.start_date));
     vteam_http.setValue('bid_end_date', toDateAndTime2(bid.end_date));
@@ -116,8 +121,8 @@ function callback(result) {
 }
 
 function update_lists() {
-    _displayOngoingBid(bid_ongoing_current_page);
-    _displayUpcomingBid(bid_upcoming_current_page);
+    //_displayOngoingBid(bid_ongoing_current_page);
+    //_displayUpcomingBid(bid_upcoming_current_page);
     _displayCompletedBids(bid_completed_current_page);
 }
 function clearBidDetail(self) {

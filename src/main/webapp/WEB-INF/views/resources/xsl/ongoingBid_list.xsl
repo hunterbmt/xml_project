@@ -34,7 +34,7 @@
                     <cost><xsl:value-of select="cost"/></cost>
                     <product_id><xsl:value-of select="product_id"/></product_id>
                     <product_name><xsl:value-of select="product_name"/></product_name>
-                    <current_price><xsl:value-of select="current_price"/></current_price>
+                    <current_price><xsl:value-of select='format-number(current_price,"###,###")'/> VND</current_price>
                     <start_date><xsl:value-of select="start_date"/></start_date>
                     <end_date><xsl:value-of select="end_date"/></end_date>
                     <last_edit><xsl:value-of select="last_edit"/></last_edit>
