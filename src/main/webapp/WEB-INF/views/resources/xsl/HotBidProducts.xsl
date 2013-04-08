@@ -21,7 +21,7 @@
                             <a href="javascript:void(0)" onclick ="view_product_detail({id})">
                                 <h5><xsl:value-of select="name"/></h5>
                             </a>
-                            <p><xsl:value-of select="shortDescription"/></p>
+                            <p><xsl:value-of select="shortDescription" disable-output-escaping="yes"/></p>
                         </div>
                     </div>
                 </div>
