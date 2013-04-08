@@ -83,6 +83,7 @@ public class BidService {
             tmp.setProduct_name(bid.getProduct().getProductName());
             tmp.setEnd_date(bid.getEndDate());
             tmp.setCost(bid.getCost());
+            tmp.setIsCompleted(bid.getStatus().ordinal());
             if (uuid != null) {
                 Users u = userDAO.findUserByUuid(uuid);
                 tmp.setLast_username(u.getFullname());

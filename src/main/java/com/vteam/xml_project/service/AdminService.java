@@ -199,8 +199,8 @@ public class AdminService {
     public BidDTO insertBid(int product_id, String startDateStr, String endDateStr, int cost) {
         BidDTO bidDTO = new BidDTO();
         try {
-            Date startDate = dateUtil.parseFromString(startDateStr, "MM/dd/yyyy HH:mm");
-            Date endDate = dateUtil.parseFromString(endDateStr, "MM/dd/yyyy HH:mm");
+            Date startDate = dateUtil.parseFromString(startDateStr, "yyyy/MM/dd HH:mm");
+            Date endDate = dateUtil.parseFromString(endDateStr, "yyyy/MM/dd HH:mm");
             Product product = productDAO.getProductById(product_id);
             Bids newBid = new Bids(product, startDate, endDate, Bids.Status.UNCOMPLETED, cost);
             newBid.setLastEdit(new Date());
@@ -215,6 +215,7 @@ public class AdminService {
             product.setStatus(Product.Status.ONBID);
             productDAO.save(product);
             bidDTO.setStatus("success");
+            bidDTO.setIsCompleted(0);
             updateAllXML();
 
             return bidDTO;
@@ -234,8 +235,8 @@ public class AdminService {
     public BidDTO updateBid(int bid_id, int product_id, String startDateStr, String endDateStr, String status, int cost) {
         BidDTO bidDTO = new BidDTO();
         try {
-            Date startDate = dateUtil.parseFromString(startDateStr, "MM/dd/yyyy HH:mm");
-            Date endDate = dateUtil.parseFromString(endDateStr, "MM/dd/yyyy HH:mm");
+            Date startDate = dateUtil.parseFromString(startDateStr, "yyyy/MM/dd HH:mm");
+            Date endDate = dateUtil.parseFromString(endDateStr, "yyyy/MM/dd HH:mm");
             Product product = productDAO.getProductById(product_id);
             Bids currentBid = bidDAO.getBidById(bid_id);
             Product currentProduct = currentBid.getProduct();
@@ -251,6 +252,7 @@ public class AdminService {
             if (currentBid.getStatus().toString().equalsIgnoreCase("completed")) {
                 product.setStatus(Product.Status.AVAILABLE);
                 product.setBidId(null);
+                bidDTO.setIsCompleted(1);
             }
             product.setBidId(currentBid.getId());
             product.setStatus(Product.Status.ONBID);
