@@ -61,6 +61,15 @@ public class BidDTO extends BaseDTO {
     @XmlJavaTypeAdapter(DateAdapter.class)
     private Date last_edit;
     private int isCompleted;
+    private int biddedCounter;
+
+    public int getBiddedCounter() {
+        return biddedCounter;
+    }
+
+    public void setBiddedCounter(int biddedCounter) {
+        this.biddedCounter = biddedCounter;
+    }
 
     public int getIsCompleted() {
         return isCompleted;

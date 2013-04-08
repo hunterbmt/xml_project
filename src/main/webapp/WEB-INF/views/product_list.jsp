@@ -28,6 +28,7 @@
         <script src="/resources/js/order.js"></script> 
         <script src="/resources/js/jquery-ui-timepicker-addon.js"></script>
         <script src="/resources/js/dateUtils.js"></script>
+        <script src="/resources/js/xml_transform_helper.js"></script>
         <script>
             window.onload = function() {
                 loadAndDisplayProduct(1);

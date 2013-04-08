@@ -44,6 +44,7 @@ public class ProductService {
     @Autowired
     ServletContext servletContext;
     private static final int PAGESIZE = 50;
+    private static String HOT_BID_PRODUCTS_XML_FILE_NAME = "hot_bid_products.xml";
 
     @Transactional
     public ProductListDTO getProductList(int page) {
@@ -343,15 +344,63 @@ public class ProductService {
         }
         return list;
     }
+
     @Transactional
-    public SearchKeywordListDTO searchSearchCacheKeyWord(String query){
+    public SearchKeywordListDTO searchSearchCacheKeyWord(String query) {
         List<SearchCache> dbSearchCache = searchCacheDAO.searchSearchCacheByKeyword(query);
         SearchKeywordListDTO searchKeywordListDTO = new SearchKeywordListDTO();
-        for(SearchCache searchCache:dbSearchCache){
+        for (SearchCache searchCache : dbSearchCache) {
             String keyword = searchCache.getQuery().split("_")[0];
             searchKeywordListDTO.getKeywordList().add(keyword);
         }
         searchKeywordListDTO.setStatus("success");
         return searchKeywordListDTO;
+    }
+
+    @Transactional
+    public void marshallHotBidProducts(String[] id_list) {
+        try {
+            ProductListDTO pListDTO = this.getHotProductList(id_list);
+            String realPath = servletContext.getRealPath("WEB-INF/views/resources/xml/");
+            XMLUtil.Marshall(pListDTO, realPath + "/" + HOT_BID_PRODUCTS_XML_FILE_NAME);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Transactional
+    ProductListDTO getHotProductList(String[] product_id_list) {
+        ProductListDTO list = new ProductListDTO();
+        try {
+            long time = 0;
+            Product tmp;
+            ProductDTO p;
+            Bids bid;
+            Date currentDate = new Date();
+            for (String p_id : product_id_list) {
+                tmp = productDAO.getProductById(Integer.valueOf(p_id));
+                if (tmp.getBidId() != null) {
+                    bid = bidDAO.getBidById(tmp.getBidId());
+                    time = bid.getStartDate().getTime() - currentDate.getTime();
+                }
+                p = new ProductDTO();
+                p.setBidTimeRemain(time);
+                p.setName(tmp.getProductName());
+                p.setDescription(tmp.getDescription());
+                p.setImage("/resources/img/product/" + tmp.getImage());
+                p.setImageName(tmp.getImage());
+                p.setCategoryId(tmp.getCategory().getId());
+                p.setId(tmp.getId());
+                p.setBidId(tmp.getBidId());
+                list.getProductList().add(p);
+            }
+            list.setNumberOfProduct(product_id_list.length);
+            list.setStatus("success");
+        } catch (HibernateException ex) {
+            log.error(ex);
+            list.setStatus("error");
+            list.setMsg("Have some errors. Try again");
+        }
+        return list;
     }
 }

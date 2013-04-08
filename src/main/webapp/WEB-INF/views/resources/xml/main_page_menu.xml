@@ -7,7 +7,7 @@
     </Item>
     <Item>
         <class></class>
-        <function></function>
+        <function>viewHotBids()</function>
         <name>Hot Bids</name>
     </Item>
 </MenuItems>
