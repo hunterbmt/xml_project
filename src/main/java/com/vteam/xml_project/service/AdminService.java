@@ -215,6 +215,7 @@ public class AdminService {
             product.setStatus(Product.Status.ONBID);
             productDAO.save(product);
             bidDTO.setStatus("success");
+            bidDTO.setIsCompleted(0);
             updateAllXML();
 
             return bidDTO;
@@ -251,6 +252,7 @@ public class AdminService {
             if (currentBid.getStatus().toString().equalsIgnoreCase("completed")) {
                 product.setStatus(Product.Status.AVAILABLE);
                 product.setBidId(null);
+                bidDTO.setIsCompleted(1);
             }
             product.setBidId(currentBid.getId());
             product.setStatus(Product.Status.ONBID);

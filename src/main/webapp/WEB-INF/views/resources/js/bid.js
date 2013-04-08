@@ -117,7 +117,7 @@ function callback(result) {
             setTimeout(vteam_http.hide("result_IU_bid"), 2000);
         });
     }
-    refresh(1000);
+    refresh(100);
 }
 
 function update_lists() {

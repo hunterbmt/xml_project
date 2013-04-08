@@ -21,7 +21,9 @@
                       select="number(translate($cDate, $datetime-punctuation, ''))" />   
         <bidList>            
             <xsl:for-each 
-                select="//bid[number(translate(start_date, $datetime-punctuation, '')) 
+                select="//bid[
+                            isCompleted != 1 and
+                            number(translate(start_date, $datetime-punctuation, '')) 
                             &lt;= $stripped-current-datetime 
                             and 
                             number(translate(end_date, $datetime-punctuation, ''))
