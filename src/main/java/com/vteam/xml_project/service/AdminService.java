@@ -187,7 +187,7 @@ public class AdminService {
             result.setMaxPrice(dbProduct.getMaxPrice());
             result.setMinPrice(dbProduct.getMinPrice());
             result.setImageName(dbProduct.getImage());
-            result.setImage(SERVERIMGPATH+dbProduct.getImage());
+            result.setImage(SERVERIMGPATH + dbProduct.getImage());
             result.setStatus("success");
         } else {
             result.setStatus("error");
@@ -399,8 +399,7 @@ public class AdminService {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }   
-    
+    }
 
     @Transactional
     public ByteArrayOutputStream exportProductListToPdf() {
@@ -413,6 +412,8 @@ public class AdminService {
                 productDTO.setName(p.getProductName());
                 productDTO.setDescription(p.getDescription());
                 productDTO.setCategoryName(p.getCategory().getCategoryName());
+                Bids bid = bidDAO.getBidById(p.getBidId());
+                productDTO.setCurrentPrice(bid.getCurrentPrice());
                 productListDTO.getProductList().add(productDTO);
             }
             File xmlFile = File.createTempFile(UUID.randomUUID().toString(), "_product.xml");
@@ -496,13 +497,13 @@ public class AdminService {
                 result.setStatus("error");
                 result.setMsg("File is not image file (Only support JPEG and PNG)");
             } else {
-                    String filePath = servletContext.getRealPath("WEB-INF/views/resources/img/product/") + File.separator+uploadedFileItem.getName();
-                    File file = new File(filePath);
-                    //file.createNewFile();
-                    uploadedFileItem.write(file);
-                    result.setImgPath(SERVERIMGPATH+uploadedFileItem.getName());
-                    result.setImgName(uploadedFileItem.getName());
-                    result.setStatus("success");
+                String filePath = servletContext.getRealPath("WEB-INF/views/resources/img/product/") + File.separator + uploadedFileItem.getName();
+                File file = new File(filePath);
+                //file.createNewFile();
+                uploadedFileItem.write(file);
+                result.setImgPath(SERVERIMGPATH + uploadedFileItem.getName());
+                result.setImgName(uploadedFileItem.getName());
+                result.setStatus("success");
             }
         } catch (FileUploadException e) {
             result.setStatus("error");
