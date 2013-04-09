@@ -17,4 +17,8 @@
 	    <constructor-arg value="${app.id}"/>
             <constructor-arg value="${app.accessToken}"/>
 	</bean>
+        <bean id="smsService" class="com.hoiio.sdk.services.SmsService">
+	    <constructor-arg value="${app.id}"/>
+            <constructor-arg value="${app.accessToken}"/>
+	</bean>
 </beans>

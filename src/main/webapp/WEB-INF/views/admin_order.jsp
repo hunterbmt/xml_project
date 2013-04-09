@@ -20,7 +20,7 @@
         <script src="/resources/js/vteam.js"></script>
         <script src="/resources/js/admin_order.js"></script>
         <script>
-            window.onload = function(){
+            window.onload = function() {
                 loadOrderList(1);
             }
         </script>
@@ -94,8 +94,27 @@
                 </div>
             </div>
         </div>    
-    </div>
-</div>
-
-</body>
+        <div id="order_detail_modal" style="width: 30%" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h3 id="myModalLabel">Order detail</h3>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <fieldset>
+                        <div id ="order_detail_result" class="hide">All form fields are required.</div>
+                        <label>Address</label>
+                        <input type="text" id="order_detal_address"/>
+                    </fieldset>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+                <button class="btn btn-warning" onclick="updateOrder()">Update</button>
+            </div>
+        </div>
+        <div id="order_action_confirm" title="Confirm your action" class="hide">
+           <p><i class="icon-warning-sign"></i> <span id="order_action_confirm_msg"></span></p>
+        </div>
+    </body>
 </html>
