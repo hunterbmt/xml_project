@@ -9,7 +9,6 @@ import com.vteam.xml_project.dto.UserPaymentDTO;
 import com.vteam.xml_project.dto.UserPaymentListDTO;
 import com.vteam.xml_project.dto.UserDTO;
 import com.vteam.xml_project.dto.UserListDTO;
-import com.vteam.xml_project.handler.LoginSaxHandler;
 import com.vteam.xml_project.hibernate.dao.CardCodeDAO;
 
 import com.vteam.xml_project.hibernate.orm.Users;
@@ -22,31 +21,17 @@ import com.vteam.xml_project.util.PhoneNumberUtil;
 import com.vteam.xml_project.util.StringUtil;
 import com.vteam.xml_project.util.XMLUtil;
 import java.io.File;
-import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.servlet.ServletContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathExpressionException;
-import javax.xml.xpath.XPathFactory;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-import org.xml.sax.SAXException;
 
 /**
  *

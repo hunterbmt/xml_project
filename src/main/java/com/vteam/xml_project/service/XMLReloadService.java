@@ -1,32 +1,48 @@
-/*
+        /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.vteam.xml_project.context.listener;
+package com.vteam.xml_project.service;
 
 import com.vteam.xml_project.dto.BidListDTO;
 import com.vteam.xml_project.dto.CategoryDTO;
 import com.vteam.xml_project.dto.CategoryListDTO;
+import com.vteam.xml_project.dto.NinCodeDTO;
+import com.vteam.xml_project.dto.UserPaymentDTO;
+import com.vteam.xml_project.dto.UserPaymentListDTO;
 import com.vteam.xml_project.dto.UserDTO;
 import com.vteam.xml_project.dto.UserListDTO;
-import com.vteam.xml_project.service.BidService;
-import com.vteam.xml_project.service.CategoryService;
-import com.vteam.xml_project.service.OrderHistoryService;
-import com.vteam.xml_project.service.ProductService;
-import com.vteam.xml_project.service.UserService;
+import com.vteam.xml_project.hibernate.dao.CardCodeDAO;
+
+import com.vteam.xml_project.hibernate.orm.Users;
+import com.vteam.xml_project.hibernate.dao.UserDAO;
+import com.vteam.xml_project.hibernate.dao.UserPaymentDAO;
+import com.vteam.xml_project.hibernate.orm.CardCode;
+import com.vteam.xml_project.hibernate.orm.UserPayment;
+import com.vteam.xml_project.util.DateUtil;
+import com.vteam.xml_project.util.PhoneNumberUtil;
+import com.vteam.xml_project.util.StringUtil;
 import com.vteam.xml_project.util.XMLUtil;
+import java.io.File;
+import java.security.NoSuchAlgorithmException;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import javax.servlet.ServletContext;
 import javax.xml.bind.JAXBException;
+import org.apache.log4j.Logger;
+import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationListener;
-import org.springframework.context.event.ContextRefreshedEvent;
-import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
- * @author Lenovo
+ * @author Administrator
  */
-public class ApplicationListenerBean implements ApplicationListener<ContextRefreshedEvent> {
+@Service
+public class XMLReloadService {
 
     @Autowired
     CategoryService categoryService;
@@ -40,20 +56,11 @@ public class ApplicationListenerBean implements ApplicationListener<ContextRefre
     BidService bidService;
     @Autowired
     OrderHistoryService orderService;
-    
     private static String CATEGORY_XML_FILE_NAME = "category.xml";
     private static String USER_XML_FILE_NAME = "user.xml";
     private static String BID_XML_FILE_NAME = "bids.xml";
 
-    @Override
-    public void onApplicationEvent(ContextRefreshedEvent event) {
-        marshallCategory();
-        marshallUser();
-        marshallBids();
-    }
-    //@Scheduled(fixedRate=6000)
-    @Scheduled(cron = "* * 1 * * ?")
-    private void marshallCategory() {
+    public void marshallCategory() {
         try {
             CategoryListDTO categoryListDTO = categoryService.getCategoryList();
             for (CategoryDTO categoryDTO : categoryListDTO.getCategoryList()) {
@@ -66,7 +73,7 @@ public class ApplicationListenerBean implements ApplicationListener<ContextRefre
         }
     }
 
-    private void marshallUser() {
+    public void marshallUser() {
         try {
             UserListDTO userListDTO = userService.getUserList();
             for (UserDTO userDTO : userListDTO.getUserList()) {
@@ -79,7 +86,7 @@ public class ApplicationListenerBean implements ApplicationListener<ContextRefre
         }
     }
 
-    private void marshallBids(){
+    public void marshallBids() {
         try {
             BidListDTO bidListDTO = bidService.getBidsList(1, 999);
             String realPath = servletContext.getRealPath("WEB-INF/views/resources/xml/");
@@ -88,5 +95,4 @@ public class ApplicationListenerBean implements ApplicationListener<ContextRefre
             e.printStackTrace();
         }
     }
-
 }

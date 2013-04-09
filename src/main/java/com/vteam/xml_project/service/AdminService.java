@@ -94,6 +94,8 @@ public class AdminService {
     BidService bidService;
     @Autowired
     SmsService smsService;
+    @Autowired
+    XMLReloadService xmlReloadService;
     private static String CATEGORY_XML_FILE_NAME = "category.xml";
     private static String USER_XML_FILE_NAME = "user.xml";
     private static String BID_XML_FILE_NAME = "bids.xml";
@@ -591,7 +593,7 @@ public class AdminService {
         }
         String thankyouMsg = "Cảm ơn quý khách đã mua hàng tại Bid 20! Chúc quý khách một ngày làm việc vui vẻ";
         try {
-            smsService.send(dbOrder.getUser().getPhone(),thankyouMsg, "+1243546543",null,null );
+            smsService.send(dbOrder.getUser().getPhone(), thankyouMsg, "+1243546543", null, null);
         } catch (HoiioException ex) {
             java.util.logging.Logger.getLogger(AdminService.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -613,13 +615,15 @@ public class AdminService {
         bidDAO.save(dbBids);
         OrderHistoryDTO orderHistoryDTO = new OrderHistoryDTO();
         orderHistoryDTO.setStatus("success");
-        
-        String cancelMsg = "Bid sản phẩm " + dbProduct.getProductName() +" của quý khách đã bị hủy . Vui lòng liên hệ để biết thêm chi tiết";
+
+        String cancelMsg = "Bid sản phẩm " + dbProduct.getProductName() + " của quý khách đã bị hủy . Vui lòng liên hệ để biết thêm chi tiết";
         try {
             smsService.send(dbOrder.getUser().getPhone(), cancelMsg, "+1243546543", null, null);
         } catch (HoiioException ex) {
             java.util.logging.Logger.getLogger(AdminService.class.getName()).log(Level.SEVERE, null, ex);
         }
+        xmlReloadService.marshallUser();
+        xmlReloadService.marshallCategory();
         return orderHistoryDTO;
     }
 }
