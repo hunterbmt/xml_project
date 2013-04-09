@@ -90,8 +90,8 @@ public class UserAPI {
             returnMap.put("status", "unlogin");
             return returnMap;
         }
-        String tmp=birthday.split("\\s").toString();
-        boolean result = userService.upadateUser(email, address, phone, birthday, formatDate);
+        String tmp=(birthday!=null)?birthday.split("\\s").toString():"";
+        boolean result = userService.upadateUser(email, address, phone, tmp, formatDate);
         if (result) {
             returnMap.put("status", "success");
         } else {
