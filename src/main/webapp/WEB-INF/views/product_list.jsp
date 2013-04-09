@@ -175,7 +175,7 @@
                                         <label > Nhập mã xác nhận tại đây:</label>
                                         <input type="text" id="txtInput"/> 
                                     </div>
-                                    <div class="hide" id="capcha_validation">Hãy nhập đúng mã xác nhận</div>
+                                    <div class="hide" id="capcha_validation"><font style="color: red">Hãy nhập đúng mã xác nhận</font></div>
                                     <button name="send" type="button"  class="btn btn-success" onclick="create()">Đăng ký</button>
                                     <button name="send" type="button"  class="btn" onclick="changeLogin()"style="margin-left: 16%">Hủy bỏ</button>
                                 </fieldset>

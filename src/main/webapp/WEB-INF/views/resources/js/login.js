@@ -120,17 +120,19 @@ function updatePassword() {
                 if (result.status == "success")
                 {
                     vteam_http.setHTML("updateResult1", "<font style='color: green;font-size: large;'><strong>Cập nhật thành công! !</strong></font>");
-
+                    vteam_http.show("updateResult1");
+                    $("#updateResult1").hide(5000);
 
                 } else if (result.status == "unlogin") {
                     vteam_http.setHTML("updateResult1", "<font style='color: black;font-size: large;'><strong>Sesstion Times out! !</strong> Please log in again.</font>");
-
+                    vteam_http.show("updateResult1");
+                $("#updateResult1").hide(5000);
 
                 } else if (result.status == "error") {
                     vteam_http.setHTML("updateResult1", "<font style='color: red;font-size: large;'><strong>Oh snap!!</strong> Change a few things up and try submitting again.</font>");
-                }
-                vteam_http.show("updateResult1");
+                    vteam_http.show("updateResult1");
                 $("#updateResult1").hide(5000);
+                }
             });
 
 }
@@ -345,7 +347,6 @@ function valid_register_Username() {
                         var html = "<font style='color:red'>Địa chỉ email của bạn đã tồn tại.</font>";
                         vteam_http.setHTML("email_validation", html);
                         vteam_http.show("email_validation");
-                        document.getElementById("new_username").focus();
                         return false;
                     } else if (result == true) {
                         vteam_http.hide("email_validation");
@@ -428,7 +429,7 @@ function valid_register_Phone() {
                     if (result == false)
                     {
 
-                        var html = "<font style='color: red'>Định dạng số điện thoạilà +84xxxxxxxxx.</font>";
+                        var html = "<font style='color: red'>Định dạng số điện thoại là +84xxxxxxxxx.</font>";
                         vteam_http.setHTML("phone_validation", html);
                         vteam_http.show("phone_validation");
                         return false;
