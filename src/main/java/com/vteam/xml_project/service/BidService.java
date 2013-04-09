@@ -426,13 +426,6 @@ public class BidService {
             Bids bid = bidDAO.getBidById(bid_id);
             Product p = productDAO.getProductById(bid.getProduct().getId());
             bid.setStatus(Bids.Status.COMPLETED);
-=======
-        List<Bids> expiredBids = bidDAO.getExpiredBids(new Date());
-        Product p = null;
-        for (Bids b : expiredBids) {
-            b.setStatus(Bids.Status.COMPLETED);
-            p = productDAO.getProductById(b.getProduct().getId());
->>>>>>> 02ed50dfad2dcf819a64804d8ecfa80b72ce28d1
             p.setBidId(null);
             p.setStatus(Product.Status.AVAILABLE);
             bidDAO.save(bid);
