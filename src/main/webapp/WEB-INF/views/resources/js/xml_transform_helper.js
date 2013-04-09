@@ -29,7 +29,7 @@ function transformToOngoingSourceXML(cDate)
     xml = loadXMLDoc("../resources/xml/bids.xml");
     xsl = loadXMLDoc("../resources/xsl/ongoingBid_list.xsl");
 
-    // code for IE
+    // IE
     if (window.ActiveXObject)
     {
         ex = xml.transformNode(xsl);
@@ -78,7 +78,7 @@ function viewHotBids() {
 function transformHotBids() {
     xml = loadXMLDoc("../resources/xml/hot_bid_products.xml");
     xsl = loadXMLDoc("../resources/xsl/HotBidProducts.xsl");
-    // code for IE
+    // IE
     if (window.ActiveXObject)
     {
         ex = xml.transformNode(xsl);
@@ -113,11 +113,11 @@ function displayOngoingPaginationResult(page, pageSize)
     xml = transformToOngoingSourceXML(toDateAndTime2(new Date()));
     xsl = loadXMLDoc("../resources/xsl/OnGoingBidPaging.xsl");
 
-    // code for IE
+    // IE
     if (window.ActiveXObject)
     {
         ex = xml.transformNode(xsl);
-        document.getElementById("example").innerHTML = ex;
+        document.getElementById("test11").innerHTML = ex;
     }
     else if (document.implementation && document.implementation.createDocument)
     {
