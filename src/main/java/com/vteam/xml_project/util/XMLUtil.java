@@ -99,6 +99,7 @@ public class XMLUtil {
         Fop fop = fopFactory.newFop(MimeConstants.MIME_PDF, foUserAgent, outStream);
         Result res = new SAXResult(fop.getDefaultHandler());
         Transformer xslfoTransformer = getTransformer(xstlFile);
+        xslfoTransformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
         xslfoTransformer.transform(xmlFile, res);
         return outStream;
     }

@@ -52,7 +52,7 @@ public class ApplicationListenerBean implements ApplicationListener<ContextRefre
         marshallBids();
     }
     //@Scheduled(fixedRate=6000)
-    @Scheduled(cron = "* * 1 * * ?")
+    @Scheduled(cron = "* * * 1 * ?")
     private void marshallCategory() {
         try {
             CategoryListDTO categoryListDTO = categoryService.getCategoryList();

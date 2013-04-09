@@ -3,6 +3,7 @@
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
                 xmlns:fo="http://www.w3.org/1999/XSL/Format"
                 exclude-result-prefixes="fo">
+    <xsl:output method="xml" version="1.0" encoding="UTF-8" indent="yes"/> 
     <xsl:template match="/">
         <fo:root xmlns:fo="http://www.w3.org/1999/XSL/Format">
             <fo:layout-master-set>
@@ -13,7 +14,7 @@
 
             <fo:page-sequence master-reference="my-page">
                 <fo:flow flow-name="xsl-region-body">
-                    <fo:block font-size = "20pt" font-family = "sans-serif" line-height = "24pt"
+                    <fo:block font-size = "20pt" font-family="Times-Roman" line-height = "24pt"
                               text-align = "center" background-color="gray" >
                         Product List
                     </fo:block>

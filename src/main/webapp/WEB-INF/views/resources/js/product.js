@@ -113,6 +113,7 @@ function doBid(_id) {
         if (d.allowed === 'ok') {
             vteam_http.setHTML("current_price", numberWithCommas(d.price) + " VND");
             isInBidTime = true;
+            getBalance();
             startBuyingNow(d.bidId);
         } else {
             alert(d.message);
@@ -128,7 +129,12 @@ function doBuy(_id) {
     "POST", function(d) {
         clearInterval(cc);
         $('#buyNowLeft').html('');
-        $('#bidButton').html('<font color="white" size="4.5em"><center>Chúc mừng!<br/><font size="2.5em"><strong>Sản phẩm đã thuộc về bạn</strong></font></center></font>');
+        if (d.success == "yes") {
+            $('#bidButton').html('<font color="white" size="4.5em"><center>Chúc mừng!<br/><font size="2.5em"><strong>Sản phẩm đã thuộc về bạn</strong></font></center></font>');
+        }
+        else {
+            $('#bidButton').html('<font color="red" size="4.5em"><center>Không thành công!<br/><font size="2.5em"><strong>'+d.message+'</strong></font></center></font>');
+        }
         $('#bidButton').removeClass('v6Buy');
         $('#bidButton').addClass('v6Bought');
     });
@@ -195,15 +201,15 @@ function toHMS(diff, isEndTime) {
     var diffMinutes = diff / (60 * 1000) % 60;
     var diffHours = diff / (60 * 60 * 1000);
     var returnHTML;
-         
+
     if (isEndTime) {
-        returnHTML   = "Còn <span class='clockNumber' style='font-size:1.7em'>" + Number(diffHours).toFixed(0) + "</span> Giờ "
-            + "<span class='clockNumber' style='font-size:1.5em'>" + Number(diffMinutes).toFixed(0) + "</span> Phút "
-            + "<span class='clockNumber' style='font-size:1.7em'>" + Number(diffSeconds).toFixed(0) + "</span>s<br/>";
+        returnHTML = "Còn <span class='clockNumber' style='font-size:1.7em'>" + Number(diffHours).toFixed(0) + "</span> Giờ "
+                + "<span class='clockNumber' style='font-size:1.5em'>" + Number(diffMinutes).toFixed(0) + "</span> Phút "
+                + "<span class='clockNumber' style='font-size:1.7em'>" + Number(diffSeconds).toFixed(0) + "</span>s<br/>";
     } else {
-        returnHTML   = "<span class='clockNumber' >" + Number(diffHours).toFixed(0) + "</span> Giờ "
-            + "<span class='clockNumber'>" + Number(diffMinutes).toFixed(0) + "</span> Phút "
-            + "<span class='clockNumber'>" + Number(diffSeconds).toFixed(0) + "</span> Giây";
+        returnHTML = "<span class='clockNumber' >" + Number(diffHours).toFixed(0) + "</span> Giờ "
+                + "<span class='clockNumber'>" + Number(diffMinutes).toFixed(0) + "</span> Phút "
+                + "<span class='clockNumber'>" + Number(diffSeconds).toFixed(0) + "</span> Giây";
     }
     return returnHTML;
 }

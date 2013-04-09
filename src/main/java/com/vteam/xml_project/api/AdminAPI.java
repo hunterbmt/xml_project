@@ -221,7 +221,7 @@ public class AdminAPI {
         }
     }
 
-    @RequestMapping(value = "export_product_list_to_pdf", method = RequestMethod.GET)
+    @RequestMapping(value = "/export_product_list_to_pdf", method = RequestMethod.GET)
     public void exportProductListToPdf(HttpServletResponse response) {
         try {
             ByteArrayOutputStream outStream = adminService.exportProductListToPdf();

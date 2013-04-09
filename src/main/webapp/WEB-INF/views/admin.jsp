@@ -91,9 +91,9 @@
 
                                 <div class="shortcuts">
 
-                                    <a href="javascript:;" class="shortcut">
+                                    <a href="javascript:;" class="shortcut" onclick="exportDataOnClick()">
                                         <i class="shortcut-icon icon-cloud-download"></i>
-                                        <span class="shortcut-label">Download report as PDF</span>	
+                                        <span class="shortcut-label">Export as PDF</span>	
                                     </a>
 
                                     <a href="javascript:;" class="shortcut" onclick="generateNinOnClick()">
@@ -105,7 +105,15 @@
                                         <i class="shortcut-icon icon-envelope"></i>
                                         <span class="shortcut-label">Send email to users</span>
                                     </a>
-                                </div> <!-- /shortcuts -->	
+                                </div>
+                                <div id="list_pdf" class="hide">
+                                    <ul>
+                                        <li><i class="icon-file"></i><a href="javascript:void(0);" onclick ="exportProductOnClick()">Product </a></li>
+                                    </ul>
+                                    <ul>
+                                        <li><i class="icon-file"></i><a href="javascript:void(0);" onclick ="exportNinCodeOnClick()">Nin Code</a></li>
+                                    </ul>
+                                </div>
                                 <div id="nin_modal" style="width: 30%" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                     <div class="modal-header">
                                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
