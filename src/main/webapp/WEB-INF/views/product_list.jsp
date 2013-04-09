@@ -188,10 +188,10 @@
                         <div class="alert hide" id="updateResult1"></div>
                         <div class="tabbable tabs-left">
                             <ul class="nav nav-tabs">
-                                <li class="active"><a href="#lA" data-toggle="tab">Thông tin chi tiết</a></li>
+                                <li class="active"><a href="#lA" data-toggle="tab" onclick="loadUserInfo()">Thông tin chi tiết</a></li>
                                 <li class=""><a href="#lB" data-toggle="tab">Thay đổi mật khẩu</a></li>
                                 <li class=""><a href="#lC" data-toggle="tab" onclick="getOrderList()">Lịch sử mua hàng</a></li>
-                                <li class=""><a href="#lD" data-toggle="tab">Nạp thẻ</a></li>
+                                <li class=""><a href="#lD" data-toggle="tab" onclick="hidePaymentList()">Nạp thẻ</a></li>
                             </ul>
                             <div class="tab-content">
 

@@ -126,7 +126,7 @@ public class UserService {
     public boolean createNewUser(UserDTO newUser) {
         try {
             String storePassword = StringUtil.createPasswordForDB(newUser.getPassword());
-            Users dbUser = new Users(newUser.getEmail(), storePassword, newUser.getFullname(), null, null, null);
+            Users dbUser = new Users(newUser.getEmail(), storePassword, newUser.getFullname(), null, null, newUser.getPhone());
             dbUser.setBalance(5);
             userDAO.save(dbUser);
             return true;

@@ -87,8 +87,11 @@ function updateInfo() {
             function(result) {
                 if (result.status == "success")
                 {
+                    vteam_http.setHTML("updateResult1", "<font style='color: green;font-size: large;'><strong>Cập nhật thành công! !</strong></font>");
+                    vteam_http.show("updateResult1");
+                    $("#updateResult1").hide(5000);
                     loadUserInfo();
-
+                    
                 } else {
                     if (result.status == "unlogin") {
                         vteam_http.setHTML("updateResult1", "<font style='color: black;font-size: large;'><strong>Sesstion Times out! !</strong> Please log in again.</font>");
@@ -96,7 +99,7 @@ function updateInfo() {
                         vteam_http.setHTML("updateResult1", "<font style='color: red;font-size: large;'><strong>Oh snap!!</strong> Change a few things up and try submitting again.</font>");
                     }
                     vteam_http.show("updateResult1");
-                    $("#updateResult1").hide(20000);
+                    $("#updateResult1").hide(5000);
                 }
             });
 }
@@ -116,7 +119,7 @@ function updatePassword() {
             function(result) {
                 if (result.status == "success")
                 {
-                    vteam_http.setHTML("updateResult1", "<font style='color: green;font-size: large;'><strong>Well done! !</strong> You successfully updated.</font>");
+                    vteam_http.setHTML("updateResult1", "<font style='color: green;font-size: large;'><strong>Cập nhật thành công! !</strong></font>");
 
 
                 } else if (result.status == "unlogin") {
@@ -127,7 +130,7 @@ function updatePassword() {
                     vteam_http.setHTML("updateResult1", "<font style='color: red;font-size: large;'><strong>Oh snap!!</strong> Change a few things up and try submitting again.</font>");
                 }
                 vteam_http.show("updateResult1");
-                $("#updateResult1").hide(20000);
+                $("#updateResult1").hide(5000);
             });
 
 }
@@ -187,6 +190,10 @@ function inputCode() {
             function(result) {
                 if (result.status == "success")
                 {
+                    vteam_http.setHTML("updateResult1", "<font style='color: green;font-size: large;'><strong>Cập nhật thành công! !</strong></font>");
+                    vteam_http.show("updateResult1");                  
+                    $("#updateResult1").hide(5000);
+                    clearText();
                     initUserInfo();
                 } else if (result.status == "unlogin") {
                     vteam_http.setHTML("result", "You need login again to insert");
@@ -196,6 +203,10 @@ function inputCode() {
                     vteam_http.show("result");
                 }
             });
+}
+function hidePaymentList(){
+    vteam_http.hide("tablePayment");
+    vteam_http.hide("paymentResult");
 }
 function create() {
     var email = document.getElementById("new_username").value;
@@ -207,7 +218,8 @@ function create() {
         vteam_http.makeHttpRequest("/user/create", {
             email: email,
             password: password,
-            fullname: fullname
+            fullname: fullname,
+            phone:phone
         },
         "POST",
                 function(result) {
