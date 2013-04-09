@@ -33,7 +33,7 @@ public class BidDAO extends BaseDAO{
         Query query = this
                 .sessionFactory
                 .getCurrentSession()
-                .createQuery("FROM Bids");
+                .createQuery("FROM Bids ORDER BY lastEdit DESC");
        
         query = query.setFirstResult(pageSize * (page - 1));
 		query.setMaxResults(pageSize);

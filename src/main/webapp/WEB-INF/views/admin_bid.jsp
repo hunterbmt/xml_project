@@ -23,11 +23,11 @@
         <script src="/resources/js/lib/jquery-ui.js"></script>
         <script src="/resources/js/lib/bootstrap.min.js"></script>
         <script src="/resources/js/vteam.js"></script>
-        <script src="/resources/js/dateUtils.js"></script>
-        <script src="/resources/js/bid.js"></script>
+        <script src="/resources/js/dateUtils.js"></script>        
         <script src="/resources/js/jquery-ui-timepicker-addon.js"></script>
         <script type="text/javascript" src="/resources/js/lib/jquery.simplePagination.js"></script>
         <script src="/resources/js/xml_transform_helper.js"></script>
+        <script src="/resources/js/bid.js"></script>
 
         <script>
             $(document).ready(function() {
@@ -55,7 +55,7 @@
             });
         </script>
     </head>
-    <body>
+    <body onload="updateXML()">
         <div class="navbar navbar-fixed-top">
             <div class="navbar-inner">
                 <div class="container">

@@ -89,9 +89,9 @@ function insertOrUpdateBid() {
             'POST', callback);
         }
         clearValidBid();
-        
+
     }
-    
+
 }
 
 function refresh(timeout) {
@@ -102,12 +102,12 @@ function refresh(timeout) {
 var msg = "Thành công!";
 function callback(result) {
     if (result.status === 'success') {
-       // msg = "Thành công !";
+        // msg = "Thành công !";
         clearBidDetail();
         update_lists();
         getAllProductNamList();
     } else {
-        msg = result.msg;        
+        msg = result.msg;
     }
     refresh(100);
 }
@@ -275,6 +275,20 @@ function displayUpcomingBid(bidList) {
     vteam_http.setHTML('upComingBid', cnt);
 }
 
+function bid_remove(id) {
+    vteam_http.makeHttpRequest(
+            "/admin/remove_bid",
+            {bid_id: id},
+    "POST",
+            function(d) {
+                if (d) {
+                    alert("Removed success!");
+                } else {
+                    alert("Removed failed!")
+                }
+            });
+    refresh(500);
+}
 function displayCompletedBids(bidList) {
     var cnt = '';
     for (var i = 0; i < bidList.length; i++) {
@@ -283,7 +297,7 @@ function displayCompletedBids(bidList) {
         cnt += "<td>" + bidList[i].product_name + "</td>";
         cnt += "<td>" + toDate(bidList[i].start_date) + "</td>";
         cnt += "<td>" + bidList[i].last_username + "</td>";
-        cnt += "<td>" + bidList[i].current_price + "</td>";
+        cnt += "<td>" + numberWithCommas(bidList[i].current_price) + " VND</td>";
         cnt += "<td>" + toDateAndTime(bidList[i].last_edit) + "</td>";
         cnt += "</tr>";
     }

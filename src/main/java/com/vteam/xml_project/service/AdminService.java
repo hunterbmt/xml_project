@@ -554,6 +554,11 @@ public class AdminService {
     public void checkExpiredBids() {
         bidService.checkExpiredBids();
     }
+    
+    @Transactional
+    public boolean removeBidById(int bid_id) {
+        return bidService.removeBidById(bid_id);
+    }
 
     @Transactional
     public OrderHistoryDTO getOrderDetail(int orderId) {

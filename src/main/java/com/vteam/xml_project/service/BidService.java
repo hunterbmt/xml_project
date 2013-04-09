@@ -324,7 +324,8 @@ public class BidService {
             fromIndex = (fromIndex > filteredList.size() - 1) ? 0 : fromIndex;
             int toIndex = fromIndex + pageSize;
             toIndex = (toIndex > filteredList.size() - 1) ? filteredList.size() : toIndex;
-            list.setBidList(getTmpList(filteredList.subList(fromIndex, toIndex)));
+            List<Bids> tmp = filteredList.subList(fromIndex, toIndex + 1);
+            list.setBidList(getTmpList(tmp));
             list.setNumberOfBid(filteredList.size());
             list.setStatus("success");
         } catch (HibernateException he) {
@@ -354,7 +355,8 @@ public class BidService {
             fromIndex = (fromIndex > filteredList.size() - 1) ? 0 : fromIndex;
             int toIndex = fromIndex + pageSize;
             toIndex = (toIndex > filteredList.size() - 1) ? filteredList.size() : toIndex;
-            list.setBidList(getTmpList(filteredList.subList(fromIndex, toIndex)));
+            List<Bids> tmp = filteredList.subList(fromIndex, toIndex + 1);
+            list.setBidList(getTmpList(tmp));
             list.setNumberOfBid(filteredList.size());
             list.setStatus("success");
         } catch (HibernateException he) {
@@ -380,8 +382,9 @@ public class BidService {
             int fromIndex = pageSize * (page - 1);
             fromIndex = (fromIndex > filteredList.size() - 1) ? 0 : fromIndex;
             int toIndex = fromIndex + pageSize - 1;
-            toIndex = (toIndex > filteredList.size() - 1) ? filteredList.size() : toIndex;
-            list.setBidList(getTmpList(filteredList.subList(fromIndex, toIndex)));
+            toIndex = (toIndex > filteredList.size() - 1) ? filteredList.size() - 1 : toIndex;
+            List<Bids> tmp = filteredList.subList(fromIndex, toIndex + 1);
+            list.setBidList(getTmpList(tmp));
             list.setNumberOfBid(filteredList.size());
             list.setStatus("success");
         } catch (HibernateException he) {
@@ -394,15 +397,36 @@ public class BidService {
 
     @Transactional
     void checkExpiredBids() {
-        List<Bids> expiredBids = bidDAO.getExpiredBids(new Date());
-        Product p = null;
-        for (Bids b: expiredBids) {
-            b.setStatus(Bids.Status.COMPLETED);
-            p = productDAO.getProductById(b.getProduct().getId());
+        try {
+            List<Bids> expiredBids = bidDAO.getExpiredBids(new Date());
+            Product p = null;
+            for (Bids b : expiredBids) {
+                b.setStatus(Bids.Status.COMPLETED);
+                p = productDAO.getProductById(b.getProduct().getId());
+                p.setBidId(null);
+                p.setStatus(Product.Status.AVAILABLE);
+                productDAO.save(p);
+                bidDAO.save(b);
+            }
+        } catch (HibernateException he) {
+            log.error(he);
+        }
+    }
+
+    @Transactional
+    boolean removeBidById(int bid_id) {
+        try {
+            Bids bid = bidDAO.getBidById(bid_id);
+            Product p = productDAO.getProductById(bid.getProduct().getId());
+            bid.setStatus(Bids.Status.COMPLETED);
             p.setBidId(null);
             p.setStatus(Product.Status.AVAILABLE);
+            bidDAO.save(bid);
             productDAO.save(p);
-            bidDAO.save(b);
+        } catch (HibernateException he) {
+            log.error(he);
+            return false;
         }
+        return true;
     }
 }
