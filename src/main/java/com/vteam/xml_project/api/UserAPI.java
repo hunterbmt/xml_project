@@ -69,6 +69,10 @@ public class UserAPI {
         newUser.setEmail(email);
         newUser.setPassword(password);
         newUser.setFullname(fullname);
+        phone = phone.trim();
+        if(phone.charAt(0)!='+'){
+            phone = '+'+phone;
+        }
         newUser.setPhone(phone);
         boolean result = userService.createNewUser(newUser);
         if (result) {
@@ -90,6 +94,10 @@ public class UserAPI {
         if (!StringUtil.validString(email)) {
             returnMap.put("status", "unlogin");
             return returnMap;
+        }
+        phone = phone.trim();
+        if(phone.charAt(0)!='+'){
+            phone = '+'+phone;
         }
         boolean result = userService.upadateUser(email, address, phone, birthday, formatDate);
         if (result) {

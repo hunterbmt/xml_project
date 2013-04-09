@@ -302,6 +302,9 @@ public class BidService {
                 xmlReloadService.marshallUser();
                 xmlReloadService.marshallCategory();
             }
+            else{
+                return false;
+            }
         }
         return true;
     }

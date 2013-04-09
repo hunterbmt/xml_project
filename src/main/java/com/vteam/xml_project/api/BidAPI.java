@@ -8,7 +8,6 @@ import com.vteam.xml_project.controller.UserSession;
 import com.vteam.xml_project.dto.BidDTO;
 import com.vteam.xml_project.dto.BidListDTO;
 import com.vteam.xml_project.dto.UserDTO;
-import com.vteam.xml_project.hibernate.orm.BidHistory;
 import com.vteam.xml_project.service.BidHistoryService;
 import com.vteam.xml_project.service.BidService;
 import com.vteam.xml_project.service.UserService;
