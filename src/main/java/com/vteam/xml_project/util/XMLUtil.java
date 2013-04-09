@@ -4,6 +4,7 @@
  */
 package com.vteam.xml_project.util;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -106,5 +107,23 @@ public class XMLUtil {
         TransformerFactoryImpl impl =
                 new TransformerFactoryImpl();
         return impl.newTransformer(streamSource);
+    }
+
+    public static String transformOrderXML(String xmlFilePath,String xslFilePath,String userEmail) {
+        String formattedOutput = "";
+        try {
+            Transformer transformer =getTransformer(new StreamSource(xslFilePath));
+            transformer.setParameter("user_email", userEmail);
+            StreamSource xmlSource = new StreamSource(xmlFilePath);
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            transformer.transform(xmlSource, new StreamResult(baos));
+
+            formattedOutput = baos.toString();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return formattedOutput;
     }
 }

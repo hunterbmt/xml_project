@@ -418,6 +418,8 @@ public class AdminService {
                 productDTO.setName(p.getProductName());
                 productDTO.setDescription(p.getDescription());
                 productDTO.setCategoryName(p.getCategory().getCategoryName());
+                Bids bid = bidDAO.getBidById(p.getBidId());
+                productDTO.setCurrentPrice(bid.getCurrentPrice());
                 productListDTO.getProductList().add(productDTO);
             }
             File xmlFile = File.createTempFile(UUID.randomUUID().toString(), "_product.xml");

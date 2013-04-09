@@ -18,6 +18,7 @@ import com.vteam.xml_project.hibernate.dao.UserPaymentDAO;
 import com.vteam.xml_project.hibernate.orm.CardCode;
 import com.vteam.xml_project.hibernate.orm.UserPayment;
 import com.vteam.xml_project.util.DateUtil;
+import com.vteam.xml_project.util.PhoneNumberUtil;
 import com.vteam.xml_project.util.StringUtil;
 import com.vteam.xml_project.util.XMLUtil;
 import java.io.File;
@@ -66,6 +67,7 @@ public class UserService {
     @Autowired
     ServletContext servletContext;
     private static String USER_XML_FILE_NAME = "user.xml";
+    private static String Order_XSL_FILE_NAME = "order_history.xsl";
 
     @Transactional
     public UserDTO checkLogin(String email, String password) {
@@ -205,6 +207,20 @@ public class UserService {
     }
 
     @Transactional
+    public boolean checkValidationPhone(String phone) {
+        //UserDTO returnUser = new UserDTO();
+        try {
+            if (!PhoneNumberUtil.validatePhoneNumber(phone)) {
+                return false;
+            }
+        } catch (HibernateException ex) {
+            log.error(ex.getStackTrace());
+            //returnUser.setStatus("error");
+        }
+        return true;
+    }
+
+    @Transactional
     public boolean checkPassword(String email, String currentPass, String newPassword) {
         try {
             Users user = userDAO.findUserByEmail(email);
@@ -322,6 +338,21 @@ public class UserService {
     public void updateAllXML() {
         marshallUser();
 
+    }
+
+    @Transactional
+    public String showOrderHistory(String userEmail) {
+        String output = "";
+        try {
+            String xmlrealPath = servletContext.getRealPath("WEB-INF/views/resources/xml/") + File.separator;
+            String xslrealPath = servletContext.getRealPath("WEB-INF/views/resources/xsl/") + File.separator;
+            String xmlPath = xmlrealPath + USER_XML_FILE_NAME;
+            String xslPath = xslrealPath + Order_XSL_FILE_NAME;
+            output = XMLUtil.transformOrderXML(xmlPath, xslPath, userEmail);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return output;
     }
 
     private void marshallUser() {

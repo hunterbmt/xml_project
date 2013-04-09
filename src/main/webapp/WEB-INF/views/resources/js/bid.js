@@ -99,23 +99,15 @@ function refresh(timeout) {
         window.location.reload(true);
     }, timeout);
 }
-
+var msg = "Thành công!";
 function callback(result) {
     if (result.status === 'success') {
-        vteam_http.setHTML("result_IU_bid", "Successful !");
-        vteam_http.show("result_IU_bid");
-        $(function() {
-            setTimeout(vteam_http.hide("result_IU_bid"), 2000);
-        });
+       // msg = "Thành công !";
         clearBidDetail();
         update_lists();
         getAllProductNamList();
     } else {
-        vteam_http.setHTML("result_IU_bid", result.msg);
-        vteam_http.show("result_IU_bid");
-        $(function() {
-            setTimeout(vteam_http.hide("result_IU_bid"), 2000);
-        });
+        msg = result.msg;        
     }
     refresh(100);
 }
@@ -181,8 +173,8 @@ function populateList(list) {
             source: array_values
         });
     } else {
-        var newProductButton = '<br/><a class="btn-small admin_bid_new_product" href="product">Add product</a>';
-        newProductButton += '<span style="margin-left:25%; font-size:0.9em">No more available</span>';
+        var newProductButton = '<br/><a class="btn-small admin_bid_new_product" href="product">Thêm sản phẩm</a>';
+        newProductButton += '<span style="margin-left:25%; font-size:0.9em">Hết sản phẩm!</span>';
         $("#bid_product_name").after(newProductButton);
     }
 

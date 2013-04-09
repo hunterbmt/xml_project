@@ -28,6 +28,7 @@
         <script src="/resources/js/order.js"></script> 
         <script src="/resources/js/jquery-ui-timepicker-addon.js"></script>
         <script src="/resources/js/dateUtils.js"></script>
+        <script src="/resources/js/xml_transform_helper.js"></script>
         <script>
             window.onload = function() {
                 loadAndDisplayProduct(1);
@@ -139,28 +140,34 @@
                             <form  method="post" accept-charset="UTF-8">
                                 <fieldset style="padding-left: 300px;">
                                     <div class="control-group">
-                                        <label > Tên đăng nhập:</label>
+                                        <label > Tên đăng nhập:<font style="color: red">*</font></label>
                                         <input id="new_username" name="email" type="text" name="username" onblur="valid_register_Username()"/>
-                                        <div class="hide" id="email_validation"></div>
+                                        <div class="hide" id="email_validation" sytle=""></div>
                                     </div>
                                     <div class="control-group">
-                                        <label > Mật khẩu:</label>
+                                        <label > Mật khẩu:<font style="color: red">*</font></label>
                                         <input id="new_password"  type="password" name="password" onblur="valid_register_Password()" />
                                     </div>
                                     <div class="control-group">
-                                        <label > Nhập lại mật khẩu:</label>
+                                        <label > Nhập lại mật khẩu:<font style="color: red">*</font></label>
                                         <input id="new_repassword"  type="password" name="password" onblur="valid_register_rePassword()" />
-                                        <div class="hide" id="pass_validation">Hãy nhập đúng mật khẩu đăng kí</div>
+                                        <div class="hide" id="pass_validation"></div>
                                     </div>
                                     <div class="control-group">
-                                        <label > Tên thật:</label>
+                                        <label > Tên thật:<font style="color: red">*</font></label>
                                         <input id="new_fullname"  type="text" name="fullname" onblur="valid_register_Fullname()" /><p/>
                                     </div>
-                                    <div class="hide" id="fullname_validation">Hãy nhập tên đầy đủ</div>
+                                    <div class="hide" id="fullname_validation"><font style="color: red">Hãy nhập tên đầy đủ</font></div>
+                                    <div class="control-group">
+                                        <label > Số điện thoại:<font style="color: red">*</font></label>
+                                        <input id="new_phone" type="text" name="fname" onblur="valid_register_Phone()"><br>
+                                        <div class="hide" id="phone_validation"></div>
+                                    </div>
+                                    
                                     <div>
                                         <input type="text" id="txtCaptcha" 
                                                style="background-color: #FFA0A0; text-align:center; border:none;
-                                               font-weight:bold; font-family:Modern" />
+                                               font-weight:bold; font-family:Modern" readonly="true" onpaste="return false;"/>
                                         <i style="margin-left: 5px;" class="icon-refresh" id="btnrefresh"onclick="DrawCaptcha();"></i>
                                          
                                     </div>
@@ -183,7 +190,7 @@
                             <ul class="nav nav-tabs">
                                 <li class="active"><a href="#lA" data-toggle="tab">Thông tin chi tiết</a></li>
                                 <li class=""><a href="#lB" data-toggle="tab">Thay đổi mật khẩu</a></li>
-                                <li class=""><a href="#lC" data-toggle="tab" onclick="loadAndDisplayOrder()">Lịch sử mua hàng</a></li>
+                                <li class=""><a href="#lC" data-toggle="tab" onclick="getOrderList()">Lịch sử mua hàng</a></li>
                                 <li class=""><a href="#lD" data-toggle="tab">Nạp thẻ</a></li>
                             </ul>
                             <div class="tab-content">

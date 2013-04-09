@@ -17,6 +17,9 @@ function toDateAndTime1(ts) {
 function toDateAndTime2(ts) {
     return formatDate1(ts);
 }
+function toDateAndTimeBirthday(ts) {
+    return formatDateBirthday(ts);
+}
 
 function formatDate(pubDate) {
     var weekday = new Array("Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat");
@@ -35,6 +38,17 @@ function formatDate1(ts) {
     day = (day < 10)? "0" + day: day;
     //var formattedDate = month + '/' + day + '/'+pubDate.getFullYear()+' '+ getTime(ts);
     var formattedDate = pubDate.getFullYear()+ '/' + month + '/' + day + ' '+ getTime(ts); //yyyy/MM/dd HH:mm:ss
+    return formattedDate;
+}
+
+function formatDateBirthday(ts) {
+    var pubDate = new Date(ts);
+    var month = (pubDate.getMonth() + 1);
+    month = (month < 10)? "0" + month: month;
+    var day = pubDate.getDate();
+    day = (day < 10)? "0" + day: day;
+    //var formattedDate = month + '/' + day + '/'+pubDate.getFullYear()+' '+ getTime(ts);
+    var formattedDate = pubDate.getFullYear()+ '/' + month + '/' + day; //yyyy/MM/dd HH:mm:ss
     return formattedDate;
 }
 

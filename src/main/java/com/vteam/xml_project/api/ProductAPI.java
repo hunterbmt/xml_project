@@ -7,6 +7,7 @@ package com.vteam.xml_project.api;
 import com.vteam.xml_project.controller.UserSession;
 import com.vteam.xml_project.dto.ProductDTO;
 import com.vteam.xml_project.dto.ProductListDTO;
+import com.vteam.xml_project.service.AdminService;
 import com.vteam.xml_project.service.BidHistoryService;
 import com.vteam.xml_project.service.ProductService;
 import java.util.List;
@@ -33,6 +34,8 @@ public class ProductAPI {
     private ProductService productService;
     @Autowired
     private BidHistoryService bhService;
+    @Autowired
+    private AdminService adminService;
 
     @RequestMapping(value = "/getProductList", method = RequestMethod.POST, produces = "application/json")
     public @ResponseBody
@@ -73,5 +76,14 @@ public class ProductAPI {
         ProductDTO result = productService.getProductById(product_id);
         return result;
     }
+    @RequestMapping(value = "/marshallHotBidProducts", method = RequestMethod.POST)
+    public @ResponseBody
+    String marshallHotBidProducts(
+            @RequestParam String[] product_ids) {
+        productService.marshallHotBidProducts(product_ids);
+        return "success";
+    }
+    
+    
 
 }

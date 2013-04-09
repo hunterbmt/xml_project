@@ -8,6 +8,8 @@ import com.vteam.xml_project.controller.UserSession;
 import com.vteam.xml_project.dto.BidDTO;
 import com.vteam.xml_project.dto.BidListDTO;
 import com.vteam.xml_project.dto.UserDTO;
+import com.vteam.xml_project.hibernate.orm.BidHistory;
+import com.vteam.xml_project.service.BidHistoryService;
 import com.vteam.xml_project.service.BidService;
 import com.vteam.xml_project.service.UserService;
 import java.util.HashMap;
@@ -35,6 +37,8 @@ public class BidAPI {
     private BidService bidService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private BidHistoryService bhService;
 
     /* ========== place bid ============ */
     @RequestMapping(value = "/do_bid", method = RequestMethod.POST, produces = "application/json")
@@ -147,15 +151,10 @@ public class BidAPI {
         return result;
     }
 
-    @RequestMapping(value = "/create", method = RequestMethod.POST, produces = "application/json")
+    @RequestMapping(value = "/getNoOfBidderByBidID", method = RequestMethod.POST, produces = "application/json")
     public @ResponseBody
-    BidDTO create(
-            @RequestParam int product_id, String start_date, String format_date) {
-
-        if (format_date == null) {
-            format_date = "MM/dd/yyyy HH:mm:ss";
-        }
-        BidDTO result = bidService.createNewBid(product_id, start_date, format_date);
-        return result;
+    String getNoOfBidderByBidID(
+            @RequestParam int bid_id) {
+        return String.valueOf(bhService.getNoOfBidderByBidID(bid_id));
     }
 }

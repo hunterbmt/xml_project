@@ -45,4 +45,10 @@ public class BidHistoryService {
         }
         return rs;
     }
+    
+    @Transactional
+    public int getNoOfBidderByBidID(int bid_id) {
+        List<BidHistory> bhList = bhDAO.getBidHistoryByBidId(bid_id);
+        return bhList.size();
+    }
 }

@@ -25,7 +25,7 @@ public class OrderHistoryDAO extends BaseDAO {
         return (OrderHistory) query.uniqueResult();
     }
 
-    public List<OrderHistory> getOrderHistorysList(int id) throws HibernateException {
+    public List<OrderHistory> getOrderHistorysListByUserID(int id) throws HibernateException {
         Query query = this.sessionFactory
                 .getCurrentSession()
                 .createQuery("FROM OrderHistory where user_id = :uid");

@@ -65,6 +65,8 @@ public class BidService {
     ServletContext servletContext;
     @Autowired
     VoiceService voiceService;
+    @Autowired
+    private BidHistoryService bhService;
     private static long BID_DURATION = (long) 25.00;
 
     private List<BidDTO> getTmpList(List<Bids> bidList) {
@@ -84,6 +86,7 @@ public class BidService {
             tmp.setEnd_date(bid.getEndDate());
             tmp.setCost(bid.getCost());
             tmp.setIsCompleted(bid.getStatus().ordinal());
+            tmp.setBiddedCounter(bhService.getNoOfBidderByBidID(bid.getId()));
             if (uuid != null) {
                 Users u = userDAO.findUserByUuid(uuid);
                 tmp.setLast_username(u.getFullname());

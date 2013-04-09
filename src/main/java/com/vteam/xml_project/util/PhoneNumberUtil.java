@@ -131,7 +131,7 @@ public final class PhoneNumberUtil {
 			return true;
 		}
 		return false;
-	}
+	}  
 
 	private static boolean validLength(String phoneNumber) {
 		if (phoneNumber == null) {

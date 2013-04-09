@@ -17,16 +17,19 @@ function loadXMLDoc(dname)
     return xhttp.responseXML;
 }
 
-var transformeddoc = null;
-var params = extractparams(window.location.search);
-
+function updateXML() {
+    vteam_http.makeHttpRequest(
+            "/admin/updateXML",{},"POST"
+        );
+}
 
 function transformToOngoingSourceXML(cDate)
 {
+    updateXML();
     xml = loadXMLDoc("../resources/xml/bids.xml");
     xsl = loadXMLDoc("../resources/xsl/ongoingBid_list.xsl");
 
-    // code for IE
+    // IE
     if (window.ActiveXObject)
     {
         ex = xml.transformNode(xsl);
@@ -36,35 +39,96 @@ function transformToOngoingSourceXML(cDate)
     {
         xsltProcessor = new XSLTProcessor();
         xsltProcessor.importStylesheet(xsl);
-        xsltProcessor.setParameter("","cDate",cDate);
-        
-        return xsltProcessor.transformToDocument(xml);        
+        xsltProcessor.setParameter("", "cDate", cDate);
+
+        return xsltProcessor.transformToDocument(xml);
     }
 }
 
-function displayOngoingPaginationResult(page, pageSize)
-{
-    if (!page) { page = 0; }
-    if (!pageSize) { pageSize = 3; }
+function viewHotBids() {
+    updateXML();
     xml = transformToOngoingSourceXML(toDateAndTime2(new Date()));
-    xsl = loadXMLDoc("../resources/xsl/OnGoingBidPaging.xsl");
-
-    // code for IE
+    xsl = loadXMLDoc("../resources/xsl/HotBidProductIDs.xsl");
+    var orderedHotProductIDs;
     if (window.ActiveXObject)
     {
-        ex = xml.transformNode(xsl);
-        document.getElementById("example").innerHTML = ex;
+        orderedHotProductIDs = xml.transformNode(xsl);        
     }
     else if (document.implementation && document.implementation.createDocument)
     {
         xsltProcessor = new XSLTProcessor();
         xsltProcessor.importStylesheet(xsl);
-        xsltProcessor.setParameter("","Page",page);
-        xsltProcessor.setParameter("","PageSize",pageSize);
-        xsltProcessor.setParameter("","_target",'bid');
-        resultDocument = xsltProcessor.transformToFragment(xml,document);
-        document.getElementById("test11").appendChild(resultDocument);
+        orderedHotProductIDs =  xsltProcessor.transformToDocument(xml);
+    }
+
+    var target = new Array();
+    var ids = orderedHotProductIDs.getElementsByTagName("product_id");
+    for (var i = 0; i < ids.length; i++) {
+        target.push(ids[i].textContent);
+    }
+
+    vteam_http.makeSyncHttpRequest("/product/marshallHotBidProducts",
+            {
+                product_ids: target.reverse()
+            },
+    'POST');
+    transformHotBids();
+}
+
+function transformHotBids() {
+    xml = loadXMLDoc("../resources/xml/hot_bid_products.xml");
+    xsl = loadXMLDoc("../resources/xsl/HotBidProducts.xsl");
+    // IE
+    if (window.ActiveXObject)
+    {
+        ex = xml.transformNode(xsl);
+        document.getElementById("product_list").innerHTML = ex;
+    }
+    else if (document.implementation && document.implementation.createDocument)
+    {
+        xsltProcessor = new XSLTProcessor();
+        xsltProcessor.importStylesheet(xsl);
+        resultDocument = xsltProcessor.transformToFragment(xml, document);
+        //document.getElementById("product_list").appendChild(resultDocument);
+        var x = resultDocument.childNodes;
+        var html = "";
         
+        for (i=0;i<x.length;i++) {            
+            html += x[i].outerHTML;
+        }
+        vteam_http.setHTML("product_list","");
+        vteam_http.appendTo("product_list", html);
+        hideAllDiv();
+        vteam_http.show("product_list");
+    }
+}
+function displayOngoingPaginationResult(page, pageSize)
+{
+    if (!page) {
+        page = 0;
+    }
+    if (!pageSize) {
+        pageSize = 3;
+    }
+    xml = transformToOngoingSourceXML(toDateAndTime2(new Date()));
+    xsl = loadXMLDoc("../resources/xsl/OnGoingBidPaging.xsl");
+
+    // IE
+    if (window.ActiveXObject)
+    {
+        ex = xml.transformNode(xsl);
+        document.getElementById("test11").innerHTML = ex;
+    }
+    else if (document.implementation && document.implementation.createDocument)
+    {
+        xsltProcessor = new XSLTProcessor();
+        xsltProcessor.importStylesheet(xsl);
+        xsltProcessor.setParameter("", "Page", page);
+        xsltProcessor.setParameter("", "PageSize", pageSize);
+        xsltProcessor.setParameter("", "_target", 'bid');
+        resultDocument = xsltProcessor.transformToFragment(xml, document);
+        document.getElementById("test11").appendChild(resultDocument);
+
     }
 }
 

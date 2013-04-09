@@ -30,6 +30,7 @@
                             &gt; $stripped-current-datetime
                             ]"
             ><bid>
+                    <!--<xsl:copy-of select="."/>-->
                     <id><xsl:value-of select="id"/></id>
                     <last_userid><xsl:value-of select="last_userid"/></last_userid>
                     <last_username><xsl:value-of select="last_username"/></last_username>
@@ -40,6 +41,7 @@
                     <start_date><xsl:value-of select="start_date"/></start_date>
                     <end_date><xsl:value-of select="end_date"/></end_date>
                     <last_edit><xsl:value-of select="last_edit"/></last_edit>
+                    <biddedCounter><xsl:value-of select="biddedCounter"/></biddedCounter>
                 </bid>
             </xsl:for-each>  
         </bidList>
