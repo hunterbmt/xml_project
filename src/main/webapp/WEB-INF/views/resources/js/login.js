@@ -277,7 +277,7 @@ function displayPayment(paymentList) {
     vteam_http.show("paymentResult");
 }
 function exportPDF() {
-    window.location.href = "/order/export_product_list_to_pdf";
+    window.location.href = "/order/export_order_list_to_pdf";
 }
 function validUsername() {
     var email = document.getElementById("user_username").value;
