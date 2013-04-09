@@ -4,15 +4,10 @@
  */
 package com.vteam.xml_project.service;
 
-import com.vteam.xml_project.dto.NinCodeDTO;
-import com.vteam.xml_project.dto.NinCodeListDTO;
 import com.vteam.xml_project.dto.OrderHistoryDTO;
 import com.vteam.xml_project.dto.OrderHistoryListDTO;
 import com.vteam.xml_project.hibernate.dao.OrderHistoryDAO;
-import com.vteam.xml_project.hibernate.orm.CardCode;
 import com.vteam.xml_project.hibernate.orm.OrderHistory;
-import com.vteam.xml_project.hibernate.orm.Users;
-import com.vteam.xml_project.util.DateUtil;
 import com.vteam.xml_project.util.XMLUtil;
 import java.io.ByteArrayOutputStream;
 import java.io.File;

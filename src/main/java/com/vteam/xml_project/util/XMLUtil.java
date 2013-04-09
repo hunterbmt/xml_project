@@ -17,6 +17,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.stream.XMLStreamReader;
+import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Result;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
@@ -113,12 +114,14 @@ public class XMLUtil {
         String formattedOutput = "";
         try {
             Transformer transformer =getTransformer(new StreamSource(xslFilePath));
+            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+            transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
             transformer.setParameter("user_email", userEmail);
             StreamSource xmlSource = new StreamSource(xmlFilePath);
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             transformer.transform(xmlSource, new StreamResult(baos));
 
-            formattedOutput = baos.toString();
+            formattedOutput = baos.toString("UTF-8");
 
         } catch (Exception e) {
             e.printStackTrace();
