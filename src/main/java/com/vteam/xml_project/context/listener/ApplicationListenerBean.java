@@ -7,6 +7,7 @@ package com.vteam.xml_project.context.listener;
 import com.vteam.xml_project.dto.BidListDTO;
 import com.vteam.xml_project.dto.CategoryDTO;
 import com.vteam.xml_project.dto.CategoryListDTO;
+import com.vteam.xml_project.dto.UserDTO;
 import com.vteam.xml_project.dto.UserListDTO;
 import com.vteam.xml_project.service.BidService;
 import com.vteam.xml_project.service.CategoryService;
@@ -70,6 +71,9 @@ public class ApplicationListenerBean implements ApplicationListener<ContextRefre
     private void marshallUser() {
         try {
             UserListDTO userListDTO = userService.getUserList();
+            for (UserDTO userDTO : userListDTO.getUserList()) {
+                userDTO.setOderListDTO(orderService.getOrderListByUserID(userDTO.getId()));
+            }
             String realPath = servletContext.getRealPath("WEB-INF/views/resources/xml/");
             XMLUtil.Marshall(userListDTO, realPath + "/" + USER_XML_FILE_NAME);
         } catch (Exception e) {

@@ -90,6 +90,7 @@ public class UserAPI {
             returnMap.put("status", "unlogin");
             return returnMap;
         }
+        String tmp=birthday.split("\\s").toString();
         boolean result = userService.upadateUser(email, address, phone, birthday, formatDate);
         if (result) {
             returnMap.put("status", "success");
@@ -126,6 +127,16 @@ public class UserAPI {
     boolean check_email(@RequestParam String email) {
         //String email = (String) session.get("email");
        if(userService.checkEmail(email)){
+           return true;
+       }
+       return false;
+    }
+    @RequestMapping(value = "/check_phone", method = RequestMethod.POST, produces = "application/json")
+    public @ResponseBody
+    boolean check_phone(@RequestParam String phone) {
+        String phone1 = "+"+phone.replace(" ", "");
+        
+       if(userService.checkValidationPhone(phone1)){
            return true;
        }
        return false;
@@ -171,5 +182,20 @@ public class UserAPI {
         UserPaymentListDTO paymentResult = userService.getListByPaymentID(id);
         return paymentResult;
         //return result;
+    }
+    @RequestMapping(value = "/getOrderList", method = RequestMethod.POST, produces = "application/json")
+    public @ResponseBody
+    HashMap<String, Object> getOrderList() {
+        HashMap<String, Object> returnMap = new HashMap<String, Object>();
+          String email = (String) session.get("email");
+        if (!StringUtil.validString(email)) {
+            returnMap.put("status", "unlogin");
+            return returnMap;
+        }
+        //userService.updateAllXML();
+        String output=userService.showOrderHistory(email);
+        returnMap.put("status", "success");
+        returnMap.put("result",output );
+        return returnMap;
     }
 }

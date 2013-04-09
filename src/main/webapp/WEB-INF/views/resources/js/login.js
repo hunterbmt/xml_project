@@ -31,7 +31,7 @@ function login() {
 }
 function showLogedInMenu() {
     vteam_http.hide("login_menu");
-    vteam_http.setHTML("loginResult", '<a class="btn btn-success" id="email" style="margin-left:10px;margin-top:2px;" href="javascript:void(0)" onclick="displayUserDetail()"><i class="icon-user icon-white" ></i>' + current_user_info.fullname + ' </a>'
+    vteam_http.setHTML("loginResult", '<a class="btn btn-success" id="email" style="margin-left:10px;margin-top:2px;" href="javascript:void(0)" onclick="loadUserInfo()"><i class="icon-user icon-white" ></i>' + current_user_info.fullname + ' </a>'
             + '<li id="fat-menu1" class="btn btn-success" style="width:70px;height:20px;margin-left:10px;" ><a href="javascript:void(0)" id="drop4" role="button" class="dropdown-toggle" data-toggle="dropdown" style="color:white;">' + current_user_info.balance + 'Nil' + '</a></li>'
             + '<a class="btn btn-success" id="logout" style="margin-left:10px;margin-top:2px;" href="javascript:void(0)" onclick="logout()"><i class="icon-off icon-white" ></i></a>');
     vteam_http.show("loginResult");
@@ -56,6 +56,8 @@ function logout() {
 function changeSigin() {
     clearText();
     DrawCaptcha();
+   document.getElementById('new_phone').value = '+84';
+
     currentPosition = -1;
     vteam_http.hide("login");
     vteam_http.show("signin");
@@ -150,7 +152,7 @@ function displayUserDetail() {
     document.getElementById('user_fullname').value = current_user_info.fullname;
     document.getElementById('user_phone').value = current_user_info.phone;
     if (current_user_info.birthday) {
-        document.getElementById('user_birthday').value = toDateAndTime2(current_user_info.birthday);
+        document.getElementById('user_birthday').value = toDateAndTimeBirthday(current_user_info.birthday);
     }
     else {
         document.getElementById('user_birthday').value = '';
@@ -200,7 +202,8 @@ function create() {
     var password = document.getElementById("new_password").value;
     var repassword = document.getElementById("new_repassword").value;
     var fullname = document.getElementById("new_fullname").value;
-    if (valid_register(email, password, repassword, fullname)) {
+    var phone = document.getElementById("new_phone").value;
+    if (valid_register(email, password, repassword, fullname,phone)) {
         vteam_http.makeHttpRequest("/user/create", {
             email: email,
             password: password,
@@ -313,17 +316,21 @@ function valid_register_Username() {
         var div = $("#new_username").parents("div.control-group");
         div.removeClass("success");
         div.addClass("error");
+        var html = '<font style="color: red">Địa chỉ email của bạn theo dạng aa@aa.aaa</font>';
+        vteam_http.setHTML("email_validation", html);
+        vteam_http.show("email_validation");
         return false;
     } else {
         var div = $("#new_username").parents("div.control-group");
         div.removeClass("error");
+        vteam_http.hide("email_validation");
         vteam_http.makeHttpRequest("/user/check_email", {email: username},
         "POST",
                 function(result) {
                     if (result == false)
                     {
 
-                        var html = "Địa chỉ email của bạn đã tồn tại.";
+                        var html = "<font style='color:red'>Địa chỉ email của bạn đã tồn tại.</font>";
                         vteam_http.setHTML("email_validation", html);
                         vteam_http.show("email_validation");
                         document.getElementById("new_username").focus();
@@ -343,10 +350,14 @@ function valid_register_Password() {
         var div = $("#new_password").parents("div.control-group");
         div.removeClass("success");
         div.addClass("error");
+        var html = ' <font style="color: red">Vui lòng điền mật khẩu</font>';
+        vteam_http.setHTML("pass_validation", html);
+        vteam_http.show("pass_validation");
         return false;
     } else {
         var div = $("#new_password").parents("div.control-group");
         div.removeClass("error");
+        vteam_http.hide("pass_validation");
         //div.addClass("success");
         return true;
     }
@@ -357,10 +368,14 @@ function valid_register_rePassword() {
         var div = $("#new_repassword").parents("div.control-group");
         div.removeClass("success");
         div.addClass("error");
+         var html = ' <font style="color: red">Hãy nhập đúng mật khẩu đăng kí</font>';
+        vteam_http.setHTML("pass_validation", html);
+        vteam_http.show("pass_validation");
         return false;
     } else {
         var div = $("#new_repassword").parents("div.control-group");
         div.removeClass("error");
+        vteam_http.hide("pass_validation");
         //div.addClass("success");
         return true;
     }
@@ -371,18 +386,53 @@ function valid_register_Fullname() {
         var div = $("#new_fullname").parents("div.control-group");
         div.removeClass("success");
         div.addClass("error");
+        vteam_http.show("fullname_validation");
         return false;
     } else {
         var div = $("#new_fullname").parents("div.control-group");
         div.removeClass("error");
+        vteam_http.hide("fullname_validation");
         //div.addClass("success");
         return true;
     }
 }
-function valid_register(email, pass, re_pass, fullname) {
+function valid_register_Phone() {
+    var phone = document.getElementById("new_phone").value;
+    if (!phone) {
+        var div = $("#new_phone").parents("div.control-group");
+        div.removeClass("success");
+        div.addClass("error");
+        var html = "<font style='color: red'>Định dạng số điện thoạilà +84xxxxxxxxx.</font>";
+                        vteam_http.setHTML("phone_validation", html);
+                        vteam_http.show("phone_validation");
+        return false;
+    } else {
+        var div = $("#new_phone").parents("div.control-group");
+        div.removeClass("error");
+        vteam_http.hide("phone_validation");
+        vteam_http.makeHttpRequest("/user/check_phone", {phone: phone},
+        "POST",
+                function(result) {
+                    if (result == false)
+                    {
+
+                        var html = "<font style='color: red'>Định dạng số điện thoạilà +84xxxxxxxxx.</font>";
+                        vteam_http.setHTML("phone_validation", html);
+                        vteam_http.show("phone_validation");
+                        return false;
+                    } else if (result == true) {
+                        vteam_http.hide("phone_validation");
+                        return true;
+                    }
+                });
+        //div.addClass("success");
+
+    }
+}
+function valid_register(email, pass, re_pass, fullname,phone) {
     var filter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
     if (!filter.test(email)) {
-        var html = 'Địa chỉ email của bạn theo dạng aa@aa.aaa';
+        var html = '<font style="color: red">Địa chỉ email của bạn theo dạng aa@aa.aaa</font>';
         vteam_http.setHTML("email_validation", html);
         vteam_http.show("email_validation");
         return false;
@@ -390,18 +440,18 @@ function valid_register(email, pass, re_pass, fullname) {
         vteam_http.hide("email_validation");
     }
     if(pass=="" && re_pass==""){
-       var html = 'Vui lòng điền mật khẩu';
+       var html = '<font style="color: red">Vui lòng điền mật khẩu</font>';
         vteam_http.setHTML("pass_validation", html);
         vteam_http.show("pass_validation");
         return false;
     }else{
        if (pass != re_pass) {
-        var html = 'Hãy nhập đúng mật khẩu đăng kí';
+        var html = '<font style="color: red">Hãy nhập đúng mật khẩu đăng kí</font>';
         vteam_http.setHTML("pass_validation", html);
         vteam_http.show("pass_validation");
         return false;
     } else {
-        vteam_http.hide("pass_validation")
+        vteam_http.hide("pass_validation");
     } 
     }
     if (fullname == "" || fullname == null) {
@@ -409,6 +459,29 @@ function valid_register(email, pass, re_pass, fullname) {
         return false;
     } else {
         vteam_http.hide("fullname_validation")
+    }
+    if (phone == "" || phone == null) {
+        var html = "<font style='color: red'>Định dạng số điện thoạilà +84xxxxxxxxx.</font>";
+                        vteam_http.setHTML("phone_validation", html);
+                        vteam_http.show("phone_validation");
+        return false;
+    } else {
+        vteam_http.hide("phone_validation");
+        vteam_http.makeHttpRequest("/user/check_phone", {phone: phone},
+        "POST",
+                function(result) {
+                    if (result == false)
+                    {
+
+                        var html = "<font style='color: red'>Định dạng số điện thoạilà +84xxxxxxxxx.</font>";
+                        vteam_http.setHTML("phone_validation", html);
+                        vteam_http.show("phone_validation");
+                        return false;
+                    } else if (result == true) {
+                        vteam_http.hide("phone_validation");
+                        return true;
+                    }
+                });
     }
     if (!ValidCaptcha()) {
         vteam_http.show("capcha_validation");
@@ -454,4 +527,15 @@ function clearText(){
             elements[ii].value = "";
         }
     }
+}
+function getOrderList(){
+ vteam_http.makeHttpRequest("/user/getOrderList", {},
+        "POST",
+                function(result) {
+                    if (result.status == "success")
+                    {
+                            vteam_http.setHTML("orderResult",result.result);
+                            vteam_http.show("orderResult");
+                    }
+                }); 
 }

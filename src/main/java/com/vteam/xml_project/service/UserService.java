@@ -18,6 +18,7 @@ import com.vteam.xml_project.hibernate.dao.UserPaymentDAO;
 import com.vteam.xml_project.hibernate.orm.CardCode;
 import com.vteam.xml_project.hibernate.orm.UserPayment;
 import com.vteam.xml_project.util.DateUtil;
+import com.vteam.xml_project.util.PhoneNumberUtil;
 import com.vteam.xml_project.util.StringUtil;
 import com.vteam.xml_project.util.XMLUtil;
 import java.io.File;
@@ -66,30 +67,30 @@ public class UserService {
     @Autowired
     ServletContext servletContext;
     private static String USER_XML_FILE_NAME = "user.xml";
+    private static String Order_XSL_FILE_NAME = "order_history.xsl";
 
     @Transactional
     public UserDTO checkLogin(String email, String password) {
         UserDTO userDTO = new UserDTO();
         try {
-                String storagepass = StringUtil.createPasswordForDB(password);
-                String realPath = servletContext.getRealPath("WEB-INF/views/resources/xml") ;
-                String filePath = realPath + File.separator + "user.xml";
-                SAXParserFactory spf= SAXParserFactory.newInstance();
-                SAXParser sax= spf.newSAXParser();
-                LoginSaxHandler lgs= new LoginSaxHandler(email, storagepass);
-                File file= new File(filePath);
-                sax.parse(file, lgs);
-                if(lgs.isFound()){
-                    userDTO.setStatus(lgs.getStatus());
-                    userDTO.setEmail(email);
-                    userDTO.setFullname(lgs.getFullname());
+            String storagepass = StringUtil.createPasswordForDB(password);
+            String realPath = servletContext.getRealPath("WEB-INF/views/resources/xml");
+            String filePath = realPath + File.separator + "user.xml";
+            SAXParserFactory spf = SAXParserFactory.newInstance();
+            SAXParser sax = spf.newSAXParser();
+            LoginSaxHandler lgs = new LoginSaxHandler(email, storagepass);
+            File file = new File(filePath);
+            sax.parse(file, lgs);
+            if (lgs.isFound()) {
+                userDTO.setStatus(lgs.getStatus());
+                userDTO.setEmail(email);
+                userDTO.setFullname(lgs.getFullname());
                 userDTO.setPhone(lgs.getPhone());
                 userDTO.setAddress(lgs.getAddress());
                 userDTO.setBalance(Integer.parseInt(lgs.getBalance()));
-                }
-                else {
-                    userDTO.setStatus("error");
-                }
+            } else {
+                userDTO.setStatus("error");
+            }
         } catch (NoSuchAlgorithmException ex) {
             log.error(ex.getStackTrace());
             userDTO.setStatus("error");
@@ -187,12 +188,27 @@ public class UserService {
         }
         return returnUser;
     }
-     @Transactional
+
+    @Transactional
     public boolean checkEmail(String email) {
         //UserDTO returnUser = new UserDTO();
         try {
             Users dbUser = userDAO.findUserByEmail(email);
-            if(dbUser!=null){
+            if (dbUser != null) {
+                return false;
+            }
+        } catch (HibernateException ex) {
+            log.error(ex.getStackTrace());
+            //returnUser.setStatus("error");
+        }
+        return true;
+    }
+
+    @Transactional
+    public boolean checkValidationPhone(String phone) {
+        //UserDTO returnUser = new UserDTO();
+        try {
+            if (!PhoneNumberUtil.validatePhoneNumber(phone)) {
                 return false;
             }
         } catch (HibernateException ex) {
@@ -315,11 +331,28 @@ public class UserService {
         }
         return userList;
     }
+
     @Transactional
     public void updateAllXML() {
         marshallUser();
 
     }
+
+    @Transactional
+    public String showOrderHistory(String userEmail) {
+        String output="";
+        try {
+            String xmlrealPath = servletContext.getRealPath("WEB-INF/views/resources/xml/") + File.separator;
+            String xslrealPath = servletContext.getRealPath("WEB-INF/views/resources/xsl/") + File.separator;
+            String xmlPath = xmlrealPath + USER_XML_FILE_NAME;
+            String xslPath = xslrealPath + Order_XSL_FILE_NAME;
+            output = XMLUtil.transformOrderXML(xmlPath, xslPath,userEmail);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return output;
+    }
+
     private void marshallUser() {
         try {
             UserListDTO userListDTO = this.getUserList();

@@ -13,8 +13,8 @@
 
             <fo:page-sequence master-reference="my-page">
                 <fo:flow flow-name="xsl-region-body">
-                    <fo:block>Order List</fo:block>
-                    <fo:block>
+                    <fo:block text-align="center" background-color="blue" font-size="20px" >Order List</fo:block>
+                    <fo:block padding-top="20px">
                         <fo:table>
                             <fo:table-body>
                                 <fo:table-row>
@@ -37,7 +37,7 @@
                                         </fo:block>
                                     </fo:table-cell>
                                     <fo:table-cell border-color="blue" border="solid 1px black" 
-                                       text-align="center" font-weight="bold">
+                                       text-align="center" font-weight="bold" width="200px">
                                         <fo:block>
                                             Order Date
                                         </fo:block>
@@ -63,12 +63,12 @@
                                         </fo:table-cell>
                                         <fo:table-cell border="solid 1px black" text-align="center">
                                             <fo:block>
-                                                <xsl:value-of select="date" />
+                                                <xsl:value-of select="address" />
                                             </fo:block>
                                         </fo:table-cell>
                                         <fo:table-cell border="solid 1px black" text-align="center">
                                             <fo:block>
-                                                <xsl:value-of select="address" />
+                                                <xsl:value-of select="date" />
                                             </fo:block>
                                         </fo:table-cell>
                                         <fo:table-cell border="solid 1px black" text-align="center">
@@ -79,7 +79,8 @@
                                     </fo:table-row>
                                 </xsl:for-each>
                             </fo:table-body>
-                        </fo:table>
+                        </fo:table >
+                        <fo:block width="100%" text-align="right" padding-top="15px">TOTAL:<xsl:value-of select="sum(//ammount)" /> VND</fo:block>
                     </fo:block>
                 </fo:flow>
             </fo:page-sequence>
