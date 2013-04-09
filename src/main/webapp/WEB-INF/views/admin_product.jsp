@@ -294,7 +294,7 @@
                             </div>
                         </div>
                     </div>
-                    <div id="delete_product_confirm" title="Delete the product ?">
+                    <div id="delete_product_confirm" title="Delete the product ?" class="hide">
                         <p><i class="icon-warning-sign"></i> <span id="delete_product_confirm_msg"></span></p>
                     </div>
                 </div>    

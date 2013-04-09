@@ -24,9 +24,10 @@ public class OrderHistoryDTO extends BaseDTO {
     private String address;
     private int ammount;
     private String productName;
-    private String user;
+    private String phoneNumber;
     private String orderStatus;
     private String orderDay;
+    private String user;
 
     public String getProductName() {
         return productName;
@@ -84,12 +85,12 @@ public class OrderHistoryDTO extends BaseDTO {
         this.productName = productName;
     }
 
-    public String getUser() {
-        return user;
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
 
-    public void setUser(String user) {
-        this.user = user;
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
     public String getOrderStatus() {
@@ -106,5 +107,13 @@ public class OrderHistoryDTO extends BaseDTO {
 
     public void setOrderDay(String orderDay) {
         this.orderDay = orderDay;
+    }
+
+    public String getUser() {
+        return user;
+    }
+
+    public void setUser(String user) {
+        this.user = user;
     }
 }
