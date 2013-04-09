@@ -53,7 +53,7 @@ function insertOrUpdateProduct() {
     var id = parseInt(vteam_http.getHTML("product_id"));
     var product_name = vteam_http.getValue("product_name");
     var category_id = product_current_category_id;
-    var description = encodeURI(editor.getValue());
+    var description = encodeURIComponent(editor.getValue());
     var min_price = vteam_http.getValue("product_min_price");
     var max_price = vteam_http.getValue("product_max_price");
     var img = vteam_http.getValue("product_img_name");
