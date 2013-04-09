@@ -110,7 +110,8 @@ public class ProductDAO extends BaseDAO {
     public int getNumberOfProduct() {
         return ((Long) this.getSessionFactory()
                 .getCurrentSession()
-                .createQuery("Select count(product) from Product product")
+                .createQuery("Select count(product) from Product product where product.status != :status")
+                .setParameter("status", Product.Status.DELETED)
                 .uniqueResult()).intValue();
     }
 }

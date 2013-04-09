@@ -46,4 +46,12 @@ public class AdminController {
 
         return mav;
     }
+
+    @RequestMapping(value = "/order")
+    @Transactional
+    public ModelAndView admin_order(HttpServletRequest request) {
+        ModelAndView mav = new ModelAndView("admin_order");
+
+        return mav;
+    }
 }

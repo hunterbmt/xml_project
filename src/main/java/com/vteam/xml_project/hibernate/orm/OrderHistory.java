@@ -4,6 +4,8 @@ package com.vteam.xml_project.hibernate.orm;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import static javax.persistence.GenerationType.IDENTITY;
@@ -21,12 +23,17 @@ import javax.persistence.TemporalType;
 @Table(name = "tbl_order_history", catalog = "xml_project")
 public class OrderHistory implements java.io.Serializable {
 
+    public enum Status {
+
+        NEW, CANCELED, FINISHED;
+    }
     private Integer id;
     private Users user;
     private Product product;
     private Date orderDay;
     private String address;
     private int amount;
+    private OrderHistory.Status status = OrderHistory.Status.NEW;
 
     public OrderHistory() {
     }
@@ -96,5 +103,15 @@ public class OrderHistory implements java.io.Serializable {
 
     public void setAmount(int amount) {
         this.amount = amount;
+    }
+
+    @Enumerated(EnumType.ORDINAL)
+    @Column(name = "status", nullable = false, columnDefinition = "TINYINT")
+    public OrderHistory.Status getStatus() {
+        return this.status;
+    }
+
+    public void setStatus(OrderHistory.Status status) {
+        this.status = status;
     }
 }

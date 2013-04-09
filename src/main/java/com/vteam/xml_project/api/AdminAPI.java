@@ -9,6 +9,7 @@ import com.vteam.xml_project.dto.BidDTO;
 import com.vteam.xml_project.dto.CategoryDTO;
 import com.vteam.xml_project.dto.CategoryListDTO;
 import com.vteam.xml_project.dto.NinCodeListDTO;
+import com.vteam.xml_project.dto.OrderHistoryListDTO;
 import com.vteam.xml_project.dto.ProductDTO;
 import com.vteam.xml_project.dto.ProductListDTO;
 import com.vteam.xml_project.dto.TagsDTO;
@@ -93,7 +94,7 @@ public class AdminAPI {
         return result;
     }
 
-    @RequestMapping(value = "/delete_product", method = RequestMethod.POST,produces = "application/json")
+    @RequestMapping(value = "/delete_product", method = RequestMethod.POST, produces = "application/json")
     public @ResponseBody
     ProductDTO deleteProduct(@RequestParam int productId) {
         ProductDTO result = adminService.deleteProduct(productId);
@@ -247,5 +248,12 @@ public class AdminAPI {
         }
         writer.write(StringUtil.objectToJSON(result));
         writer.close();
+    }
+
+    @RequestMapping(value = "/get_order_list", method = RequestMethod.POST, produces = "application/json")
+    public @ResponseBody
+    OrderHistoryListDTO getOrderList(@RequestParam int page, int pageSize) {
+        OrderHistoryListDTO result = adminService.getOrderList(page, pageSize);
+        return result;
     }
 }

@@ -58,7 +58,7 @@ public class OrderHistoryService {
 
                 o = new OrderHistoryDTO();
                 o.setProduct_id(d.getProduct().getId());
-                o.setProduct_name(d.getProduct().getProductName());
+                o.setProductName(d.getProduct().getProductName());
                 o.setUser_id(d.getUser().getId());
                 o.setAddress(d.getAddress());
                 o.setDate(d.getOrderDay());
@@ -83,7 +83,7 @@ public class OrderHistoryService {
             OrderHistoryDTO orderDTO;
             for (OrderHistory order : orderList) {
                 orderDTO = new OrderHistoryDTO();
-                orderDTO.setProduct_name(order.getProduct().getProductName());
+                orderDTO.setProductName(order.getProduct().getProductName());
                 orderDTO.setAddress(order.getAddress());
                 orderDTO.setDate(order.getOrderDay());
                 orderDTO.setAmmount(order.getAmount());

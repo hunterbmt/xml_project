@@ -71,25 +71,24 @@ public class UserService {
     public UserDTO checkLogin(String email, String password) {
         UserDTO userDTO = new UserDTO();
         try {
-                String storagepass = StringUtil.createPasswordForDB(password);
-                String realPath = servletContext.getRealPath("WEB-INF/views/resources/xml") ;
-                String filePath = realPath + File.separator + "user.xml";
-                SAXParserFactory spf= SAXParserFactory.newInstance();
-                SAXParser sax= spf.newSAXParser();
-                LoginSaxHandler lgs= new LoginSaxHandler(email, storagepass);
-                File file= new File(filePath);
-                sax.parse(file, lgs);
-                if(lgs.isFound()){
-                    userDTO.setStatus(lgs.getStatus());
-                    userDTO.setEmail(email);
-                    userDTO.setFullname(lgs.getFullname());
+            String storagepass = StringUtil.createPasswordForDB(password);
+            String realPath = servletContext.getRealPath("WEB-INF/views/resources/xml");
+            String filePath = realPath + File.separator + "user.xml";
+            SAXParserFactory spf = SAXParserFactory.newInstance();
+            SAXParser sax = spf.newSAXParser();
+            LoginSaxHandler lgs = new LoginSaxHandler(email, storagepass);
+            File file = new File(filePath);
+            sax.parse(file, lgs);
+            if (lgs.isFound()) {
+                userDTO.setStatus(lgs.getStatus());
+                userDTO.setEmail(email);
+                userDTO.setFullname(lgs.getFullname());
                 userDTO.setPhone(lgs.getPhone());
                 userDTO.setAddress(lgs.getAddress());
                 userDTO.setBalance(Integer.parseInt(lgs.getBalance()));
-                }
-                else {
-                    userDTO.setStatus("error");
-                }
+            } else {
+                userDTO.setStatus("error");
+            }
         } catch (NoSuchAlgorithmException ex) {
             log.error(ex.getStackTrace());
             userDTO.setStatus("error");
@@ -118,8 +117,10 @@ public class UserService {
             if (formatDate == null) {
                 formatDate = "MM/dd/yyyy HH:mm:ss";
             }
-            Date parseDay = util.parseFromString(birthday, formatDate);
-            dbUser.setBirthday(parseDay);
+            if (StringUtil.validString(birthday)) {
+                Date parseDay = util.parseFromString(birthday, formatDate);
+                dbUser.setBirthday(parseDay);
+            }
             userDAO.save(dbUser);
             return true;
         } catch (NullPointerException ex) {
@@ -187,12 +188,13 @@ public class UserService {
         }
         return returnUser;
     }
-     @Transactional
+
+    @Transactional
     public boolean checkEmail(String email) {
         //UserDTO returnUser = new UserDTO();
         try {
             Users dbUser = userDAO.findUserByEmail(email);
-            if(dbUser!=null){
+            if (dbUser != null) {
                 return false;
             }
         } catch (HibernateException ex) {
@@ -315,11 +317,13 @@ public class UserService {
         }
         return userList;
     }
+
     @Transactional
     public void updateAllXML() {
         marshallUser();
 
     }
+
     private void marshallUser() {
         try {
             UserListDTO userListDTO = this.getUserList();
