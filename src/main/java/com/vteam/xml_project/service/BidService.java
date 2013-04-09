@@ -403,7 +403,6 @@ public class BidService {
 
     @Transactional
     void checkExpiredBids() {
-<<<<<<< HEAD
         try {
             List<Bids> expiredBids = bidDAO.getExpiredBids(new Date());
             Product p = null;
