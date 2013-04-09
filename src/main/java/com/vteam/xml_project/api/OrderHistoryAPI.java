@@ -43,7 +43,7 @@ public class OrderHistoryAPI {
         return orderResult;
         //return result;
     }
-      @RequestMapping(value = "/export_product_list_to_pdf", method = RequestMethod.GET)
+      @RequestMapping(value = "/export_order_list_to_pdf", method = RequestMethod.GET)
     public void exportProductListToPdf(HttpServletResponse response) {
         try {
             String email=(String) session.get("email");

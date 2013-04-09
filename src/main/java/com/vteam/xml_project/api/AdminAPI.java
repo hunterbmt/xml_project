@@ -9,6 +9,7 @@ import com.vteam.xml_project.dto.BidDTO;
 import com.vteam.xml_project.dto.CategoryDTO;
 import com.vteam.xml_project.dto.CategoryListDTO;
 import com.vteam.xml_project.dto.NinCodeListDTO;
+import com.vteam.xml_project.dto.OrderHistoryDTO;
 import com.vteam.xml_project.dto.OrderHistoryListDTO;
 import com.vteam.xml_project.dto.ProductDTO;
 import com.vteam.xml_project.dto.ProductListDTO;
@@ -19,8 +20,6 @@ import com.vteam.xml_project.service.CategoryService;
 import com.vteam.xml_project.service.ProductService;
 import com.vteam.xml_project.util.StringUtil;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Date;
 import java.util.HashMap;
@@ -261,6 +260,34 @@ public class AdminAPI {
     public @ResponseBody
     OrderHistoryListDTO getOrderList(@RequestParam int page, int pageSize) {
         OrderHistoryListDTO result = adminService.getOrderList(page, pageSize);
+        return result;
+    }
+
+    @RequestMapping(value = "/get_order_detail", method = RequestMethod.GET, produces = "application/json")
+    public @ResponseBody
+    OrderHistoryDTO getOrderList(@RequestParam int orderId) {
+        OrderHistoryDTO result = adminService.getOrderDetail(orderId);
+        return result;
+    }
+
+    @RequestMapping(value = "/update_order_detail", method = RequestMethod.POST, produces = "application/json")
+    public @ResponseBody
+    OrderHistoryDTO updateOrderDetail(@RequestParam int orderId, String address) {
+        OrderHistoryDTO result = adminService.updateOrderDetail(orderId, address);
+        return result;
+    }
+
+    @RequestMapping(value = "/finish_order", method = RequestMethod.POST, produces = "application/json")
+    public @ResponseBody
+    OrderHistoryDTO finishOrder(@RequestParam int orderId) {
+        OrderHistoryDTO result = adminService.finishOrder(orderId);
+        return result;
+    }
+
+    @RequestMapping(value = "/cancel_order", method = RequestMethod.POST, produces = "application/json")
+    public @ResponseBody
+    OrderHistoryDTO cancelOrder(@RequestParam int orderId) {
+        OrderHistoryDTO result = adminService.cancelOrder(orderId);
         return result;
     }
 }

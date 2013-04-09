@@ -32,7 +32,7 @@ function login() {
 function showLogedInMenu() {
     vteam_http.hide("login_menu");
     vteam_http.setHTML("loginResult", '<a class="btn btn-success" id="email" style="margin-left:10px;margin-top:2px;" href="javascript:void(0)" onclick="loadUserInfo()"><i class="icon-user icon-white" ></i>' + current_user_info.fullname + ' </a>'
-            + '<li id="fat-menu1" class="btn btn-success" style="width:70px;height:20px;margin-left:10px;" ><a href="javascript:void(0)" id="drop4" role="button" class="dropdown-toggle" data-toggle="dropdown" style="color:white;">' + current_user_info.balance + 'Nil' + '</a></li>'
+            + '<li id="fat-menu1" class="btn btn-success"  style="width:70px;height:20px;margin-left:10px;" ><a href="javascript:void(0)" id="drop4" role="button" class="dropdown-toggle" data-toggle="dropdown" style="color:white;">' + current_user_info.balance + 'Nil' + '</a></li>'
             + '<a class="btn btn-success" id="logout" style="margin-left:10px;margin-top:2px;" href="javascript:void(0)" onclick="logout()"><i class="icon-off icon-white" ></i></a>');
     vteam_http.show("loginResult");
 }
@@ -196,13 +196,16 @@ function inputCode() {
                     vteam_http.show("updateResult1");                  
                     $("#updateResult1").hide(5000);
                     clearText();
-                    initUserInfo();
+                    getBalance();
+                    //initUserInfo();
                 } else if (result.status == "unlogin") {
-                    vteam_http.setHTML("result", "You need login again to insert");
-                    vteam_http.show("result");
+                    vteam_http.setHTML("updateResult1", "<font style='color: black;font-size: large;'><strong>Vui lòng đăng nhập lại để tiếp tục! !</strong></font>");
+                    vteam_http.show("updateResult1");                  
+                    $("#updateResult1").hide(5000);
                 } else {
-                    vteam_http.setHTML("result", "Error when insert");
-                    vteam_http.show("result");
+                   vteam_http.setHTML("updateResult1", "<font style='color: red;font-size: large;'><strong>Có lỗi xảy ra!Hãy kiểm tra lại mã thẻ !</strong></font>");
+                    vteam_http.show("updateResult1");                  
+                    $("#updateResult1").hide(5000);
                 }
             });
 }
@@ -274,7 +277,7 @@ function displayPayment(paymentList) {
     vteam_http.show("paymentResult");
 }
 function exportPDF() {
-    window.location.href = "/order/export_product_list_to_pdf";
+    window.location.href = "/order/export_order_list_to_pdf";
 }
 function validUsername() {
     var email = document.getElementById("user_username").value;
@@ -551,4 +554,16 @@ function getOrderList(){
                             vteam_http.show("orderResult");
                     }
                 }); 
+}
+function getBalance(){
+    vteam_http.makeHttpRequest("/user/get_user_by_email", {},
+            "POST",
+            function(result) {
+                if (result.status == "success")
+                {
+                    current_user_info=result;
+                    var html=current_user_info.balance+'NIL';
+                   vteam_http.setHTML("drop4",html);
+                }
+            });     
 }

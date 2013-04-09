@@ -4,6 +4,8 @@
  */
 package com.vteam.xml_project.service;
 
+import com.hoiio.sdk.exception.HoiioException;
+import com.hoiio.sdk.services.SmsService;
 import com.vteam.xml_project.dto.BidDTO;
 import com.vteam.xml_project.dto.BidListDTO;
 import com.vteam.xml_project.dto.CategoryDTO;
@@ -62,7 +64,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 public class AdminService {
-    
+
     private static final long MAX_UPLOAD_BYTES = 5242880;
     private static final String SERVERIMGPATH = "/resources/img/product/";
     private static Logger log = Logger.getLogger(UserService.class.getName());
@@ -90,10 +92,12 @@ public class AdminService {
     ProductService productService;
     @Autowired
     BidService bidService;
+    @Autowired
+    SmsService smsService;
     private static String CATEGORY_XML_FILE_NAME = "category.xml";
     private static String USER_XML_FILE_NAME = "user.xml";
     private static String BID_XML_FILE_NAME = "bids.xml";
-    
+
     @Transactional
     public ProductDTO insertProduct(int categoryId, String productName, String description, String img, double minPrice, double maxPrice, String tags) {
         ProductDTO productDTO = new ProductDTO();
@@ -119,9 +123,9 @@ public class AdminService {
             productDTO.setMsg("Have some errors . Try again");
         }
         return productDTO;
-        
+
     }
-    
+
     @Transactional
     public ProductDTO updateProduct(int productId, int categoryId, String productName, String description, String img, double minPrice, double maxPrice, String tags) {
         ProductDTO productDTO = new ProductDTO();
@@ -151,7 +155,7 @@ public class AdminService {
         }
         return productDTO;
     }
-    
+
     @Transactional
     public ProductListDTO getProductList(int page, int pageSize) {
         ProductListDTO list = new ProductListDTO();
@@ -159,7 +163,7 @@ public class AdminService {
             List<Product> dbProducts = productDAO.getProductListInorgeStatus(page, pageSize);
             ProductDTO p;
             for (Product d : dbProducts) {
-                
+
                 p = new ProductDTO();
                 p.setName(d.getProductName());
                 p.setDescription(d.getDescription());
@@ -167,7 +171,7 @@ public class AdminService {
                 p.setImageName(d.getImage());
                 p.setId(d.getId());
                 p.setBidId(d.getBidId());
-                
+
                 list.getProductList().add(p);
             }
             list.setNumberOfProduct(productDAO.getNumberOfProduct());
@@ -179,7 +183,7 @@ public class AdminService {
         }
         return list;
     }
-    
+
     @Transactional
     public ProductDTO getProductDetail(int id) {
         Product dbProduct = productDAO.getProductById(id);
@@ -200,7 +204,7 @@ public class AdminService {
         }
         return result;
     }
-    
+
     @Transactional
     public BidDTO insertBid(int product_id, String startDateStr, String endDateStr, int cost) {
         BidDTO bidDTO = new BidDTO();
@@ -211,7 +215,7 @@ public class AdminService {
             Bids newBid = new Bids(product, startDate, endDate, Bids.Status.UNCOMPLETED, cost);
             newBid.setLastEdit(new Date());
             bidDAO.save(newBid);
-            
+
             bidDTO.setId(newBid.getId());
             bidDTO.setLast_edit(newBid.getLastEdit());
             bidDTO.setProduct_id(product_id);
@@ -223,7 +227,7 @@ public class AdminService {
             bidDTO.setStatus("success");
             bidDTO.setIsCompleted(0);
             updateAllXML();
-            
+
             return bidDTO;
         } catch (HibernateException ex) {
             log.error(ex.getStackTrace());
@@ -236,7 +240,7 @@ public class AdminService {
         }
         return bidDTO;
     }
-    
+
     @Transactional
     public BidDTO updateBid(int bid_id, int product_id, String startDateStr, String endDateStr, String status, int cost) {
         BidDTO bidDTO = new BidDTO();
@@ -281,7 +285,7 @@ public class AdminService {
         }
         return bidDTO;
     }
-    
+
     @Transactional
     public CategoryDTO insertCategory(String categoryName, String description) {
         CategoryDTO categoryDTO = new CategoryDTO();
@@ -296,7 +300,7 @@ public class AdminService {
         }
         return categoryDTO;
     }
-    
+
     @Transactional
     public CategoryDTO updateCategory(int categoryID, String description) {
         CategoryDTO categoryDTO = new CategoryDTO();
@@ -312,7 +316,7 @@ public class AdminService {
         }
         return categoryDTO;
     }
-    
+
     @Transactional
     public NinCodeListDTO generateNin(int amount, int quantity) {
         NinCodeListDTO ninCodeList = new NinCodeListDTO();
@@ -335,7 +339,7 @@ public class AdminService {
         }
         return ninCodeList;
     }
-    
+
     @Transactional
     public TagsDTO insertTag(String tagName, String description) {
         TagsDTO tagDTO = new TagsDTO();
@@ -350,7 +354,7 @@ public class AdminService {
         }
         return tagDTO;
     }
-    
+
     @Transactional
     public TagsDTO updateTag(int tagID, String description) {
         TagsDTO tagDTO = new TagsDTO();
@@ -366,14 +370,14 @@ public class AdminService {
         }
         return tagDTO;
     }
-    
+
     @Transactional
     public void updateAllXML() {
         marshallCategory();
         marshallUser();
         marshallBids();
     }
-    
+
     private void marshallCategory() {
         try {
             CategoryListDTO categoryListDTO = categoryService.getCategoryList();
@@ -386,7 +390,7 @@ public class AdminService {
             ex.printStackTrace();
         }
     }
-    
+
     private void marshallUser() {
         try {
             UserListDTO userListDTO = userService.getUserList();
@@ -396,7 +400,7 @@ public class AdminService {
             e.printStackTrace();
         }
     }
-    
+
     private void marshallBids() {
         try {
             BidListDTO bidListDTO = bidService.getBidsList(1, 999);
@@ -406,7 +410,7 @@ public class AdminService {
             e.printStackTrace();
         }
     }
-    
+
     @Transactional
     public ByteArrayOutputStream exportProductListToPdf() {
         try {
@@ -439,7 +443,7 @@ public class AdminService {
         }
         return null;
     }
-    
+
     @Transactional
     public ByteArrayOutputStream exportNinCodeToPdf() {
         try {
@@ -456,7 +460,7 @@ public class AdminService {
             xmlFile.deleteOnExit();
             XMLUtil.Marshall(ninCodeListDTO, xmlFile.getAbsolutePath());
             String appPath = servletContext.getRealPath("WEB-INF/views/resources/xsl");
-            
+
             return XMLUtil.printPDF(xmlFile.getAbsolutePath(), appPath + File.separator + "nin_code_pdf.xsl");
         } catch (IOException ex) {
             log.error(ex);
@@ -470,9 +474,9 @@ public class AdminService {
             java.util.logging.Logger.getLogger(AdminService.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
-        
+
     }
-    
+
     @Transactional
     public ProductDTO deleteProduct(int productId) {
         ProductDTO productDTO = new ProductDTO();
@@ -487,7 +491,7 @@ public class AdminService {
         }
         return productDTO;
     }
-    
+
     public UploadResultDTO uploadToServer(FileItem uploadedFileItem) {
         UploadResultDTO result = new UploadResultDTO();
         try {
@@ -495,7 +499,7 @@ public class AdminService {
                     || uploadedFileItem.getName().length() == 0) {
                 result.setStatus("error");
                 result.setMsg("File empty");
-                
+
             } else if (uploadedFileItem.getSize() > MAX_UPLOAD_BYTES) {
                 result.setStatus("error");
                 result.setMsg("File size is more than 5MB");
@@ -522,7 +526,7 @@ public class AdminService {
         }
         return result;
     }
-    
+
     @Transactional
     public OrderHistoryListDTO getOrderList(int page, int pageSize) {
         List<OrderHistory> dbOrderHistories = orderHistoryDAO.getOrderHistorysList(page, pageSize);
@@ -533,6 +537,7 @@ public class AdminService {
             orderHistoryDTO.setId(order.getId());
             orderHistoryDTO.setProductName(order.getProduct().getProductName());
             orderHistoryDTO.setUser(order.getUser().getEmail());
+            orderHistoryDTO.setPhoneNumber(order.getUser().getPhone());
             orderHistoryDTO.setAddress(order.getAddress());
             String orderDay = DateUtil.getFormattedDate(order.getOrderDay(), DateUtil.FRONT_END_FORMAT_STRING);
             orderHistoryDTO.setOrderDay(orderDay);
@@ -544,8 +549,78 @@ public class AdminService {
         result.setStatus("success");
         return result;
     }
+<<<<<<< HEAD
     @Transactional
     public void checkExpiredBids() {
         bidService.checkExpiredBids();
+=======
+
+    @Transactional
+    public OrderHistoryDTO getOrderDetail(int orderId) {
+        OrderHistory dbOrder = orderHistoryDAO.getOrderById(orderId);
+        OrderHistoryDTO orderHistoryDTO = new OrderHistoryDTO();
+        orderHistoryDTO.setId(dbOrder.getId());
+        orderHistoryDTO.setAddress(dbOrder.getAddress());
+        orderHistoryDTO.setPhoneNumber(dbOrder.getUser().getPhone());
+        orderHistoryDTO.setOrderStatus(dbOrder.getStatus().name());
+        orderHistoryDTO.setStatus("success");
+        return orderHistoryDTO;
+    }
+
+    @Transactional
+    public OrderHistoryDTO updateOrderDetail(int orderId, String address) {
+        OrderHistory dbOrder = orderHistoryDAO.getOrderById(orderId);
+        OrderHistoryDTO orderHistoryDTO = new OrderHistoryDTO();
+        if (dbOrder.getStatus() != OrderHistory.Status.NEW) {
+            orderHistoryDTO.setStatus("error");
+            orderHistoryDTO.setMsg("Can not update FINISHED or CANCELED order");
+        } else {
+            dbOrder.setAddress(address);
+            orderHistoryDAO.save(dbOrder);
+            orderHistoryDTO.setStatus("success");
+        }
+        return orderHistoryDTO;
+    }
+
+    @Transactional
+    public OrderHistoryDTO finishOrder(int orderId) {
+        OrderHistory dbOrder = orderHistoryDAO.getOrderById(orderId);
+        if (dbOrder.getStatus() != OrderHistory.Status.CANCELED) {
+            dbOrder.setStatus(OrderHistory.Status.FINISHED);
+            orderHistoryDAO.save(dbOrder);
+        }
+        String thankyouMsg = "Cảm ơn quý khách đã mua hàng tại Bid 20! Chúc quý khách một ngày làm việc vui vẻ";
+        try {
+            smsService.send(dbOrder.getUser().getPhone(),thankyouMsg, "+1243546543",null,null );
+        } catch (HoiioException ex) {
+            java.util.logging.Logger.getLogger(AdminService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        OrderHistoryDTO orderHistoryDTO = new OrderHistoryDTO();
+        orderHistoryDTO.setStatus("success");
+        return orderHistoryDTO;
+    }
+
+    @Transactional
+    public OrderHistoryDTO cancelOrder(int orderId) {
+        OrderHistory dbOrder = orderHistoryDAO.getOrderById(orderId);
+        dbOrder.setStatus(OrderHistory.Status.CANCELED);
+        orderHistoryDAO.save(dbOrder);
+        Product dbProduct = dbOrder.getProduct();
+        dbProduct.setStatus(Product.Status.ONBID);
+        orderHistoryDAO.save(dbOrder);
+        Bids dbBids = bidDAO.getBidById(dbProduct.getBidId());
+        dbBids.setStatus(Bids.Status.UNCOMPLETED);
+        bidDAO.save(dbBids);
+        OrderHistoryDTO orderHistoryDTO = new OrderHistoryDTO();
+        orderHistoryDTO.setStatus("success");
+        
+        String cancelMsg = "Bid sản phẩm " + dbProduct.getProductName() +" của quý khách đã bị hủy . Vui lòng liên hệ để biết thêm chi tiết";
+        try {
+            smsService.send(dbOrder.getUser().getPhone(), cancelMsg, "+1243546543", null, null);
+        } catch (HoiioException ex) {
+            java.util.logging.Logger.getLogger(AdminService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return orderHistoryDTO;
+>>>>>>> 2e5621c85b08f4db23dcab9b54e0a196bf679d08
     }
 }
