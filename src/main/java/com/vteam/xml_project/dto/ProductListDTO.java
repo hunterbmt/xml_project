@@ -22,6 +22,7 @@ public class ProductListDTO extends BaseDTO {
     private int numberOfProduct;
     @XmlElement(name = "product", type = ProductDTO.class)
     private List<ProductDTO> productList;
+        
 
     public ProductListDTO() {
         productList = new ArrayList<ProductDTO>();

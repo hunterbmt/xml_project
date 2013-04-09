@@ -15,7 +15,8 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "orderHistory")
-public class OrderHistoryDTO extends BaseDTO{
+public class OrderHistoryDTO extends BaseDTO {
+
     private int id;
     private Integer user_id;
     private Integer product_id;
@@ -23,10 +24,14 @@ public class OrderHistoryDTO extends BaseDTO{
     private String address;
     private int ammount;
     private String productName;
+    private String user;
+    private String orderStatus;
+    private String orderDay;
 
     public String getProductName() {
         return productName;
     }
+
     public int getId() {
         return id;
     }
@@ -75,8 +80,31 @@ public class OrderHistoryDTO extends BaseDTO{
         this.ammount = ammount;
     }
 
-    public void setProduct_name(String productName) {
-        this.productName=productName;
+    public void setProductName(String productName) {
+        this.productName = productName;
     }
 
+    public String getUser() {
+        return user;
+    }
+
+    public void setUser(String user) {
+        this.user = user;
+    }
+
+    public String getOrderStatus() {
+        return orderStatus;
+    }
+
+    public void setOrderStatus(String orderStatus) {
+        this.orderStatus = orderStatus;
+    }
+
+    public String getOrderDay() {
+        return orderDay;
+    }
+
+    public void setOrderDay(String orderDay) {
+        this.orderDay = orderDay;
+    }
 }

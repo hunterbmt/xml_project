@@ -10,13 +10,20 @@
         <link href="/resources/css/bootstrap-responsive.css" rel="stylesheet">
         <link href="/resources/css/font-awesome.css" rel="stylesheet">
         <link href="/resources/css/jquery-ui-helper.css" rel="stylesheet">
+        <link href="/resources/css/simplePagination.css" rel="stylesheet">
         <link href="/resources/css/admin.css" rel="stylesheet">
         <script src="/resources/js/lib/jquery.js"></script>
+        <script type="text/javascript" src="/resources/js/lib/jquery.simplePagination.js"></script>
         <script src="/resources/js/lib/jquery.url.js"></script>
         <script src="/resources/js/lib/jquery-ui.js"></script>
         <script src="/resources/js/lib/bootstrap.min.js"></script>
         <script src="/resources/js/vteam.js"></script>
-        <script src="/resources/js/admin.js"></script>
+        <script src="/resources/js/admin_order.js"></script>
+        <script>
+            window.onload = function(){
+                loadOrderList(1);
+            }
+        </script>
     </head>
     <body>
         <div class="navbar navbar-fixed-top">
@@ -54,132 +61,41 @@
         <div class="main" >
             <div class="container">
                 <div class="row">
-                    <div class="span6">
-                        <div class="widget">
-                            <div class="widget-header">
-                                <i class="icon-bar-chart"></i>
-                                <h3>Static</h3>
-                            </div>
-                            <div class="widget-content">
-                                <div class="stats">
-                                    <div class="stat">
-                                        <span class="stat-value">12,386</span>									
-                                        Products
-                                    </div> <!-- /stat -->
+                    <div class="widget widget-table action-table">
+                        <div class="widget-header">
+                            <i class="icon-list-alt"></i>
+                            <h3>Orders</h3>
+                        </div>
+                        <div class="widget-content">
+                            <table class="table table-striped table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th >ID</th>
+                                        <th >User</th>
+                                        <th >Product</th>
+                                        <th >Address</th>
+                                        <th>Amount</th>
+                                        <th>Order day</th>
+                                        <th>Status</th>
+                                        <th style ="width: 140px"class="td-actions"></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="order_list_tbody">
 
-                                    <div class="stat">
-                                        <span class="stat-value">9,249</span>									
-                                        Users
-                                    </div> <!-- /stat -->
+                                </tbody>
+                            </table>
+                            <div class="pagination-bar">
+                                <div id="pagination_bar" style="float: right">
 
-                                    <div class="stat">
-                                        <span class="stat-value">70%</span>									
-                                        Bids
-                                    </div> 
                                 </div>
                             </div>
                         </div>
-
-                        <div class="widget">
-
-                            <div class="widget-header">
-                                <i class="icon-cogs"></i>
-                                <h3>Function Shortcuts</h3>
-                            </div> <!-- /widget-header -->
-
-                            <div class="widget-content">
-
-                                <div class="shortcuts">
-
-                                    <a href="javascript:;" class="shortcut">
-                                        <i class="shortcut-icon icon-cloud-download"></i>
-                                        <span class="shortcut-label">Download report as PDF</span>	
-                                    </a>
-
-                                    <a href="javascript:;" class="shortcut" onclick="generateNinOnClick()">
-                                        <i class="shortcut-icon  icon-magic"></i>
-                                        <span class="shortcut-label">Generate Nin code</span>	
-                                    </a>
-
-                                    <a href="javascript:;" class="shortcut">
-                                        <i class="shortcut-icon icon-envelope"></i>
-                                        <span class="shortcut-label">Send email to users</span>
-                                    </a>
-                                </div> <!-- /shortcuts -->	
-                                <div id="nin_modal" style="width: 30%" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                                    <div class="modal-header">
-                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                                        <h3 id="myModalLabel">Generate Nin Code</h3>
-                                    </div>
-                                    <div class="modal-body">
-                                        <form>
-                                            <fieldset>
-                                                <div id ="nin_result" class="hide">All form fields are required.</div>
-                                                <label>Amount</label>
-                                                <input type="number" name="Amount" id="nin_amount" class="number" />
-                                                <label>Quantity</label>
-                                                <input type="number" name="Quantity" id="nin_quantity" class="number"/>
-                                            </fieldset>
-                                        </form>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-                                        <button class="btn btn-warning" onclick="generateNinCode()">Generate</button>
-                                    </div>
-                                </div>
-                            </div> <!-- /widget-content -->
-                        </div>
                     </div>
-                    <div class="span6">
-                        <div class="widget widget-nopad">
-
-                            <div class="widget-header">
-                                <i class="icon-list-alt"></i>
-                                <h3>Recent Payment</h3>
-                            </div> <!-- /widget-header -->
-
-                            <div class="widget-content">
-                                <ul class="news-items">
-                                    <li>
-                                        <div class="news-item-detail">										
-                                            <a href="javascript:;" class="news-item-title">500 Nin be added</a>
-                                            <p class="news-item-preview">500 Nin be added by HunterBMT via Nin code : 56fgds54gd43</p>
-                                        </div>
-
-                                        <div class="news-item-date">
-                                            <span class="news-item-day">10</span>
-                                            <span class="news-item-month">Mar</span>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="news-item-detail">										
-                                            <a href="javascript:;" class="news-item-title">500 Nin be added</a>
-                                            <p class="news-item-preview">500 Nin be added by HunterBMT via Nin code : 56f54444444</p>
-                                        </div>
-
-                                        <div class="news-item-date">
-                                            <span class="news-item-day">08</span>
-                                            <span class="news-item-month">Mar</span>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="news-item-detail">										
-                                            <a href="javascript:;" class="news-item-title">200 Nin be added</a>
-                                            <p class="news-item-preview">500 Nin be added by HunterBMT via Nin code : 56svcfd43554</p>
-                                        </div>
-
-                                        <div class="news-item-date">
-                                            <span class="news-item-day">08</span>
-                                            <span class="news-item-month">Mar</span>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div> <!-- /widget-content -->
-                        </div>
-                    </div>
-                </div>    
+                </div>
             </div>
-        </div>
+        </div>    
+    </div>
+</div>
 
-    </body>
+</body>
 </html>

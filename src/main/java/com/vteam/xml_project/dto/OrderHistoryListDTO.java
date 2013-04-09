@@ -17,13 +17,15 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "orderHistoryList")
-public class OrderHistoryListDTO extends BaseDTO{
+public class OrderHistoryListDTO extends BaseDTO {
+
     @XmlElement(name = "orderHistory", type = OrderHistoryDTO.class)
     private List<OrderHistoryDTO> orderList;
-    
-    public OrderHistoryListDTO(){
-        
-        orderList=new ArrayList<OrderHistoryDTO>();
+    private int numberOfOrder = 0;
+
+    public OrderHistoryListDTO() {
+
+        orderList = new ArrayList<OrderHistoryDTO>();
     }
 
     public List<OrderHistoryDTO> getOrderList() {
@@ -32,5 +34,13 @@ public class OrderHistoryListDTO extends BaseDTO{
 
     public void setOrderList(List<OrderHistoryDTO> orderList) {
         this.orderList = orderList;
+    }
+
+    public int getNumberOfOrder() {
+        return numberOfOrder;
+    }
+
+    public void setNumberOfOrder(int numberOfOrder) {
+        this.numberOfOrder = numberOfOrder;
     }
 }

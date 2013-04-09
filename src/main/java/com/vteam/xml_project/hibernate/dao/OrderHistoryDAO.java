@@ -15,7 +15,8 @@ import org.springframework.stereotype.Repository;
  * @author TH11032013
  */
 @Repository
-public class OrderHistoryDAO extends BaseDAO{
+public class OrderHistoryDAO extends BaseDAO {
+
     public OrderHistory getOrderById(int order_id) throws HibernateException {
         Query query = this.sessionFactory
                 .getCurrentSession()
@@ -23,6 +24,7 @@ public class OrderHistoryDAO extends BaseDAO{
         query.setParameter(0, order_id);
         return (OrderHistory) query.uniqueResult();
     }
+
     public List<OrderHistory> getOrderHistorysListByUserID(int id) throws HibernateException {
         Query query = this.sessionFactory
                 .getCurrentSession()
@@ -30,11 +32,27 @@ public class OrderHistoryDAO extends BaseDAO{
         query.setParameter("uid", id);
         return query.list();
     }
+
     public List<OrderHistory> getOrderHistorysList() throws HibernateException {
         Query query = this.sessionFactory
                 .getCurrentSession()
                 .createQuery("FROM OrderHistory");
         return query.list();
     }
-   
+
+    public List<OrderHistory> getOrderHistorysList(int page, int pageSize) throws HibernateException {
+        Query query = this.sessionFactory
+                .getCurrentSession()
+                .createQuery("FROM OrderHistory");
+        query = query.setFirstResult(pageSize * (page - 1));
+        query.setMaxResults(pageSize);
+        return query.list();
+    }
+
+    public int getNumberOfOrderHistory() throws HibernateException {
+        return ((Long) this.getSessionFactory()
+                .getCurrentSession()
+                .createQuery("Select count(o) from OrderHistory o")
+                .uniqueResult()).intValue();
+    }
 }

@@ -101,9 +101,11 @@ public class UserService {
             if (formatDate == null) {
                 formatDate = "MM/dd/yyyy HH:mm:ss";
             }
+
             if(birthday!=null && !birthday.isEmpty()){
             Date parseDay = util.parseFromString(birthday, formatDate);
             dbUser.setBirthday(parseDay);
+
             }
             userDAO.save(dbUser);
             return true;
@@ -324,13 +326,13 @@ public class UserService {
 
     @Transactional
     public String showOrderHistory(String userEmail) {
-        String output="";
+        String output = "";
         try {
             String xmlrealPath = servletContext.getRealPath("WEB-INF/views/resources/xml/") + File.separator;
             String xslrealPath = servletContext.getRealPath("WEB-INF/views/resources/xsl/") + File.separator;
             String xmlPath = xmlrealPath + USER_XML_FILE_NAME;
             String xslPath = xslrealPath + Order_XSL_FILE_NAME;
-            output = XMLUtil.transformOrderXML(xmlPath, xslPath,userEmail);
+            output = XMLUtil.transformOrderXML(xmlPath, xslPath, userEmail);
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -301,7 +301,7 @@ public class BidService {
     }
 
     private void createOrderHistory(Users user, Product product, double amount) {
-        OrderHistory orderHistory = new OrderHistory(user, product, dateUtil.getCurrentDate(), user.getAddress(), (int) amount);
+        OrderHistory orderHistory = new OrderHistory(user, product, new Date(), user.getAddress(), (int) amount);
         orderHistoryDAO.save(orderHistory);
     }
 

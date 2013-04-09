@@ -31,7 +31,8 @@ public class ProductDAO extends BaseDAO {
     public List<Product> getProductList() throws HibernateException {
         Query query = this.sessionFactory
                 .getCurrentSession()
-                .createQuery("FROM Product");
+                .createQuery("FROM Product WHERE status = :s");
+        query.setParameter("s", Product.Status.SOLD);
         return query.list();
     }
 
@@ -110,7 +111,8 @@ public class ProductDAO extends BaseDAO {
     public int getNumberOfProduct() {
         return ((Long) this.getSessionFactory()
                 .getCurrentSession()
-                .createQuery("Select count(product) from Product product")
+                .createQuery("Select count(product) from Product product where product.status != :status")
+                .setParameter("status", Product.Status.DELETED)
                 .uniqueResult()).intValue();
     }
 }
