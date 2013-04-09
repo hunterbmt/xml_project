@@ -60,5 +60,13 @@ public class BidDAO extends BaseDAO{
         returnObj =  (Bids) query.uniqueResult();
         return returnObj;
     }
+
+    public List<Bids> getExpiredBids(Date currentDate) {
+        String sql = "From Bids where endDate <= :d and status = :status";
+        Query query = this.sessionFactory.getCurrentSession().createQuery(sql);
+        query.setParameter("d", currentDate);    
+        query.setParameter("status", Bids.Status.UNCOMPLETED);
+        return query.list();
+    }
     
 }

@@ -96,6 +96,12 @@ function transformHotBids() {
         for (i=0;i<x.length;i++) {            
             html += x[i].outerHTML;
         }
+        
+        if (product_list_current_page == 1) {
+        currentPosition += 1;
+        divArray[currentPosition] = "product_list";
+        generateBackAndNext();
+        }
         vteam_http.setHTML("product_list","");
         vteam_http.appendTo("product_list", html);
         hideAllDiv();

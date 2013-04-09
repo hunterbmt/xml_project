@@ -39,7 +39,7 @@ function loadAndDisplayProduct(page) {
 
 function displayProduct(productList) {
     if (product_list_current_page == 1) {
-        vteam_http.setHTML("product_list","");
+        vteam_http.setHTML("product_list", "");
         currentPosition += 1;
         divArray[currentPosition] = "product_list";
         generateBackAndNext();
@@ -49,6 +49,7 @@ function displayProduct(productList) {
     var bid_type = "";
     var i = (product_list_current_page - 1) * page_size;
     var pageSize = i + page_size;
+    var end_ts = 0;
     if (pageSize > productList.length) {
         pageSize = productList.length;
     }
@@ -57,7 +58,8 @@ function displayProduct(productList) {
         ts = productList[i].bidTimeRemain;
         if (ts <= 0) // in bid 
         {
-            bid_type = "<div class='onBidType'></div>";
+            end_ts = productList[i].bidEndTimeRemain;
+            bid_type = "<div class='onBidType'><div class='endTimeRemain'></div></div>";
         } else {
             bid_type = "<div class='upComingBidType'></div>";
         }
@@ -142,6 +144,7 @@ function startBuyingNow(bidId) {
     var buy_link = '<a href="javascript:doBuy(' + bidId + ')"><span id="buyNowLeft"></span></a>';
     vteam_http.setHTML("bidButton", buy_link);
     cc = setInterval(buyCountDown, 1000);
+    isInBidTime = true;
 }
 
 function buyCountDown() {
@@ -166,42 +169,66 @@ function displayCounter() {
     if (count <= 0)
     {
         clearInterval(c);
-        vteam_http.setHTML("timer", "Sản phẩm có thể bid");
+        if (ec_count > 0) {
+            vteam_http.setHTML("timer", "Sản phẩm có thể bid");
+        }
         return;
     }
-    vteam_http.setHTML("timer", toHMS(count));
+    vteam_http.setHTML("timer", toHMS(count, false));
+}
+function displayEndCounter() {
+    ec_count -= 1000;
+    if (ec_count <= 0)
+    {
+        clearInterval(ec);
+        //vteam_http.setHTML("timer", "Sản phẩm đã hết hạn bid");
+        vteam_http.setHTML("timer", "");
+        return;
+    }
+    vteam_http.setHTML("timer", toHMS(ec_count, true));
 }
 
-function toHMS(diff) {
+function toHMS(diff, isEndTime) {
     if (diff < 0)
         return 0;
     var diffSeconds = diff / 1000 % 60;
     var diffMinutes = diff / (60 * 1000) % 60;
     var diffHours = diff / (60 * 60 * 1000);
-    return "<span class='clockNumber'>" + Number(diffHours).toFixed(0) + "</span> Giờ "
+    var returnHTML;
+         
+    if (isEndTime) {
+        returnHTML   = "Còn <span class='clockNumber' style='font-size:1.7em'>" + Number(diffHours).toFixed(0) + "</span> Giờ "
+            + "<span class='clockNumber' style='font-size:1.5em'>" + Number(diffMinutes).toFixed(0) + "</span> Phút "
+            + "<span class='clockNumber' style='font-size:1.7em'>" + Number(diffSeconds).toFixed(0) + "</span>s<br/>";
+    } else {
+        returnHTML   = "<span class='clockNumber' >" + Number(diffHours).toFixed(0) + "</span> Giờ "
             + "<span class='clockNumber'>" + Number(diffMinutes).toFixed(0) + "</span> Phút "
             + "<span class='clockNumber'>" + Number(diffSeconds).toFixed(0) + "</span> Giây";
+    }
+    return returnHTML;
 }
 
 var isInBidTime = false;
 function resetBiddingFlag() {
     isInBidTime = false;
 }
+var ec;
+var ec_count = 0;
 function displayProductDetail(product) {
+    clearInterval(ec);
     clearInterval(c);
     var html = '';
     count = product.bidTimeRemain;
+    ec_count = product.bidEndTimeRemain;
     c = setInterval(displayCounter, 1000);
+
+
     html += '<div class="row-fluid">'
-
     html += '<div class= "p_detail" style="border:none;">'
-
-
     html += '<div class="product-detail-img">'
     html += '<img src="' + product.image + '"/>'
     html += '</div>'
     html += '<div id= "right">'
-
     html += '<div class="title">'
     html += product.name
     html += '</div>'
@@ -209,15 +236,28 @@ function displayProductDetail(product) {
     html += '<div class="v6Price mTop10" align="center">'
     html += '<span id="current_price">??,??? VND</span></div>'
     html += '<div class="v7inlinetype" align="center"><span id="bid_cost">' + product.bidCost + '</span> Nils/bid</div>'
-    html += '<div id="bidButton" class="v6BuyNow">'
-    html += '<a class=" fixPng" href="javascript:doBid(' + product.bidId + ')"><span id="buyNowLeft"></span></a></div>'
-    html += "</div></div>"
 
-    html += '<div class="v6BorderBot pTop5"><div class="v6Timer">'
-    html += '<div class="v6Gray fl"></div>'
-    html += '<div class="v6DisplayTime" id="timer">' + (toHMS(product.bidTimeRemain) == 0 ? "Sản phẩm có thể bid" : toHMS(product.bidTimeRemain)) + '</span></div>'
+    if (ec_count > 0) // end_time not meet
+    {
+        html += '<div id="bidButton" class="v6BuyNow">'
+        html += '<a class=" fixPng" href="javascript:doBid(' + product.bidId + ')"><span id="buyNowLeft"></span></a></div>'
+        html += "</div></div>"
+        html += '<div class="v6BorderBot pTop5"><div class="v6Timer">'
+        html += '<div class="v6Gray fl"></div>'
+        html += '<div class="v6DisplayTime" id="timer">' + (toHMS(product.bidTimeRemain) == 0 ? "Sản phẩm có thể bid" : toHMS(product.bidTimeRemain)) + '</span>'
+        html += '<div class="v6DisplayTime" id="endTimer"></div></div>'
+        if (count < 0) //in bid
+        {
+            ec = setInterval(displayEndCounter, 1000);
+        }
+
+    } else {
+
+        html += '<div class="v6DisplayTime" id="timer">Sản phẩm này đã hết thời gian bid!</div>'
+
+    }
+
     html += '</div></div>'
-
     html += '<div class="v6BorderBot pTop5">'
     html += '<div class="v6Buyersnew pBottom5 mTop5 ">'
     html += 'Top recent bidders<ul id="topBidders" class="firstList">'
@@ -327,7 +367,7 @@ function searchOnKeyDown(e) {
 
     if (e.keyCode === 13) {
         e.preventDefault();
-        searchProductAtLocal('',1);
+        searchProductAtLocal('', 1);
     }
 }
 

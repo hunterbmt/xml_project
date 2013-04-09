@@ -25,6 +25,15 @@ public class ProductDTO extends BaseDTO {
     private String imageName;
     private int bidCost;
     private long bidTimeRemain;
+    private long bidEndTimeRemain;
+
+    public long getBidEndTimeRemain() {
+        return bidEndTimeRemain;
+    }
+
+    public void setBidEndTimeRemain(long bidEndTimeRemain) {
+        this.bidEndTimeRemain = bidEndTimeRemain;
+    }
     private double currentPrice;
 
     public double getCurrentPrice() {

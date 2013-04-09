@@ -391,4 +391,18 @@ public class BidService {
         }
         return list;
     }
+
+    @Transactional
+    void checkExpiredBids() {
+        List<Bids> expiredBids = bidDAO.getExpiredBids(new Date());
+        Product p = null;
+        for (Bids b: expiredBids) {
+            b.setStatus(Bids.Status.COMPLETED);
+            p = productDAO.getProductById(b.getProduct().getId());
+            p.setBidId(null);
+            p.setStatus(Product.Status.AVAILABLE);
+            productDAO.save(p);
+            bidDAO.save(b);
+        }
+    }
 }

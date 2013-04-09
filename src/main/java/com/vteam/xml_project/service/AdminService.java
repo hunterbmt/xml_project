@@ -544,4 +544,8 @@ public class AdminService {
         result.setStatus("success");
         return result;
     }
+    @Transactional
+    public void checkExpiredBids() {
+        bidService.checkExpiredBids();
+    }
 }

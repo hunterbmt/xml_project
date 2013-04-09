@@ -54,6 +54,13 @@ public class AdminAPI {
     private ProductService productService;
     @Autowired
     private CategoryService categoryService;
+    
+    @RequestMapping(value = "/checkExpiredBids", method = RequestMethod.POST)
+    public @ResponseBody
+    String checkExpiredBids() {
+        adminService.checkExpiredBids();
+        return "Done";
+    }
 
     @RequestMapping(value = "/updateXML", method = RequestMethod.POST, produces = "application/json")
     public @ResponseBody

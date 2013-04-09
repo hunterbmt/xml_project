@@ -66,7 +66,7 @@
                 <div class="navbar-inner">
                     <div class="container">
                         <h1 class="brand">
-                            <a href="index.html">
+                            <a href="/">
                                 Bid 20!
                                 <i class="icon-legal"></i>
                             </a>
