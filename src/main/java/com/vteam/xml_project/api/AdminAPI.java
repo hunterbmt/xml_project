@@ -60,6 +60,12 @@ public class AdminAPI {
         adminService.checkExpiredBids();
         return "Done";
     }
+    
+    @RequestMapping(value = "/remove_bid", method = RequestMethod.POST)
+    public @ResponseBody
+    String rm_bid(@RequestParam int bid_id) {
+        return Boolean.toString(adminService.removeBidById(bid_id));
+    }
 
     @RequestMapping(value = "/updateXML", method = RequestMethod.POST, produces = "application/json")
     public @ResponseBody

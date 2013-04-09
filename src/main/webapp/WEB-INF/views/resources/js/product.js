@@ -187,18 +187,25 @@ function displayEndCounter() {
     if (ec_count <= 0)
     {
         clearInterval(ec);
-        //vteam_http.setHTML("timer", "Sản phẩm đã hết hạn bid");
-        vteam_http.setHTML("timer", "");
+        vteam_http.setHTML("timer", '');
+        vteam_http.setHTML("bidButton","<font color='white'>Sản phẩm này đã hết thời gian bid!</font>");
+        vteam_http.makeHttpRequest(
+            "/admin/checkExpiredBids",{},"POST");
+        setInterval(reload, 2000);
         return;
     }
+    
     vteam_http.setHTML("timer", toHMS(ec_count, true));
 }
 
+function reload() {
+    document.location.reload();
+}
 function toHMS(diff, isEndTime) {
     if (diff < 0)
         return 0;
     var diffSeconds = diff / 1000 % 60;
-    var diffMinutes = diff / (60 * 1000) % 60;
+    var diffMinutes = Math.ceil(diff / (60 * 1000) % 60) - 1;
     var diffHours = diff / (60 * 60 * 1000);
     var returnHTML;
 
@@ -250,8 +257,8 @@ function displayProductDetail(product) {
         html += "</div></div>"
         html += '<div class="v6BorderBot pTop5"><div class="v6Timer">'
         html += '<div class="v6Gray fl"></div>'
-        html += '<div class="v6DisplayTime" id="timer">' + (toHMS(product.bidTimeRemain) == 0 ? "Sản phẩm có thể bid" : toHMS(product.bidTimeRemain)) + '</span>'
-        html += '<div class="v6DisplayTime" id="endTimer"></div></div>'
+        html += '<div class="v6DisplayTime" id="timer">' + (toHMS(product.bidTimeRemain) == 0 ? "Sản phẩm có thể bid" : toHMS(product.bidTimeRemain))
+        html += '</div>'
         if (count < 0) //in bid
         {
             ec = setInterval(displayEndCounter, 1000);
@@ -259,7 +266,7 @@ function displayProductDetail(product) {
 
     } else {
 
-        html += '<div class="v6DisplayTime" id="timer">Sản phẩm này đã hết thời gian bid!</div>'
+        html += '<div class="v6DisplayTime" id="timer" style="padding-left:20px"><font color="white">Sản phẩm này đã hết thời gian bid!</font></div>'
 
     }
 
