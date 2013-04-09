@@ -73,7 +73,6 @@ public class UserAPI {
         boolean result = userService.createNewUser(newUser);
         if (result) {
             session.put("email", email);
-            userService.updateAllXML();
             returnMap.put("status", "success");
         } else {
             returnMap.put("status", "error");

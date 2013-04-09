@@ -39,6 +39,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.hoiio.sdk.services.VoiceService;
+import com.vteam.xml_project.dto.CategoryDTO;
+import com.vteam.xml_project.dto.CategoryListDTO;
 import com.vteam.xml_project.util.PhoneNumberUtil;
 
 /**
@@ -67,6 +69,8 @@ public class BidService {
     VoiceService voiceService;
     @Autowired
     private BidHistoryService bhService;
+    @Autowired
+    private XMLReloadService xmlReloadService;
     private static long BID_DURATION = (long) 25.00;
 
     private List<BidDTO> getTmpList(List<Bids> bidList) {
@@ -288,13 +292,15 @@ public class BidService {
             if (PhoneNumberUtil.validatePhoneNumber(user.getPhone(), true)) {
                 try {
                     voiceService.makeCall("+84914042412", user.getPhone(), null, null, null);
-                    update_bought_bid(dbBid, current_date, user.getId(), dbBid.getCurrentPrice());
-                    updateBidsHistory(user, dbBid);
-                    createOrderHistory(user, dbBid.getProduct(), dbBid.getCurrentPrice());
                 } catch (HoiioException ex) {
                     java.util.logging.Logger.getLogger(BidService.class.getName()).log(Level.SEVERE, null, ex);
                     return false;
                 }
+                update_bought_bid(dbBid, current_date, user.getId(), dbBid.getCurrentPrice());
+                updateBidsHistory(user, dbBid);
+                createOrderHistory(user, dbBid.getProduct(), dbBid.getCurrentPrice());
+                xmlReloadService.marshallUser();
+                xmlReloadService.marshallCategory();
             }
         }
         return true;
@@ -397,6 +403,7 @@ public class BidService {
 
     @Transactional
     void checkExpiredBids() {
+<<<<<<< HEAD
         try {
             List<Bids> expiredBids = bidDAO.getExpiredBids(new Date());
             Product p = null;
@@ -419,6 +426,13 @@ public class BidService {
             Bids bid = bidDAO.getBidById(bid_id);
             Product p = productDAO.getProductById(bid.getProduct().getId());
             bid.setStatus(Bids.Status.COMPLETED);
+=======
+        List<Bids> expiredBids = bidDAO.getExpiredBids(new Date());
+        Product p = null;
+        for (Bids b : expiredBids) {
+            b.setStatus(Bids.Status.COMPLETED);
+            p = productDAO.getProductById(b.getProduct().getId());
+>>>>>>> 02ed50dfad2dcf819a64804d8ecfa80b72ce28d1
             p.setBidId(null);
             p.setStatus(Product.Status.AVAILABLE);
             bidDAO.save(bid);
