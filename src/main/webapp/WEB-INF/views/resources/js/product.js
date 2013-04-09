@@ -145,7 +145,7 @@ function startBuyingNow(bidId) {
 }
 
 function buyCountDown() {
-    if (bcount <= 0) {
+    if (bcount <= 0 || !(isInBidTime)) {
         clearInterval(cc);
         isInBidTime = false;
         vteam_http.setHTML("buyNowLeft", '');
@@ -184,6 +184,9 @@ function toHMS(diff) {
 }
 
 var isInBidTime = false;
+function resetBiddingFlag() {
+    isInBidTime = false;
+}
 function displayProductDetail(product) {
     clearInterval(c);
     var html = '';
@@ -331,6 +334,7 @@ function searchOnKeyDown(e) {
 function changeContext() {
     currentPosition = -1;
     displayProduct(product_list);
+    resetBiddingFlag();
 }
 
 function hideAllDiv() {
@@ -339,6 +343,7 @@ function hideAllDiv() {
     vteam_http.hide("product_list");
     vteam_http.hide("user_login");
     vteam_http.hide("user_detail");
+    resetBiddingFlag();
 }
 function loadProductTags(id) {
     vteam_http.makeHttpRequest("/tags/getTagsByProductId",

@@ -175,7 +175,7 @@
                                         <label > Nhập mã xác nhận tại đây:</label>
                                         <input type="text" id="txtInput"/> 
                                     </div>
-                                    <div class="hide" id="capcha_validation">Hãy nhập đúng mã xác nhận</div>
+                                    <div class="hide" id="capcha_validation"><font style="color: red">Hãy nhập đúng mã xác nhận</font></div>
                                     <button name="send" type="button"  class="btn btn-success" onclick="create()">Đăng ký</button>
                                     <button name="send" type="button"  class="btn" onclick="changeLogin()"style="margin-left: 16%">Hủy bỏ</button>
                                 </fieldset>
@@ -188,10 +188,10 @@
                         <div class="alert hide" id="updateResult1"></div>
                         <div class="tabbable tabs-left">
                             <ul class="nav nav-tabs">
-                                <li class="active"><a href="#lA" data-toggle="tab">Thông tin chi tiết</a></li>
+                                <li class="active"><a href="#lA" data-toggle="tab" onclick="loadUserInfo()">Thông tin chi tiết</a></li>
                                 <li class=""><a href="#lB" data-toggle="tab">Thay đổi mật khẩu</a></li>
                                 <li class=""><a href="#lC" data-toggle="tab" onclick="getOrderList()">Lịch sử mua hàng</a></li>
-                                <li class=""><a href="#lD" data-toggle="tab">Nạp thẻ</a></li>
+                                <li class=""><a href="#lD" data-toggle="tab" onclick="hidePaymentList()">Nạp thẻ</a></li>
                             </ul>
                             <div class="tab-content">
 

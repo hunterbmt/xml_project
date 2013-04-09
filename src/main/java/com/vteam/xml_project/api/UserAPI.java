@@ -63,12 +63,13 @@ public class UserAPI {
     @RequestMapping(value = "/create", method = RequestMethod.POST, produces = "application/json")
     public @ResponseBody
     HashMap<String, Object> create(
-            @RequestParam String email, String password, String fullname) {
+            @RequestParam String email, String password, String fullname,String phone) {
         HashMap<String, Object> returnMap = new HashMap<String, Object>();
         UserDTO newUser = new UserDTO();
         newUser.setEmail(email);
         newUser.setPassword(password);
         newUser.setFullname(fullname);
+        newUser.setPhone(phone);
         boolean result = userService.createNewUser(newUser);
         if (result) {
             session.put("email", email);
@@ -90,7 +91,6 @@ public class UserAPI {
             returnMap.put("status", "unlogin");
             return returnMap;
         }
-        String tmp=birthday.split("\\s").toString();
         boolean result = userService.upadateUser(email, address, phone, birthday, formatDate);
         if (result) {
             returnMap.put("status", "success");
