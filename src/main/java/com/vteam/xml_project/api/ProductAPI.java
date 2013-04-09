@@ -76,12 +76,12 @@ public class ProductAPI {
         ProductDTO result = productService.getProductById(product_id);
         return result;
     }
-    @RequestMapping(value = "/marshallHotBidProducts", method = RequestMethod.POST, produces = "application/json")
+    @RequestMapping(value = "/marshallHotBidProducts", method = RequestMethod.POST)
     public @ResponseBody
     String marshallHotBidProducts(
             @RequestParam String[] product_ids) {
         productService.marshallHotBidProducts(product_ids);
-        return "OK";
+        return "success";
     }
     
     

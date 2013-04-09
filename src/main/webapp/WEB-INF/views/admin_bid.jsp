@@ -111,75 +111,76 @@
                                         </div>
                                     </div>
                                     <div class="control-group">
-                                        <label class="control-label">Last user</label>
+                                        <label class="control-label">Bidder cuối</label>
                                         <div class="controls">
                                             <span id="bid_last_userid" class="uneditable-input"></span>
                                         </div>
                                     </div>
                                     <div class="control-group">
-                                        <label class="control-label">Product Name *</label>
+                                        <label class="control-label">Sản phẩm *</label>
                                         <div id="product_name_container" class="controls">
                                             <input id="bid_product_name" autocomplete="off" type="text">
                                         </div>
                                     </div>
                                     <div class="control-group">
-                                        <label class="control-label">Current price</label>
+                                        <label class="control-label">Giá SP</label>
                                         <div class="controls">
                                             <span id="bid_current_price" class="uneditable-input"></span>
                                         </div>
                                     </div>
                                     <div class="control-group">
-                                        <label class="control-label">Last edit</label>
+                                        <label class="control-label">Cập nhật</label>
                                         <div class="controls">
                                             <span id="bid_last_edit" class="uneditable-input"></span>
                                         </div>
                                     </div>
                                     <div class="control-group">
-                                        <label class="control-label">Start date *</label>
+                                        <label class="control-label">Bắt đầu *</label>
                                         <div class="controls">
                                             <input id="bid_start_date" type="text">
                                         </div>
                                     </div>
                                     <div class="control-group">
-                                        <label class="control-label">End date *</label>
+                                        <label class="control-label">Kết thúc *</label>
                                         <div class="controls">
                                             <input id="bid_end_date" type="text">
                                         </div>
                                     </div>
                                     <div class="control-group">
-                                        <label class="control-label">Cost *</label>
+                                        <label class="control-label">Giá mỗi bid *</label>
                                         <div class="controls">
                                             <input id="bid_cost" type="number" class="input-small">
                                         </div>
                                     </div>
                                     <div class="control-group">
-                                        <label class="control-label">Status</label>
+                                        <label class="control-label">Trạng thái</label>
                                         <div class="controls">                                            
                                             <select id ="bid_status">
-                                                <option value="UNCOMPLETED">UnCompleted</option>
-                                                <option value="COMPLETED">Competed</option>                                                
+                                                <option value="UNCOMPLETED">Chưa hoàn thành</option>
+                                                <option value="COMPLETED">Hoàn thành</option>                                                
                                             </select>
                                         </div>
                                     </div>
                                     <div class="control-group">
                                         <label class="control-label"></label>
                                         <div class="controls">                                            
-                                            <span class="" style="color:#0033ff; font-size: smaller">Note: All * marked fields are required</span>
+                                            <span class="" style="color:#0033ff; font-size: smaller">(*) Yêu cầu nhập</span>
                                         </div>
                                     </div>
                                     <div class="controls-button">
-                                        <button type="button" id="btnSave" class="btn btn-warning disabled" onclick="insertOrUpdateBid()">Save</button>
-                                        <button type="button" class="btn newBtn" onclick="clearBidDetail(this)">New</button>
+                                        <button type="button" id="btnSave" class="btn btn-warning disabled" onclick="insertOrUpdateBid()">Lưu</button>
+                                        <button type="button" class="btn newBtn" onclick="clearBidDetail(this)">Thêm</button>
                                     </div>
                                     <div>
-                                        <span class="alert-info" id="result_IU_bid">VTeam - XML_Project</span>
+                                        <span class="alert-info" id="result_IU_bid"></span>
                                     </div>
                                     <script>
-            $(function() {
-                setTimeout(function() {
-                    $("#result_IU_bid").hide('blind', {}, 500);
-                }, 2000);
-            });
+                                        vteam_http.setHTML("result_IU_bid",msg);
+                                        $(function() {
+                                            setTimeout(function() {
+                                                $("#result_IU_bid").hide('blind', {}, 500);
+                                            }, 2000);
+                                        });
                                     </script>
                                 </form>
                             </div>

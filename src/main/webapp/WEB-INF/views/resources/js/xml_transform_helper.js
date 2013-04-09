@@ -17,14 +17,19 @@ function loadXMLDoc(dname)
     return xhttp.responseXML;
 }
 
-
+function updateXML() {
+    vteam_http.makeHttpRequest(
+            "/admin/updateXML",{},"POST"
+        );
+}
 
 function transformToOngoingSourceXML(cDate)
 {
+    updateXML();
     xml = loadXMLDoc("../resources/xml/bids.xml");
     xsl = loadXMLDoc("../resources/xsl/ongoingBid_list.xsl");
 
-    // code for IE
+    // IE
     if (window.ActiveXObject)
     {
         ex = xml.transformNode(xsl);
@@ -41,6 +46,7 @@ function transformToOngoingSourceXML(cDate)
 }
 
 function viewHotBids() {
+    updateXML();
     xml = transformToOngoingSourceXML(toDateAndTime2(new Date()));
     xsl = loadXMLDoc("../resources/xsl/HotBidProductIDs.xsl");
     var orderedHotProductIDs;
@@ -61,10 +67,9 @@ function viewHotBids() {
         target.push(ids[i].textContent);
     }
 
-    //alert(target);
-    vteam_http.makeHttpRequest("/product/marshallHotBidProducts",
+    vteam_http.makeSyncHttpRequest("/product/marshallHotBidProducts",
             {
-                product_ids: target
+                product_ids: target.reverse()
             },
     'POST');
     transformHotBids();
@@ -73,7 +78,7 @@ function viewHotBids() {
 function transformHotBids() {
     xml = loadXMLDoc("../resources/xml/hot_bid_products.xml");
     xsl = loadXMLDoc("../resources/xsl/HotBidProducts.xsl");
-    // code for IE
+    // IE
     if (window.ActiveXObject)
     {
         ex = xml.transformNode(xsl);
@@ -108,11 +113,11 @@ function displayOngoingPaginationResult(page, pageSize)
     xml = transformToOngoingSourceXML(toDateAndTime2(new Date()));
     xsl = loadXMLDoc("../resources/xsl/OnGoingBidPaging.xsl");
 
-    // code for IE
+    // IE
     if (window.ActiveXObject)
     {
         ex = xml.transformNode(xsl);
-        document.getElementById("example").innerHTML = ex;
+        document.getElementById("test11").innerHTML = ex;
     }
     else if (document.implementation && document.implementation.createDocument)
     {
