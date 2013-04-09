@@ -549,11 +549,11 @@ public class AdminService {
         result.setStatus("success");
         return result;
     }
-<<<<<<< HEAD
+
     @Transactional
     public void checkExpiredBids() {
         bidService.checkExpiredBids();
-=======
+    }
 
     @Transactional
     public OrderHistoryDTO getOrderDetail(int orderId) {
@@ -621,6 +621,5 @@ public class AdminService {
             java.util.logging.Logger.getLogger(AdminService.class.getName()).log(Level.SEVERE, null, ex);
         }
         return orderHistoryDTO;
->>>>>>> 2e5621c85b08f4db23dcab9b54e0a196bf679d08
     }
 }
