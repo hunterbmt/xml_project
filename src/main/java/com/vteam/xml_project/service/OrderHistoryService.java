@@ -12,6 +12,7 @@ import com.vteam.xml_project.hibernate.dao.OrderHistoryDAO;
 import com.vteam.xml_project.hibernate.orm.CardCode;
 import com.vteam.xml_project.hibernate.orm.OrderHistory;
 import com.vteam.xml_project.hibernate.orm.Users;
+import com.vteam.xml_project.util.DateUtil;
 import com.vteam.xml_project.util.XMLUtil;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -44,11 +45,10 @@ public class OrderHistoryService {
     private ServletContext servletContext;
     
     @Transactional
-    public OrderHistoryListDTO getListByOrderID(int id){
+    public OrderHistoryListDTO getOrderListByUserID(int id){
         OrderHistoryListDTO listOrders=new OrderHistoryListDTO();
         try{
-            Users user = new Users();
-            List<OrderHistory> dbOrders = orderDAO.getOrderHistorysList(id);
+            List<OrderHistory> dbOrders = orderDAO.getOrderHistorysListByUserID(id);
             
             
             OrderHistoryDTO o;
@@ -78,7 +78,7 @@ public class OrderHistoryService {
      @Transactional
     public ByteArrayOutputStream exportOrderHistoryToPdf(int id) {
         try {
-            List<OrderHistory> orderList = orderDAO.getOrderHistorysList(id);
+            List<OrderHistory> orderList = orderDAO.getOrderHistorysListByUserID(id);
             OrderHistoryListDTO orderListDTO = new OrderHistoryListDTO();
             OrderHistoryDTO orderDTO;
             for (OrderHistory order : orderList) {

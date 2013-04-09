@@ -39,7 +39,7 @@ public class OrderHistoryAPI {
     public @ResponseBody
     OrderHistoryListDTO getOrderList(
             @RequestParam int id) {
-        OrderHistoryListDTO orderResult = orderService.getListByOrderID(id);
+        OrderHistoryListDTO orderResult = orderService.getOrderListByUserID(id);
         return orderResult;
         //return result;
     }

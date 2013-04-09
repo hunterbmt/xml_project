@@ -7,6 +7,7 @@ package com.vteam.xml_project.dto;
 import java.util.Date;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -24,6 +25,16 @@ public class UserDTO extends BaseDTO{
     private String phone;
     private Integer balance;
     private Integer id;
+    @XmlElement(name = "orderList", type = OrderHistoryListDTO.class)
+    private OrderHistoryListDTO oderListDTO;
+
+    public OrderHistoryListDTO getOderListDTO() {
+        return oderListDTO;
+    }
+
+    public void setOderListDTO(OrderHistoryListDTO oderListDTO) {
+        this.oderListDTO = oderListDTO;
+    }
 
     public Integer getId() {
         return id;

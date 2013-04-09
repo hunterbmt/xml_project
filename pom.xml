@@ -38,6 +38,7 @@
         <javax.servlet.jsp-api-version>2.1</javax.servlet.jsp-api-version>
         <javax.mail-version>1.4</javax.mail-version>
         <jmockit-version>0.999.14</jmockit-version>
+        <netbeans.hint.deploy.server>Tomcat</netbeans.hint.deploy.server>
     </properties>
 
     <repositories>
